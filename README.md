@@ -4,7 +4,7 @@
 
 - [x] Get Node ID
 
-- [x] Get Wallet Address
+- [x] Get *Testnet* Wallet Address
 
 - [ ] See Total Balance updated
 
