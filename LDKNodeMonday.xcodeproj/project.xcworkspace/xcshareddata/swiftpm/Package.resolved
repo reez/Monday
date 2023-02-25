@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "WalletUI",
+        "repositoryURL": "https://github.com/reez/WalletUI.git",
+        "state": {
+          "branch": "main",
+          "revision": "0e53ff7a1930051071c3c04acc03b07bc8bf580c",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
