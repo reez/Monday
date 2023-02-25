@@ -1,13 +1,13 @@
 # Monday
 
-[x] Start Node
+- [x] Start Node
 
-[x] Get Node ID
+- [x] Get Node ID
 
-[x] Get Wallet Address
+- [x] Get Wallet Address
 
-[ ] See Total Balance updated
+- [ ] See Total Balance updated
 
-[ ] Open Channel
+- [ ] Open Channel
 
-[ ] Send Sats
+- [ ] Send Sats
