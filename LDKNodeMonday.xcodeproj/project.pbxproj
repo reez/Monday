@@ -20,6 +20,7 @@
 		AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* NodeIDView.swift */; };
 		AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelView.swift */; };
 		AE931D8629A950D200F7F2F7 /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8529A950D200F7F2F7 /* BalanceView.swift */; };
+		AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		AE80116A29A59976009B9967 /* NodeIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDView.swift; sourceTree = "<group>"; };
 		AE80116C29A59AF4009B9967 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
 		AE931D8529A950D200F7F2F7 /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
+		AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 			children = (
 				AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */,
 				AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */,
+				AE931D8929AA79E800F7F2F7 /* Utilities */,
 			);
 			path = Lightning;
 			sourceTree = "<group>";
@@ -124,6 +127,14 @@
 				AE80116A29A59976009B9967 /* NodeIDView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		AE931D8929AA79E800F7F2F7 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +223,7 @@
 				AE931D8629A950D200F7F2F7 /* BalanceView.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */,
 				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
+				AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,22 +14,34 @@ class LightningNodeService {
     
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService()
+            static let instance = LightningNodeService(network: .testnet)
         }
         return Singleton.instance
     }
     
-    init() {
+    init(network: NetworkConnection) {
+        
         let storageDirectoryPath = storageManager.getDocumentsDirectory()
-        let esploraServerUrl = "http://blockstream.info/testnet/api/"
-        let network = "testnet"
+        var esploraServerUrl = "http://blockstream.info/testnet/api/"
+        var chosenNetwork = "testnet"
         let listeningAddress: String? = nil
         let defaultCltvExpiryDelta = UInt32(2048)
+        
+        switch network {
+        case .regtest:
+            chosenNetwork = "regtest"
+            esploraServerUrl = "http://127.0.0.1:3002"
+            print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
+        case .testnet:
+            chosenNetwork = "testnet"
+            esploraServerUrl = "http://blockstream.info/testnet/api/"
+            print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
+        }
         
         let ldkConfig = Config(
             storageDirPath: storageDirectoryPath,
             esploraServerUrl: esploraServerUrl,
-            network: network,
+            network: chosenNetwork,
             listeningAddress: listeningAddress,
             defaultCltvExpiryDelta: defaultCltvExpiryDelta
         )
