@@ -21,6 +21,7 @@
 		AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelView.swift */; };
 		AE931D8629A950D200F7F2F7 /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8529A950D200F7F2F7 /* BalanceView.swift */; };
 		AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */; };
+		AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		AE80116C29A59AF4009B9967 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
 		AE931D8529A950D200F7F2F7 /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
 		AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
+		AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 				AE931D8529A950D200F7F2F7 /* BalanceView.swift */,
 				AE80116C29A59AF4009B9967 /* ChannelView.swift */,
 				AE80116A29A59976009B9967 /* NodeIDView.swift */,
+				AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 			files = (
 				AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */,
 				AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */,
+				AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */,
 				AE80116929A59918009B9967 /* TabHomeView.swift in Sources */,
 				AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */,
 				AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */,

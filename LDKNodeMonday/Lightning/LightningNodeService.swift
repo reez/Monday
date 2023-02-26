@@ -36,6 +36,7 @@ class LightningNodeService {
         case .testnet:
             chosenNetwork = "testnet"
             esploraServerUrl = "http://blockstream.info/testnet/api/"
+            listeningAddress = "127.0.0.1:18333"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
         }
         

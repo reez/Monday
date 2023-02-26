@@ -42,6 +42,9 @@ struct AddressView: View {
                     
                     VStack {
                         
+                        QRCodeView(address: viewModel.address)
+                            .padding()
+                        
                         Text("Copy Address")
                             .bold()
                         
