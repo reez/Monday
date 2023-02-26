@@ -24,13 +24,14 @@ class LightningNodeService {
         let storageDirectoryPath = storageManager.getDocumentsDirectory()
         var esploraServerUrl = "http://blockstream.info/testnet/api/"
         var chosenNetwork = "testnet"
-        let listeningAddress: String? = nil
+        var listeningAddress: String? = nil
         let defaultCltvExpiryDelta = UInt32(2048)
         
         switch network {
         case .regtest:
             chosenNetwork = "regtest"
             esploraServerUrl = "http://127.0.0.1:3002"
+            listeningAddress = "127.0.0.1:24224"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
         case .testnet:
             chosenNetwork = "testnet"

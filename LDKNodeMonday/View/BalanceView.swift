@@ -28,39 +28,41 @@ class BalanceViewModel: ObservableObject {
 
 struct BalanceView: View {
     @ObservedObject var viewModel: BalanceViewModel
-
+    
     var body: some View {
         
         NavigationView {
             
-        ZStack {
-            Color(uiColor: UIColor.systemBackground)
+            ZStack {
+                Color(uiColor: UIColor.systemBackground)
+                
+                VStack(spacing: 20.0) {
+                    Text(viewModel.balance)
+                        .textStyle(BitcoinTitle1())
+                    Text("Sats")
+                        .foregroundColor(.secondary)
+                        .textStyle(BitcoinTitle5())
+                    
+                    Button {
+                        viewModel.syncWallets()
+                        viewModel.getTotalOnchainBalanceSats()
+                    } label: {
+                        Image(systemName: "arrow.counterclockwise")
+                    }
+                    
+                }
+                .padding()
+                .navigationTitle("Balance")
+                .onAppear {
+                    Task {
+                        viewModel.syncWallets()
+                        viewModel.getTotalOnchainBalanceSats()
+                    }
+                }
+            }
+            .ignoresSafeArea()
             
-            VStack(spacing: 20.0) {
-                Text(viewModel.balance)
-                    .textStyle(BitcoinTitle1())
-                Text("Sats")
-                    .foregroundColor(.secondary)
-                    .textStyle(BitcoinTitle5())
-                
-                Button {
-                    viewModel.getTotalOnchainBalanceSats()
-                } label: {
-                    Image(systemName: "arrow.counterclockwise")
-                }
-                
-            }
-            .padding()
-            .navigationTitle("Balance")
-            .onAppear {
-                Task {
-                    viewModel.getTotalOnchainBalanceSats
-                }
-            }
         }
-        .ignoresSafeArea()
-        
-    }
         
     }
     
@@ -71,6 +73,5 @@ struct BalanceView_Previews: PreviewProvider {
         BalanceView(viewModel: .init())
         BalanceView(viewModel: .init())
             .environment(\.colorScheme, .dark)
-
     }
 }
