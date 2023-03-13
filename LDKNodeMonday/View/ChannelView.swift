@@ -10,10 +10,10 @@ import LightningDevKitNode
 import WalletUI
 
 class ChannelViewModel: ObservableObject {
-    @Published var pubKey: String = "0f211ed889948482f181b7f86360005b7cfb99c99b386a0ee7508290cb34e0bba7"
-    @Published var hostname: String = "127.0.0.1"
-    @Published var port: String = "9735"
-    @Published var sats: String = "100"
+    @Published var pubKey: String = ""
+    @Published var hostname: String = ""
+    @Published var port: String = ""
+    @Published var sats: String = ""
     
     func createNodePubkeyAddress() -> String {
         let nodeAddressAndPort = "\(pubKey)@\(hostname):\(port)"
@@ -42,51 +42,61 @@ struct ChannelView: View {
                     
                     VStack(alignment: .leading) {
                         Text("Pubkey")
-                        TextField(
-                            "Pubkey",
-                            text: $viewModel.pubKey
-                        )
-                        .textFieldStyle(.roundedBorder)
-                        .truncationMode(.middle)
-                        .font(.caption)
+                        TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.pubKey)
+                            .frame(height: 48)
+                            .truncationMode(.middle)
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundColor(.secondary)
+                            )
                     }
                     .padding()
-
+                    
                     VStack(alignment: .leading) {
                         Text("Hostname")
-                        TextField(
-                            "Hostname",
-                            text: $viewModel.hostname
-                        )
-                        .textFieldStyle(.roundedBorder)
-                        .font(.caption)
+                        TextField("127.0.0.1", text: $viewModel.hostname)
+                            .frame(height: 48)
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundColor(.secondary)
+                            )
                     }
                     .padding()
-
+                    
                     VStack(alignment: .leading) {
                         Text("Port")
-                        TextField(
-                            "Port",
-                            text: $viewModel.port
-                        )
-                        .textFieldStyle(.roundedBorder)
-                        .keyboardType(.numberPad)
-                        .font(.caption)
+                        TextField("9735", text: $viewModel.port)
+                            .frame(height: 48)
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundColor(.secondary)
+                            )
                     }
                     .padding()
-
+                    
                     VStack(alignment: .leading) {
                         Text("Sats")
-                        TextField(
-                            "Amount Sats",
-                            text: $viewModel.sats
-                        )
-                        .textFieldStyle(.roundedBorder)
-                        .keyboardType(.numberPad)
-                        .font(.caption)
+                        TextField("6102", text: $viewModel.sats)
+                            .frame(height: 48)
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundColor(.secondary)
+                            )
                     }
                     .padding()
-
+                    
                     Button {
                         let nodePubkeyAndAddress = viewModel.createNodePubkeyAddress()
                         let channelAmountSats = UInt64(viewModel.sats) ?? UInt64(100)
@@ -102,6 +112,7 @@ struct ChannelView: View {
                     
                 }
                 .padding()
+                .padding(.top)
                 .navigationTitle("Channel")
                 
             }

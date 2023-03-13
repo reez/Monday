@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 import LightningDevKitNode
 import WalletUI
 
@@ -20,7 +19,7 @@ class TabHomeViewModel: ObservableObject {
 
 struct TabHomeView: View {
     @ObservedObject var viewModel: TabHomeViewModel
-
+    
     var body: some View {
         
         ZStack {
@@ -32,7 +31,7 @@ struct TabHomeView: View {
                     .tabItem {
                         Label(
                             "Address",
-                            systemImage: "bitcoinsign"
+                            systemImage: "arrow.down"
                         )
                     }
                 
@@ -40,7 +39,7 @@ struct TabHomeView: View {
                     .tabItem {
                         Label(
                             "Balance",
-                            systemImage: "wallet.pass"
+                            systemImage: "line.3.horizontal"
                         )
                     }
                 
@@ -48,7 +47,15 @@ struct TabHomeView: View {
                     .tabItem {
                         Label(
                             "Channel",
-                            systemImage: "fibrechannel"
+                            systemImage: "plus"
+                        )
+                    }
+                
+                SendView(viewModel: .init())
+                    .tabItem {
+                        Label(
+                            "Send",
+                            systemImage: "arrow.up"
                         )
                     }
                 
@@ -78,6 +85,5 @@ struct TabHomeView_Previews: PreviewProvider {
         TabHomeView(viewModel: .init())
         TabHomeView(viewModel: .init())
             .environment(\.colorScheme, .dark)
-        
     }
 }

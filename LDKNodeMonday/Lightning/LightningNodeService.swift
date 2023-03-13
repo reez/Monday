@@ -31,7 +31,7 @@ class LightningNodeService {
         case .regtest:
             chosenNetwork = "regtest"
             esploraServerUrl = "http://127.0.0.1:3002"
-            listeningAddress = "127.0.0.1:24224"
+            listeningAddress = "10.0.2.132:3002"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
         case .testnet:
             chosenNetwork = "testnet"
@@ -47,6 +47,7 @@ class LightningNodeService {
             listeningAddress: listeningAddress,
             defaultCltvExpiryDelta: defaultCltvExpiryDelta
         )
+        print("LDKNodeMonday /// config: \(ldkConfig)")
         
         let nodeBuilder = Builder.fromConfig(config: ldkConfig)
         let node = nodeBuilder.build()
@@ -92,19 +93,26 @@ class LightningNodeService {
                 announceChannel: true
             )
             print("LDKNodeMonday /// opened channel to \(nodePubkeyAndAddress) with amount \(channelAmountSats)")
-        } catch {
-            print("LDKNodeMonday /// error getting openChannel: \(error.localizedDescription)")
+        } catch { // could do something like `catch let err1 as MyError where err1 == .error1` but i don't like that as much right now
+            print("LDKNodeMonday /// error getting openChannel: \(error.localizedDescription) ...")
+            print("LDKNodeMonday /// details \n nodePubkeyAndAddress \(nodePubkeyAndAddress) \n channelAmountSats \(channelAmountSats)")
+            if let mine = error as? NodeError {
+                let _ = MondayNodeError(nodeError: mine)
+            } else {
+                print("couldn't equate error to Node Error")
+            }
         }
     }
     
     func syncWallets() {
         do {
             try node.syncWallets()
+            print("LDKNodeMonday /// Wallet synced!")
         } catch {
             print("LDKNodeMonday /// error syncing wallets: \(error.localizedDescription)")
         }
     }
-        
+    
     func getTotalOnchainBalanceSats() -> UInt64? {
         do {
             let balance = try node.totalOnchainBalanceSats()
@@ -114,6 +122,53 @@ class LightningNodeService {
             print("LDKNodeMonday /// error getting getTotalOnchainBalanceSats: \(error.localizedDescription)")
             return nil
         }
+    }
+    
+    func nextEvent() {
+        let nextEvent = node.nextEvent()
+        switch nextEvent {
+        case .paymentSuccessful(paymentHash: let paymentHash):
+            print("LDKNodeMonday /// event: paymentSuccessful \n paymentHash \(paymentHash)")
+        case .paymentFailed(paymentHash: let paymentHash):
+            print("LDKNodeMonday /// event: paymentFailed \n paymentHash \(paymentHash)")
+        case .paymentReceived(paymentHash: let paymentHash, amountMsat: let amountMsat):
+            print("LDKNodeMonday /// event: paymentReceived \n paymentHash \(paymentHash) \n amountMsat \(amountMsat)")
+        case .channelReady(channelId: let channelId, userChannelId: let userChannelId):
+            print("LDKNodeMonday /// event: channelReady \n channelId \(channelId) \n userChannelId \(userChannelId)")
+        case .channelClosed(channelId: let channelId, userChannelId: let userChannelId):
+            print("LDKNodeMonday /// event: channelClosed \n channelId \(channelId) \n userChannelId \(userChannelId)")
+        }
+    }
+    
+    func eventHandled() {
+        node.eventHandled()
+    }
+    
+    func sendSpontaneousPayment(amountMsat: UInt64, nodeId: String) {
+        do {
+            let paymentHash = try node.sendSpontaneousPayment(amountMsat: amountMsat, nodeId: nodeId)
+            print("paymentHash: \(paymentHash)")
+        } catch {
+            if let mine = error as? NodeError {
+                let _ = MondayNodeError(nodeError: mine)
+            } else {
+                print("couldn't equate error to Node Error")
+            }
+        }
+    }
+    
+    func sendPayment(invoice: Invoice) {
+        do {
+            let paymentHash = try node.sendPayment(invoice: invoice)
+            print("paymentHash: \(paymentHash)")
+        } catch {
+            if let mine = error as? NodeError {
+                let _ = MondayNodeError(nodeError: mine)
+            } else {
+                print("couldn't equate error to Node Error")
+            }
+        }
+        
     }
     
 }

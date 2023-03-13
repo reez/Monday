@@ -12,6 +12,7 @@ struct LightningStorage {
     func getDocumentsDirectory() -> String {
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let pathString = path.path
+        print("LDKNodeMonday /// getDocumentsDirectory path: \n \(pathString)")
         
         return pathString
     }
