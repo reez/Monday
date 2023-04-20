@@ -32,7 +32,6 @@
 		AE17E8DB29A402E30058C9C9 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
 		AE17E8DD29A402E40058C9C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		AE17E90929A42AF90058C9C9 /* swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = swift; path = "../../Desktop/ldk-node/bindings/swift"; sourceTree = "<group>"; };
 		AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeService.swift; sourceTree = "<group>"; };
 		AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningStorage.swift; sourceTree = "<group>"; };
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -64,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				AE5C4FD429A5565700BE3285 /* README.md */,
-				AE17E8E729A4036C0058C9C9 /* Packages */,
 				AE17E8D829A402E30058C9C9 /* LDKNodeMonday */,
 				AE17E8D729A402E30058C9C9 /* Products */,
 				AE17E8E929A403800058C9C9 /* Frameworks */,
@@ -98,14 +96,6 @@
 				AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		AE17E8E729A4036C0058C9C9 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				AE17E90929A42AF90058C9C9 /* swift */,
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 		AE17E8E929A403800058C9C9 /* Frameworks */ = {
