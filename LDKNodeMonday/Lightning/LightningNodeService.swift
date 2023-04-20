@@ -40,16 +40,16 @@ class LightningNodeService {
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
         }
         
-        let ldkConfig = Config(
+        let config = Config(
             storageDirPath: storageDirectoryPath,
             esploraServerUrl: esploraServerUrl,
             network: chosenNetwork,
             listeningAddress: listeningAddress,
             defaultCltvExpiryDelta: defaultCltvExpiryDelta
         )
-        print("LDKNodeMonday /// config: \(ldkConfig)")
+        print("LDKNodeMonday /// config: \(config)")
         
-        let nodeBuilder = Builder.fromConfig(config: ldkConfig)
+        let nodeBuilder = Builder.fromConfig(config: config)
         let node = nodeBuilder.build()
         self.node = node
     }
