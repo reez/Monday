@@ -63,15 +63,10 @@ class LightningNodeService {
         }
     }
     
-    func getNodeId() -> String? {
-        do {
-            let nodeID = try node.nodeId()
-            print("LDKNodeMonday /// My node ID: \(nodeID)")
-            return nodeID
-        } catch {
-            print("LDKNodeMonday /// error getting nodeID: \(error.localizedDescription)")
-            return nil
-        }
+    func getNodeId() -> String {
+        let nodeID = node.nodeId()
+        print("LDKNodeMonday /// My node ID: \(nodeID)")
+        return nodeID
     }
     
     func getAddress() -> String? {
@@ -84,27 +79,6 @@ class LightningNodeService {
             return nil
         }
     }
-    
-//    func openChannel(nodePubkeyAndAddress: String, channelAmountSats: UInt64) {
-//        do {
-//            try node.connectOpenChannel(
-//                nodePubkeyAndAddress: nodePubkeyAndAddress,
-//                channelAmountSats: channelAmountSats,
-//                announceChannel: true
-//            )
-//            print("LDKNodeMonday /// opened channel to \(nodePubkeyAndAddress) with amount \(channelAmountSats)")
-//        } catch { // could do something like `catch let err1 as MyError where err1 == .error1` but i don't like that as much right now
-//            print("LDKNodeMonday /// error getting openChannel: \(error.localizedDescription) ...")
-//            print("LDKNodeMonday /// details \n nodePubkeyAndAddress \(nodePubkeyAndAddress) \n channelAmountSats \(channelAmountSats)")
-//            if let mine = error as? NodeError {
-//                let _ = MondayNodeError(nodeError: mine)
-//            } else {
-//                print("couldn't equate error to Node Error")
-//            }
-//        }
-//    }
-    
-    //    public func `connectOpenChannel`(`nodeId`: PublicKey, `address`: SocketAddr, `channelAmountSats`: UInt64, `announceChannel`: Bool) throws {
 
     func openChannel(
         nodeId: PublicKey,

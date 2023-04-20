@@ -38,9 +38,6 @@ struct MondayNodeError {
         case .NonUniquePaymentHash(message: let message):
             print("LDKNodeMonday /// MondayNodeError: NonUniquePaymentHash \n \(message)")
             
-//        case .InvoiceInvalid(message: let message):
-//            print("LDKNodeMonday /// MondayNodeError: InvoiceInvalid \n \(message)")
-            
         case .InvoiceCreationFailed(message: let message):
             print("LDKNodeMonday /// MondayNodeError: InvoiceCreationFailed \n \(message)")
             
@@ -49,10 +46,7 @@ struct MondayNodeError {
             
         case .NetworkInvalid(message: let message):
             print("LDKNodeMonday /// MondayNodeError: NetworkInvalid \n \(message)")
-            
-//        case .RoutingFailed(message: let message):
-//            print("LDKNodeMonday /// MondayNodeError: RoutingFailed \n \(message)")
-            
+  
         case .PeerInfoParseFailed(message: let message):
             print("LDKNodeMonday /// MondayNodeError: PeerInfoParseFailed \n \(message)")
             
