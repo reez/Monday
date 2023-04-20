@@ -119,6 +119,17 @@ class LightningNodeService {
         }
     }
     
+    func getSpendableOnchainBalanceSats() -> UInt64? {
+        do {
+            let balance = try node.spendableOnchainBalanceSats()
+            print("LDKNodeMonday /// My balance: \(balance)")
+            return balance
+        } catch {
+            print("LDKNodeMonday /// error getting getSpendableOnchainBalanceSats: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
     func nextEvent() {
         let nextEvent = node.nextEvent()
         switch nextEvent {

@@ -10,8 +10,9 @@ import LightningDevKitNode
 import WalletUI
 
 class BalanceViewModel: ObservableObject {
-    @Published var balance: String = "0"
-    
+    @Published var totalBalance: String = "0"
+    @Published var spendableBalance: String = "0"
+
     func syncWallets() {
         LightningNodeService.shared.syncWallets()
     }
@@ -20,8 +21,16 @@ class BalanceViewModel: ObservableObject {
         guard let balance = LightningNodeService.shared.getTotalOnchainBalanceSats() else { return }
         let intBalance = Int(balance)
         let stringIntBalance = String(intBalance)
-        print("My balance int string: \(stringIntBalance)")
-        self.balance = stringIntBalance
+        print("My total balance int string: \(stringIntBalance)")
+        self.totalBalance = stringIntBalance
+    }
+    
+    func getSpendableOnchainBalanceSats() {
+        guard let balance = LightningNodeService.shared.getSpendableOnchainBalanceSats() else { return }
+        let intBalance = Int(balance)
+        let stringIntBalance = String(intBalance)
+        print("My spendable balance int string: \(stringIntBalance)")
+        self.spendableBalance = stringIntBalance
     }
     
 }
@@ -37,15 +46,27 @@ struct BalanceView: View {
                 Color(uiColor: UIColor.systemBackground)
                 
                 VStack(spacing: 20.0) {
-                    Text(viewModel.balance)
-                        .textStyle(BitcoinTitle1())
-                    Text("Sats")
-                        .foregroundColor(.secondary)
-                        .textStyle(BitcoinTitle5())
+                    
+                    VStack {
+                        Text(viewModel.totalBalance)
+                            .textStyle(BitcoinTitle1())
+                        Text("Total Sats")
+                            .foregroundColor(.secondary)
+                            .textStyle(BitcoinTitle5())
+                    }
+                    
+                    VStack {
+                        Text(viewModel.spendableBalance)
+                            .textStyle(BitcoinTitle1())
+                        Text("Spendable Sats")
+                            .foregroundColor(.secondary)
+                            .textStyle(BitcoinTitle5())
+                    }
                     
                     Button {
                         viewModel.syncWallets()
                         viewModel.getTotalOnchainBalanceSats()
+                        viewModel.getSpendableOnchainBalanceSats()
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                     }
@@ -57,6 +78,7 @@ struct BalanceView: View {
                     Task {
                         viewModel.syncWallets()
                         viewModel.getTotalOnchainBalanceSats()
+                        viewModel.getSpendableOnchainBalanceSats()
                     }
                 }
             }
