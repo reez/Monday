@@ -16,6 +16,7 @@ struct QRCodeView: View {
             .interpolation(.none)
             .resizable()
             .scaledToFit()
+            .padding()
     }
 }
 

@@ -11,14 +11,16 @@
 		AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E8DB29A402E30058C9C9 /* AddressView.swift */; };
 		AE17E8DE29A402E40058C9C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE17E8DD29A402E40058C9C9 /* Assets.xcassets */; };
 		AE17E8E129A402E40058C9C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */; };
-		AE17E90B29A42B5B0058C9C9 /* LightningDevKitNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE17E90A29A42B5B0058C9C9 /* LightningDevKitNode */; };
 		AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */; };
+		AE48445329F1BDBD007E37C7 /* LightningDevKitNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE48445229F1BDBD007E37C7 /* LightningDevKitNode */; };
 		AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */; };
 		AE5C4FD529A5565700BE3285 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AE5C4FD429A5565700BE3285 /* README.md */; };
 		AE5C4FD829A5577F00BE3285 /* WalletUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE5C4FD729A5577F00BE3285 /* WalletUI */; };
 		AE80116929A59918009B9967 /* TabHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116829A59918009B9967 /* TabHomeView.swift */; };
 		AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* NodeIDView.swift */; };
 		AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelView.swift */; };
+		AE83142629AED67B00088A70 /* LightningNodeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142529AED67B00088A70 /* LightningNodeError.swift */; };
+		AE83142829AEDDAD00088A70 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142729AEDDAD00088A70 /* SendView.swift */; };
 		AE931D8629A950D200F7F2F7 /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8529A950D200F7F2F7 /* BalanceView.swift */; };
 		AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */; };
 		AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */; };
@@ -30,13 +32,15 @@
 		AE17E8DB29A402E30058C9C9 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
 		AE17E8DD29A402E40058C9C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		AE17E90929A42AF90058C9C9 /* swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = swift; path = "../../Desktop/ldk-node/bindings/swift"; sourceTree = "<group>"; };
 		AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeService.swift; sourceTree = "<group>"; };
 		AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningStorage.swift; sourceTree = "<group>"; };
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AE80116829A59918009B9967 /* TabHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeView.swift; sourceTree = "<group>"; };
 		AE80116A29A59976009B9967 /* NodeIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDView.swift; sourceTree = "<group>"; };
 		AE80116C29A59AF4009B9967 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
+		AE83142529AED67B00088A70 /* LightningNodeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeError.swift; sourceTree = "<group>"; };
+		AE83142729AEDDAD00088A70 /* SendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendView.swift; sourceTree = "<group>"; };
+		AE8D877429B145F100F2B918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AE931D8529A950D200F7F2F7 /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
 		AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
@@ -47,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE17E90B29A42B5B0058C9C9 /* LightningDevKitNode in Frameworks */,
+				AE48445329F1BDBD007E37C7 /* LightningDevKitNode in Frameworks */,
 				AE5C4FD829A5577F00BE3285 /* WalletUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				AE5C4FD429A5565700BE3285 /* README.md */,
-				AE17E8E729A4036C0058C9C9 /* Packages */,
 				AE17E8D829A402E30058C9C9 /* LDKNodeMonday */,
 				AE17E8D729A402E30058C9C9 /* Products */,
 				AE17E8E929A403800058C9C9 /* Frameworks */,
@@ -77,6 +80,7 @@
 		AE17E8D829A402E30058C9C9 /* LDKNodeMonday */ = {
 			isa = PBXGroup;
 			children = (
+				AE8D877429B145F100F2B918 /* Info.plist */,
 				AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */,
 				AE80116E29A5A64F009B9967 /* View */,
 				AE5C4FD329A5550100BE3285 /* Lightning */,
@@ -94,14 +98,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		AE17E8E729A4036C0058C9C9 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				AE17E90929A42AF90058C9C9 /* swift */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		AE17E8E929A403800058C9C9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +110,7 @@
 			children = (
 				AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */,
 				AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */,
+				AE83142529AED67B00088A70 /* LightningNodeError.swift */,
 				AE931D8929AA79E800F7F2F7 /* Utilities */,
 			);
 			path = Lightning;
@@ -124,10 +121,11 @@
 			children = (
 				AE80116829A59918009B9967 /* TabHomeView.swift */,
 				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
+				AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */,
 				AE931D8529A950D200F7F2F7 /* BalanceView.swift */,
 				AE80116C29A59AF4009B9967 /* ChannelView.swift */,
+				AE83142729AEDDAD00088A70 /* SendView.swift */,
 				AE80116A29A59976009B9967 /* NodeIDView.swift */,
-				AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -157,8 +155,8 @@
 			);
 			name = LDKNodeMonday;
 			packageProductDependencies = (
-				AE17E90A29A42B5B0058C9C9 /* LightningDevKitNode */,
 				AE5C4FD729A5577F00BE3285 /* WalletUI */,
+				AE48445229F1BDBD007E37C7 /* LightningDevKitNode */,
 			);
 			productName = LDKNodeMonday;
 			productReference = AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */;
@@ -190,6 +188,7 @@
 			mainGroup = AE17E8CD29A402E30058C9C9;
 			packageReferences = (
 				AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */,
+				AE48444F29F1BDA2007E37C7 /* XCRemoteSwiftPackageReference "ldk-node" */,
 			);
 			productRefGroup = AE17E8D729A402E30058C9C9 /* Products */;
 			projectDirPath = "";
@@ -218,7 +217,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE83142629AED67B00088A70 /* LightningNodeError.swift in Sources */,
 				AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */,
+				AE83142829AEDDAD00088A70 /* SendView.swift in Sources */,
 				AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */,
 				AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */,
 				AE80116929A59918009B9967 /* TabHomeView.swift in Sources */,
@@ -359,6 +360,7 @@
 				DEVELOPMENT_TEAM = 9G6M658RKZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LDKNodeMonday/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -388,6 +390,7 @@
 				DEVELOPMENT_TEAM = 9G6M658RKZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LDKNodeMonday/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -430,6 +433,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		AE48444F29F1BDA2007E37C7 /* XCRemoteSwiftPackageReference "ldk-node" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jurvis/ldk-node.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.0.2;
+			};
+		};
 		AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/reez/WalletUI.git";
@@ -441,8 +452,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AE17E90A29A42B5B0058C9C9 /* LightningDevKitNode */ = {
+		AE48445229F1BDBD007E37C7 /* LightningDevKitNode */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = AE48444F29F1BDA2007E37C7 /* XCRemoteSwiftPackageReference "ldk-node" */;
 			productName = LightningDevKitNode;
 		};
 		AE5C4FD729A5577F00BE3285 /* WalletUI */ = {

@@ -15,11 +15,7 @@ class NodeIDViewModel: ObservableObject {
     
     func getNodeID() {
         let nodeID = LightningNodeService.shared.getNodeId()
-        guard let idee = nodeID else {
-            self.nodeID = "ID: None"
-            return
-        }
-        self.nodeID = idee
+        self.nodeID = nodeID
     }
     
 }

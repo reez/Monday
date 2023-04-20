@@ -40,48 +40,43 @@ struct AddressView: View {
                 
                 VStack {
                     
-                    VStack {
-                        
-                        QRCodeView(address: viewModel.address)
-                            .padding()
-                        
-                        Text("Copy Address")
-                            .bold()
-                        
-                        Text("Receive bitcoin from other wallets or exchanges with these addresses.")
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                        
-                        HStack(alignment: .center) {
-                            
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 50.0, height: 50.0)
-                                    .foregroundColor(.orange)
-                                Image(systemName: "bitcoinsign")
-                                    .font(.title)
-                                    .foregroundColor(Color(uiColor: .systemBackground))
-                                    .bold()
-                            }
-                            
-                            VStack(alignment: .leading, spacing: 5.0) {
-                                Text("Bitcoin Network")
-                                    .font(.caption)
-                                    .bold()
-                                Text(viewModel.address)
-                                    .font(.caption)
-                                    .truncationMode(.middle)
-                                    .lineLimit(1)
-                                    .foregroundColor(.secondary)
-                            }
-                            
-                            Spacer()
-                            
-                            Image(systemName: "doc.on.doc")
-                                .foregroundColor(.orange)
-                            
-                        }
+                    QRCodeView(address: viewModel.address)
                         .padding()
+                    
+                    Text("Copy Address")
+                        .bold()
+                    
+                    Text("Receive bitcoin from other wallets or exchanges with these addresses.")
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                    
+                    HStack(alignment: .center) {
+                        
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 50.0, height: 50.0)
+                                .foregroundColor(.orange)
+                            Image(systemName: "bitcoinsign")
+                                .font(.title)
+                                .foregroundColor(Color(uiColor: .systemBackground))
+                                .bold()
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 5.0) {
+                            Text("Bitcoin Network")
+                                .font(.caption)
+                                .bold()
+                            Text(viewModel.address)
+                                .font(.caption)
+                                .truncationMode(.middle)
+                                .lineLimit(1)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        Spacer()
+                        
+                        Image(systemName: "doc.on.doc")
+                            .foregroundColor(.orange)
                         
                     }
                     .padding()

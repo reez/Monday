@@ -31,7 +31,7 @@ class LightningNodeService {
         case .regtest:
             chosenNetwork = "regtest"
             esploraServerUrl = "http://127.0.0.1:3002"
-            listeningAddress = "127.0.0.1:24224"
+            listeningAddress = "10.0.2.132:3002"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
         case .testnet:
             chosenNetwork = "testnet"
@@ -47,6 +47,7 @@ class LightningNodeService {
             listeningAddress: listeningAddress,
             defaultCltvExpiryDelta: defaultCltvExpiryDelta
         )
+        print("LDKNodeMonday /// config: \(ldkConfig)")
         
         let nodeBuilder = Builder.fromConfig(config: ldkConfig)
         let node = nodeBuilder.build()
@@ -62,15 +63,10 @@ class LightningNodeService {
         }
     }
     
-    func getNodeId() -> String? {
-        do {
-            let nodeID = try node.nodeId()
-            print("LDKNodeMonday /// My node ID: \(nodeID)")
-            return nodeID
-        } catch {
-            print("LDKNodeMonday /// error getting nodeID: \(error.localizedDescription)")
-            return nil
-        }
+    func getNodeId() -> String {
+        let nodeID = node.nodeId()
+        print("LDKNodeMonday /// My node ID: \(nodeID)")
+        return nodeID
     }
     
     func getAddress() -> String? {
@@ -83,15 +79,21 @@ class LightningNodeService {
             return nil
         }
     }
-    
-    func openChannel(nodePubkeyAndAddress: String, channelAmountSats: UInt64) {
+
+    func openChannel(
+        nodeId: PublicKey,
+        address: SocketAddr,
+        channelAmountSats: UInt64,
+        announceChannel: Bool = true
+    ) {
         do {
             try node.connectOpenChannel(
-                nodePubkeyAndAddress: nodePubkeyAndAddress,
+                nodeId: nodeId,
+                address: address,
                 channelAmountSats: channelAmountSats,
                 announceChannel: true
             )
-            print("LDKNodeMonday /// opened channel to \(nodePubkeyAndAddress) with amount \(channelAmountSats)")
+            print("LDKNodeMonday /// opened channel to \(nodeId):\(address) with amount \(channelAmountSats)")
         } catch {
             print("LDKNodeMonday /// error getting openChannel: \(error.localizedDescription)")
         }
@@ -100,11 +102,12 @@ class LightningNodeService {
     func syncWallets() {
         do {
             try node.syncWallets()
+            print("LDKNodeMonday /// Wallet synced!")
         } catch {
             print("LDKNodeMonday /// error syncing wallets: \(error.localizedDescription)")
         }
     }
-        
+    
     func getTotalOnchainBalanceSats() -> UInt64? {
         do {
             let balance = try node.totalOnchainBalanceSats()
@@ -114,6 +117,53 @@ class LightningNodeService {
             print("LDKNodeMonday /// error getting getTotalOnchainBalanceSats: \(error.localizedDescription)")
             return nil
         }
+    }
+    
+    func nextEvent() {
+        let nextEvent = node.nextEvent()
+        switch nextEvent {
+        case .paymentSuccessful(paymentHash: let paymentHash):
+            print("LDKNodeMonday /// event: paymentSuccessful \n paymentHash \(paymentHash)")
+        case .paymentFailed(paymentHash: let paymentHash):
+            print("LDKNodeMonday /// event: paymentFailed \n paymentHash \(paymentHash)")
+        case .paymentReceived(paymentHash: let paymentHash, amountMsat: let amountMsat):
+            print("LDKNodeMonday /// event: paymentReceived \n paymentHash \(paymentHash) \n amountMsat \(amountMsat)")
+        case .channelReady(channelId: let channelId, userChannelId: let userChannelId):
+            print("LDKNodeMonday /// event: channelReady \n channelId \(channelId) \n userChannelId \(userChannelId)")
+        case .channelClosed(channelId: let channelId, userChannelId: let userChannelId):
+            print("LDKNodeMonday /// event: channelClosed \n channelId \(channelId) \n userChannelId \(userChannelId)")
+        }
+    }
+    
+    func eventHandled() {
+        node.eventHandled()
+    }
+    
+    func sendSpontaneousPayment(amountMsat: UInt64, nodeId: String) {
+        do {
+            let paymentHash = try node.sendSpontaneousPayment(amountMsat: amountMsat, nodeId: nodeId)
+            print("paymentHash: \(paymentHash)")
+        } catch {
+            if let mine = error as? NodeError {
+                let _ = MondayNodeError(nodeError: mine)
+            } else {
+                print("couldn't equate error to Node Error")
+            }
+        }
+    }
+    
+    func sendPayment(invoice: Invoice) {
+        do {
+            let paymentHash = try node.sendPayment(invoice: invoice)
+            print("paymentHash: \(paymentHash)")
+        } catch {
+            if let mine = error as? NodeError {
+                let _ = MondayNodeError(nodeError: mine)
+            } else {
+                print("couldn't equate error to Node Error")
+            }
+        }
+        
     }
     
 }
