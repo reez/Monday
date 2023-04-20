@@ -71,11 +71,11 @@ class LightningNodeService {
     
     func getAddress() -> String? {
         do {
-            let address = try node.newFundingAddress()
-            print("LDKNodeMonday /// Address: \(address)")
-            return address
+            let fundingAddress = try node.newFundingAddress()
+            print("LDKNodeMonday /// Funding Address: \(fundingAddress)")
+            return fundingAddress
         } catch {
-            print("LDKNodeMonday /// error getting address: \(error.localizedDescription)")
+            print("LDKNodeMonday /// error getting funding address: \(error.localizedDescription)")
             return nil
         }
     }
