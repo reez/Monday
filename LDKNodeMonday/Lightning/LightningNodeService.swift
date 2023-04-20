@@ -40,16 +40,16 @@ class LightningNodeService {
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
         }
         
-        let ldkConfig = Config(
+        let config = Config(
             storageDirPath: storageDirectoryPath,
             esploraServerUrl: esploraServerUrl,
             network: chosenNetwork,
             listeningAddress: listeningAddress,
             defaultCltvExpiryDelta: defaultCltvExpiryDelta
         )
-        print("LDKNodeMonday /// config: \(ldkConfig)")
+        print("LDKNodeMonday /// config: \(config)")
         
-        let nodeBuilder = Builder.fromConfig(config: ldkConfig)
+        let nodeBuilder = Builder.fromConfig(config: config)
         let node = nodeBuilder.build()
         self.node = node
     }
@@ -63,6 +63,15 @@ class LightningNodeService {
         }
     }
     
+    func stop() async throws {
+        do {
+            try node.stop()
+            print("LDKNodeMonday /// Stopped node!")
+        } catch {
+            print("LDKNodeMonday /// error stopping node: \(error.localizedDescription)")
+        }
+    }
+    
     func getNodeId() -> String {
         let nodeID = node.nodeId()
         print("LDKNodeMonday /// My node ID: \(nodeID)")
@@ -71,11 +80,11 @@ class LightningNodeService {
     
     func getAddress() -> String? {
         do {
-            let address = try node.newFundingAddress()
-            print("LDKNodeMonday /// Address: \(address)")
-            return address
+            let fundingAddress = try node.newFundingAddress()
+            print("LDKNodeMonday /// Funding Address: \(fundingAddress)")
+            return fundingAddress
         } catch {
-            print("LDKNodeMonday /// error getting address: \(error.localizedDescription)")
+            print("LDKNodeMonday /// error getting funding address: \(error.localizedDescription)")
             return nil
         }
     }
