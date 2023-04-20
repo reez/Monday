@@ -15,14 +15,22 @@ class ChannelViewModel: ObservableObject {
     @Published var port: String = ""
     @Published var sats: String = ""
     
-    func createNodePubkeyAddress() -> String {
-        let nodeAddressAndPort = "\(pubKey)@\(hostname):\(port)"
-        return nodeAddressAndPort
-    }
+//    func createNodePubkeyAddress() -> String {
+//        let nodeAddressAndPort = "\(pubKey)@\(hostname):\(port)"
+//        return nodeAddressAndPort
+//    }
+//
+//    func openChannel(nodePubkeyAndAddress: String, channelAmountSats: UInt64) {
+//        LightningNodeService.shared.openChannel(
+//            nodePubkeyAndAddress: nodePubkeyAndAddress,
+//            channelAmountSats: channelAmountSats
+//        )
+//    }
     
-    func openChannel(nodePubkeyAndAddress: String, channelAmountSats: UInt64) {
+    func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64) {
         LightningNodeService.shared.openChannel(
-            nodePubkeyAndAddress: nodePubkeyAndAddress,
+            nodeId: nodeId,
+            address: address,
             channelAmountSats: channelAmountSats
         )
     }
@@ -98,10 +106,19 @@ struct ChannelView: View {
                     .padding()
                     
                     Button {
-                        let nodePubkeyAndAddress = viewModel.createNodePubkeyAddress()
+//                        let nodePubkeyAndAddress = viewModel.createNodePubkeyAddress()
+//                        let channelAmountSats = UInt64(viewModel.sats) ?? UInt64(100)
+//                        viewModel.openChannel(
+//                            nodePubkeyAndAddress: nodePubkeyAndAddress,
+//                            channelAmountSats: channelAmountSats
+//                        )
+                        
+                        let nodeId = PublicKey.init()
+                        let address = SocketAddr.init()
                         let channelAmountSats = UInt64(viewModel.sats) ?? UInt64(100)
                         viewModel.openChannel(
-                            nodePubkeyAndAddress: nodePubkeyAndAddress,
+                            nodeId: nodeId,
+                            address: address,
                             channelAmountSats: channelAmountSats
                         )
                     } label: {

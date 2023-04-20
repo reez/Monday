@@ -1,16 +1,23 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "WalletUI",
-        "repositoryURL": "https://github.com/reez/WalletUI.git",
-        "state": {
-          "branch": "main",
-          "revision": "0e53ff7a1930051071c3c04acc03b07bc8bf580c",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "ldk-node",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jurvis/ldk-node.git",
+      "state" : {
+        "revision" : "835b09224c67fa6b32866c9277672eb489e8bbcf",
+        "version" : "0.0.2"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "walletui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/reez/WalletUI.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0e53ff7a1930051071c3c04acc03b07bc8bf580c"
+      }
+    }
+  ],
+  "version" : 2
 }

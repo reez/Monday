@@ -38,8 +38,8 @@ struct MondayNodeError {
         case .NonUniquePaymentHash(message: let message):
             print("LDKNodeMonday /// MondayNodeError: NonUniquePaymentHash \n \(message)")
             
-        case .InvoiceInvalid(message: let message):
-            print("LDKNodeMonday /// MondayNodeError: InvoiceInvalid \n \(message)")
+//        case .InvoiceInvalid(message: let message):
+//            print("LDKNodeMonday /// MondayNodeError: InvoiceInvalid \n \(message)")
             
         case .InvoiceCreationFailed(message: let message):
             print("LDKNodeMonday /// MondayNodeError: InvoiceCreationFailed \n \(message)")
@@ -50,8 +50,8 @@ struct MondayNodeError {
         case .NetworkInvalid(message: let message):
             print("LDKNodeMonday /// MondayNodeError: NetworkInvalid \n \(message)")
             
-        case .RoutingFailed(message: let message):
-            print("LDKNodeMonday /// MondayNodeError: RoutingFailed \n \(message)")
+//        case .RoutingFailed(message: let message):
+//            print("LDKNodeMonday /// MondayNodeError: RoutingFailed \n \(message)")
             
         case .PeerInfoParseFailed(message: let message):
             print("LDKNodeMonday /// MondayNodeError: PeerInfoParseFailed \n \(message)")
@@ -74,6 +74,24 @@ struct MondayNodeError {
         case .TxSyncFailed(message: let message):
             print("LDKNodeMonday /// MondayNodeError: TxSyncFailed \n \(message)")
             
+        case .PaymentPreimageInvalid(message: let message):
+            print("LDKNodeMonday /// MondayNodeError: PaymentPreimageInvalid \n \(message)")
+
+        case .PaymentSecretInvalid(message: let message):
+            print("LDKNodeMonday /// MondayNodeError: PaymentSecretInvalid \n \(message)")
+
+        case .InvalidAmount(message: let message):
+            print("LDKNodeMonday /// MondayNodeError: InvalidAmount \n \(message)")
+
+        case .InvalidInvoice(message: let message):
+            print("LDKNodeMonday /// MondayNodeError: InvalidInvoice \n \(message)")
+
+        case .InsufficientFunds(message: let message):
+            print("LDKNodeMonday /// MondayNodeError: InsufficientFunds \n \(message)")
+
+        case .PaymentFailed(message: let message):
+            print("LDKNodeMonday /// MondayNodeError: PaymentFailed \n \(message)")
+
         }
         
     }

@@ -85,22 +85,43 @@ class LightningNodeService {
         }
     }
     
-    func openChannel(nodePubkeyAndAddress: String, channelAmountSats: UInt64) {
+//    func openChannel(nodePubkeyAndAddress: String, channelAmountSats: UInt64) {
+//        do {
+//            try node.connectOpenChannel(
+//                nodePubkeyAndAddress: nodePubkeyAndAddress,
+//                channelAmountSats: channelAmountSats,
+//                announceChannel: true
+//            )
+//            print("LDKNodeMonday /// opened channel to \(nodePubkeyAndAddress) with amount \(channelAmountSats)")
+//        } catch { // could do something like `catch let err1 as MyError where err1 == .error1` but i don't like that as much right now
+//            print("LDKNodeMonday /// error getting openChannel: \(error.localizedDescription) ...")
+//            print("LDKNodeMonday /// details \n nodePubkeyAndAddress \(nodePubkeyAndAddress) \n channelAmountSats \(channelAmountSats)")
+//            if let mine = error as? NodeError {
+//                let _ = MondayNodeError(nodeError: mine)
+//            } else {
+//                print("couldn't equate error to Node Error")
+//            }
+//        }
+//    }
+    
+    //    public func `connectOpenChannel`(`nodeId`: PublicKey, `address`: SocketAddr, `channelAmountSats`: UInt64, `announceChannel`: Bool) throws {
+
+    func openChannel(
+        nodeId: PublicKey,
+        address: SocketAddr,
+        channelAmountSats: UInt64,
+        announceChannel: Bool = true
+    ) {
         do {
             try node.connectOpenChannel(
-                nodePubkeyAndAddress: nodePubkeyAndAddress,
+                nodeId: nodeId,
+                address: address,
                 channelAmountSats: channelAmountSats,
                 announceChannel: true
             )
-            print("LDKNodeMonday /// opened channel to \(nodePubkeyAndAddress) with amount \(channelAmountSats)")
-        } catch { // could do something like `catch let err1 as MyError where err1 == .error1` but i don't like that as much right now
-            print("LDKNodeMonday /// error getting openChannel: \(error.localizedDescription) ...")
-            print("LDKNodeMonday /// details \n nodePubkeyAndAddress \(nodePubkeyAndAddress) \n channelAmountSats \(channelAmountSats)")
-            if let mine = error as? NodeError {
-                let _ = MondayNodeError(nodeError: mine)
-            } else {
-                print("couldn't equate error to Node Error")
-            }
+            print("LDKNodeMonday /// opened channel to \(nodeId):\(address) with amount \(channelAmountSats)")
+        } catch {
+            print("LDKNodeMonday /// error getting openChannel: \(error.localizedDescription)")
         }
     }
     
