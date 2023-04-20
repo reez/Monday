@@ -63,6 +63,15 @@ class LightningNodeService {
         }
     }
     
+    func stop() async throws {
+        do {
+            try node.stop()
+            print("LDKNodeMonday /// Stopped node!")
+        } catch {
+            print("LDKNodeMonday /// error stopping node: \(error.localizedDescription)")
+        }
+    }
+    
     func getNodeId() -> String {
         let nodeID = node.nodeId()
         print("LDKNodeMonday /// My node ID: \(nodeID)")
