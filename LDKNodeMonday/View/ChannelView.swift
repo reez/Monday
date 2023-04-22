@@ -10,10 +10,9 @@ import LightningDevKitNode
 import WalletUI
 
 class ChannelViewModel: ObservableObject {
-    @Published var pubKey: String = ""
-    @Published var hostname: String = ""
-    @Published var port: String = ""
-    @Published var sats: String = ""
+    @Published var nodeId: PublicKey = "publicKey"
+    @Published var address: SocketAddr = "socketAddr"
+    @Published var channelAmountSats: String = "0"
     
     func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64) {
         LightningNodeService.shared.openChannel(
@@ -37,8 +36,8 @@ struct ChannelView: View {
                 VStack {
                     
                     VStack(alignment: .leading) {
-                        Text("Pubkey")
-                        TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.pubKey)
+                        Text("Node ID")
+                        TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
                             .frame(height: 48)
                             .truncationMode(.middle)
                             .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
@@ -52,22 +51,8 @@ struct ChannelView: View {
                     .padding()
                     
                     VStack(alignment: .leading) {
-                        Text("Hostname")
-                        TextField("127.0.0.1", text: $viewModel.hostname)
-                            .frame(height: 48)
-                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                            .cornerRadius(5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(lineWidth: 1.0)
-                                    .foregroundColor(.secondary)
-                            )
-                    }
-                    .padding()
-                    
-                    VStack(alignment: .leading) {
-                        Text("Port")
-                        TextField("9735", text: $viewModel.port)
+                        Text("Address")
+                        TextField("172.18.0.2:9735", text: $viewModel.address)
                             .frame(height: 48)
                             .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
                             .cornerRadius(5)
@@ -81,7 +66,7 @@ struct ChannelView: View {
                     
                     VStack(alignment: .leading) {
                         Text("Sats")
-                        TextField("6102", text: $viewModel.sats)
+                        TextField("125000", text: $viewModel.channelAmountSats)
                             .frame(height: 48)
                             .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
                             .cornerRadius(5)
@@ -94,12 +79,10 @@ struct ChannelView: View {
                     .padding()
                     
                     Button {
-                        let nodeId = PublicKey.init()
-                        let address = SocketAddr.init()
-                        let channelAmountSats = UInt64(viewModel.sats) ?? UInt64(100)
+                        let channelAmountSats = UInt64(viewModel.channelAmountSats) ?? UInt64(101010)
                         viewModel.openChannel(
-                            nodeId: nodeId,
-                            address: address,
+                            nodeId: viewModel.nodeId,
+                            address: viewModel.address,
                             channelAmountSats: channelAmountSats
                         )
                     } label: {

@@ -8,13 +8,21 @@
 import Foundation
 import LightningDevKitNode
 
+enum EventState {
+    case paymentSuccessful(PaymentHash)
+    case paymentFailed(PaymentHash)
+    case paymentReceived(PaymentHash, UInt64)
+    case channelReady(ChannelId, UserChannelId)
+    case channelClosed(ChannelId, UserChannelId)
+}
+
 class LightningNodeService {
     private let node: Node
     private let storageManager = LightningStorage()
-    
+        
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService(network: .testnet)
+            static let instance = LightningNodeService(network: .regtest)
         }
         return Singleton.instance
     }
@@ -30,13 +38,13 @@ class LightningNodeService {
         switch network {
         case .regtest:
             chosenNetwork = "regtest"
-            esploraServerUrl = "http://127.0.0.1:3002"
-            listeningAddress = "10.0.2.132:3002"
+            esploraServerUrl = "http://127.0.0.1:3002" 
+            listeningAddress = "127.0.0.1:2323"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
         case .testnet:
             chosenNetwork = "testnet"
             esploraServerUrl = "http://blockstream.info/testnet/api/"
-            listeningAddress = "127.0.0.1:18333"
+            listeningAddress = "0.0.0.0:9735"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
         }
         
@@ -141,6 +149,7 @@ class LightningNodeService {
     
     func nextEvent() {
         let nextEvent = node.nextEvent()
+        print("LDKNodeMonday /// nextEvent: \n \(nextEvent)")
         switch nextEvent {
         case .paymentSuccessful(paymentHash: let paymentHash):
             print("LDKNodeMonday /// event: paymentSuccessful \n paymentHash \(paymentHash)")
@@ -157,6 +166,7 @@ class LightningNodeService {
     
     func eventHandled() {
         node.eventHandled()
+        print("LDKNodeMonday /// eventHandled")
     }
     
     func sendSpontaneousPayment(amountMsat: UInt64, nodeId: String) {
