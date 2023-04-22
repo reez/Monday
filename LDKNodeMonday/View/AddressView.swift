@@ -21,11 +21,7 @@ class AddressViewModel: ObservableObject {
         }
         self.address = address
     }
-    
-    func start() async throws {
-        try await LightningNodeService.shared.start()
-    }
-    
+ 
 }
 
 struct AddressView: View {

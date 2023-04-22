@@ -6,8 +6,8 @@
 
 - [x] Get *Testnet*/*Regtest* Wallet Address
 
-- [ ] See Total Balance updated
+- [x] See Total Balance updated
 
-- [ ] Open Channel
+- [x] Open Channel
 
 - [ ] Send Sats
