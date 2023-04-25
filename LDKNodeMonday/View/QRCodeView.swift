@@ -10,7 +10,7 @@ import CoreImage.CIFilterBuiltins
 
 struct QRCodeView: View {
     var address: String
-
+    
     var body: some View {
         Image(uiImage: generateQRCode(from: "bitcoin:\(address)"))
             .interpolation(.none)
@@ -26,7 +26,7 @@ extension QRCodeView {
         let filter = CIFilter.qrCodeGenerator()
         let data = Data(string.utf8)
         filter.setValue(data, forKey: "inputMessage")
-
+        
         if let outputImage = filter.outputImage {
             if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
                 return UIImage(cgImage: cgimg)

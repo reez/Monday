@@ -19,7 +19,7 @@ enum EventState {
 class LightningNodeService {
     private let node: Node
     private let storageManager = LightningStorage()
-        
+    
     class var shared: LightningNodeService {
         struct Singleton {
             static let instance = LightningNodeService(network: .regtest)
@@ -96,7 +96,7 @@ class LightningNodeService {
             return nil
         }
     }
-
+    
     func openChannel(
         nodeId: PublicKey,
         address: SocketAddr,
@@ -147,6 +147,26 @@ class LightningNodeService {
         }
     }
     
+    func sendPayment(invoice: Invoice) {
+        do {
+            let paymentHash = try node.sendPayment(invoice: invoice)
+            print("LDKNodeMonday /// sendPayment paymentHash: \(paymentHash)")
+        } catch {
+            if let mine = error as? NodeError {
+                // TODO: do something when catching error here, you'll see it with a bad invoice like lnbc10u1pwzj6u7pp5p8l6arvcj6mpw4um4x7xvj2pw6j3q9g2q3e7f44plzupn5g5n5sdqsd5v5sxqrrssycnqar0dakjapqrxqzjccqzpgxqyz5vq5s5l5v0fydrf7g9j82pxf6jtakz6m8h6j4g6amw4m0rr4x2swk6jl9r9emr0r7jvkd8zjwd48azl6kwsuuc7s0vfh8y8z9p9xlkwlfh7yy43v8f8j3nfgqkg2qy7at94xj8f8r9ckzr0r
+                let _ = MondayNodeError(nodeError: mine)
+            } else {
+                print("LDKNodeMonday /// sendPayment couldn't equate error to Node Error")
+            }
+        }
+        
+    }
+    
+}
+
+// Currently unused
+extension LightningNodeService {
+    
     func nextEvent() {
         let nextEvent = node.nextEvent()
         print("LDKNodeMonday /// nextEvent: \n \(nextEvent)")
@@ -172,28 +192,14 @@ class LightningNodeService {
     func sendSpontaneousPayment(amountMsat: UInt64, nodeId: String) {
         do {
             let paymentHash = try node.sendSpontaneousPayment(amountMsat: amountMsat, nodeId: nodeId)
-            print("paymentHash: \(paymentHash)")
+            print("LDKNodeMonday /// sendSpontaneousPayment paymentHash: \(paymentHash)")
         } catch {
             if let mine = error as? NodeError {
                 let _ = MondayNodeError(nodeError: mine)
             } else {
-                print("couldn't equate error to Node Error")
+                print("LDKNodeMonday /// sendSpontaneousPayment couldn't equate error to Node Error")
             }
         }
-    }
-    
-    func sendPayment(invoice: Invoice) {
-        do {
-            let paymentHash = try node.sendPayment(invoice: invoice)
-            print("paymentHash: \(paymentHash)")
-        } catch {
-            if let mine = error as? NodeError {
-                let _ = MondayNodeError(nodeError: mine)
-            } else {
-                print("couldn't equate error to Node Error")
-            }
-        }
-        
     }
     
 }

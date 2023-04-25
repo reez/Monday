@@ -10,18 +10,18 @@ import LightningDevKitNode
 import WalletUI
 
 class AddressViewModel: ObservableObject {
-    @Published var address: String = "testb1hmlct7dlmfllphqz6ylcx4uqlvdacc9q9z7"
+    @Published var address: String = ""
     @Published var synced: Bool = false
     @Published var balance: String = "0"
     
     func getAddress() {
         guard let address = LightningNodeService.shared.getAddress() else {
-            self.address = "none"
+            self.address = ""
             return
         }
         self.address = address
     }
- 
+    
 }
 
 struct AddressView: View {
@@ -71,8 +71,15 @@ struct AddressView: View {
                         
                         Spacer()
                         
-                        Image(systemName: "doc.on.doc")
-                            .foregroundColor(.orange)
+                        Button {
+                            UIPasteboard.general.string = viewModel.address
+                        } label: {
+                            HStack {
+                                Image(systemName: "doc.on.doc")
+                                    .font(.subheadline)
+                            }
+                            .bold()
+                        }
                         
                     }
                     .padding()

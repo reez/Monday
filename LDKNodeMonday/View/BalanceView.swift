@@ -12,7 +12,7 @@ import WalletUI
 class BalanceViewModel: ObservableObject {
     @Published var totalBalance: String = "0"
     @Published var spendableBalance: String = "0"
-
+    
     func syncWallets() {
         LightningNodeService.shared.syncWallets()
     }
@@ -21,7 +21,7 @@ class BalanceViewModel: ObservableObject {
         guard let balance = LightningNodeService.shared.getTotalOnchainBalanceSats() else { return }
         let intBalance = Int(balance)
         let stringIntBalance = String(intBalance)
-        print("My total balance int string: \(stringIntBalance)")
+        print("LDKNodeMonday /// My total balance int string: \(stringIntBalance)")
         self.totalBalance = stringIntBalance
     }
     
@@ -29,7 +29,7 @@ class BalanceViewModel: ObservableObject {
         guard let balance = LightningNodeService.shared.getSpendableOnchainBalanceSats() else { return }
         let intBalance = Int(balance)
         let stringIntBalance = String(intBalance)
-        print("My spendable balance int string: \(stringIntBalance)")
+        print("LDKNodeMonday /// My spendable balance int string: \(stringIntBalance)")
         self.spendableBalance = stringIntBalance
     }
     
@@ -48,7 +48,8 @@ struct BalanceView: View {
                 VStack(spacing: 20.0) {
                     
                     VStack {
-                        Text(viewModel.totalBalance)
+                        let totalBalance = viewModel.totalBalance.formattedAmount()
+                        Text(totalBalance)
                             .textStyle(BitcoinTitle1())
                         Text("Total Sats")
                             .foregroundColor(.secondary)
@@ -56,7 +57,8 @@ struct BalanceView: View {
                     }
                     
                     VStack {
-                        Text(viewModel.spendableBalance)
+                        let spendableBalance = viewModel.totalBalance.formattedAmount()
+                        Text(spendableBalance)
                             .textStyle(BitcoinTitle1())
                         Text("Spendable Sats")
                             .foregroundColor(.secondary)

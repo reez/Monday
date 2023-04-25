@@ -11,7 +11,7 @@ import WalletUI
 
 class NodeIDViewModel: ObservableObject {
     
-    @Published var nodeID: String = "..."
+    @Published var nodeID: String = ""
     
     func getNodeID() {
         let nodeID = LightningNodeService.shared.getNodeId()
@@ -51,6 +51,7 @@ struct NodeIDView: View {
                                 Image(systemName: "doc.on.doc")
                                     .font(.subheadline)
                             }
+                            .bold()
                         }
                     }
                     .padding(.horizontal)

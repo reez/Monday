@@ -7,18 +7,10 @@
 
 import SwiftUI
 import LightningDevKitNode
+import WalletUI
 
 class SendViewModel: ObservableObject {
-    
-    func sendSpontaneousPayment() {
-        LightningNodeService.shared.sendSpontaneousPayment(amountMsat: UInt64(1002), nodeId: "03a529eea4bb467d7f300e48e1677eb7bccaa124c2b6f259915b099fcb82a9650c")
-    }
-    
-    func sendPayment() {
-        let invoice = Invoice(stringLiteral: "lnbcrt500u1pjqz9yrpp56873w23uypdl40ff7xw653527dj2fgsm9l5s42myxhhg48n4w5nqdqqcqzpgsp577ky2wx5yz78jsmxfc0dxlfnejd8z57pd9h4x4pcrxxhzgwjjy9s9qyyssqf3lkt7zj66mwtc9l2ym6gj8t88ntjnwhz0gdsgmtucugqy5w3q3r0mc9rxxs9e474xh09et4a2v5e6mwjydtuglayw9mvk8nqpefflqqsq7k5g")
-        LightningNodeService.shared.sendPayment(invoice: invoice)
-    }
-    
+    @Published var invoice: PublicKey = ""
 }
 
 struct SendView: View {
@@ -33,19 +25,33 @@ struct SendView: View {
                 
                 VStack {
                     
-                    Button {
-                        viewModel.sendSpontaneousPayment()
-                    } label: {
-                        Text("Spontaneous")
+                    VStack(alignment: .leading) {
+                        Text("Invoice")
+                            .bold()
+                        TextField("lnbc10u1pwz...8f8r9ckzr0r", text: $viewModel.invoice)
+                            .frame(height: 48)
+                            .truncationMode(.middle)
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundColor(.secondary)
+                            )
                     }
                     .padding()
                     
-                    Button {
-                        viewModel.sendPayment()
-                    } label: {
-                        Text("Invoice")
+                    NavigationLink(
+                        destination:
+                            SendConfirmationView(
+                                viewModel: .init(
+                                    invoice: viewModel.invoice
+                                )
+                            )
+                    ) {
+                        Text("Send")
                     }
-                    .padding()
+                    .buttonStyle(BitcoinOutlined())
                     
                 }
                 .padding()
