@@ -10,9 +10,9 @@ import LightningDevKitNode
 import WalletUI
 
 class ChannelViewModel: ObservableObject {
-    @Published var nodeId: PublicKey = "publicKey"
-    @Published var address: SocketAddr = "socketAddr"
-    @Published var channelAmountSats: String = "0"
+    @Published var nodeId: PublicKey = ""
+    @Published var address: SocketAddr = ""
+    @Published var channelAmountSats: String = ""
     
     func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64) {
         LightningNodeService.shared.openChannel(
@@ -23,6 +23,7 @@ class ChannelViewModel: ObservableObject {
     }
     
 }
+
 struct ChannelView: View {
     @ObservedObject var viewModel: ChannelViewModel
     
@@ -37,6 +38,7 @@ struct ChannelView: View {
                     
                     VStack(alignment: .leading) {
                         Text("Node ID")
+                            .bold()
                         TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
                             .frame(height: 48)
                             .truncationMode(.middle)
@@ -52,6 +54,7 @@ struct ChannelView: View {
                     
                     VStack(alignment: .leading) {
                         Text("Address")
+                            .bold()
                         TextField("172.18.0.2:9735", text: $viewModel.address)
                             .frame(height: 48)
                             .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
@@ -66,6 +69,7 @@ struct ChannelView: View {
                     
                     VStack(alignment: .leading) {
                         Text("Sats")
+                            .bold()
                         TextField("125000", text: $viewModel.channelAmountSats)
                             .frame(height: 48)
                             .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))

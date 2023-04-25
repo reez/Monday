@@ -10,4 +10,4 @@
 
 - [x] Open Channel
 
-- [ ] Send Sats
+- [x] Send Sats
