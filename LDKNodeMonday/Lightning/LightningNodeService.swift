@@ -8,14 +8,6 @@
 import Foundation
 import LightningDevKitNode
 
-enum EventState {
-    case paymentSuccessful(PaymentHash)
-    case paymentFailed(PaymentHash)
-    case paymentReceived(PaymentHash, UInt64)
-    case channelReady(ChannelId, UserChannelId)
-    case channelClosed(ChannelId, UserChannelId)
-}
-
 class LightningNodeService {
     private let node: Node
     private let storageManager = LightningStorage()
@@ -244,8 +236,6 @@ extension LightningNodeService {
         } catch {
             print("LDKNodeMonday /// error on sendPaymentUsingAmount: \(error.localizedDescription)")
         }
-        fatalError()
-
     }
     
     func sendSpontaneousPayment(amountMsat: UInt64, nodeId: String) {
@@ -281,7 +271,14 @@ extension LightningNodeService {
         print("LDKNodeMonday /// listPeers")
         let peers = node.listPeers()
         print("LDKNodeMonday /// listPeers peers: \(peers)")
-        fatalError()
     }
     
 }
+
+//enum EventState {
+//    case paymentSuccessful(PaymentHash)
+//    case paymentFailed(PaymentHash)
+//    case paymentReceived(PaymentHash, UInt64)
+//    case channelReady(ChannelId, UserChannelId)
+//    case channelClosed(ChannelId, UserChannelId)
+//}
