@@ -172,6 +172,15 @@ class LightningNodeService {
         }
     }
     
+    func disconnect(nodeId: PublicKey) {
+        print("LDKNodeMonday /// disconnect")
+        do {
+            try node.disconnect(nodeId: nodeId)
+        } catch {
+            print("LDKNodeMonday /// error on disconnect: \(error.localizedDescription)")
+        }
+    }
+    
     func openChannel(
         nodeId: PublicKey,
         address: SocketAddr,
@@ -241,17 +250,6 @@ class LightningNodeService {
 
 // Currently unused
 extension LightningNodeService {
-    
-    func disconnect(nodeId: PublicKey) {
-        print("LDKNodeMonday /// disconnect")
-        do {
-            try node.disconnect(nodeId: nodeId)
-        } catch {
-            print("LDKNodeMonday /// error on disconnect: \(error.localizedDescription)")
-        }
-    }
-    
-
     
     func sendPaymentUsingAmount(invoice: Invoice, amountMsat: UInt64) {
         print("LDKNodeMonday /// sendPaymentUsingAmount")
