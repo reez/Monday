@@ -43,7 +43,7 @@ struct TabHomeView: View {
                         )
                     }
                 
-                ChannelView(viewModel: .init())
+                ChannelsListView(viewModel: .init())
                     .tabItem {
                         Label(
                             "Channel",

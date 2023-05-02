@@ -162,6 +162,12 @@ class LightningNodeService {
         
     }
     
+    func listChannels() -> [ChannelDetails] {
+        let channels = node.listChannels()
+        print("LDKNodeMonday /// listChannels: \(channels)")
+        return channels
+    }
+    
 }
 
 // Currently unused

@@ -26,7 +26,8 @@ class ChannelViewModel: ObservableObject {
 
 struct ChannelView: View {
     @ObservedObject var viewModel: ChannelViewModel
-    
+    @Environment(\.presentationMode) var presentationMode
+
     var body: some View {
         
         NavigationView {
@@ -89,6 +90,9 @@ struct ChannelView: View {
                             address: viewModel.address,
                             channelAmountSats: channelAmountSats
                         )
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
                     } label: {
                         Text("Open Channel")
                     }
@@ -97,8 +101,7 @@ struct ChannelView: View {
                     
                 }
                 .padding()
-                .padding(.top)
-                .navigationTitle("Channel")
+//                .navigationTitle("Channel")
                 
             }
             .ignoresSafeArea()
