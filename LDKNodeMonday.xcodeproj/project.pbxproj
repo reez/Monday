@@ -19,6 +19,12 @@
 		AE5C4FD829A5577F00BE3285 /* WalletUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE5C4FD729A5577F00BE3285 /* WalletUI */; };
 		AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */; };
 		AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5702A00947B009E16E3 /* ReceiveView.swift */; };
+		AE6BB5732A0171F1009E16E3 /* EventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5722A0171F1009E16E3 /* EventsView.swift */; };
+		AE6BB5752A017D77009E16E3 /* ChannelReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5742A017D77009E16E3 /* ChannelReadyView.swift */; };
+		AE6BB5772A017DE1009E16E3 /* PaymentSuccessfulView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5762A017DE1009E16E3 /* PaymentSuccessfulView.swift */; };
+		AE6BB5792A017DEA009E16E3 /* PaymentFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5782A017DEA009E16E3 /* PaymentFailedView.swift */; };
+		AE6BB57B2A017DF2009E16E3 /* PaymentReceivedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB57A2A017DF2009E16E3 /* PaymentReceivedView.swift */; };
+		AE6BB57D2A017DFA009E16E3 /* ChannelClosedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB57C2A017DFA009E16E3 /* ChannelClosedView.swift */; };
 		AE80116929A59918009B9967 /* TabHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116829A59918009B9967 /* TabHomeView.swift */; };
 		AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* NodeIDView.swift */; };
 		AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelView.swift */; };
@@ -43,6 +49,12 @@
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extensions.swift"; sourceTree = "<group>"; };
 		AE6BB5702A00947B009E16E3 /* ReceiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveView.swift; sourceTree = "<group>"; };
+		AE6BB5722A0171F1009E16E3 /* EventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsView.swift; sourceTree = "<group>"; };
+		AE6BB5742A017D77009E16E3 /* ChannelReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelReadyView.swift; sourceTree = "<group>"; };
+		AE6BB5762A017DE1009E16E3 /* PaymentSuccessfulView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSuccessfulView.swift; sourceTree = "<group>"; };
+		AE6BB5782A017DEA009E16E3 /* PaymentFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFailedView.swift; sourceTree = "<group>"; };
+		AE6BB57A2A017DF2009E16E3 /* PaymentReceivedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentReceivedView.swift; sourceTree = "<group>"; };
+		AE6BB57C2A017DFA009E16E3 /* ChannelClosedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelClosedView.swift; sourceTree = "<group>"; };
 		AE80116829A59918009B9967 /* TabHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeView.swift; sourceTree = "<group>"; };
 		AE80116A29A59976009B9967 /* NodeIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDView.swift; sourceTree = "<group>"; };
 		AE80116C29A59AF4009B9967 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
@@ -127,10 +139,24 @@
 			path = Lightning;
 			sourceTree = "<group>";
 		};
+		AE6BB57E2A0181A6009E16E3 /* Event Views */ = {
+			isa = PBXGroup;
+			children = (
+				AE6BB5742A017D77009E16E3 /* ChannelReadyView.swift */,
+				AE6BB57C2A017DFA009E16E3 /* ChannelClosedView.swift */,
+				AE6BB57A2A017DF2009E16E3 /* PaymentReceivedView.swift */,
+				AE6BB5782A017DEA009E16E3 /* PaymentFailedView.swift */,
+				AE6BB5762A017DE1009E16E3 /* PaymentSuccessfulView.swift */,
+			);
+			path = "Event Views";
+			sourceTree = "<group>";
+		};
 		AE80116E29A5A64F009B9967 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				AE80116829A59918009B9967 /* TabHomeView.swift */,
+				AE6BB5722A0171F1009E16E3 /* EventsView.swift */,
+				AE6BB57E2A0181A6009E16E3 /* Event Views */,
 				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
 				AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */,
 				AE80116C29A59AF4009B9967 /* ChannelView.swift */,
@@ -243,20 +269,26 @@
 				AE83142629AED67B00088A70 /* LightningNodeError.swift in Sources */,
 				AE001CDD29F5EBEC006CA7D1 /* SendConfirmationView.swift in Sources */,
 				AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */,
+				AE6BB5772A017DE1009E16E3 /* PaymentSuccessfulView.swift in Sources */,
+				AE6BB57B2A017DF2009E16E3 /* PaymentReceivedView.swift in Sources */,
 				AE83142829AEDDAD00088A70 /* SendView.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
 				AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */,
 				AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */,
 				AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */,
 				AE80116929A59918009B9967 /* TabHomeView.swift in Sources */,
+				AE6BB5752A017D77009E16E3 /* ChannelReadyView.swift in Sources */,
 				AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */,
 				AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */,
+				AE6BB5792A017DEA009E16E3 /* PaymentFailedView.swift in Sources */,
 				AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
+				AE6BB57D2A017DFA009E16E3 /* ChannelClosedView.swift in Sources */,
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */,
 				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
 				AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */,
+				AE6BB5732A0171F1009E16E3 /* EventsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

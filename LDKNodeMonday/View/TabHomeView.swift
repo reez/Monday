@@ -27,6 +27,14 @@ struct TabHomeView: View {
             
             TabView {
                 
+                EventsView(viewModel: .init())
+                    .tabItem {
+                        Label(
+                            "Events",
+                            systemImage: "infinity"
+                        )
+                    }
+                
                 AddressView(viewModel: .init())
                     .tabItem {
                         Label(

@@ -131,6 +131,7 @@ struct AddressView: View {
                     
                 }
                 .padding()
+                .ignoresSafeArea()
                 .navigationTitle("Address")
                 .onAppear {
                     Task {
