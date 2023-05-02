@@ -10,18 +10,7 @@ import LightningDevKitNode
 import WalletUI
 
 class ChannelsListViewModel: ObservableObject {
-//    @Published var nodeId: PublicKey = ""
-//    @Published var address: SocketAddr = ""
-//    @Published var channelAmountSats: String = ""
     @Published var channels: [ChannelDetails] = []
-//
-//    func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64) {
-//        LightningNodeService.shared.openChannel(
-//            nodeId: nodeId,
-//            address: address,
-//            channelAmountSats: channelAmountSats
-//        )
-//    }
     
     func listChannels() {
         self.channels = LightningNodeService.shared.listChannels()
@@ -98,9 +87,12 @@ struct ChannelsListView: View {
                 .padding()
                 .padding(.top)
                 .navigationTitle("\(viewModel.channels.count) Channels")
+//                .navigationBarTitle("Channelzz")
+
                 .onAppear { viewModel.listChannels() }
                 
             }
+//            .ignoresSafeArea()
             
         }
       

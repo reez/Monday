@@ -64,7 +64,7 @@ class LightningNodeService {
         }
     }
     
-    func stop() async throws {
+    func stop() {
         do {
             try node.stop()
             print("LDKNodeMonday /// Stopped node!")
@@ -158,6 +158,20 @@ class LightningNodeService {
         }
     }
     
+    func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) {
+        print("LDKNodeMonday /// connect")
+        do {
+            try node.connect(
+                nodeId: nodeId,
+                address: address,
+                permanently: permanently
+            )
+            print("LDKNodeMonday /// connected to \(nodeId):\(address) (permanently \(permanently))")
+        } catch {
+            print("LDKNodeMonday /// error on connect: \(error.localizedDescription)")
+        }
+    }
+    
     func openChannel(
         nodeId: PublicKey,
         address: SocketAddr,
@@ -201,6 +215,13 @@ class LightningNodeService {
         }
     }
     
+    func listPeers() -> [PeerDetails] {
+        print("LDKNodeMonday /// listPeers")
+        let peers = node.listPeers()
+        print("LDKNodeMonday /// listPeers peers: \(peers)")
+        return peers
+    }
+    
     func listChannels() -> [ChannelDetails] {
         let channels = node.listChannels()
         print("LDKNodeMonday /// listChannels: \(channels)")
@@ -212,19 +233,9 @@ class LightningNodeService {
 // Currently unused
 extension LightningNodeService {
     
-    func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) {
-        print("LDKNodeMonday /// connect")
-        do {
-            try node.connect(
-                nodeId: nodeId,
-                address: address,
-                permanently: permanently
-            )
-            print("LDKNodeMonday /// connected to \(nodeId):\(address) (permanently \(permanently))")
-        } catch {
-            print("LDKNodeMonday /// error on connect: \(error.localizedDescription)")
-        }
-    }
+
+    
+    
     
     func disconnect(nodeId: PublicKey) {
         print("LDKNodeMonday /// disconnect")
@@ -281,12 +292,6 @@ extension LightningNodeService {
         print("LDKNodeMonday /// paymentInfo")
         guard let paymentInfo = node.paymentInfo(paymentHash: paymentHash) else { return }
         print("LDKNodeMonday /// paymentInfo: \(paymentInfo)")
-    }
-    
-    func listPeers() {
-        print("LDKNodeMonday /// listPeers")
-        let peers = node.listPeers()
-        print("LDKNodeMonday /// listPeers peers: \(peers)")
     }
     
 }

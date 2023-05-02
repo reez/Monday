@@ -78,7 +78,7 @@ struct EventsView: View {
             }
             .ignoresSafeArea()
             .navigationTitle("Events")
-
+            
         }
         
     }

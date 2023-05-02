@@ -33,6 +33,9 @@
 		AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */; };
 		AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9422692A007D6C007E4F12 /* ChannelsListView.swift */; };
 		AEBAA4812A01A6BB0042EA82 /* LDKNodeMondayEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4802A01A6BB0042EA82 /* LDKNodeMondayEvent.swift */; };
+		AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4822A01A80A0042EA82 /* PeersListView.swift */; };
+		AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48C2A01A93B0042EA82 /* PeerView.swift */; };
+		AEBAA48F2A01C03A0042EA82 /* StopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48E2A01C03A0042EA82 /* StopView.swift */; };
 		AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */; };
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
 		AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */; };
@@ -65,6 +68,9 @@
 		AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		AE9422692A007D6C007E4F12 /* ChannelsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListView.swift; sourceTree = "<group>"; };
 		AEBAA4802A01A6BB0042EA82 /* LDKNodeMondayEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKNodeMondayEvent.swift; sourceTree = "<group>"; };
+		AEBAA4822A01A80A0042EA82 /* PeersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersListView.swift; sourceTree = "<group>"; };
+		AEBAA48C2A01A93B0042EA82 /* PeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerView.swift; sourceTree = "<group>"; };
+		AEBAA48E2A01C03A0042EA82 /* StopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopView.swift; sourceTree = "<group>"; };
 		AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -142,32 +148,31 @@
 			path = Lightning;
 			sourceTree = "<group>";
 		};
-		AE6BB57E2A0181A6009E16E3 /* Event Views */ = {
+		AE6BB57E2A0181A6009E16E3 /* Event */ = {
 			isa = PBXGroup;
 			children = (
+				AE6BB5722A0171F1009E16E3 /* EventsView.swift */,
 				AE6BB5742A017D77009E16E3 /* ChannelReadyView.swift */,
 				AE6BB57C2A017DFA009E16E3 /* ChannelClosedView.swift */,
 				AE6BB57A2A017DF2009E16E3 /* PaymentReceivedView.swift */,
 				AE6BB5782A017DEA009E16E3 /* PaymentFailedView.swift */,
 				AE6BB5762A017DE1009E16E3 /* PaymentSuccessfulView.swift */,
 			);
-			path = "Event Views";
+			path = Event;
 			sourceTree = "<group>";
 		};
 		AE80116E29A5A64F009B9967 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				AE80116829A59918009B9967 /* TabHomeView.swift */,
-				AE6BB5722A0171F1009E16E3 /* EventsView.swift */,
-				AE6BB57E2A0181A6009E16E3 /* Event Views */,
-				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
-				AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */,
-				AE80116C29A59AF4009B9967 /* ChannelView.swift */,
-				AE9422692A007D6C007E4F12 /* ChannelsListView.swift */,
-				AE83142729AEDDAD00088A70 /* SendView.swift */,
-				AE001CDC29F5EBEC006CA7D1 /* SendConfirmationView.swift */,
-				AE6BB5702A00947B009E16E3 /* ReceiveView.swift */,
-				AE80116A29A59976009B9967 /* NodeIDView.swift */,
+				AE6BB57E2A0181A6009E16E3 /* Event */,
+				AEBAA4872A01A9060042EA82 /* Address */,
+				AEBAA48B2A01A9300042EA82 /* Peer */,
+				AEBAA4862A01A8FB0042EA82 /* Channel */,
+				AEBAA4882A01A90D0042EA82 /* Send */,
+				AEBAA4892A01A9130042EA82 /* Receive */,
+				AEBAA48A2A01A91C0042EA82 /* Node ID */,
+				AEBAA4902A01C1770042EA82 /* Stop */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -178,6 +183,66 @@
 				AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		AEBAA4862A01A8FB0042EA82 /* Channel */ = {
+			isa = PBXGroup;
+			children = (
+				AE9422692A007D6C007E4F12 /* ChannelsListView.swift */,
+				AE80116C29A59AF4009B9967 /* ChannelView.swift */,
+			);
+			path = Channel;
+			sourceTree = "<group>";
+		};
+		AEBAA4872A01A9060042EA82 /* Address */ = {
+			isa = PBXGroup;
+			children = (
+				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
+				AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */,
+			);
+			path = Address;
+			sourceTree = "<group>";
+		};
+		AEBAA4882A01A90D0042EA82 /* Send */ = {
+			isa = PBXGroup;
+			children = (
+				AE83142729AEDDAD00088A70 /* SendView.swift */,
+				AE001CDC29F5EBEC006CA7D1 /* SendConfirmationView.swift */,
+			);
+			path = Send;
+			sourceTree = "<group>";
+		};
+		AEBAA4892A01A9130042EA82 /* Receive */ = {
+			isa = PBXGroup;
+			children = (
+				AE6BB5702A00947B009E16E3 /* ReceiveView.swift */,
+			);
+			path = Receive;
+			sourceTree = "<group>";
+		};
+		AEBAA48A2A01A91C0042EA82 /* Node ID */ = {
+			isa = PBXGroup;
+			children = (
+				AE80116A29A59976009B9967 /* NodeIDView.swift */,
+			);
+			path = "Node ID";
+			sourceTree = "<group>";
+		};
+		AEBAA48B2A01A9300042EA82 /* Peer */ = {
+			isa = PBXGroup;
+			children = (
+				AEBAA4822A01A80A0042EA82 /* PeersListView.swift */,
+				AEBAA48C2A01A93B0042EA82 /* PeerView.swift */,
+			);
+			path = Peer;
+			sourceTree = "<group>";
+		};
+		AEBAA4902A01C1770042EA82 /* Stop */ = {
+			isa = PBXGroup;
+			children = (
+				AEBAA48E2A01C03A0042EA82 /* StopView.swift */,
+			);
+			path = Stop;
 			sourceTree = "<group>";
 		};
 		AEE8FDE029F8581400406DD9 /* Extensions */ = {
@@ -277,7 +342,9 @@
 				AE83142829AEDDAD00088A70 /* SendView.swift in Sources */,
 				AEBAA4812A01A6BB0042EA82 /* LDKNodeMondayEvent.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
+				AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */,
 				AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */,
+				AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */,
 				AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */,
 				AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */,
 				AE80116929A59918009B9967 /* TabHomeView.swift in Sources */,
@@ -292,6 +359,7 @@
 				AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */,
 				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
 				AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */,
+				AEBAA48F2A01C03A0042EA82 /* StopView.swift in Sources */,
 				AE6BB5732A0171F1009E16E3 /* EventsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

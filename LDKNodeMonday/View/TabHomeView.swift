@@ -22,67 +22,90 @@ struct TabHomeView: View {
     
     var body: some View {
         
-        ZStack {
-            Color(uiColor: UIColor.systemBackground)
+//        NavigationView {
             
-            TabView {
+            
+            ZStack {
+                Color(uiColor: UIColor.systemBackground)
                 
-                EventsView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Events",
-                            systemImage: "infinity"
-                        )
-                    }
-                
-                AddressView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Address",
-                            systemImage: "bitcoinsign"
-                        )
-                    }
-                
-                SendView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Send",
-                            systemImage: "arrow.up"
-                        )
-                    }
-                
-                ReceiveView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Receive",
-                            systemImage: "arrow.down"
-                        )
-                    }
-                
-                ChannelsListView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Channel",
-                            systemImage: "plus"
-                        )
-                    }
-                
-                NodeIDView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Node ID",
-                            systemImage: "person"
-                        )
-                    }
+                TabView {
+                    
+             
+                    
+                    AddressView(viewModel: .init())
+                        .tabItem {
+                            Label(
+                                "Address",
+                                systemImage: "bitcoinsign"
+                            )
+                        }
+                    
+                    ChannelsListView(viewModel: .init())
+                        .tabItem {
+                            Label(
+                                "Channel",
+                                systemImage: "person.line.dotted.person"
+                            )
+                        }
+                    
+                    SendView(viewModel: .init())
+                        .tabItem {
+                            Label(
+                                "Send",
+                                systemImage: "arrow.up"
+                            )
+                        }
+                    
+                    ReceiveView(viewModel: .init())
+                        .tabItem {
+                            Label(
+                                "Receive",
+                                systemImage: "arrow.down"
+                            )
+                        }
+                    
+                    EventsView(viewModel: .init())
+                        .tabItem {
+                            Label(
+                                "Events",
+                                systemImage: "infinity"
+                            )
+                        }
+                    
+                    PeersListView(viewModel: .init())
+                        .tabItem {
+                            Label(
+                                "Peers",
+                                systemImage: "person.line.dotted.person"
+                            )
+                        }
+                    
+                    NodeIDView(viewModel: .init())
+                        .tabItem {
+                            Label(
+                                "Node ID",
+                                systemImage: "person"
+                            )
+                        }
+                    
+                    StopView(viewModel: .init())
+                        .tabItem {
+                            Label(
+                                "Stop",
+                                systemImage: "xmark"
+                            )
+                        }
+                    
+                }
                 
             }
-            
-        }
-        .onAppear {
-            Task {
-                try await viewModel.start()
+            .onAppear {
+                Task {
+                    try await viewModel.start()
+                }
             }
-        }
+            
+//        }
         
     }
     

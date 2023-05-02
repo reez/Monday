@@ -61,6 +61,7 @@ struct SendView: View {
             .ignoresSafeArea()
             
         }
+        
     }
 }
 

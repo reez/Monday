@@ -30,7 +30,7 @@ struct ChannelView: View {
 
     var body: some View {
         
-        NavigationView {
+//        NavigationView {
             
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
@@ -101,11 +101,13 @@ struct ChannelView: View {
                     
                 }
                 .padding()
+                .navigationBarTitle("Channel")
+
                 
             }
-            .ignoresSafeArea()
+//            .ignoresSafeArea()
             
-        }
+//        }
         
     }
 }

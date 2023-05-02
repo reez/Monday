@@ -50,13 +50,15 @@ struct AddressView: View {
     @ObservedObject var viewModel: AddressViewModel
     
     var body: some View {
-        
+                    
         NavigationView {
             
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
                 
                 VStack {
+                    
+                    Spacer()
                     
                     VStack {
                         
@@ -77,12 +79,12 @@ struct AddressView: View {
                         }
                         .font(.caption)
                         .foregroundColor(.secondary)
-
+                        
                     }
-                    .padding()
+//                    .padding()
                     
                     QRCodeView(address: viewModel.address)
-                        .padding()
+//                        .padding()
                     
                     Text("Copy Address")
                         .bold()
@@ -127,7 +129,9 @@ struct AddressView: View {
                         }
                         
                     }
-                    .padding()
+//                    .padding()
+                    
+                    Spacer()
                     
                 }
                 .padding()
@@ -143,9 +147,12 @@ struct AddressView: View {
                 }
                 
             }
+//            .navigationTitle("Address")
+
             
         }
-        
+
+                
     }
     
 }
