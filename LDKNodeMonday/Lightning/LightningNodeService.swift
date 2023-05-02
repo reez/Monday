@@ -11,7 +11,7 @@ import LightningDevKitNode
 class LightningNodeService {
     private let node: Node
     private let storageManager = LightningStorage()
-    var myEvent = LDKNodeMondayEvent.none
+    var ldkNodeMondayEvent = LDKNodeMondayEvent.none
     
     class var shared: LightningNodeService {
         struct Singleton {
@@ -90,26 +90,29 @@ class LightningNodeService {
             
         case .paymentSuccessful(paymentHash: let paymentHash):
             print("LDKNodeMonday /// event: paymentSuccessful \n paymentHash \(paymentHash)")
-            //self.eventState = .paymentSuccessful(paymentHash)
-            
+            let event = convertToLDKNodeMondayEvent(event: .paymentSuccessful(paymentHash: paymentHash))
+            self.ldkNodeMondayEvent = event
+
         case .paymentFailed(paymentHash: let paymentHash):
             print("LDKNodeMonday /// event: paymentFailed \n paymentHash \(paymentHash)")
-            //self.eventState = .paymentFailed(paymentHash)
-            
+            let event = convertToLDKNodeMondayEvent(event: .paymentFailed(paymentHash: paymentHash))
+            self.ldkNodeMondayEvent = event
+
         case .paymentReceived(paymentHash: let paymentHash, amountMsat: let amountMsat):
             print("LDKNodeMonday /// event: paymentReceived \n paymentHash \(paymentHash) \n amountMsat \(amountMsat)")
-            //self.eventState = .paymentReceived(paymentHash, amountMsat)
-            
+            let event = convertToLDKNodeMondayEvent(event: .paymentReceived(paymentHash: paymentHash, amountMsat: amountMsat))
+            self.ldkNodeMondayEvent = event
+
         case .channelReady(channelId: let channelId, userChannelId: let userChannelId):
             print("LDKNodeMonday /// event: channelReady \n channelId \(channelId) \n userChannelId \(userChannelId)")
-            //self.eventState = .channelReady(channelId, userChannelId)
-            let a = convertToLDKNodeMondayEvent(event: .channelReady(channelId: channelId, userChannelId: userChannelId))
-            self.myEvent = a
+            let event = convertToLDKNodeMondayEvent(event: .channelReady(channelId: channelId, userChannelId: userChannelId))
+            self.ldkNodeMondayEvent = event
             
         case .channelClosed(channelId: let channelId, userChannelId: let userChannelId):
             print("LDKNodeMonday /// event: channelClosed \n channelId \(channelId) \n userChannelId \(userChannelId)")
-            //self.eventState = .channelClosed(channelId, userChannelId)
-            
+            let event = convertToLDKNodeMondayEvent(event: .channelClosed(channelId: channelId, userChannelId: userChannelId))
+            self.ldkNodeMondayEvent = event
+
         }
         
     }
