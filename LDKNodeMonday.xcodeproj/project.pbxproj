@@ -36,6 +36,7 @@
 		AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4822A01A80A0042EA82 /* PeersListView.swift */; };
 		AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48C2A01A93B0042EA82 /* PeerView.swift */; };
 		AEBAA48F2A01C03A0042EA82 /* StopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48E2A01C03A0042EA82 /* StopView.swift */; };
+		AEBAA4922A01C34A0042EA82 /* ChannelCloseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4912A01C34A0042EA82 /* ChannelCloseView.swift */; };
 		AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */; };
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
 		AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */; };
@@ -71,6 +72,7 @@
 		AEBAA4822A01A80A0042EA82 /* PeersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersListView.swift; sourceTree = "<group>"; };
 		AEBAA48C2A01A93B0042EA82 /* PeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerView.swift; sourceTree = "<group>"; };
 		AEBAA48E2A01C03A0042EA82 /* StopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopView.swift; sourceTree = "<group>"; };
+		AEBAA4912A01C34A0042EA82 /* ChannelCloseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelCloseView.swift; sourceTree = "<group>"; };
 		AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 			children = (
 				AE9422692A007D6C007E4F12 /* ChannelsListView.swift */,
 				AE80116C29A59AF4009B9967 /* ChannelView.swift */,
+				AEBAA4912A01C34A0042EA82 /* ChannelCloseView.swift */,
 			);
 			path = Channel;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 				AE83142629AED67B00088A70 /* LightningNodeError.swift in Sources */,
 				AE001CDD29F5EBEC006CA7D1 /* SendConfirmationView.swift in Sources */,
 				AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */,
+				AEBAA4922A01C34A0042EA82 /* ChannelCloseView.swift in Sources */,
 				AE6BB5772A017DE1009E16E3 /* PaymentSuccessfulView.swift in Sources */,
 				AE6BB57B2A017DF2009E16E3 /* PaymentReceivedView.swift in Sources */,
 				AE83142829AEDDAD00088A70 /* SendView.swift in Sources */,

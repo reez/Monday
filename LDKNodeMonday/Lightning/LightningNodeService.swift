@@ -191,6 +191,15 @@ class LightningNodeService {
         }
     }
     
+    func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) {
+        print("LDKNodeMonday /// closeChannel")
+        do {
+            try node.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
+        } catch {
+            print("LDKNodeMonday /// error on closeChannel: \(error.localizedDescription)")
+        }
+    }
+    
     func sendPayment(invoice: Invoice) {
         do {
             let paymentHash = try node.sendPayment(invoice: invoice)
@@ -233,10 +242,6 @@ class LightningNodeService {
 // Currently unused
 extension LightningNodeService {
     
-
-    
-    
-    
     func disconnect(nodeId: PublicKey) {
         print("LDKNodeMonday /// disconnect")
         do {
@@ -246,14 +251,7 @@ extension LightningNodeService {
         }
     }
     
-    func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) {
-        print("LDKNodeMonday /// closeChannel")
-        do {
-            try node.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
-        } catch {
-            print("LDKNodeMonday /// error on closeChannel: \(error.localizedDescription)")
-        }
-    }
+
     
     func sendPaymentUsingAmount(invoice: Invoice, amountMsat: UInt64) {
         print("LDKNodeMonday /// sendPaymentUsingAmount")
