@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 import LightningDevKitNode
 import WalletUI
 
@@ -17,6 +16,7 @@ class StopViewModel: ObservableObject {
     }
     
 }
+
 struct StopView: View {
     @ObservedObject var viewModel: StopViewModel
     

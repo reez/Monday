@@ -25,7 +25,6 @@ class ChannelCloseViewModel: ObservableObject {
     
 }
 
-
 struct ChannelCloseView: View {
     @ObservedObject var viewModel: ChannelCloseViewModel
     @Environment(\.presentationMode) var presentationMode

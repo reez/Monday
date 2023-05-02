@@ -43,10 +43,7 @@ struct ChannelsListView: View {
                             
                             ForEach(viewModel.channels, id: \.self) { channel in
                                 
-                                
                                 NavigationLink {
-                                    // destination
-                                    //Text("Hello")
                                     ChannelCloseView(viewModel: .init(channel: channel))
                                 } label: {
                                     // label
