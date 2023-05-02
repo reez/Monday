@@ -32,6 +32,7 @@
 		AE83142829AEDDAD00088A70 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142729AEDDAD00088A70 /* SendView.swift */; };
 		AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */; };
 		AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9422692A007D6C007E4F12 /* ChannelsListView.swift */; };
+		AEBAA4812A01A6BB0042EA82 /* LDKNodeMondayEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4802A01A6BB0042EA82 /* LDKNodeMondayEvent.swift */; };
 		AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */; };
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
 		AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */; };
@@ -63,6 +64,7 @@
 		AE8D877429B145F100F2B918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		AE9422692A007D6C007E4F12 /* ChannelsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListView.swift; sourceTree = "<group>"; };
+		AEBAA4802A01A6BB0042EA82 /* LDKNodeMondayEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKNodeMondayEvent.swift; sourceTree = "<group>"; };
 		AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */,
+				AEBAA4802A01A6BB0042EA82 /* LDKNodeMondayEvent.swift */,
 				AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */,
 				AE83142529AED67B00088A70 /* LightningNodeError.swift */,
 			);
@@ -272,6 +275,7 @@
 				AE6BB5772A017DE1009E16E3 /* PaymentSuccessfulView.swift in Sources */,
 				AE6BB57B2A017DF2009E16E3 /* PaymentReceivedView.swift in Sources */,
 				AE83142829AEDDAD00088A70 /* SendView.swift in Sources */,
+				AEBAA4812A01A6BB0042EA82 /* LDKNodeMondayEvent.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
 				AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */,
 				AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */,

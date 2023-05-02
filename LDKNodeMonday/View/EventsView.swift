@@ -9,7 +9,7 @@ import SwiftUI
 import WalletUI
 
 class EventsViewModel: ObservableObject {
-    @Published var myEvent: MyEvent = .none
+    @Published var myEvent: LDKNodeMondayEvent = .none
     
     // TODO: pass in Event? So I can mock out with each event
     

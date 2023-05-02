@@ -11,8 +11,7 @@ import LightningDevKitNode
 class LightningNodeService {
     private let node: Node
     private let storageManager = LightningStorage()
-//    var eventState = EventState.none
-    var myEvent = MyEvent.none
+    var myEvent = LDKNodeMondayEvent.none
     
     class var shared: LightningNodeService {
         struct Singleton {
@@ -81,6 +80,43 @@ class LightningNodeService {
         } catch {
             print("LDKNodeMonday /// error syncing wallets: \(error.localizedDescription)")
         }
+    }
+    
+    func nextEvent() {
+        let nextEvent = node.nextEvent()
+        print("LDKNodeMonday /// nextEvent: \n \(nextEvent)")
+        
+        switch nextEvent {
+            
+        case .paymentSuccessful(paymentHash: let paymentHash):
+            print("LDKNodeMonday /// event: paymentSuccessful \n paymentHash \(paymentHash)")
+            //self.eventState = .paymentSuccessful(paymentHash)
+            
+        case .paymentFailed(paymentHash: let paymentHash):
+            print("LDKNodeMonday /// event: paymentFailed \n paymentHash \(paymentHash)")
+            //self.eventState = .paymentFailed(paymentHash)
+            
+        case .paymentReceived(paymentHash: let paymentHash, amountMsat: let amountMsat):
+            print("LDKNodeMonday /// event: paymentReceived \n paymentHash \(paymentHash) \n amountMsat \(amountMsat)")
+            //self.eventState = .paymentReceived(paymentHash, amountMsat)
+            
+        case .channelReady(channelId: let channelId, userChannelId: let userChannelId):
+            print("LDKNodeMonday /// event: channelReady \n channelId \(channelId) \n userChannelId \(userChannelId)")
+            //self.eventState = .channelReady(channelId, userChannelId)
+            let a = convertToLDKNodeMondayEvent(event: .channelReady(channelId: channelId, userChannelId: userChannelId))
+            self.myEvent = a
+            
+        case .channelClosed(channelId: let channelId, userChannelId: let userChannelId):
+            print("LDKNodeMonday /// event: channelClosed \n channelId \(channelId) \n userChannelId \(userChannelId)")
+            //self.eventState = .channelClosed(channelId, userChannelId)
+            
+        }
+        
+    }
+    
+    func eventHandled() {
+        node.eventHandled()
+        print("LDKNodeMonday /// eventHandled")
     }
     
     func getNodeId() -> String {
@@ -173,50 +209,8 @@ class LightningNodeService {
     
 }
 
-
-
-
 // Currently unused
 extension LightningNodeService {
-    
-
-    
-    func nextEvent() {
-        let nextEvent = node.nextEvent()
-        print("LDKNodeMonday /// nextEvent: \n \(nextEvent)")
-        
-        switch nextEvent {
-            
-        case .paymentSuccessful(paymentHash: let paymentHash):
-            print("LDKNodeMonday /// event: paymentSuccessful \n paymentHash \(paymentHash)")
-            //self.eventState = .paymentSuccessful(paymentHash)
-            
-        case .paymentFailed(paymentHash: let paymentHash):
-            print("LDKNodeMonday /// event: paymentFailed \n paymentHash \(paymentHash)")
-            //self.eventState = .paymentFailed(paymentHash)
-            
-        case .paymentReceived(paymentHash: let paymentHash, amountMsat: let amountMsat):
-            print("LDKNodeMonday /// event: paymentReceived \n paymentHash \(paymentHash) \n amountMsat \(amountMsat)")
-            //self.eventState = .paymentReceived(paymentHash, amountMsat)
-            
-        case .channelReady(channelId: let channelId, userChannelId: let userChannelId):
-            print("LDKNodeMonday /// event: channelReady \n channelId \(channelId) \n userChannelId \(userChannelId)")
-            //self.eventState = .channelReady(channelId, userChannelId)
-            let a = convertToMyEvent(event: .channelReady(channelId: channelId, userChannelId: userChannelId))
-            self.myEvent = a
-            
-        case .channelClosed(channelId: let channelId, userChannelId: let userChannelId):
-            print("LDKNodeMonday /// event: channelClosed \n channelId \(channelId) \n userChannelId \(userChannelId)")
-            //self.eventState = .channelClosed(channelId, userChannelId)
-            
-        }
-        
-    }
-    
-    func eventHandled() {
-        node.eventHandled()
-        print("LDKNodeMonday /// eventHandled")
-    }
     
     func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) {
         print("LDKNodeMonday /// connect")
@@ -296,90 +290,3 @@ extension LightningNodeService {
     }
     
 }
-
-
-
-enum EventState {
-    case none
-    case paymentSuccessful(PaymentHash)
-    case paymentFailed(PaymentHash)
-    case paymentReceived(PaymentHash, UInt64)
-    case channelReady(ChannelId, UserChannelId)
-    case channelClosed(ChannelId, UserChannelId)
-    
-    var description: String {
-          switch self {
-          case .none:
-              return "none"
-          case .paymentSuccessful(let paymentHash):
-              return "paymentSuccessful(\(paymentHash))"
-          case .paymentFailed(let paymentHash):
-              return "paymentFailed(\(paymentHash))"
-          case .paymentReceived(let paymentHash, let amount):
-              return "paymentReceived(\(paymentHash), \(amount))"
-          case .channelReady(let channelId, let userChannelId):
-              // I'd like to return a type here, but I'm not sure its possible because I'll return multiple types, and I don't think I can conform to Event
-              return "channelReady(\(channelId), \(userChannelId))"
-          case .channelClosed(let channelId, let userChannelId):
-              return "channelClosed(\(channelId), \(userChannelId))"
-          }
-      }
-    
-}
-
-
-
-struct PaymentReceived {
-    let paymentHash: PaymentHash
-    let amountMsat: UInt64
-}
-
-struct PaymentSuccessful {
-    let paymentHash: PaymentHash
-}
-
-struct PaymentFailed {
-    let paymentHash: PaymentHash
-}
-
-struct ChannelReady {
-    let channelId: ChannelId
-    let userChannelId: UserChannelId
-}
-
-struct ChannelClosed {
-    let channelId: ChannelId
-    let userChannelId: UserChannelId
-}
-
-
-enum MyEvent {
-    case none
-    case paymentSuccessful(paymentSuccessful: PaymentSuccessful)
-    case paymentFailed(paymentFailed: PaymentFailed)
-    case paymentReceived(paymentReceived: PaymentReceived)
-    case channelReady(channelReady: ChannelReady)
-    case channelClosed(channelClosed: ChannelClosed)
-}
-
-
-func convertToMyEvent(event: Event) -> MyEvent {
-    switch event {
-    case .paymentSuccessful(let paymentHash):
-        let paymentSuccessful = PaymentSuccessful(paymentHash: paymentHash)
-        return .paymentSuccessful(paymentSuccessful: paymentSuccessful)
-    case .paymentFailed(let paymentHash):
-        let paymentFailed = PaymentFailed(paymentHash: paymentHash)
-        return .paymentFailed(paymentFailed: paymentFailed)
-    case .paymentReceived(let paymentHash, let amountMsat):
-        let paymentReceived = PaymentReceived(paymentHash: paymentHash, amountMsat: amountMsat)
-        return .paymentReceived(paymentReceived: paymentReceived)
-    case .channelReady(let channelId, let userChannelId):
-        let channelReady = ChannelReady(channelId: channelId, userChannelId: userChannelId)
-        return .channelReady(channelReady: channelReady)
-    case .channelClosed(let channelId, let userChannelId):
-        let channelClosed = ChannelClosed(channelId: channelId, userChannelId: userChannelId)
-        return .channelClosed(channelClosed: channelClosed)
-    }
-}
-
