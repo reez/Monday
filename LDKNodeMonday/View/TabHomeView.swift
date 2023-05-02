@@ -31,23 +31,7 @@ struct TabHomeView: View {
                     .tabItem {
                         Label(
                             "Address",
-                            systemImage: "arrow.down"
-                        )
-                    }
-                
-                BalanceView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Balance",
-                            systemImage: "line.3.horizontal"
-                        )
-                    }
-                
-                ChannelsListView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Channel",
-                            systemImage: "plus"
+                            systemImage: "bitcoinsign"
                         )
                     }
                 
@@ -56,6 +40,22 @@ struct TabHomeView: View {
                         Label(
                             "Send",
                             systemImage: "arrow.up"
+                        )
+                    }
+                
+                ReceiveView(viewModel: .init())
+                    .tabItem {
+                        Label(
+                            "Receive",
+                            systemImage: "arrow.down"
+                        )
+                    }
+                
+                ChannelsListView(viewModel: .init())
+                    .tabItem {
+                        Label(
+                            "Channel",
+                            systemImage: "plus"
                         )
                     }
                 

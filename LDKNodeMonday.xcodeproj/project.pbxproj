@@ -18,12 +18,12 @@
 		AE5C4FD529A5565700BE3285 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AE5C4FD429A5565700BE3285 /* README.md */; };
 		AE5C4FD829A5577F00BE3285 /* WalletUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE5C4FD729A5577F00BE3285 /* WalletUI */; };
 		AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */; };
+		AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5702A00947B009E16E3 /* ReceiveView.swift */; };
 		AE80116929A59918009B9967 /* TabHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116829A59918009B9967 /* TabHomeView.swift */; };
 		AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* NodeIDView.swift */; };
 		AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelView.swift */; };
 		AE83142629AED67B00088A70 /* LightningNodeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142529AED67B00088A70 /* LightningNodeError.swift */; };
 		AE83142829AEDDAD00088A70 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142729AEDDAD00088A70 /* SendView.swift */; };
-		AE931D8629A950D200F7F2F7 /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8529A950D200F7F2F7 /* BalanceView.swift */; };
 		AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */; };
 		AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9422692A007D6C007E4F12 /* ChannelsListView.swift */; };
 		AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */; };
@@ -42,13 +42,13 @@
 		AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningStorage.swift; sourceTree = "<group>"; };
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extensions.swift"; sourceTree = "<group>"; };
+		AE6BB5702A00947B009E16E3 /* ReceiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveView.swift; sourceTree = "<group>"; };
 		AE80116829A59918009B9967 /* TabHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeView.swift; sourceTree = "<group>"; };
 		AE80116A29A59976009B9967 /* NodeIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDView.swift; sourceTree = "<group>"; };
 		AE80116C29A59AF4009B9967 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
 		AE83142529AED67B00088A70 /* LightningNodeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeError.swift; sourceTree = "<group>"; };
 		AE83142729AEDDAD00088A70 /* SendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendView.swift; sourceTree = "<group>"; };
 		AE8D877429B145F100F2B918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		AE931D8529A950D200F7F2F7 /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
 		AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		AE9422692A007D6C007E4F12 /* ChannelsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListView.swift; sourceTree = "<group>"; };
 		AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
@@ -133,11 +133,11 @@
 				AE80116829A59918009B9967 /* TabHomeView.swift */,
 				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
 				AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */,
-				AE931D8529A950D200F7F2F7 /* BalanceView.swift */,
 				AE80116C29A59AF4009B9967 /* ChannelView.swift */,
 				AE9422692A007D6C007E4F12 /* ChannelsListView.swift */,
 				AE83142729AEDDAD00088A70 /* SendView.swift */,
 				AE001CDC29F5EBEC006CA7D1 /* SendConfirmationView.swift */,
+				AE6BB5702A00947B009E16E3 /* ReceiveView.swift */,
 				AE80116A29A59976009B9967 /* NodeIDView.swift */,
 			);
 			path = View;
@@ -246,13 +246,13 @@
 				AE83142829AEDDAD00088A70 /* SendView.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
 				AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */,
+				AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */,
 				AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */,
 				AE80116929A59918009B9967 /* TabHomeView.swift in Sources */,
 				AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */,
 				AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */,
 				AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
-				AE931D8629A950D200F7F2F7 /* BalanceView.swift in Sources */,
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */,
 				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,

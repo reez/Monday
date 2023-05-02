@@ -101,7 +101,6 @@ struct ChannelView: View {
                     
                 }
                 .padding()
-//                .navigationTitle("Channel")
                 
             }
             .ignoresSafeArea()

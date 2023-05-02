@@ -13,6 +13,28 @@ class AddressViewModel: ObservableObject {
     @Published var address: String = ""
     @Published var synced: Bool = false
     @Published var balance: String = "0"
+    @Published var totalBalance: String = "0"
+    @Published var spendableBalance: String = "0"
+    
+    func syncWallets() {
+        LightningNodeService.shared.syncWallets()
+    }
+    
+    func getTotalOnchainBalanceSats() {
+        guard let balance = LightningNodeService.shared.getTotalOnchainBalanceSats() else { return }
+        let intBalance = Int(balance)
+        let stringIntBalance = String(intBalance)
+        print("LDKNodeMonday /// My total balance int string: \(stringIntBalance)")
+        self.totalBalance = stringIntBalance
+    }
+    
+    func getSpendableOnchainBalanceSats() {
+        guard let balance = LightningNodeService.shared.getSpendableOnchainBalanceSats() else { return }
+        let intBalance = Int(balance)
+        let stringIntBalance = String(intBalance)
+        print("LDKNodeMonday /// My spendable balance int string: \(stringIntBalance)")
+        self.spendableBalance = stringIntBalance
+    }
     
     func getAddress() {
         guard let address = LightningNodeService.shared.getAddress() else {
@@ -35,6 +57,29 @@ struct AddressView: View {
                 Color(uiColor: UIColor.systemBackground)
                 
                 VStack {
+                    
+                    VStack {
+                        
+                        HStack(alignment: .lastTextBaseline) {
+                            let totalBalance = viewModel.totalBalance.formattedAmount()
+                            Text(totalBalance)
+                                .textStyle(BitcoinTitle1())
+                            Text("Total Sats")
+                                .foregroundColor(.secondary)
+                                .textStyle(BitcoinTitle5())
+                                .baselineOffset(2)
+                        }
+                        
+                        HStack(spacing: 4) {
+                            let spendableBalance = viewModel.totalBalance.formattedAmount()
+                            Text(spendableBalance)
+                            Text("Spendable Sats")
+                        }
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+
+                    }
+                    .padding()
                     
                     QRCodeView(address: viewModel.address)
                         .padding()
@@ -90,6 +135,9 @@ struct AddressView: View {
                 .onAppear {
                     Task {
                         viewModel.getAddress()
+                        viewModel.syncWallets()
+                        viewModel.getTotalOnchainBalanceSats()
+                        viewModel.getSpendableOnchainBalanceSats()
                     }
                 }
                 

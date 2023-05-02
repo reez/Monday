@@ -80,6 +80,15 @@ class LightningNodeService {
         }
     }
     
+    func syncWallets() {
+        do {
+            try node.syncWallets()
+            print("LDKNodeMonday /// Wallet synced!")
+        } catch {
+            print("LDKNodeMonday /// error syncing wallets: \(error.localizedDescription)")
+        }
+    }
+    
     func getNodeId() -> String {
         let nodeID = node.nodeId()
         print("LDKNodeMonday /// My node ID: \(nodeID)")
@@ -93,6 +102,28 @@ class LightningNodeService {
             return fundingAddress
         } catch {
             print("LDKNodeMonday /// error getting funding address: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    func getSpendableOnchainBalanceSats() -> UInt64? {
+        do {
+            let balance = try node.spendableOnchainBalanceSats()
+            print("LDKNodeMonday /// My balance: \(balance)")
+            return balance
+        } catch {
+            print("LDKNodeMonday /// error getting getSpendableOnchainBalanceSats: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    func getTotalOnchainBalanceSats() -> UInt64? {
+        do {
+            let balance = try node.totalOnchainBalanceSats()
+            print("LDKNodeMonday /// My balance: \(balance)")
+            return balance
+        } catch {
+            print("LDKNodeMonday /// error getting getTotalOnchainBalanceSats: \(error.localizedDescription)")
             return nil
         }
     }
@@ -116,37 +147,6 @@ class LightningNodeService {
         }
     }
     
-    func syncWallets() {
-        do {
-            try node.syncWallets()
-            print("LDKNodeMonday /// Wallet synced!")
-        } catch {
-            print("LDKNodeMonday /// error syncing wallets: \(error.localizedDescription)")
-        }
-    }
-    
-    func getTotalOnchainBalanceSats() -> UInt64? {
-        do {
-            let balance = try node.totalOnchainBalanceSats()
-            print("LDKNodeMonday /// My balance: \(balance)")
-            return balance
-        } catch {
-            print("LDKNodeMonday /// error getting getTotalOnchainBalanceSats: \(error.localizedDescription)")
-            return nil
-        }
-    }
-    
-    func getSpendableOnchainBalanceSats() -> UInt64? {
-        do {
-            let balance = try node.spendableOnchainBalanceSats()
-            print("LDKNodeMonday /// My balance: \(balance)")
-            return balance
-        } catch {
-            print("LDKNodeMonday /// error getting getSpendableOnchainBalanceSats: \(error.localizedDescription)")
-            return nil
-        }
-    }
-    
     func sendPayment(invoice: Invoice) {
         do {
             let paymentHash = try node.sendPayment(invoice: invoice)
@@ -159,7 +159,16 @@ class LightningNodeService {
                 print("LDKNodeMonday /// sendPayment couldn't equate error to Node Error")
             }
         }
-        
+    }
+    
+    func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) -> Invoice? {
+        do {
+            let invoice = try node.receivePayment(amountMsat: amountMsat, description: description, expirySecs: expirySecs)
+            return invoice
+        } catch {
+            print("LDKNodeMonday /// receivePayment couldn't equate error to Node Error")
+            return nil
+        }
     }
     
     func listChannels() -> [ChannelDetails] {
@@ -195,6 +204,50 @@ extension LightningNodeService {
         print("LDKNodeMonday /// eventHandled")
     }
     
+    func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) {
+        print("LDKNodeMonday /// connect")
+        do {
+            try node.connect(
+                nodeId: nodeId,
+                address: address,
+                permanently: permanently
+            )
+            print("LDKNodeMonday /// connected to \(nodeId):\(address) (permanently \(permanently))")
+        } catch {
+            print("LDKNodeMonday /// error on connect: \(error.localizedDescription)")
+        }
+    }
+    
+    func disconnect(nodeId: PublicKey) {
+        print("LDKNodeMonday /// disconnect")
+        do {
+            try node.disconnect(nodeId: nodeId)
+        } catch {
+            print("LDKNodeMonday /// error on disconnect: \(error.localizedDescription)")
+        }
+    }
+    
+    func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) {
+        print("LDKNodeMonday /// closeChannel")
+        do {
+            try node.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
+        } catch {
+            print("LDKNodeMonday /// error on closeChannel: \(error.localizedDescription)")
+        }
+    }
+    
+    func sendPaymentUsingAmount(invoice: Invoice, amountMsat: UInt64) {
+        print("LDKNodeMonday /// sendPaymentUsingAmount")
+        do {
+            let paymentHash = try node.sendPaymentUsingAmount(invoice: invoice, amountMsat: amountMsat)
+            print("LDKNodeMonday /// sendPaymentUsingAmount paymentHash: \(paymentHash)")
+        } catch {
+            print("LDKNodeMonday /// error on sendPaymentUsingAmount: \(error.localizedDescription)")
+        }
+        fatalError()
+
+    }
+    
     func sendSpontaneousPayment(amountMsat: UInt64, nodeId: String) {
         do {
             let paymentHash = try node.sendSpontaneousPayment(amountMsat: amountMsat, nodeId: nodeId)
@@ -206,6 +259,29 @@ extension LightningNodeService {
                 print("LDKNodeMonday /// sendSpontaneousPayment couldn't equate error to Node Error")
             }
         }
+    }
+    
+    func receiveVariableAmountPayment(description: String, expirySecs: UInt32) {
+        print("LDKNodeMonday /// receiveVariableAmountPayment")
+        do {
+            let invoice = try node.receiveVariableAmountPayment(description: description, expirySecs: expirySecs)
+            print("LDKNodeMonday /// receiveVariableAmountPayment invoice: \(invoice)")
+        } catch {
+            print("LDKNodeMonday /// receiveVariableAmountPayment couldn't equate error to Node Error")
+        }
+    }
+    
+    func paymentInfo(paymentHash: PaymentHash) {
+        print("LDKNodeMonday /// paymentInfo")
+        guard let paymentInfo = node.paymentInfo(paymentHash: paymentHash) else { return }
+        print("LDKNodeMonday /// paymentInfo: \(paymentInfo)")
+    }
+    
+    func listPeers() {
+        print("LDKNodeMonday /// listPeers")
+        let peers = node.listPeers()
+        print("LDKNodeMonday /// listPeers peers: \(peers)")
+        fatalError()
     }
     
 }
