@@ -13,7 +13,7 @@ import WalletUI
 class ReceiveViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""
     @Published var amountMsat: String = "" // TODO: make minimum 1/10/1000?
-
+    
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) {
         guard let invoice = LightningNodeService.shared.receivePayment(
             amountMsat: amountMsat,
@@ -21,6 +21,10 @@ class ReceiveViewModel: ObservableObject {
             expirySecs: expirySecs
         ) else { return }
         self.invoice = invoice
+    }
+    
+    func clearInvoice() {
+        self.invoice = ""
     }
     
 }
@@ -36,50 +40,6 @@ struct ReceiveView: View {
                 Color(uiColor: UIColor.systemBackground)
                 
                 VStack {
-                    
-                    HStack(alignment: .center) {
-                        
-                        ZStack {
-                            
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 50.0, height: 50.0)
-                                .foregroundColor(.orange)
-                            
-                            Image(systemName: "bolt.fill")
-                                .font(.title)
-                                .foregroundColor(Color(uiColor: .systemBackground))
-                                .bold()
-                            
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 5.0) {
-                            
-                            Text("Lightning Network")
-                                .font(.caption)
-                                .bold()
-                            
-                            Text(viewModel.invoice)
-                                .font(.caption)
-                                .truncationMode(.middle)
-                                .lineLimit(1)
-                                .foregroundColor(.secondary)
-                            
-                        }
-                        
-                        Spacer()
-                        
-                        Button {
-                            UIPasteboard.general.string = viewModel.invoice
-                        } label: {
-                            HStack {
-                                Image(systemName: "doc.on.doc")
-                                    .font(.subheadline)
-                            }
-                            .bold()
-                        }
-                        
-                    }
-                    .padding()
                     
                     VStack(alignment: .leading) {
                         
@@ -107,6 +67,64 @@ struct ReceiveView: View {
                         )
                     }
                     .buttonStyle(BitcoinOutlined())
+                    .padding()
+                    
+                    
+                    
+                    if viewModel.invoice != "" {
+                        
+                        HStack(alignment: .center) {
+                            
+                            ZStack {
+                                
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 50.0, height: 50.0)
+                                    .foregroundColor(.orange)
+                                
+                                Image(systemName: "bolt.fill")
+                                    .font(.title)
+                                    .foregroundColor(Color(uiColor: .systemBackground))
+                                    .bold()
+                                
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 5.0) {
+                                
+                                Text("Lightning Network")
+                                    .font(.caption)
+                                    .bold()
+                                
+                                Text(viewModel.invoice)
+                                    .font(.caption)
+                                    .truncationMode(.middle)
+                                    .lineLimit(1)
+                                    .foregroundColor(.secondary)
+                                
+                            }
+                            
+                            Spacer()
+                            
+                            Button {
+                                UIPasteboard.general.string = viewModel.invoice
+                            } label: {
+                                HStack {
+                                    Image(systemName: "doc.on.doc")
+                                        .font(.subheadline)
+                                }
+                                .bold()
+                            }
+                            
+                        }
+                        .padding()
+                        
+                        
+                        Button("Clear Invoice") {
+                            viewModel.clearInvoice()
+                        }
+                        .buttonStyle(BitcoinOutlined())
+                        .padding()
+                        
+                    }
                     
                 }
                 .padding()
