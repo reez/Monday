@@ -37,8 +37,9 @@ struct SendConfirmationView: View {
                 VStack(spacing: 10) {
                     
                     Image(systemName: "bitcoinsign.circle.fill")
-                        .foregroundColor(.orange)
+//                        .foregroundColor(.orange)
                         .font(.system(size: 100))
+                        .foregroundColor(LightningNodeService.shared.networkColor)
                     
                     Text("Sats paid")
                         .bold()

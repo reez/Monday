@@ -54,6 +54,8 @@ struct NodeIDView: View {
                                     .font(.subheadline)
                             }
                             .bold()
+                            .foregroundColor(LightningNodeService.shared.networkColor)
+
                         }
                         
                     }

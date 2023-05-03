@@ -52,13 +52,17 @@ struct PeersListView: View {
                                         HStack(alignment: .center) {
                                             
                                             ZStack {
+                                                
                                                 Circle()
                                                     .frame(width: 50.0, height: 50.0)
-                                                    .foregroundColor(.orange)
+//                                                    .foregroundColor(.orange)
+                                                    .foregroundColor(LightningNodeService.shared.networkColor)
+
                                                 Image(systemName: "person.line.dotted.person")
                                                     .font(.subheadline)
                                                     .foregroundColor(Color(uiColor: .systemBackground))
                                                     .bold()
+                                                
                                             }
                                             
                                             VStack(alignment: .leading, spacing: 5.0) {

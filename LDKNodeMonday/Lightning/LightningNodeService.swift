@@ -7,11 +7,34 @@
 
 import Foundation
 import LightningDevKitNode
+import SwiftUI
+
+enum BitcoinNetworkColor {
+    case regtest
+    case signet
+    case mainnet
+    case testnet
+    
+    var color: Color {
+        switch self {
+        case .regtest:
+            return Color.green
+        case .signet:
+            return Color.yellow
+        case .mainnet:
+            return Color.orange // I'm just going to make it orange instead of black //Color.black
+        case .testnet:
+            return Color.red
+        }
+    }
+}
+
 
 class LightningNodeService {
     private let node: Node
     private let storageManager = LightningStorage()
     var ldkNodeMondayEvent = LDKNodeMondayEvent.none
+    var networkColor = Color.black
     
     class var shared: LightningNodeService {
         struct Singleton {
@@ -34,11 +57,13 @@ class LightningNodeService {
             esploraServerUrl = "http://127.0.0.1:3002" 
             listeningAddress = "127.0.0.1:2323"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
+            self.networkColor = BitcoinNetworkColor.regtest.color
         case .testnet:
             chosenNetwork = "testnet"
             esploraServerUrl = "http://blockstream.info/testnet/api/"
             listeningAddress = "0.0.0.0:9735"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
+            self.networkColor = BitcoinNetworkColor.testnet.color
         }
         
         let config = Config(

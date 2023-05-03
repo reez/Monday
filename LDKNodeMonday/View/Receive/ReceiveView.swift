@@ -79,7 +79,8 @@ struct ReceiveView: View {
                                 
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 50.0, height: 50.0)
-                                    .foregroundColor(.orange)
+//                                    .foregroundColor(.orange)
+                                    .foregroundColor(LightningNodeService.shared.networkColor)
                                 
                                 Image(systemName: "bolt.fill")
                                     .font(.title)
@@ -112,6 +113,8 @@ struct ReceiveView: View {
                                         .font(.subheadline)
                                 }
                                 .bold()
+                                .foregroundColor(LightningNodeService.shared.networkColor)
+
                             }
                             
                         }
