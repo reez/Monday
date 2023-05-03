@@ -111,8 +111,10 @@ struct ChannelView: View {
             .navigationBarTitle("Channel")
             
         }
+        .ignoresSafeArea()
         
     }
+    
 }
 
 struct ChannelView_Previews: PreviewProvider {

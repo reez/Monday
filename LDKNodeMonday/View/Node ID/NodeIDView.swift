@@ -61,12 +61,12 @@ struct NodeIDView: View {
                     
                 }
                 .padding()
+                .navigationTitle("Node ID")
                 .onAppear {
                     Task {
                         viewModel.getNodeID()
                     }
                 }
-                .navigationTitle("Node ID")
                 
             }
             .ignoresSafeArea()

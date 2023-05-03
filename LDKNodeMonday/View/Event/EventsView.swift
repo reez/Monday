@@ -74,10 +74,10 @@ struct EventsView: View {
                     
                 }
                 .padding()
-                
+                .navigationTitle("Events")
+
             }
             .ignoresSafeArea()
-            .navigationTitle("Events")
             
         }
         

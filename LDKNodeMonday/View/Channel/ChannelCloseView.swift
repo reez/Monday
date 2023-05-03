@@ -70,8 +70,11 @@ struct ChannelCloseView: View {
                 .buttonStyle(BitcoinOutlined())
                 
             }
+            .padding()
+            // navigationtitle?
             
         }
+        .ignoresSafeArea()
         
     }
 }

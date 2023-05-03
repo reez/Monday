@@ -91,8 +91,10 @@ struct PeerView: View {
                 
             }
             .padding()
+            // navigationtitle?
             
         }
+        .ignoresSafeArea()
         
     }
     

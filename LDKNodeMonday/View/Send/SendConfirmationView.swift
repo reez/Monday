@@ -70,6 +70,8 @@ struct SendConfirmationView: View {
                 Spacer()
                 
             }
+            .padding()
+            // navigationtitle?
             .onAppear {
                 viewModel.sendPayment(invoice: viewModel.invoice)
             }

@@ -39,6 +39,7 @@ struct StopView: View {
                 .navigationTitle("Stop")
                 
             }
+            .ignoresSafeArea()
             
         }
         

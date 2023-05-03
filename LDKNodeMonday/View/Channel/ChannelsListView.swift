@@ -101,6 +101,7 @@ struct ChannelsListView: View {
                 .onAppear { viewModel.listChannels() }
                 
             }
+            .ignoresSafeArea()
             
         }
         

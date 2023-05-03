@@ -115,6 +115,7 @@ struct PeersListView: View {
                 }
                 
             }
+            .ignoresSafeArea()
             
         }
         
