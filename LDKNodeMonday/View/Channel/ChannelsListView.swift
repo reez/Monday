@@ -19,7 +19,7 @@ class ChannelsListViewModel: ObservableObject {
 }
 struct ChannelsListView: View {
     @ObservedObject var viewModel: ChannelsListViewModel
-
+    
     var body: some View {
         
         NavigationView {
@@ -29,11 +29,11 @@ struct ChannelsListView: View {
                 
                 VStack {
                     
-                        NavigationLink(destination: ChannelView(viewModel: .init())) {
-                           Text("Add Channel")
-                        }
-                        .buttonStyle(BitcoinOutlined())
-                        .padding()
+                    NavigationLink(destination: ChannelView(viewModel: .init())) {
+                        Text("Add Channel")
+                    }
+                    .buttonStyle(BitcoinOutlined())
+                    .padding()
                     
                     if viewModel.channels.isEmpty {
                         Text("No Channels")
@@ -46,82 +46,52 @@ struct ChannelsListView: View {
                                 NavigationLink {
                                     ChannelCloseView(viewModel: .init(channel: channel))
                                 } label: {
-                                    // label
                                     
                                     VStack {
                                         
                                         HStack(alignment: .center) {
                                             
                                             ZStack {
+                                                
                                                 Circle()
                                                     .frame(width: 50.0, height: 50.0)
                                                     .foregroundColor(.orange)
+                                                
                                                 Image(systemName: "person.line.dotted.person")
                                                     .font(.subheadline)
                                                     .foregroundColor(Color(uiColor: .systemBackground))
                                                     .bold()
+                                                
                                             }
                                             
                                             VStack(alignment: .leading, spacing: 5.0) {
+                                                
                                                 Text("\(channel.channelValueSatoshis) sats ")
                                                     .font(.caption)
                                                     .bold()
-                                             
+                                                
                                                 Text(channel.counterparty)
                                                     .font(.caption)
                                                     .truncationMode(.middle)
                                                     .lineLimit(1)
                                                     .foregroundColor(.secondary)
+                                                
                                             }
                                             
                                             Spacer()
-
+                                            
                                         }
                                         .padding()
-
+                                        
                                     }
                                     
                                 }
-
                                 
-//                                VStack {
-//
-//                                    HStack(alignment: .center) {
-//
-//                                        ZStack {
-//                                            Circle()
-//                                                .frame(width: 50.0, height: 50.0)
-//                                                .foregroundColor(.orange)
-//                                            Image(systemName: "person.line.dotted.person")
-//                                                .font(.subheadline)
-//                                                .foregroundColor(Color(uiColor: .systemBackground))
-//                                                .bold()
-//                                        }
-//
-//                                        VStack(alignment: .leading, spacing: 5.0) {
-//                                            Text("\(channel.channelValueSatoshis) sats ")
-//                                                .font(.caption)
-//                                                .bold()
-//
-//                                            Text(channel.counterparty)
-//                                                .font(.caption)
-//                                                .truncationMode(.middle)
-//                                                .lineLimit(1)
-//                                                .foregroundColor(.secondary)
-//                                        }
-//
-//                                        Spacer()
-//
-//                                    }
-//                                    .padding()
-//
-//                                }
-
                             }
-
+                            
                         }
                         .listStyle(.plain)
-
+                        
                     }
                     
                 }
@@ -131,10 +101,9 @@ struct ChannelsListView: View {
                 .onAppear { viewModel.listChannels() }
                 
             }
-//            .ignoresSafeArea()
             
         }
-      
+        
     }
     
 }

@@ -40,24 +40,30 @@ struct ReceiveView: View {
                     HStack(alignment: .center) {
                         
                         ZStack {
+                            
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 50.0, height: 50.0)
                                 .foregroundColor(.orange)
+                            
                             Image(systemName: "bolt.fill")
                                 .font(.title)
                                 .foregroundColor(Color(uiColor: .systemBackground))
                                 .bold()
+                            
                         }
                         
                         VStack(alignment: .leading, spacing: 5.0) {
+                            
                             Text("Lightning Network")
                                 .font(.caption)
                                 .bold()
+                            
                             Text(viewModel.invoice)
                                 .font(.caption)
                                 .truncationMode(.middle)
                                 .lineLimit(1)
                                 .foregroundColor(.secondary)
+                            
                         }
                         
                         Spacer()
@@ -76,8 +82,10 @@ struct ReceiveView: View {
                     .padding()
                     
                     VStack(alignment: .leading) {
+                        
                         Text("Amount (mSat)")
                             .bold()
+                        
                         TextField("125000", text: $viewModel.amountMsat)
                             .frame(height: 48)
                             .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
@@ -87,6 +95,7 @@ struct ReceiveView: View {
                                     .stroke(lineWidth: 1.0)
                                     .foregroundColor(.secondary)
                             )
+                        
                     }
                     .padding()
                     
@@ -115,5 +124,7 @@ struct ReceiveView: View {
 struct ReceiveView_Previews: PreviewProvider {
     static var previews: some View {
         ReceiveView(viewModel: .init())
+        ReceiveView(viewModel: .init())
+            .environment(\.colorScheme, .dark)
     }
 }

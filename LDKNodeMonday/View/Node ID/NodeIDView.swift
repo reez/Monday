@@ -39,11 +39,13 @@ struct NodeIDView: View {
                         .textStyle(BitcoinTitle5())
                     
                     HStack(alignment: .bottom) {
+                        
                         Text(viewModel.nodeID)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                             .font(.subheadline)
+                        
                         Button {
                             UIPasteboard.general.string = viewModel.nodeID
                         } label: {
@@ -53,6 +55,7 @@ struct NodeIDView: View {
                             }
                             .bold()
                         }
+                        
                     }
                     .padding(.horizontal)
                     

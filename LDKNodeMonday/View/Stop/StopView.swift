@@ -37,7 +37,7 @@ struct StopView: View {
                 }
                 .padding()
                 .navigationTitle("Stop")
-
+                
             }
             
         }

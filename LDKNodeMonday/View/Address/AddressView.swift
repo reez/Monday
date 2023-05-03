@@ -50,7 +50,7 @@ struct AddressView: View {
     @ObservedObject var viewModel: AddressViewModel
     
     var body: some View {
-                    
+        
         NavigationView {
             
             ZStack {
@@ -81,10 +81,8 @@ struct AddressView: View {
                         .foregroundColor(.secondary)
                         
                     }
-//                    .padding()
                     
                     QRCodeView(address: viewModel.address)
-//                        .padding()
                     
                     Text("Copy Address")
                         .bold()
@@ -129,7 +127,6 @@ struct AddressView: View {
                         }
                         
                     }
-//                    .padding()
                     
                     Spacer()
                     
@@ -147,12 +144,9 @@ struct AddressView: View {
                 }
                 
             }
-//            .navigationTitle("Address")
-
             
         }
-
-                
+        
     }
     
 }

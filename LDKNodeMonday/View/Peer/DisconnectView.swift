@@ -24,7 +24,7 @@ class DisconnectViewModel: ObservableObject {
 struct DisconnectView: View {
     @ObservedObject var viewModel: DisconnectViewModel
     @Environment(\.presentationMode) var presentationMode
-
+    
     var body: some View {
         
         ZStack {
@@ -33,11 +33,14 @@ struct DisconnectView: View {
             VStack {
                 
                 HStack {
+                    
                     Text("Node ID:")
+                    
                     Text(viewModel.nodeId.description)
                         .truncationMode(.middle)
                         .lineLimit(1)
                         .foregroundColor(.secondary)
+                    
                 }
                 .font(.system(.caption, design: .monospaced))
                 .padding()

@@ -13,7 +13,7 @@ struct PaymentFailedView: View {
     var body: some View {
         
         VStack(spacing: 10) {
-        
+            
             HStack {
                 Image(systemName: "questionmark")
                 Text("Payment Failed")

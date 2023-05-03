@@ -92,17 +92,17 @@ class LightningNodeService {
             print("LDKNodeMonday /// event: paymentSuccessful \n paymentHash \(paymentHash)")
             let event = convertToLDKNodeMondayEvent(event: .paymentSuccessful(paymentHash: paymentHash))
             self.ldkNodeMondayEvent = event
-
+            
         case .paymentFailed(paymentHash: let paymentHash):
             print("LDKNodeMonday /// event: paymentFailed \n paymentHash \(paymentHash)")
             let event = convertToLDKNodeMondayEvent(event: .paymentFailed(paymentHash: paymentHash))
             self.ldkNodeMondayEvent = event
-
+            
         case .paymentReceived(paymentHash: let paymentHash, amountMsat: let amountMsat):
             print("LDKNodeMonday /// event: paymentReceived \n paymentHash \(paymentHash) \n amountMsat \(amountMsat)")
             let event = convertToLDKNodeMondayEvent(event: .paymentReceived(paymentHash: paymentHash, amountMsat: amountMsat))
             self.ldkNodeMondayEvent = event
-
+            
         case .channelReady(channelId: let channelId, userChannelId: let userChannelId):
             print("LDKNodeMonday /// event: channelReady \n channelId \(channelId) \n userChannelId \(userChannelId)")
             let event = convertToLDKNodeMondayEvent(event: .channelReady(channelId: channelId, userChannelId: userChannelId))
@@ -112,7 +112,7 @@ class LightningNodeService {
             print("LDKNodeMonday /// event: channelClosed \n channelId \(channelId) \n userChannelId \(userChannelId)")
             let event = convertToLDKNodeMondayEvent(event: .channelClosed(channelId: channelId, userChannelId: userChannelId))
             self.ldkNodeMondayEvent = event
-
+            
         }
         
     }

@@ -15,13 +15,13 @@ class EventsViewModel: ObservableObject {
     
     func getEvents() {
         LightningNodeService.shared.nextEvent()
-        let a = LightningNodeService.shared.ldkNodeMondayEvent
-        print("getEvents called... event: \(a)")
-        self.myEvent = a
+        let ldkNodeMondayEvent = LightningNodeService.shared.ldkNodeMondayEvent
+        print("getEvents called... event: \(ldkNodeMondayEvent)")
+        self.myEvent = ldkNodeMondayEvent
     }
     
     func eventHandled() {
-        let _ = LightningNodeService.shared.eventHandled()
+        LightningNodeService.shared.eventHandled()
         print("eventHandled called")
     }
     

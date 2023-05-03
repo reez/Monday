@@ -11,9 +11,7 @@ import LightningDevKitNode
 class SendConfirmationViewModel: ObservableObject {
     @Published var invoice: String = ""
     
-    init(
-        invoice: String
-    ) {
+    init(invoice: String) {
         self.invoice = invoice
     }
     
@@ -37,16 +35,20 @@ struct SendConfirmationView: View {
                 Spacer()
                 
                 VStack(spacing: 10) {
+                    
                     Image(systemName: "bitcoinsign.circle.fill")
                         .foregroundColor(.orange)
                         .font(.system(size: 100))
+                    
                     Text("Sats paid")
                         .bold()
+                    
                     Text("\(viewModel.invoice)")
                         .truncationMode(.middle)
                         .lineLimit(1)
                         .foregroundColor(.secondary)
                         .padding(.horizontal)
+                    
                 }
                 .padding(.horizontal, 50.0)
                 
@@ -55,11 +57,14 @@ struct SendConfirmationView: View {
                 Spacer()
                 
                 VStack(spacing: 10) {
+                    
                     Text("\(viewModel.invoice.bolt11amount().formattedAmount()) sats")
                         .font(.largeTitle)
                         .bold()
+                    
                     Text(Date.now.formattedDate())
                         .foregroundColor(.secondary)
+                    
                 }
                 
                 Spacer()

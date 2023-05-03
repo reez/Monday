@@ -13,7 +13,7 @@ struct PaymentReceivedView: View {
     var body: some View {
         
         VStack(spacing: 10) {
-
+            
             HStack {
                 Image(systemName: "arrow.down")
                 Text("Payment Received")
@@ -37,7 +37,6 @@ struct PaymentReceivedView: View {
         }
         .font(.system(.caption, design: .monospaced))
         .padding()
-
         
     }
     

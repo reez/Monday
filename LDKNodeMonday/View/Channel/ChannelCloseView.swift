@@ -28,36 +28,41 @@ class ChannelCloseViewModel: ObservableObject {
 struct ChannelCloseView: View {
     @ObservedObject var viewModel: ChannelCloseViewModel
     @Environment(\.presentationMode) var presentationMode
-
+    
     var body: some View {
         
         ZStack {
             Color(uiColor: UIColor.systemBackground)
-
+            
             VStack {
                 
                 VStack(spacing: 10) {
                     
                     HStack {
+                        
                         Text("Channel ID:")
+                        
                         Text(viewModel.channel.channelId.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
+                        
                     }
                     
                     HStack {
+                        
                         Text("Counterparty Node ID:")
+                        
                         Text(viewModel.channel.counterparty.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
+                        
                     }
                     
                 }
                 .font(.system(.caption, design: .monospaced))
                 .padding()
-                
                 
                 Button("Close Channel") {
                     viewModel.close()

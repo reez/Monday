@@ -26,8 +26,10 @@ struct SendView: View {
                 VStack {
                     
                     VStack(alignment: .leading) {
+                        
                         Text("Invoice")
                             .bold()
+                        
                         TextField("lnbc10u1pwz...8f8r9ckzr0r", text: $viewModel.invoice)
                             .frame(height: 48)
                             .truncationMode(.middle)
@@ -38,6 +40,7 @@ struct SendView: View {
                                     .stroke(lineWidth: 1.0)
                                     .foregroundColor(.secondary)
                             )
+                        
                     }
                     .padding()
                     
