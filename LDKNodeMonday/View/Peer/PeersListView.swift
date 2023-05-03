@@ -11,9 +11,15 @@ import WalletUI
 
 class PeersListViewModel: ObservableObject {
     @Published var peers: [PeerDetails] = []
-    
+    @Published var networkColor = Color.gray
+
     func listPeers() {
         self.peers = LightningNodeService.shared.listPeers()
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -32,7 +38,7 @@ struct PeersListView: View {
                     NavigationLink(destination: PeerView(viewModel: .init())) {
                         Text("Connect Peer")
                     }
-                    .buttonStyle(BitcoinOutlined())
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding()
                     
                     if viewModel.peers.isEmpty {
@@ -56,7 +62,7 @@ struct PeersListView: View {
                                                 Circle()
                                                     .frame(width: 50.0, height: 50.0)
 //                                                    .foregroundColor(.orange)
-                                                    .foregroundColor(LightningNodeService.shared.networkColor)
+                                                    .foregroundColor(viewModel.networkColor)
 
                                                 Image(systemName: "person.line.dotted.person")
                                                     .font(.subheadline)
@@ -115,11 +121,11 @@ struct PeersListView: View {
                 .navigationTitle("\(viewModel.peers.count) Peers")
                 .onAppear {
                     viewModel.listPeers()
-                    print("peers count: \(viewModel.peers.count)")
+                    viewModel.getColor()
                 }
                 
             }
-            .ignoresSafeArea()
+//            .ignoresSafeArea()
             
         }
         

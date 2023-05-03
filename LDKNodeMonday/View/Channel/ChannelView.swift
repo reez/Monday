@@ -13,13 +13,19 @@ class ChannelViewModel: ObservableObject {
     @Published var nodeId: PublicKey = ""
     @Published var address: SocketAddr = ""
     @Published var channelAmountSats: String = ""
-    
+    @Published var networkColor = Color.gray
+
     func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64) {
         LightningNodeService.shared.openChannel(
             nodeId: nodeId,
             address: address,
             channelAmountSats: channelAmountSats
         )
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -103,12 +109,16 @@ struct ChannelView: View {
                 } label: {
                     Text("Open Channel")
                 }
-                .buttonStyle(BitcoinOutlined())
+                .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 .padding()
+                
                 
             }
             .padding()
             .navigationBarTitle("Channel")
+            .onAppear {
+                viewModel.getColor()
+            }
             
         }
         .ignoresSafeArea()

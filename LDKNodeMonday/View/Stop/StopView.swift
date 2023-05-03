@@ -10,9 +10,15 @@ import LightningDevKitNode
 import WalletUI
 
 class StopViewModel: ObservableObject {
-    
+    @Published var networkColor = Color.gray
+
     func stop() {
         LightningNodeService.shared.stop()
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -32,11 +38,14 @@ struct StopView: View {
                     Button("Stop") {
                         viewModel.stop()
                     }
-                    .buttonStyle(BitcoinOutlined())
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     
                 }
                 .padding()
                 .navigationTitle("Stop")
+                .onAppear {
+                    viewModel.getColor()
+                }
                 
             }
             .ignoresSafeArea()

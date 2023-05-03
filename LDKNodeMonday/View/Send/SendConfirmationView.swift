@@ -10,7 +10,8 @@ import LightningDevKitNode
 
 class SendConfirmationViewModel: ObservableObject {
     @Published var invoice: String = ""
-    
+    @Published var networkColor = Color.gray
+
     init(invoice: String) {
         self.invoice = invoice
     }
@@ -18,6 +19,11 @@ class SendConfirmationViewModel: ObservableObject {
     func sendPayment(invoice: Invoice) {
         print("LDKNodeMonday /// Send Payment from Invoice: \(invoice)")
         LightningNodeService.shared.sendPayment(invoice: invoice)
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -39,7 +45,7 @@ struct SendConfirmationView: View {
                     Image(systemName: "bitcoinsign.circle.fill")
 //                        .foregroundColor(.orange)
                         .font(.system(size: 100))
-                        .foregroundColor(LightningNodeService.shared.networkColor)
+                        .foregroundColor(viewModel.networkColor)
                     
                     Text("Sats paid")
                         .bold()
@@ -75,6 +81,7 @@ struct SendConfirmationView: View {
             // navigationtitle?
             .onAppear {
                 viewModel.sendPayment(invoice: viewModel.invoice)
+                viewModel.getColor()
             }
             
         }

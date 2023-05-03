@@ -10,12 +10,17 @@ import LightningDevKitNode
 import WalletUI
 
 class NodeIDViewModel: ObservableObject {
-    
     @Published var nodeID: String = ""
-    
+    @Published var networkColor = Color.gray
+
     func getNodeID() {
         let nodeID = LightningNodeService.shared.getNodeId()
         self.nodeID = nodeID
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -34,6 +39,7 @@ struct NodeIDView: View {
                     
                     Image(systemName: "person.circle.fill")
                         .font(.largeTitle)
+                        .foregroundColor(viewModel.networkColor)
                     
                     Text("Node ID")
                         .textStyle(BitcoinTitle5())
@@ -54,7 +60,7 @@ struct NodeIDView: View {
                                     .font(.subheadline)
                             }
                             .bold()
-                            .foregroundColor(LightningNodeService.shared.networkColor)
+                            .foregroundColor(viewModel.networkColor)
 
                         }
                         
@@ -67,6 +73,7 @@ struct NodeIDView: View {
                 .onAppear {
                     Task {
                         viewModel.getNodeID()
+                        viewModel.getColor()
                     }
                 }
                 

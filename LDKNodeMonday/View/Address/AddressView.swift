@@ -15,6 +15,7 @@ class AddressViewModel: ObservableObject {
     @Published var balance: String = "0"
     @Published var totalBalance: String = "0"
     @Published var spendableBalance: String = "0"
+    @Published var networkColor = Color.gray
     
     func syncWallets() {
         LightningNodeService.shared.syncWallets()
@@ -42,6 +43,11 @@ class AddressViewModel: ObservableObject {
             return
         }
         self.address = address
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -97,8 +103,7 @@ struct AddressView: View {
 
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 50.0, height: 50.0)
-//                                .foregroundColor(.orange)
-                                .foregroundColor(LightningNodeService.shared.networkColor)
+                                .foregroundColor(viewModel.networkColor)
                             
                             Image(systemName: "bitcoinsign")
                                 .font(.title)
@@ -131,7 +136,6 @@ struct AddressView: View {
                                     .font(.subheadline)
                             }
                             .bold()
-                            .foregroundColor(LightningNodeService.shared.networkColor)
 
                         }
                         
@@ -142,12 +146,14 @@ struct AddressView: View {
                 }
                 .padding()
                 .navigationTitle("Address")
+                .tint(viewModel.networkColor)
                 .onAppear {
                     Task {
                         viewModel.getAddress()
                         viewModel.syncWallets()
                         viewModel.getTotalOnchainBalanceSats()
                         viewModel.getSpendableOnchainBalanceSats()
+                        viewModel.getColor()
                     }
                 }
                 

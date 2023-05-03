@@ -11,9 +11,15 @@ import WalletUI
 
 class ChannelsListViewModel: ObservableObject {
     @Published var channels: [ChannelDetails] = []
-    
+    @Published var networkColor = Color.gray
+
     func listChannels() {
         self.channels = LightningNodeService.shared.listChannels()
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -32,7 +38,7 @@ struct ChannelsListView: View {
                     NavigationLink(destination: ChannelView(viewModel: .init())) {
                         Text("Add Channel")
                     }
-                    .buttonStyle(BitcoinOutlined())
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding()
                     
                     if viewModel.channels.isEmpty {
@@ -56,7 +62,7 @@ struct ChannelsListView: View {
                                                 Circle()
                                                     .frame(width: 50.0, height: 50.0)
 //                                                    .foregroundColor(.orange)
-                                                    .foregroundColor(LightningNodeService.shared.networkColor)
+                                                    .foregroundColor(viewModel.networkColor)
 
                                                 Image(systemName: "person.line.dotted.person")
                                                     .font(.subheadline)
@@ -99,7 +105,10 @@ struct ChannelsListView: View {
                 .padding()
                 .padding(.top)
                 .navigationTitle("\(viewModel.channels.count) Channels")
-                .onAppear { viewModel.listChannels() }
+                .onAppear {
+                    viewModel.listChannels()
+                    viewModel.getColor()
+                }
                 
             }
             // .ignoresSafeArea() // This is pushing everything up on the screen 

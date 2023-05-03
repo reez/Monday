@@ -11,13 +11,19 @@ import WalletUI
 
 class DisconnectViewModel: ObservableObject {
     @Published var nodeId: PublicKey
-    
+    @Published var networkColor = Color.gray
+
     init(nodeId: PublicKey) {
         self.nodeId = nodeId
     }
     
     func disconnect() {
         LightningNodeService.shared.disconnect(nodeId: self.nodeId)
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -48,11 +54,14 @@ struct DisconnectView: View {
                 Button("Disconnect Peer") {
                     viewModel.disconnect()
                 }
-                .buttonStyle(BitcoinOutlined())
+                .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 
             }
             .padding()
             // navigation title?
+            .onAppear {
+                viewModel.getColor()
+            }
             
         }
         .ignoresSafeArea()

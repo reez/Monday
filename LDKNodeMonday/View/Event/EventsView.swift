@@ -10,7 +10,8 @@ import WalletUI
 
 class EventsViewModel: ObservableObject {
     @Published var myEvent: LDKNodeMondayEvent = .none
-    
+    @Published var networkColor = Color.gray
+
     // TODO: pass in Event? So I can mock out with each event
     
     func getEvents() {
@@ -23,6 +24,11 @@ class EventsViewModel: ObservableObject {
     func eventHandled() {
         LightningNodeService.shared.eventHandled()
         print("eventHandled called")
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -65,17 +71,19 @@ struct EventsView: View {
                     Button("Next Event") {
                         viewModel.getEvents()
                     }
-                    .buttonStyle(BitcoinOutlined())
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     
                     Button("Event Handled") {
                         viewModel.eventHandled()
                     }
-                    .buttonStyle(BitcoinOutlined())
-                    
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+
                 }
                 .padding()
                 .navigationTitle("Events")
-
+                .onAppear {
+                    viewModel.getColor()
+                }
             }
             .ignoresSafeArea()
             

@@ -11,7 +11,8 @@ import WalletUI
 
 class ChannelCloseViewModel: ObservableObject {
     @Published var channel: ChannelDetails
-    
+    @Published var networkColor = Color.gray
+
     init(channel: ChannelDetails) {
         self.channel = channel
     }
@@ -21,6 +22,11 @@ class ChannelCloseViewModel: ObservableObject {
             channelId: self.channel.channelId,
             counterpartyNodeId: self.channel.counterparty
         )
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -67,11 +73,14 @@ struct ChannelCloseView: View {
                 Button("Close Channel") {
                     viewModel.close()
                 }
-                .buttonStyle(BitcoinOutlined())
+                .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 
             }
             .padding()
             // navigationtitle?
+            .onAppear {
+                viewModel.getColor()
+            }
             
         }
         .ignoresSafeArea()

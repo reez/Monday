@@ -13,7 +13,8 @@ import WalletUI
 class ReceiveViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""
     @Published var amountMsat: String = "" // TODO: make minimum 1/10/1000?
-    
+    @Published var networkColor = Color.gray
+
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) {
         guard let invoice = LightningNodeService.shared.receivePayment(
             amountMsat: amountMsat,
@@ -25,6 +26,11 @@ class ReceiveViewModel: ObservableObject {
     
     func clearInvoice() {
         self.invoice = ""
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -66,10 +72,8 @@ struct ReceiveView: View {
                             expirySecs: UInt32(3600)
                         )
                     }
-                    .buttonStyle(BitcoinOutlined())
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding()
-                    
-                    
                     
                     if viewModel.invoice != "" {
                         
@@ -79,8 +83,7 @@ struct ReceiveView: View {
                                 
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 50.0, height: 50.0)
-//                                    .foregroundColor(.orange)
-                                    .foregroundColor(LightningNodeService.shared.networkColor)
+                                    .foregroundColor(viewModel.networkColor)
                                 
                                 Image(systemName: "bolt.fill")
                                     .font(.title)
@@ -113,18 +116,17 @@ struct ReceiveView: View {
                                         .font(.subheadline)
                                 }
                                 .bold()
-                                .foregroundColor(LightningNodeService.shared.networkColor)
+                                .foregroundColor(viewModel.networkColor)
 
                             }
                             
                         }
                         .padding()
                         
-                        
                         Button("Clear Invoice") {
                             viewModel.clearInvoice()
                         }
-                        .buttonStyle(BitcoinOutlined())
+                        .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                         .padding()
                         
                     }
@@ -132,6 +134,9 @@ struct ReceiveView: View {
                 }
                 .padding()
                 .navigationTitle("Receive")
+                .onAppear {
+                    viewModel.getColor()
+                }
                 
             }
             .ignoresSafeArea()

@@ -12,7 +12,8 @@ import WalletUI
 class PeerViewModel: ObservableObject {
     @Published var nodeId: PublicKey = ""
     @Published var address: SocketAddr = ""
-    
+    @Published var networkColor = Color.gray
+
     func connect(
         nodeId: PublicKey,
         address: SocketAddr//,
@@ -23,6 +24,11 @@ class PeerViewModel: ObservableObject {
             address: address,
             permanently: true//permanently
         )
+    }
+    
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
     }
     
 }
@@ -86,12 +92,15 @@ struct PeerView: View {
                 } label: {
                     Text("Connect Peer")
                 }
-                .buttonStyle(BitcoinOutlined())
+                .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 .padding()
                 
             }
             .padding()
             // navigationtitle?
+            .onAppear {
+                viewModel.getColor()
+            }
             
         }
         .ignoresSafeArea()

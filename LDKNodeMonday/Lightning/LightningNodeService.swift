@@ -52,18 +52,21 @@ class LightningNodeService {
         let defaultCltvExpiryDelta = UInt32(2048)
         
         switch network {
+            
         case .regtest:
             chosenNetwork = "regtest"
             esploraServerUrl = "http://127.0.0.1:3002" 
             listeningAddress = "127.0.0.1:2323"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
             self.networkColor = BitcoinNetworkColor.regtest.color
+            
         case .testnet:
             chosenNetwork = "testnet"
             esploraServerUrl = "http://blockstream.info/testnet/api/"
             listeningAddress = "0.0.0.0:9735"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
             self.networkColor = BitcoinNetworkColor.testnet.color
+            
         }
         
         let config = Config(

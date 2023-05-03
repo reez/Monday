@@ -11,6 +11,13 @@ import WalletUI
 
 class SendViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""
+    @Published var networkColor = Color.gray
+
+    func getColor() {
+        let color = LightningNodeService.shared.networkColor
+        self.networkColor = color
+    }
+    
 }
 
 struct SendView: View {
@@ -54,11 +61,14 @@ struct SendView: View {
                     ) {
                         Text("Send")
                     }
-                    .buttonStyle(BitcoinOutlined())
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     
                 }
                 .padding()
                 .navigationTitle("Send")
+                .onAppear {
+                    viewModel.getColor()
+                }
                 
             }
             .ignoresSafeArea()
