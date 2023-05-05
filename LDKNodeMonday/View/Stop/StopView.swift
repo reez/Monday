@@ -35,7 +35,7 @@ struct StopView: View {
                 
                 VStack {
                     
-                    Button("Stop") {
+                    Button("Stop Node") {
                         viewModel.stop()
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))

@@ -66,6 +66,29 @@ struct ChannelCloseView: View {
                         
                     }
                     
+                    HStack {
+                        
+                        Text("Inbound Capacity (mSat):")
+                        
+                        Text(viewModel.channel.inboundCapacityMsat.description)
+                            .truncationMode(.middle)
+                            .lineLimit(1)
+                            .foregroundColor(.secondary)
+                        
+                    }
+                    
+                    HStack {
+                        
+                        Text("Outbound Capacity (mSat):")
+                        
+                        Text(viewModel.channel.outboundCapacityMsat.description)
+                            .truncationMode(.middle)
+                            .lineLimit(1)
+                            .foregroundColor(.secondary)
+                        
+                    }
+                    
+                    
                 }
                 .font(.system(.caption, design: .monospaced))
                 .padding()
