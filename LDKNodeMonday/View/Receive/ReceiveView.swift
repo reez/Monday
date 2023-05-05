@@ -73,7 +73,6 @@ struct ReceiveView: View {
                         )
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                    .padding()
                     
                     if viewModel.invoice != "" {
                         

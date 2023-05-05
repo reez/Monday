@@ -72,6 +72,9 @@ struct ChannelCloseView: View {
                 
                 Button("Close Channel") {
                     viewModel.close()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
                 }
                 .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 

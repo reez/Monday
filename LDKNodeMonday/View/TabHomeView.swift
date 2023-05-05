@@ -19,6 +19,7 @@ class TabHomeViewModel: ObservableObject {
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         self.networkColor = color
+        print("got colors")
     }
     
 }
@@ -32,6 +33,22 @@ struct TabHomeView: View {
             Color(uiColor: UIColor.systemBackground)
             
             TabView {
+                
+//                OldAddressView(viewModel: .init())
+//                    .tabItem {
+//                        Label(
+//                            "Old Address",
+//                            systemImage: "bitcoinsign"
+//                        )
+//                    }
+//
+//                OldBalanceView(viewModel: .init())
+//                    .tabItem {
+//                        Label(
+//                            "Old Balance",
+//                            systemImage: "bitcoinsign"
+//                        )
+//                    }
                 
                 AddressView(viewModel: .init())
                     .tabItem {

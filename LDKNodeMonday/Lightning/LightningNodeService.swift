@@ -55,7 +55,7 @@ class LightningNodeService {
             
         case .regtest:
             chosenNetwork = "regtest"
-            esploraServerUrl = "http://127.0.0.1:3002" 
+            esploraServerUrl = "http://ldk-node.tnull.de:3002"//"http://127.0.0.1:3002"
             listeningAddress = "127.0.0.1:2323"
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
             self.networkColor = BitcoinNetworkColor.regtest.color
