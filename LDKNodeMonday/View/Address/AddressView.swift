@@ -53,7 +53,7 @@ class AddressViewModel: ObservableObject {
 }
 
 struct AddressView: View {
-    @ObservedObject var viewModel: AddressViewModel
+    @StateObject var viewModel: AddressViewModel //ObservedObject
     
     var body: some View {
         
