@@ -149,7 +149,7 @@ struct AddressView: View {
                 .tint(viewModel.networkColor)
                 .onAppear {
                     Task {
-                        viewModel.syncWallets()
+//                        viewModel.syncWallets()
                         viewModel.getTotalOnchainBalanceSats()
                         viewModel.getSpendableOnchainBalanceSats()
                         viewModel.getAddress()
