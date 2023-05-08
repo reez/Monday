@@ -14,7 +14,7 @@ class NodeIDViewModel: ObservableObject {
     @Published var networkColor = Color.gray
 
     func getNodeID() {
-        let nodeID = LightningNodeService.shared.getNodeId()
+        let nodeID = LightningNodeService.shared.nodeId()
         self.nodeID = nodeID
     }
     

@@ -101,17 +101,8 @@ class LightningNodeService {
         }
     }
     
-    func syncWallets() {
-        do {
-            try node.syncWallets()
-            print("LDKNodeMonday /// Wallet synced!")
-        } catch {
-            print("LDKNodeMonday /// error syncing wallets: \(error.localizedDescription)")
-        }
-    }
-    
     func nextEvent() {
-        let nextEvent = node.nextEvent()
+        let nextEvent = node.nextEvent() // TODO: return event
         print("LDKNodeMonday /// nextEvent: \n \(nextEvent)")
         
         switch nextEvent {
@@ -143,6 +134,7 @@ class LightningNodeService {
             
         case .channelPending(channelId: let channelId, userChannelId: let userChannelId, formerTemporaryChannelId: let formerTemporaryChannelId, counterpartyNodeId: let counterpartyNodeId, fundingTxo: let fundingTxo):
             let event = convertToLDKNodeMondayEvent(event: .channelPending(channelId: channelId, userChannelId: userChannelId, formerTemporaryChannelId: formerTemporaryChannelId, counterpartyNodeId: counterpartyNodeId, fundingTxo: fundingTxo))
+            self.ldkNodeMondayEvent = event
             
         }
         
@@ -153,13 +145,13 @@ class LightningNodeService {
         print("LDKNodeMonday /// eventHandled")
     }
     
-    func getNodeId() -> String {
+    func nodeId() -> String {
         let nodeID = node.nodeId()
         print("LDKNodeMonday /// My node ID: \(nodeID)")
         return nodeID
     }
     
-    func getAddress() -> String? {
+    func newFundingAddress() -> String? {
         do {
             let fundingAddress = try node.newFundingAddress()
             print("LDKNodeMonday /// Funding Address: \(fundingAddress)")
@@ -215,7 +207,7 @@ class LightningNodeService {
         }
     }
     
-    func openChannel(
+    func connectOpenChannel(
         nodeId: PublicKey,
         address: SocketAddr,
         channelAmountSats: UInt64,
@@ -232,7 +224,7 @@ class LightningNodeService {
             )
             print("LDKNodeMonday /// opened channel to \(nodeId):\(address) with amount \(channelAmountSats)")
         } catch {
-            print("LDKNodeMonday /// error getting openChannel: \(error.localizedDescription)")
+            print("LDKNodeMonday /// error getting connectOpenChannel: \(error.localizedDescription)")
         }
     }
     
@@ -287,6 +279,39 @@ class LightningNodeService {
 // Currently unused
 extension LightningNodeService {
     
+    func listeningAddress() -> SocketAddr? {
+        guard let address = node.listeningAddress() else { return nil }
+        print("LDKNodeMonday /// listeningAddress: \(address)")
+        return address
+    }
+    
+    func sendToOnchainAddress(address: Address, amountMsat: UInt64) {
+        do {
+            let txId = try node.sendToOnchainAddress(address: address, amountMsat: amountMsat)
+            print("LDKNodeMonday /// sendToOnchainAddress txId: \(txId)")
+        } catch {
+            print("LDKNodeMonday /// error on sendToOnchainAddress: \(error.localizedDescription)")
+        }
+    }
+    
+    func sendAllToOnchainAddress(address: Address) {
+        do {
+            let txId = try node.sendAllToOnchainAddress(address: address)
+            print("LDKNodeMonday /// sendAllToOnchainAddress txId: \(txId)")
+        } catch {
+            print("LDKNodeMonday /// error on sendAllToOnchainAddress: \(error.localizedDescription)")
+        }
+    }
+    
+    func syncWallets() {
+        do {
+            try node.syncWallets()
+            print("LDKNodeMonday /// Wallet synced!")
+        } catch {
+            print("LDKNodeMonday /// error syncing wallets: \(error.localizedDescription)")
+        }
+    }
+    
     func sendPaymentUsingAmount(invoice: Invoice, amountMsat: UInt64) {
         print("LDKNodeMonday /// sendPaymentUsingAmount")
         do {
@@ -322,8 +347,17 @@ extension LightningNodeService {
     
     func paymentInfo(paymentHash: PaymentHash) {
         print("LDKNodeMonday /// paymentInfo")
-        guard let paymentInfo = node.payment(paymentHash: paymentHash) else { return }//.paymentInfo(paymentHash: paymentHash) else { return }
+        guard let paymentInfo = node.payment(paymentHash: paymentHash) else { return }
         print("LDKNodeMonday /// paymentInfo: \(paymentInfo)")
+    }
+    
+    func removePayment(paymentHash: PaymentHash) {
+        do {
+            let payment = try node.removePayment(paymentHash: paymentHash)
+            print("LDKNodeMonday /// paymentInfo: \(payment)")
+        } catch {
+            print("LDKNodeMonday /// removePayment couldn't equate error to Node Error")
+        }
     }
     
 }

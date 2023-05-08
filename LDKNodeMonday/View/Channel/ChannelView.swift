@@ -16,7 +16,7 @@ class ChannelViewModel: ObservableObject {
     @Published var networkColor = Color.gray
 
     func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) {
-        LightningNodeService.shared.openChannel(
+        LightningNodeService.shared.connectOpenChannel(
             nodeId: nodeId,
             address: address,
             channelAmountSats: channelAmountSats,

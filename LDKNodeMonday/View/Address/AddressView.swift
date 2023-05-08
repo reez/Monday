@@ -38,7 +38,7 @@ class AddressViewModel: ObservableObject {
     }
     
     func getAddress() {
-        guard let address = LightningNodeService.shared.getAddress() else {
+        guard let address = LightningNodeService.shared.newFundingAddress() else {
             self.address = ""
             return
         }
