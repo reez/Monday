@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jurvis/ldk-node.git",
       "state" : {
-        "revision" : "835b09224c67fa6b32866c9277672eb489e8bbcf",
-        "version" : "0.0.2"
+        "revision" : "b7e5b3356e223f6a61eba2d123e2bea8faa7332e",
+        "version" : "0.0.4"
       }
     },
     {

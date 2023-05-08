@@ -141,6 +141,9 @@ class LightningNodeService {
             let event = convertToLDKNodeMondayEvent(event: .channelClosed(channelId: channelId, userChannelId: userChannelId))
             self.ldkNodeMondayEvent = event
             
+        case .channelPending(channelId: let channelId, userChannelId: let userChannelId, formerTemporaryChannelId: let formerTemporaryChannelId, counterpartyNodeId: let counterpartyNodeId, fundingTxo: let fundingTxo):
+            let event = convertToLDKNodeMondayEvent(event: .channelPending(channelId: channelId, userChannelId: userChannelId, formerTemporaryChannelId: formerTemporaryChannelId, counterpartyNodeId: counterpartyNodeId, fundingTxo: fundingTxo))
+            
         }
         
     }
@@ -216,6 +219,7 @@ class LightningNodeService {
         nodeId: PublicKey,
         address: SocketAddr,
         channelAmountSats: UInt64,
+        pushToCounterpartyMsat: UInt64?,
         announceChannel: Bool = true
     ) {
         do {
@@ -223,6 +227,7 @@ class LightningNodeService {
                 nodeId: nodeId,
                 address: address,
                 channelAmountSats: channelAmountSats,
+                pushToCounterpartyMsat: pushToCounterpartyMsat,
                 announceChannel: true
             )
             print("LDKNodeMonday /// opened channel to \(nodeId):\(address) with amount \(channelAmountSats)")
@@ -317,7 +322,7 @@ extension LightningNodeService {
     
     func paymentInfo(paymentHash: PaymentHash) {
         print("LDKNodeMonday /// paymentInfo")
-        guard let paymentInfo = node.paymentInfo(paymentHash: paymentHash) else { return }
+        guard let paymentInfo = node.payment(paymentHash: paymentHash) else { return }//.paymentInfo(paymentHash: paymentHash) else { return }
         print("LDKNodeMonday /// paymentInfo: \(paymentInfo)")
     }
     

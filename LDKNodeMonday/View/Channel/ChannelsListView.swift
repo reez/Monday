@@ -77,7 +77,7 @@ struct ChannelsListView: View {
                                                     .font(.caption)
                                                     .bold()
                                                 
-                                                Text(channel.counterparty)
+                                                Text(channel.counterpartyNodeId)
                                                     .font(.caption)
                                                     .truncationMode(.middle)
                                                     .lineLimit(1)

@@ -20,7 +20,7 @@ class ChannelCloseViewModel: ObservableObject {
     func close() {
         LightningNodeService.shared.closeChannel(
             channelId: self.channel.channelId,
-            counterpartyNodeId: self.channel.counterparty
+            counterpartyNodeId: self.channel.counterpartyNodeId
         )
     }
     
@@ -59,7 +59,7 @@ struct ChannelCloseView: View {
                         
                         Text("Counterparty Node ID:")
                         
-                        Text(viewModel.channel.counterparty.description)
+                        Text(viewModel.channel.counterpartyNodeId.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.secondary)

@@ -20,8 +20,8 @@ struct MondayNodeError {
         case .NotRunning(message: let message):
             print("LDKNodeMonday /// MondayNodeError: NotRunning \n \(message)")
             
-        case .FundingTxCreationFailed(message: let message):
-            print("LDKNodeMonday /// MondayNodeError: FundingTxCreationFailed \n \(message)")
+//        case .FundingTxCreationFailed(message: let message):
+//            print("LDKNodeMonday /// MondayNodeError: FundingTxCreationFailed \n \(message)")
             
         case .ConnectionFailed(message: let message):
             print("LDKNodeMonday /// MondayNodeError: ConnectionFailed \n \(message)")
@@ -86,6 +86,9 @@ struct MondayNodeError {
         case .PaymentFailed(message: let message):
             print("LDKNodeMonday /// MondayNodeError: PaymentFailed \n \(message)")
             
+        case .OnchainTxCreationFailed(message: let message):
+            print("LDKNodeMonday /// MondayNodeError: OnchainTxCreationFailed \n \(message)")
+
         }
         
     }

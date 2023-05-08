@@ -15,11 +15,12 @@ class ChannelViewModel: ObservableObject {
     @Published var channelAmountSats: String = ""
     @Published var networkColor = Color.gray
 
-    func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64) {
+    func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) {
         LightningNodeService.shared.openChannel(
             nodeId: nodeId,
             address: address,
-            channelAmountSats: channelAmountSats
+            channelAmountSats: channelAmountSats,
+            pushToCounterpartyMsat: pushToCounterpartyMsat
         )
     }
     
@@ -101,7 +102,8 @@ struct ChannelView: View {
                     viewModel.openChannel(
                         nodeId: viewModel.nodeId,
                         address: viewModel.address,
-                        channelAmountSats: channelAmountSats
+                        channelAmountSats: channelAmountSats,
+                        pushToCounterpartyMsat: nil // TODO: actually make this inputtable
                     )
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                         self.presentationMode.wrappedValue.dismiss()

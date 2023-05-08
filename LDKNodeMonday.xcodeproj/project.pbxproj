@@ -32,6 +32,7 @@
 		AE83142829AEDDAD00088A70 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142729AEDDAD00088A70 /* SendView.swift */; };
 		AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */; };
 		AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9422692A007D6C007E4F12 /* ChannelsListView.swift */; };
+		AE996E7A2A09471400D410E6 /* ChannelPendingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE996E792A09471400D410E6 /* ChannelPendingView.swift */; };
 		AEBAA4812A01A6BB0042EA82 /* LDKNodeMondayEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4802A01A6BB0042EA82 /* LDKNodeMondayEvent.swift */; };
 		AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4822A01A80A0042EA82 /* PeersListView.swift */; };
 		AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48C2A01A93B0042EA82 /* PeerView.swift */; };
@@ -69,6 +70,7 @@
 		AE8D877429B145F100F2B918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		AE9422692A007D6C007E4F12 /* ChannelsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListView.swift; sourceTree = "<group>"; };
+		AE996E792A09471400D410E6 /* ChannelPendingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelPendingView.swift; sourceTree = "<group>"; };
 		AEBAA4802A01A6BB0042EA82 /* LDKNodeMondayEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKNodeMondayEvent.swift; sourceTree = "<group>"; };
 		AEBAA4822A01A80A0042EA82 /* PeersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersListView.swift; sourceTree = "<group>"; };
 		AEBAA48C2A01A93B0042EA82 /* PeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerView.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 			children = (
 				AE6BB5722A0171F1009E16E3 /* EventsView.swift */,
 				AE6BB5742A017D77009E16E3 /* ChannelReadyView.swift */,
+				AE996E792A09471400D410E6 /* ChannelPendingView.swift */,
 				AE6BB57C2A017DFA009E16E3 /* ChannelClosedView.swift */,
 				AE6BB57A2A017DF2009E16E3 /* PaymentReceivedView.swift */,
 				AE6BB5782A017DEA009E16E3 /* PaymentFailedView.swift */,
@@ -358,6 +361,7 @@
 				AE80116929A59918009B9967 /* TabHomeView.swift in Sources */,
 				AE6BB5752A017D77009E16E3 /* ChannelReadyView.swift in Sources */,
 				AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */,
+				AE996E7A2A09471400D410E6 /* ChannelPendingView.swift in Sources */,
 				AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */,
 				AE6BB5792A017DEA009E16E3 /* PaymentFailedView.swift in Sources */,
 				AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */,
@@ -580,7 +584,7 @@
 			repositoryURL = "https://github.com/jurvis/ldk-node.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.0.2;
+				version = 0.0.4;
 			};
 		};
 		AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */ = {

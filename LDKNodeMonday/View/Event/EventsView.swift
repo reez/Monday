@@ -62,11 +62,15 @@ struct EventsView: View {
                     case .channelClosed(let channelClosed):
                         ChannelClosedView(channelClosed: channelClosed)
                         
+                    case .channelPending(channelPending: let channelPending):
+                        ChannelPendingView(channelPending: channelPending)//channelPending(channelPending: channelPending)
+                        
                     case .none:
                         Text("Tap Next Event Button")
                             .italic()
                         
                     }
+
                     
                     Button("Next Event") {
                         viewModel.getEvents()
