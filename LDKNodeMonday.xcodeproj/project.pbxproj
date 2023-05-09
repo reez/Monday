@@ -40,6 +40,8 @@
 		AEBAA4922A01C34A0042EA82 /* ChannelCloseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4912A01C34A0042EA82 /* ChannelCloseView.swift */; };
 		AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */; };
 		AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */; };
+		AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = AEE5B7642A09B1FC001E5E59 /* CodeScanner */; };
+		AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE5B7692A09C722001E5E59 /* Peer.swift */; };
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
 		AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */; };
 /* End PBXBuildFile section */
@@ -78,6 +80,7 @@
 		AEBAA4912A01C34A0042EA82 /* ChannelCloseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelCloseView.swift; sourceTree = "<group>"; };
 		AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectView.swift; sourceTree = "<group>"; };
 		AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
+		AEE5B7692A09C722001E5E59 /* Peer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
 		AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,6 +92,7 @@
 			files = (
 				AE48445329F1BDBD007E37C7 /* LightningDevKitNode in Frameworks */,
 				AE5C4FD829A5577F00BE3285 /* WalletUI in Frameworks */,
+				AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */,
+				AEE5B7692A09C722001E5E59 /* Peer.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 			packageProductDependencies = (
 				AE5C4FD729A5577F00BE3285 /* WalletUI */,
 				AE48445229F1BDBD007E37C7 /* LightningDevKitNode */,
+				AEE5B7642A09B1FC001E5E59 /* CodeScanner */,
 			);
 			productName = LDKNodeMonday;
 			productReference = AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */;
@@ -315,6 +321,7 @@
 			packageReferences = (
 				AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */,
 				AE48444F29F1BDA2007E37C7 /* XCRemoteSwiftPackageReference "ldk-node" */,
+				AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = AE17E8D729A402E30058C9C9 /* Products */;
 			projectDirPath = "";
@@ -371,6 +378,7 @@
 				AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */,
 				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
 				AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */,
+				AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */,
 				AEBAA48F2A01C03A0042EA82 /* StopView.swift in Sources */,
 				AE6BB5732A0171F1009E16E3 /* EventsView.swift in Sources */,
 			);
@@ -506,6 +514,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LDKNodeMonday/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Monday;
+				INFOPLIST_KEY_NSCameraUsageDescription = "“To scan QR codes.”";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -537,6 +546,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LDKNodeMonday/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Monday;
+				INFOPLIST_KEY_NSCameraUsageDescription = "“To scan QR codes.”";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -595,6 +605,14 @@
 				kind = branch;
 			};
 		};
+		AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -607,6 +625,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */;
 			productName = WalletUI;
+		};
+		AEE5B7642A09B1FC001E5E59 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

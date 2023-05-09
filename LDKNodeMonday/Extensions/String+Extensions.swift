@@ -40,4 +40,15 @@ extension String {
         }
     }
     
+    func parseConnectionInfo() -> Peer? {
+        if let atIndex = self.firstIndex(of: "@") {
+            let nodeID = String(self[..<atIndex])
+            let address = String(self[self.index(after: atIndex)...])
+            return Peer(nodeID: nodeID, address: address)
+        } else {
+            print("Invalid parseConnectionInfo")
+            return nil
+        }
+    }
+    
 }

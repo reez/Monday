@@ -8,6 +8,7 @@
 import SwiftUI
 import LightningDevKitNode
 import WalletUI
+import CodeScanner
 
 class SendViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""
@@ -22,7 +23,9 @@ class SendViewModel: ObservableObject {
 
 struct SendView: View {
     @ObservedObject var viewModel: SendViewModel
-    
+    @State private var isShowingScanner = false
+    let pasteboard = UIPasteboard.general
+
     var body: some View {
         
         NavigationView {
@@ -31,6 +34,41 @@ struct SendView: View {
                 Color(uiColor: UIColor.systemBackground)
                 
                 VStack {
+                    
+                    HStack {
+                        Spacer()
+                        Button {
+                            isShowingScanner = true
+                        } label: {
+                            Image(systemName: "qrcode")
+                            Text("Scan Lightning Invoice")
+                        }
+                        .foregroundColor(viewModel.networkColor)
+
+                        Spacer()
+                    }
+
+                    HStack {
+                        Spacer()
+                        Button {
+                            if pasteboard.hasStrings {
+                                if let string = pasteboard.string {
+                                    let lowercaseInvoice = string.lowercased()
+                                    viewModel.invoice = lowercaseInvoice
+                                } else {
+                                    print("error: if let string = pasteboard.string")
+                                }
+                            }
+                        } label: {
+                            HStack {
+                                Image(systemName: "doc.on.doc")
+                                Text("Paste Lightning Invoice")
+                            }
+                            .foregroundColor(viewModel.networkColor)
+                        }
+                        Spacer()
+                    }
+                    .padding()
                     
                     VStack(alignment: .leading) {
                         
@@ -66,6 +104,9 @@ struct SendView: View {
                 }
                 .padding()
                 .navigationTitle("Send")
+                .sheet(isPresented: $isShowingScanner) {
+                    CodeScannerView(codeTypes: [.qr], simulatedData: "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6", completion: handleScan)
+                }
                 .onAppear {
                     viewModel.getColor()
                 }
@@ -76,6 +117,23 @@ struct SendView: View {
         }
         
     }
+}
+
+extension SendView {
+    
+    func handleScan(result: Result<ScanResult, ScanError>) {
+       isShowingScanner = false
+        switch result {
+        case .success(let result):
+            print("Scanning succeeded: \(result)")
+            print("invoice: \n \(result.string)")
+            let invoice = result.string.lowercased()
+            viewModel.invoice = invoice
+        case .failure(let error):
+            print("Scanning failed: \(error.localizedDescription)")
+        }
+    }
+    
 }
 
 struct SendView_Previews: PreviewProvider {
