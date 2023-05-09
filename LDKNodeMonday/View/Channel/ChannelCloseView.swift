@@ -68,10 +68,19 @@ struct ChannelCloseView: View {
                     
                     HStack {
                         
-                        Text("Inbound Capacity (mSat):")
+                        Text("Channel Value Satoshis:")
                         
-                        Text(viewModel.channel.inboundCapacityMsat.description)
-                            .truncationMode(.middle)
+                        Text(viewModel.channel.channelValueSatoshis.description)
+                            .lineLimit(1)
+                            .foregroundColor(.secondary)
+                        
+                    }
+                    
+                    HStack {
+                        
+                        Text("Balance mSat:")
+                        
+                        Text(viewModel.channel.balanceMsat.description)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                         
@@ -82,12 +91,52 @@ struct ChannelCloseView: View {
                         Text("Outbound Capacity (mSat):")
                         
                         Text(viewModel.channel.outboundCapacityMsat.description)
+                            .foregroundColor(.secondary)
+                        
+                    }
+                    
+                    HStack {
+                        
+                        Text("Inbound Capacity (mSat):")
+                        
+                        Text(viewModel.channel.inboundCapacityMsat.description)
+                            .foregroundColor(.secondary)
+                        
+                    }
+                    
+                    
+                    if let confirm = viewModel.channel.confirmations {
+                        HStack {
+                            
+                            Text("Confirmations:")
+                            
+                            Text(confirm.description)
+                                .foregroundColor(.secondary)
+                            
+                        }
+                    }
+                    
+                    HStack {
+                        
+                        Text("Is Channel Ready:")
+                        
+                        Text(viewModel.channel.isChannelReady.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                         
                     }
                     
+                    HStack {
+                        
+                        Text("Is Usable:")
+                        
+                        Text(viewModel.channel.isUsable.description)
+                            .truncationMode(.middle)
+                            .lineLimit(1)
+                            .foregroundColor(.secondary)
+                        
+                    }
                     
                 }
                 .font(.system(.caption, design: .monospaced))
@@ -103,7 +152,6 @@ struct ChannelCloseView: View {
                 
             }
             .padding()
-            // navigationtitle?
             .onAppear {
                 viewModel.getColor()
             }
@@ -117,6 +165,6 @@ struct ChannelCloseView: View {
 // channelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8", counterpartyNodeId: "0204ad94e0ac2e1bba3f03edfbc95aa5a7d3114a12a22610a7adba123f1f01d437")
 //struct ChannelCloseView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        ChannelCloseView(viewModel: .init(channel: .ini))
+//        ChannelCloseView(viewModel: .init(channel: .init(channelId: <#T##ChannelId#>, counterpartyNodeId: <#T##PublicKey#>, fundingTxo: <#T##OutPoint?#>, shortChannelId: <#T##UInt64?#>, outboundScidAlias: <#T##UInt64?#>, inboundScidAlias: <#T##UInt64?#>, channelValueSatoshis: <#T##UInt64#>, unspendablePunishmentReserve: <#T##UInt64?#>, userChannelId: <#T##UserChannelId#>, balanceMsat: <#T##UInt64#>, outboundCapacityMsat: <#T##UInt64#>, inboundCapacityMsat: <#T##UInt64#>, confirmationsRequired: <#T##UInt32?#>, confirmations: <#T##UInt32?#>, isOutbound: <#T##Bool#>, isChannelReady: <#T##Bool#>, isUsable: <#T##Bool#>, isPublic: <#T##Bool#>, cltvExpiryDelta: <#T##UInt16?#>)))
 //    }
 //}
