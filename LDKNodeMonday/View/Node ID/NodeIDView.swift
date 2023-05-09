@@ -12,7 +12,7 @@ import WalletUI
 class NodeIDViewModel: ObservableObject {
     @Published var nodeID: String = ""
     @Published var networkColor = Color.gray
-
+    
     func getNodeID() {
         let nodeID = LightningNodeService.shared.nodeId()
         self.nodeID = nodeID
@@ -65,13 +65,11 @@ struct NodeIDView: View {
                             }
                             .bold()
                             .foregroundColor(viewModel.networkColor)
-
+                            
                         }
                         
                     }
                     .padding(.horizontal)
-                    
-                    
                     
                     Button("Stop Node") {
                         viewModel.stop()

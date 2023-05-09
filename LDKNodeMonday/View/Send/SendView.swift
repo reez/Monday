@@ -13,7 +13,7 @@ import CodeScanner
 class SendViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""
     @Published var networkColor = Color.gray
-
+    
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         self.networkColor = color
@@ -25,7 +25,7 @@ struct SendView: View {
     @ObservedObject var viewModel: SendViewModel
     @State private var isShowingScanner = false
     let pasteboard = UIPasteboard.general
-
+    
     var body: some View {
         
         NavigationView {
@@ -44,10 +44,10 @@ struct SendView: View {
                             Text("Scan Lightning Invoice")
                         }
                         .foregroundColor(viewModel.networkColor)
-
+                        
                         Spacer()
                     }
-
+                    
                     HStack {
                         Spacer()
                         Button {
@@ -86,7 +86,7 @@ struct SendView: View {
                                     RoundedRectangle(cornerRadius: 5)
                                         .stroke(lineWidth: 1.0)
                                         .foregroundColor(.secondary)
-                            )
+                                )
                             
                             if !viewModel.invoice.isEmpty {
                                 HStack {
@@ -139,7 +139,7 @@ struct SendView: View {
 extension SendView {
     
     func handleScan(result: Result<ScanResult, ScanError>) {
-       isShowingScanner = false
+        isShowingScanner = false
         switch result {
         case .success(let result):
             print("Scanning succeeded: \(result)")

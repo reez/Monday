@@ -11,7 +11,7 @@ import LightningDevKitNode
 class SendConfirmationViewModel: ObservableObject {
     @Published var invoice: String = ""
     @Published var networkColor = Color.gray
-
+    
     init(invoice: String) {
         self.invoice = invoice
     }
@@ -43,7 +43,6 @@ struct SendConfirmationView: View {
                 VStack(spacing: 10) {
                     
                     Image(systemName: "bitcoinsign.circle.fill")
-//                        .foregroundColor(.orange)
                         .font(.system(size: 100))
                         .foregroundColor(viewModel.networkColor)
                     
@@ -78,7 +77,6 @@ struct SendConfirmationView: View {
                 
             }
             .padding()
-            // navigationtitle?
             .onAppear {
                 viewModel.sendPayment(invoice: viewModel.invoice)
                 viewModel.getColor()

@@ -127,7 +127,6 @@ struct ChannelView: View {
                     
                     ZStack {
                         
-                        
                         TextField("172.18.0.2:9735", text: $viewModel.address)
                             .frame(height: 48)
                             .truncationMode(.middle)
@@ -163,7 +162,6 @@ struct ChannelView: View {
                         .bold()
                     
                     ZStack {
-                        
                         
                         TextField("125000", text: $viewModel.channelAmountSats)
                             .frame(height: 48)

@@ -12,7 +12,7 @@ import WalletUI
 class DisconnectViewModel: ObservableObject {
     @Published var nodeId: PublicKey
     @Published var networkColor = Color.gray
-
+    
     init(nodeId: PublicKey) {
         self.nodeId = nodeId
     }
@@ -61,7 +61,6 @@ struct DisconnectView: View {
                 
             }
             .padding()
-            // navigation title?
             .onAppear {
                 viewModel.getColor()
             }

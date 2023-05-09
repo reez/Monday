@@ -100,7 +100,7 @@ struct AddressView: View {
                     HStack(alignment: .center) {
                         
                         ZStack {
-
+                            
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 50.0, height: 50.0)
                                 .foregroundColor(viewModel.networkColor)
@@ -136,7 +136,7 @@ struct AddressView: View {
                                     .font(.subheadline)
                             }
                             .bold()
-
+                            
                         }
                         
                     }
@@ -149,7 +149,6 @@ struct AddressView: View {
                 .tint(viewModel.networkColor)
                 .onAppear {
                     Task {
-//                        viewModel.syncWallets()
                         viewModel.getTotalOnchainBalanceSats()
                         viewModel.getSpendableOnchainBalanceSats()
                         viewModel.getAddress()

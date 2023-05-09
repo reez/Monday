@@ -11,7 +11,7 @@ import WalletUI
 
 class TabHomeViewModel: ObservableObject {
     @Published var networkColor = Color.gray
-
+    
     func start() async throws {
         try await LightningNodeService.shared.start()
     }
@@ -33,22 +33,6 @@ struct TabHomeView: View {
             Color(uiColor: UIColor.systemBackground)
             
             TabView {
-                
-//                OldAddressView(viewModel: .init())
-//                    .tabItem {
-//                        Label(
-//                            "Old Address",
-//                            systemImage: "bitcoinsign"
-//                        )
-//                    }
-//
-//                OldBalanceView(viewModel: .init())
-//                    .tabItem {
-//                        Label(
-//                            "Old Balance",
-//                            systemImage: "bitcoinsign"
-//                        )
-//                    }
                 
                 AddressView(viewModel: .init())
                     .tabItem {
@@ -82,22 +66,6 @@ struct TabHomeView: View {
                         )
                     }
                 
-//                EventsView(viewModel: .init())
-//                    .tabItem {
-//                        Label(
-//                            "Events",
-//                            systemImage: "infinity"
-//                        )
-//                    }
-                
-//                PeersListView(viewModel: .init())
-//                    .tabItem {
-//                        Label(
-//                            "Peers",
-//                            systemImage: "person.line.dotted.person"
-//                        )
-//                    }
-                
                 NodeIDView(viewModel: .init())
                     .tabItem {
                         Label(
@@ -105,14 +73,6 @@ struct TabHomeView: View {
                             systemImage: "person"
                         )
                     }
-                
-//                StopView(viewModel: .init())
-//                    .tabItem {
-//                        Label(
-//                            "Stop",
-//                            systemImage: "xmark"
-//                        )
-//                    }
                 
             }
             

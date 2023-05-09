@@ -12,7 +12,7 @@ import WalletUI
 class ChannelCloseViewModel: ObservableObject {
     @Published var channel: ChannelDetails
     @Published var networkColor = Color.gray
-
+    
     init(channel: ChannelDetails) {
         self.channel = channel
     }
@@ -104,8 +104,8 @@ struct ChannelCloseView: View {
                         
                     }
                     
-                    
                     if let confirm = viewModel.channel.confirmations {
+                        
                         HStack {
                             
                             Text("Confirmations:")
@@ -114,6 +114,7 @@ struct ChannelCloseView: View {
                                 .foregroundColor(.secondary)
                             
                         }
+                        
                     }
                     
                     HStack {
@@ -162,9 +163,63 @@ struct ChannelCloseView: View {
     }
 }
 
-// channelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8", counterpartyNodeId: "0204ad94e0ac2e1bba3f03edfbc95aa5a7d3114a12a22610a7adba123f1f01d437")
-//struct ChannelCloseView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ChannelCloseView(viewModel: .init(channel: .init(channelId: <#T##ChannelId#>, counterpartyNodeId: <#T##PublicKey#>, fundingTxo: <#T##OutPoint?#>, shortChannelId: <#T##UInt64?#>, outboundScidAlias: <#T##UInt64?#>, inboundScidAlias: <#T##UInt64?#>, channelValueSatoshis: <#T##UInt64#>, unspendablePunishmentReserve: <#T##UInt64?#>, userChannelId: <#T##UserChannelId#>, balanceMsat: <#T##UInt64#>, outboundCapacityMsat: <#T##UInt64#>, inboundCapacityMsat: <#T##UInt64#>, confirmationsRequired: <#T##UInt32?#>, confirmations: <#T##UInt32?#>, isOutbound: <#T##Bool#>, isChannelReady: <#T##Bool#>, isUsable: <#T##Bool#>, isPublic: <#T##Bool#>, cltvExpiryDelta: <#T##UInt16?#>)))
-//    }
-//}
+struct ChannelCloseView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        
+        ChannelCloseView(
+            viewModel: .init(
+                channel: .init(
+                    channelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8",
+                    counterpartyNodeId: "0204ad94e0ac2e1bba3f03edfbc95aa5a7d3114a12a22610a7adba123f1f01d437",
+                    fundingTxo: nil,
+                    shortChannelId: nil,
+                    outboundScidAlias: nil,
+                    inboundScidAlias: nil,
+                    channelValueSatoshis: UInt64(1),
+                    unspendablePunishmentReserve: nil,
+                    userChannelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8",
+                    balanceMsat: UInt64(2),
+                    outboundCapacityMsat: UInt64(3),
+                    inboundCapacityMsat: UInt64(4),
+                    confirmationsRequired: nil,
+                    confirmations: nil,
+                    isOutbound: true,
+                    isChannelReady: true,
+                    isUsable: false,
+                    isPublic: true,
+                    cltvExpiryDelta: nil
+                )
+            )
+        )
+        
+        ChannelCloseView(
+            viewModel: .init(
+                channel: .init(
+                    channelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8",
+                    counterpartyNodeId: "0204ad94e0ac2e1bba3f03edfbc95aa5a7d3114a12a22610a7adba123f1f01d437",
+                    fundingTxo: nil,
+                    shortChannelId: nil,
+                    outboundScidAlias: nil,
+                    inboundScidAlias: nil,
+                    channelValueSatoshis: UInt64(1),
+                    unspendablePunishmentReserve: nil,
+                    userChannelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8",
+                    balanceMsat: UInt64(2),
+                    outboundCapacityMsat: UInt64(3),
+                    inboundCapacityMsat: UInt64(4),
+                    confirmationsRequired: nil,
+                    confirmations: nil,
+                    isOutbound: true,
+                    isChannelReady: true,
+                    isUsable: false,
+                    isPublic: true,
+                    cltvExpiryDelta: nil
+                )
+            )
+        )
+        .environment(\.colorScheme, .dark)
+        
+    }
+    
+}

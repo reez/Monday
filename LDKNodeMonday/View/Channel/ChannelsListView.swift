@@ -12,7 +12,7 @@ import WalletUI
 class ChannelsListViewModel: ObservableObject {
     @Published var channels: [ChannelDetails] = []
     @Published var networkColor = Color.gray
-
+    
     func listChannels() {
         self.channels = LightningNodeService.shared.listChannels()
     }
@@ -34,7 +34,7 @@ struct ChannelsListView: View {
                 Color(uiColor: UIColor.systemBackground)
                 
                 VStack {
-                                        
+                    
                     NavigationLink(destination: ChannelView(viewModel: .init())) {
                         Text("Add Channel")
                     }
@@ -45,7 +45,7 @@ struct ChannelsListView: View {
                         
                         Text("No Channels")
                             .font(.system(.caption, design: .monospaced))
-
+                        
                     } else {
                         
                         List {
@@ -64,9 +64,8 @@ struct ChannelsListView: View {
                                                 
                                                 Circle()
                                                     .frame(width: 50.0, height: 50.0)
-//                                                    .foregroundColor(.orange)
                                                     .foregroundColor(viewModel.networkColor)
-
+                                                
                                                 Image(systemName: "person.line.dotted.person")
                                                     .font(.subheadline)
                                                     .foregroundColor(Color(uiColor: .systemBackground))
@@ -112,7 +111,6 @@ struct ChannelsListView: View {
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding()
                     .padding(.top, 50.0)
- 
                     
                 }
                 .padding()

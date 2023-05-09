@@ -14,7 +14,7 @@ class PeerViewModel: ObservableObject {
     @Published var nodeId: PublicKey = ""
     @Published var address: SocketAddr = ""
     @Published var networkColor = Color.gray
-
+    
     func connect(
         nodeId: PublicKey,
         address: SocketAddr//,
@@ -39,7 +39,7 @@ struct PeerView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
     let pasteboard = UIPasteboard.general
-
+    
     var body: some View {
         
         ZStack {
@@ -50,7 +50,9 @@ struct PeerView: View {
                 VStack(alignment: .leading) {
                     
                     HStack {
+                        
                         Spacer()
+                        
                         Button {
                             isShowingScanner = true
                         } label: {
@@ -58,12 +60,14 @@ struct PeerView: View {
                             Text("Scan Node Address")
                         }
                         .foregroundColor(viewModel.networkColor)
-
+                        
                         Spacer()
                     }
                     
                     HStack {
+                        
                         Spacer()
+                        
                         Button {
                             if pasteboard.hasStrings {
                                 if let string = pasteboard.string {
@@ -84,13 +88,14 @@ struct PeerView: View {
                             }
                             .foregroundColor(viewModel.networkColor)
                         }
+                        
                         Spacer()
+                        
                     }
                     .padding()
                     
                     Text("Node ID")
                         .bold()
-                    
                     
                     ZStack {
                         
@@ -103,7 +108,7 @@ struct PeerView: View {
                                 RoundedRectangle(cornerRadius: 5)
                                     .stroke(lineWidth: 1.0)
                                     .foregroundColor(.secondary)
-                        )
+                            )
                         
                         if !viewModel.nodeId.isEmpty {
                             HStack {
@@ -139,7 +144,7 @@ struct PeerView: View {
                                 RoundedRectangle(cornerRadius: 5)
                                     .stroke(lineWidth: 1.0)
                                     .foregroundColor(.secondary)
-                        )
+                            )
                         
                         if !viewModel.address.isEmpty {
                             HStack {
@@ -192,7 +197,7 @@ struct PeerView: View {
 extension PeerView {
     
     func handleScan(result: Result<ScanResult, ScanError>) {
-       isShowingScanner = false
+        isShowingScanner = false
         switch result {
         case .success(let result):
             print("Scanning succeeded: \(result)")

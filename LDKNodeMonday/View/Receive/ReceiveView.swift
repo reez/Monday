@@ -14,7 +14,7 @@ class ReceiveViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""
     @Published var amountMsat: String = "" // TODO: make minimum 1/10/1000?
     @Published var networkColor = Color.gray
-
+    
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) {
         guard let invoice = LightningNodeService.shared.receivePayment(
             amountMsat: amountMsat,
@@ -62,7 +62,7 @@ struct ReceiveView: View {
                                     RoundedRectangle(cornerRadius: 5)
                                         .stroke(lineWidth: 1.0)
                                         .foregroundColor(.secondary)
-                            )
+                                )
                             
                             if !viewModel.amountMsat.isEmpty {
                                 HStack {
@@ -133,7 +133,7 @@ struct ReceiveView: View {
                                 }
                                 .bold()
                                 .foregroundColor(viewModel.networkColor)
-
+                                
                             }
                             
                         }

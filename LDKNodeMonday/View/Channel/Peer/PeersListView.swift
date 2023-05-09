@@ -12,7 +12,7 @@ import WalletUI
 class PeersListViewModel: ObservableObject {
     @Published var peers: [PeerDetails] = []
     @Published var networkColor = Color.gray
-
+    
     func listPeers() {
         self.peers = LightningNodeService.shared.listPeers()
     }
@@ -28,109 +28,103 @@ struct PeersListView: View {
     
     var body: some View {
         
-//        NavigationView {
+        ZStack {
+            Color(uiColor: UIColor.systemBackground)
             
-            ZStack {
-                Color(uiColor: UIColor.systemBackground)
+            VStack {
                 
-                VStack {
+                NavigationLink(destination: PeerView(viewModel: .init())) {
+                    Text("Connect Peer")
+                }
+                .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                .padding()
+                
+                if viewModel.peers.isEmpty {
                     
-                    NavigationLink(destination: PeerView(viewModel: .init())) {
-                        Text("Connect Peer")
-                    }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                    .padding()
+                    Text("No Peers")
+                        .font(.system(.caption, design: .monospaced))
                     
-                    if viewModel.peers.isEmpty {
+                } else {
+                    
+                    List {
                         
-                        Text("No Peers")
-                            .font(.system(.caption, design: .monospaced))
-
-                    } else {
-                        
-                        List {
+                        ForEach(viewModel.peers, id: \.self) { peer in
                             
-                            ForEach(viewModel.peers, id: \.self) { peer in
+                            NavigationLink {
+                                DisconnectView(viewModel: .init(nodeId: peer.nodeId))
+                            } label: {
                                 
-                                NavigationLink {
-                                    DisconnectView(viewModel: .init(nodeId: peer.nodeId))
-                                } label: {
+                                VStack {
                                     
-                                    VStack {
+                                    HStack(alignment: .center) {
                                         
-                                        HStack(alignment: .center) {
+                                        ZStack {
                                             
-                                            ZStack {
-                                                
-                                                Circle()
-                                                    .frame(width: 50.0, height: 50.0)
-//                                                    .foregroundColor(.orange)
-                                                    .foregroundColor(viewModel.networkColor)
-
-                                                Image(systemName: "person.line.dotted.person")
-                                                    .font(.subheadline)
-                                                    .foregroundColor(Color(uiColor: .systemBackground))
-                                                    .bold()
-                                                
-                                            }
+                                            Circle()
+                                                .frame(width: 50.0, height: 50.0)
+                                                .foregroundColor(viewModel.networkColor)
                                             
-                                            VStack(alignment: .leading, spacing: 5.0) {
-                                                
-                                                HStack {
-                                                    
-                                                    peer.isConnected ?
-                                                    HStack(spacing: 2) {
-                                                        Image(systemName: "checkmark")
-                                                        Text("Connected")
-                                                    }
-                                                    .font(.caption)
-                                                    .bold()
-                                                    :
-                                                    HStack {
-                                                        Image(systemName: "xmark")
-                                                        Text("Not Connected")
-                                                    }
-                                                    .font(.caption)
-                                                    .bold()
-                                                    
-                                                }
-                                                
-                                                Text("\(peer.nodeId) ")
-                                                    .font(.caption)
-                                                    .truncationMode(.middle)
-                                                    .lineLimit(1)
-                                                    .foregroundColor(.secondary)
-                                            }
-                                            
-                                            Spacer()
+                                            Image(systemName: "person.line.dotted.person")
+                                                .font(.subheadline)
+                                                .foregroundColor(Color(uiColor: .systemBackground))
+                                                .bold()
                                             
                                         }
-                                        .padding()
+                                        
+                                        VStack(alignment: .leading, spacing: 5.0) {
+                                            
+                                            HStack {
+                                                
+                                                peer.isConnected ?
+                                                HStack(spacing: 2) {
+                                                    Image(systemName: "checkmark")
+                                                    Text("Connected")
+                                                }
+                                                .font(.caption)
+                                                .bold()
+                                                :
+                                                HStack {
+                                                    Image(systemName: "xmark")
+                                                    Text("Not Connected")
+                                                }
+                                                .font(.caption)
+                                                .bold()
+                                                
+                                            }
+                                            
+                                            Text("\(peer.nodeId) ")
+                                                .font(.caption)
+                                                .truncationMode(.middle)
+                                                .lineLimit(1)
+                                                .foregroundColor(.secondary)
+                                            
+                                        }
+                                        
+                                        Spacer()
                                         
                                     }
+                                    .padding()
                                     
                                 }
                                 
                             }
                             
                         }
-                        .listStyle(.plain)
                         
                     }
+                    .listStyle(.plain)
                     
-                }
-                .padding()
-                .padding(.top)
-//                .navigationTitle("\(viewModel.peers.count) Peers")
-                .onAppear {
-                    viewModel.listPeers()
-                    viewModel.getColor()
                 }
                 
             }
-//            .ignoresSafeArea()
+            .padding()
+            .padding(.top)
+            .onAppear {
+                viewModel.listPeers()
+                viewModel.getColor()
+            }
             
-//        }
+        }
         
     }
     
