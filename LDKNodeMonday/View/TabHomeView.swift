@@ -106,13 +106,13 @@ struct TabHomeView: View {
                         )
                     }
                 
-                StopView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Stop",
-                            systemImage: "xmark"
-                        )
-                    }
+//                StopView(viewModel: .init())
+//                    .tabItem {
+//                        Label(
+//                            "Stop",
+//                            systemImage: "xmark"
+//                        )
+//                    }
                 
             }
             

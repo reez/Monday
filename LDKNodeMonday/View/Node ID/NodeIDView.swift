@@ -18,6 +18,10 @@ class NodeIDViewModel: ObservableObject {
         self.nodeID = nodeID
     }
     
+    func stop() {
+        LightningNodeService.shared.stop()
+    }
+    
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         self.networkColor = color
@@ -66,6 +70,14 @@ struct NodeIDView: View {
                         
                     }
                     .padding(.horizontal)
+                    
+                    
+                    
+                    Button("Stop Node") {
+                        viewModel.stop()
+                    }
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                    .padding(.top, 100.0)
                     
                 }
                 .padding()
