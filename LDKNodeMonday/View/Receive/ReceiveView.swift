@@ -52,15 +52,32 @@ struct ReceiveView: View {
                         Text("Amount (mSat)")
                             .bold()
                         
-                        TextField("125000", text: $viewModel.amountMsat)
-                            .frame(height: 48)
-                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                            .cornerRadius(5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(lineWidth: 1.0)
-                                    .foregroundColor(.secondary)
+                        ZStack {
+                            
+                            TextField("125000", text: $viewModel.amountMsat)
+                                .frame(height: 48)
+                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                                .cornerRadius(5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(lineWidth: 1.0)
+                                        .foregroundColor(.secondary)
                             )
+                            
+                            if !viewModel.amountMsat.isEmpty {
+                                HStack {
+                                    Spacer()
+                                    Button(action: {
+                                        self.viewModel.amountMsat = ""
+                                    }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding(.trailing, 8)
+                                }
+                            }
+                            
+                        }
                         
                     }
                     .padding()
