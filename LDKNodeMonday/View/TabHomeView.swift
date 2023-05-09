@@ -74,6 +74,14 @@ struct TabHomeView: View {
                         )
                     }
                 
+                LogView()
+                    .tabItem {
+                        Label(
+                            "Logs",
+                            systemImage: "doc.plaintext"
+                        )
+                    }
+                
             }
             
         }
