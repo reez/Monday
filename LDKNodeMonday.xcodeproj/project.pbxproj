@@ -178,7 +178,6 @@
 				AE80116829A59918009B9967 /* TabHomeView.swift */,
 				AE6BB57E2A0181A6009E16E3 /* Event */,
 				AEBAA4872A01A9060042EA82 /* Address */,
-				AEBAA48B2A01A9300042EA82 /* Peer */,
 				AEBAA4862A01A8FB0042EA82 /* Channel */,
 				AEBAA4882A01A90D0042EA82 /* Send */,
 				AEBAA4892A01A9130042EA82 /* Receive */,
@@ -203,6 +202,7 @@
 				AE9422692A007D6C007E4F12 /* ChannelsListView.swift */,
 				AE80116C29A59AF4009B9967 /* ChannelView.swift */,
 				AEBAA4912A01C34A0042EA82 /* ChannelCloseView.swift */,
+				AEBAA48B2A01A9300042EA82 /* Peer */,
 			);
 			path = Channel;
 			sourceTree = "<group>";

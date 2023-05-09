@@ -91,16 +91,34 @@ struct PeerView: View {
                     Text("Node ID")
                         .bold()
                     
-                    TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
-                        .frame(height: 48)
-                        .truncationMode(.middle)
-                        .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                        .cornerRadius(5)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(lineWidth: 1.0)
-                                .foregroundColor(.secondary)
+                    
+                    ZStack {
+                        
+                        TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
+                            .frame(height: 48)
+                            .truncationMode(.middle)
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundColor(.secondary)
                         )
+                        
+                        if !viewModel.nodeId.isEmpty {
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    self.viewModel.nodeId = ""
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.trailing, 8)
+                            }
+                        }
+                        
+                    }
                     
                 }
                 .padding()
@@ -110,16 +128,33 @@ struct PeerView: View {
                     Text("Address")
                         .bold()
                     
-                    TextField("172.18.0.2:9735", text: $viewModel.address)
-                        .frame(height: 48)
-                        .truncationMode(.middle)
-                        .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                        .cornerRadius(5)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(lineWidth: 1.0)
-                                .foregroundColor(.secondary)
+                    ZStack {
+                        
+                        TextField("172.18.0.2:9735", text: $viewModel.address)
+                            .frame(height: 48)
+                            .truncationMode(.middle)
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundColor(.secondary)
                         )
+                        
+                        if !viewModel.address.isEmpty {
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    self.viewModel.address = ""
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.trailing, 8)
+                            }
+                        }
+                        
+                    }
                     
                 }
                 .padding()
