@@ -82,13 +82,13 @@ struct TabHomeView: View {
                         )
                     }
                 
-                EventsView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Events",
-                            systemImage: "infinity"
-                        )
-                    }
+//                EventsView(viewModel: .init())
+//                    .tabItem {
+//                        Label(
+//                            "Events",
+//                            systemImage: "infinity"
+//                        )
+//                    }
                 
                 PeersListView(viewModel: .init())
                     .tabItem {
