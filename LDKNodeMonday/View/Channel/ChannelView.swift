@@ -15,7 +15,7 @@ class ChannelViewModel: ObservableObject {
     @Published var address: SocketAddr = ""
     @Published var channelAmountSats: String = ""
     @Published var networkColor = Color.gray
-
+    
     func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) {
         LightningNodeService.shared.connectOpenChannel(
             nodeId: nodeId,
@@ -37,7 +37,7 @@ struct ChannelView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
     let pasteboard = UIPasteboard.general
-
+    
     var body: some View {
         
         ZStack {
@@ -56,7 +56,7 @@ struct ChannelView: View {
                             Text("Scan Node Address")
                         }
                         .foregroundColor(viewModel.networkColor)
-
+                        
                         Spacer()
                     }
                     
@@ -89,16 +89,33 @@ struct ChannelView: View {
                     Text("Node ID")
                         .bold()
                     
-                    TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
-                        .frame(height: 48)
-                        .truncationMode(.middle)
-                        .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                        .cornerRadius(5)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(lineWidth: 1.0)
-                                .foregroundColor(.secondary)
-                        )
+                    ZStack {
+                        
+                        TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
+                            .frame(height: 48)
+                            .truncationMode(.middle)
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundColor(.secondary)
+                            )
+                        
+                        if !viewModel.nodeId.isEmpty {
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    self.viewModel.nodeId = ""
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.trailing, 8)
+                            }
+                        }
+                        
+                    }
                     
                 }
                 .padding()
@@ -108,16 +125,34 @@ struct ChannelView: View {
                     Text("Address")
                         .bold()
                     
-                    TextField("172.18.0.2:9735", text: $viewModel.address)
-                        .frame(height: 48)
-                        .truncationMode(.middle)
-                        .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                        .cornerRadius(5)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(lineWidth: 1.0)
-                                .foregroundColor(.secondary)
-                        )
+                    ZStack {
+                        
+                        
+                        TextField("172.18.0.2:9735", text: $viewModel.address)
+                            .frame(height: 48)
+                            .truncationMode(.middle)
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundColor(.secondary)
+                            )
+                        
+                        if !viewModel.address.isEmpty {
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    self.viewModel.address = ""
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.trailing, 8)
+                            }
+                        }
+                        
+                    }
                     
                 }
                 .padding()
@@ -127,15 +162,33 @@ struct ChannelView: View {
                     Text("Sats")
                         .bold()
                     
-                    TextField("125000", text: $viewModel.channelAmountSats)
-                        .frame(height: 48)
-                        .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                        .cornerRadius(5)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(lineWidth: 1.0)
-                                .foregroundColor(.secondary)
-                        )
+                    ZStack {
+                        
+                        
+                        TextField("125000", text: $viewModel.channelAmountSats)
+                            .frame(height: 48)
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundColor(.secondary)
+                            )
+                        
+                        if !viewModel.channelAmountSats.isEmpty {
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    self.viewModel.channelAmountSats = ""
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.trailing, 8)
+                            }
+                        }
+                        
+                    }
                     
                 }
                 .padding()
@@ -178,7 +231,7 @@ struct ChannelView: View {
 extension ChannelView {
     
     func handleScan(result: Result<ScanResult, ScanError>) {
-       isShowingScanner = false
+        isShowingScanner = false
         switch result {
         case .success(let result):
             print("Scanning succeeded: \(result)")
