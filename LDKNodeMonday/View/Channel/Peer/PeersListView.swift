@@ -42,7 +42,10 @@ struct PeersListView: View {
                     .padding()
                     
                     if viewModel.peers.isEmpty {
+                        
                         Text("No Peers")
+                            .font(.system(.caption, design: .monospaced))
+
                     } else {
                         
                         List {

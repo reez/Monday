@@ -42,7 +42,10 @@ struct ChannelsListView: View {
                     .padding()
                     
                     if viewModel.channels.isEmpty {
+                        
                         Text("No Channels")
+                            .font(.system(.caption, design: .monospaced))
+
                     } else {
                         
                         List {
