@@ -90,13 +90,13 @@ struct TabHomeView: View {
 //                        )
 //                    }
                 
-                PeersListView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Peers",
-                            systemImage: "person.line.dotted.person"
-                        )
-                    }
+//                PeersListView(viewModel: .init())
+//                    .tabItem {
+//                        Label(
+//                            "Peers",
+//                            systemImage: "person.line.dotted.person"
+//                        )
+//                    }
                 
                 NodeIDView(viewModel: .init())
                     .tabItem {

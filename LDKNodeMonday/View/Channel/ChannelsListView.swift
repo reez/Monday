@@ -101,6 +101,16 @@ struct ChannelsListView: View {
                         
                     }
                     
+                    NavigationLink {
+                        PeersListView(viewModel: .init())
+                    } label: {
+                        Text("View Peers")
+                    }
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                    .padding()
+                    .padding(.top, 50.0)
+ 
+                    
                 }
                 .padding()
                 .padding(.top)

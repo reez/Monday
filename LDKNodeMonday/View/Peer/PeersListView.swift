@@ -28,7 +28,7 @@ struct PeersListView: View {
     
     var body: some View {
         
-        NavigationView {
+//        NavigationView {
             
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
@@ -118,7 +118,7 @@ struct PeersListView: View {
                 }
                 .padding()
                 .padding(.top)
-                .navigationTitle("\(viewModel.peers.count) Peers")
+//                .navigationTitle("\(viewModel.peers.count) Peers")
                 .onAppear {
                     viewModel.listPeers()
                     viewModel.getColor()
@@ -127,7 +127,7 @@ struct PeersListView: View {
             }
 //            .ignoresSafeArea()
             
-        }
+//        }
         
     }
     
