@@ -75,16 +75,33 @@ struct SendView: View {
                         Text("Invoice")
                             .bold()
                         
-                        TextField("lnbc10u1pwz...8f8r9ckzr0r", text: $viewModel.invoice)
-                            .frame(height: 48)
-                            .truncationMode(.middle)
-                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                            .cornerRadius(5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(lineWidth: 1.0)
-                                    .foregroundColor(.secondary)
+                        ZStack {
+                            
+                            TextField("lnbc10u1pwz...8f8r9ckzr0r", text: $viewModel.invoice)
+                                .frame(height: 48)
+                                .truncationMode(.middle)
+                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                                .cornerRadius(5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(lineWidth: 1.0)
+                                        .foregroundColor(.secondary)
                             )
+                            
+                            if !viewModel.invoice.isEmpty {
+                                HStack {
+                                    Spacer()
+                                    Button(action: {
+                                        self.viewModel.invoice = ""
+                                    }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding(.trailing, 8)
+                                }
+                            }
+                            
+                        }
                         
                     }
                     .padding()
