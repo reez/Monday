@@ -13,38 +13,44 @@ class ChannelCloseViewModel: ObservableObject {
     @Published var channel: ChannelDetails
     @Published var networkColor = Color.gray
     @Published var errorMessage: NodeErrorMessage?//String?
-
+    
     init(channel: ChannelDetails) {
         self.channel = channel
     }
     
-//    func close() {
-//        LightningNodeService.shared.closeChannel(
-//            channelId: self.channel.channelId,
-//            counterpartyNodeId: self.channel.counterpartyNodeId
-//        )
-//    }
+    //    func close() {
+    //        LightningNodeService.shared.closeChannel(
+    //            channelId: self.channel.channelId,
+    //            counterpartyNodeId: self.channel.counterpartyNodeId
+    //        )
+    //    }
     
     
     func close() {
-         do {
-             try LightningNodeService.shared.closeChannel(
+        do {
+            try LightningNodeService.shared.closeChannel(
                 channelId: self.channel.channelId,
                 counterpartyNodeId: self.channel.counterpartyNodeId
-             )
-             // Clear any previous error message
-             errorMessage = nil
-         } catch let error as NodeError {
-             // handle NodeError
-             let errorString = handleNodeError(error)
-             errorMessage = .init(title: errorString.title, detail: errorString.detail)//"Title: \(errorString.title) ... Detail: (\(errorString.detail))"//"Node error: \(error.localizedDescription)"
-             print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
-         } catch {
-             // handle other errors
-             print("LDKNodeMonday /// error getting close: \(error.localizedDescription)")
-             errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)//"Unexpected error: \(error.localizedDescription)"
-         }
-     }
+            )
+            // Clear any previous error message
+            errorMessage = nil
+        } catch let error as NodeError {
+            // handle NodeError
+            let errorString = handleNodeError(error)
+            //             errorMessage = .init(title: errorString.title, detail: errorString.detail)//"Title: \(errorString.title) ... Detail: (\(errorString.detail))"//"Node error: \(error.localizedDescription)"
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+            }
+            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
+        } catch {
+            // handle other errors
+            print("LDKNodeMonday /// error getting close: \(error.localizedDescription)")
+            //             errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)//"Unexpected error: \(error.localizedDescription)"
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+            }
+        }
+    }
     
     
     func getColor() {
@@ -58,7 +64,7 @@ struct ChannelCloseView: View {
     @ObservedObject var viewModel: ChannelCloseViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var showingErrorAlert = false
-
+    
     var body: some View {
         
         ZStack {
@@ -169,9 +175,9 @@ struct ChannelCloseView: View {
                 
                 Button("Close Channel") {
                     viewModel.close()
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//                        self.presentationMode.wrappedValue.dismiss()
-//                    }
+                    //                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    //                        self.presentationMode.wrappedValue.dismiss()
+                    //                    }
                     
                     if showingErrorAlert == true {
                         print(showingErrorAlert.description)

@@ -29,12 +29,18 @@ class DisconnectViewModel: ObservableObject {
         } catch let error as NodeError {
             // handle NodeError
             let errorString = handleNodeError(error)
-            errorMessage = .init(title: errorString.title, detail: errorString.detail)//"Title: \(errorString.title) ... Detail: (\(errorString.detail))"//"Node error: \(error.localizedDescription)"
+//            errorMessage = .init(title: errorString.title, detail: errorString.detail)//"Title: \(errorString.title) ... Detail: (\(errorString.detail))"//"Node error: \(error.localizedDescription)"
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+            }
             print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
             // handle other errors
             print("LDKNodeMonday /// error getting disconnect: \(error.localizedDescription)")
-            errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)//"Unexpected error: \(error.localizedDescription)"
+//            errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)//"Unexpected error: \(error.localizedDescription)"
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+            }
         }
     }
     

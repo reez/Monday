@@ -12,14 +12,36 @@ import WalletUI
 class NodeIDViewModel: ObservableObject {
     @Published var nodeID: String = ""
     @Published var networkColor = Color.gray
+    @Published var errorMessage: NodeErrorMessage?//String?
     
     func getNodeID() {
         let nodeID = LightningNodeService.shared.nodeId()
         self.nodeID = nodeID
     }
     
+    //    func stop() {
+    //        LightningNodeService.shared.stop()
+    //    }
+    
     func stop() {
-        LightningNodeService.shared.stop()
+        do {
+            try LightningNodeService.shared.stop()
+        } catch let error as NodeError {
+            // handle NodeError
+            let errorString = handleNodeError(error)
+            //            errorMessage = .init(title: errorString.title, detail: errorString.detail)//"Title: \(errorString.title) ... Detail: (\(errorString.detail))"//"Node error: \(error.localizedDescription)"
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+            }
+            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
+        } catch {
+            // handle other errors
+            print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
+            //            errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)//"Unexpected error: \(error.localizedDescription)"
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+            }
+        }
     }
     
     func getColor() {
@@ -31,6 +53,7 @@ class NodeIDViewModel: ObservableObject {
 
 struct NodeIDView: View {
     @ObservedObject var viewModel: NodeIDViewModel
+    @State private var showingErrorAlert = false
     
     var body: some View {
         
@@ -58,6 +81,7 @@ struct NodeIDView: View {
                         
                         Button {
                             UIPasteboard.general.string = viewModel.nodeID
+                            print("copied node id: \(viewModel.nodeID)")
                         } label: {
                             HStack {
                                 Image(systemName: "doc.on.doc")
@@ -83,12 +107,26 @@ struct NodeIDView: View {
                         Text("See Log File")
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-
-
+                    
+                    
                     
                 }
                 .padding()
                 .navigationTitle("Node ID")
+                .alert(isPresented: $showingErrorAlert) {
+                    Alert(
+                        title: Text(viewModel.errorMessage?.title ?? "Unknown"),
+                        message: Text(viewModel.errorMessage?.detail ?? ""),
+                        dismissButton: .default(Text("OK")) {
+                            viewModel.errorMessage = nil
+                        }
+                    )
+                }
+                .onReceive(viewModel.$errorMessage) { errorMessage in
+                    if errorMessage != nil {
+                        showingErrorAlert = true
+                    }
+                }
                 .onAppear {
                     Task {
                         viewModel.getNodeID()

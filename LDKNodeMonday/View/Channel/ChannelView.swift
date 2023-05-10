@@ -39,14 +39,20 @@ class ChannelViewModel: ObservableObject {
          } catch let error as NodeError {
              // handle NodeError
              let errorString = handleNodeError(error)
-             errorMessage = .init(title: errorString.title, detail: errorString.detail)//"Title: \(errorString.title) ... Detail: (\(errorString.detail))"//"Node error: \(error.localizedDescription)"
+//             errorMessage = .init(title: errorString.title, detail: errorString.detail)//"Title: \(errorString.title) ... Detail: (\(errorString.detail))"//"Node error: \(error.localizedDescription)"
+             DispatchQueue.main.async {
+                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+             }
              print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
          } catch {
              // handle other errors
              print("LDKNodeMonday /// error getting connectOpenChannel: \(error.localizedDescription)")
-             errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)//"Unexpected error: \(error.localizedDescription)"
+//             errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)//"Unexpected error: \(error.localizedDescription)"
+             DispatchQueue.main.async {
+                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+             }
          }
-     }
+    }
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
@@ -61,7 +67,7 @@ struct ChannelView: View {
     @State private var isShowingScanner = false
     let pasteboard = UIPasteboard.general
     @State private var showingErrorAlert = false
-
+    
     var body: some View {
         
         ZStack {
@@ -231,7 +237,7 @@ struct ChannelView: View {
                         }
                     }
                     
-                   
+                    
                 } label: {
                     Text("Open Channel")
                 }

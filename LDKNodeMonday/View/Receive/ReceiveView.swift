@@ -14,18 +14,39 @@ class ReceiveViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""
     @Published var amountMsat: String = "" // TODO: make minimum 1/10/1000?
     @Published var networkColor = Color.gray
-    
+    @Published var errorMessage: NodeErrorMessage?//String?
+
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async {
-        guard let invoice = await LightningNodeService.shared.receivePayment(
-            amountMsat: amountMsat,
-            description: description,
-            expirySecs: expirySecs
-        ) else { return }
+        do {
+            let invoice = try await LightningNodeService.shared.receivePayment(
+                amountMsat: amountMsat,
+                description: description,
+                expirySecs: expirySecs
+            )
+            
+            //        self.invoice = invoice
+            DispatchQueue.main.async {
+                self.invoice = invoice
+            }
         
-//        self.invoice = invoice
+    } catch let error as NodeError {
+        // handle NodeError
+        let errorString = handleNodeError(error)
+//        errorMessage = .init(title: errorString.title, detail: errorString.detail)
         DispatchQueue.main.async {
-               self.invoice = invoice
-           }
+            self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+        }
+        print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
+    } catch {
+        // handle other errors
+        print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
+//        errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+        DispatchQueue.main.async {
+            self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+        }
+    }
+        
+        
     }
     
     func clearInvoice() {
@@ -41,7 +62,8 @@ class ReceiveViewModel: ObservableObject {
 
 struct ReceiveView: View {
     @ObservedObject var viewModel: ReceiveViewModel
-    
+    @State private var showingErrorAlert = false
+
     var body: some View {
         
         NavigationView {
@@ -93,6 +115,8 @@ struct ReceiveView: View {
                                 description: "LDKNodeMonday",
                                 expirySecs: UInt32(3600)
                             )
+                            
+                            
                         }
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
@@ -132,6 +156,7 @@ struct ReceiveView: View {
                             
                             Button {
                                 UIPasteboard.general.string = viewModel.invoice
+                                print("invoice copied: \(viewModel.invoice)")
                             } label: {
                                 HStack {
                                     Image(systemName: "doc.on.doc")
@@ -156,6 +181,20 @@ struct ReceiveView: View {
                 }
                 .padding()
                 .navigationTitle("Receive")
+                .alert(isPresented: $showingErrorAlert) {
+                    Alert(
+                        title: Text(viewModel.errorMessage?.title ?? "Unknown"),
+                        message: Text(viewModel.errorMessage?.detail ?? ""),
+                        dismissButton: .default(Text("OK")) {
+                            viewModel.errorMessage = nil
+                        }
+                    )
+                }
+                .onReceive(viewModel.$errorMessage) { errorMessage in
+                    if errorMessage != nil {
+                        showingErrorAlert = true
+                    }
+                }
                 .onAppear {
                     viewModel.getColor()
                 }
