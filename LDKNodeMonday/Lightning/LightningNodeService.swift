@@ -221,35 +221,49 @@ class LightningNodeService {
         }
     }
     
-    func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) {
+//    func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) {
+//        print("LDKNodeMonday /// connect")
+//        do {
+//            try node.connect(
+//                nodeId: nodeId,
+//                address: address,
+//                permanently: permanently
+//            )
+//            print("LDKNodeMonday /// connected to \(nodeId):\(address) (permanently \(permanently))")
+//        } catch let error as NodeError {
+//
+//            handleNodeError(error)
+//
+//        } catch {
+//            print("LDKNodeMonday /// error on connect: \(error.localizedDescription)")
+//        }
+//    }
+    
+    func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) throws {
         print("LDKNodeMonday /// connect")
-        do {
-            try node.connect(
-                nodeId: nodeId,
-                address: address,
-                permanently: permanently
-            )
-            print("LDKNodeMonday /// connected to \(nodeId):\(address) (permanently \(permanently))")
-        } catch let error as NodeError {
-            
-            handleNodeError(error)
-            
-        } catch {
-            print("LDKNodeMonday /// error on connect: \(error.localizedDescription)")
-        }
+        try node.connect(
+            nodeId: nodeId,
+            address: address,
+            permanently: permanently
+        )
     }
     
-    func disconnect(nodeId: PublicKey) {
+//    func disconnect(nodeId: PublicKey) {
+//        print("LDKNodeMonday /// disconnect")
+//        do {
+//            try node.disconnect(nodeId: nodeId)
+//        } catch let error as NodeError {
+//            
+//            handleNodeError(error)
+//            
+//        } catch {
+//            print("LDKNodeMonday /// error on disconnect: \(error.localizedDescription)")
+//        }
+//    }
+    
+    func disconnect(nodeId: PublicKey) throws {
         print("LDKNodeMonday /// disconnect")
-        do {
-            try node.disconnect(nodeId: nodeId)
-        } catch let error as NodeError {
-            
-            handleNodeError(error)
-            
-        } catch {
-            print("LDKNodeMonday /// error on disconnect: \(error.localizedDescription)")
-        }
+        try node.disconnect(nodeId: nodeId)
     }
     
 //    func connectOpenChannel(
@@ -299,9 +313,7 @@ class LightningNodeService {
         print("LDKNodeMonday /// closeChannel")
         try node.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
         print("LDKNodeMonday /// closed channel to channelId: \(channelId) of counterpartyNodeId:  \(counterpartyNodeId)")
-
     }
-
 
     func sendPayment(invoice: Invoice) async -> PaymentHash? {
         do {

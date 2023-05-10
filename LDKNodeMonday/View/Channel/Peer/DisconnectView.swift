@@ -12,13 +12,30 @@ import WalletUI
 class DisconnectViewModel: ObservableObject {
     @Published var nodeId: PublicKey
     @Published var networkColor = Color.gray
-    
+    @Published var errorMessage: NodeErrorMessage?//String?
+
     init(nodeId: PublicKey) {
         self.nodeId = nodeId
     }
     
+//    func disconnect() {
+//        LightningNodeService.shared.disconnect(nodeId: self.nodeId)
+//    }
+    
     func disconnect() {
-        LightningNodeService.shared.disconnect(nodeId: self.nodeId)
+        do {
+            try LightningNodeService.shared.disconnect(nodeId: self.nodeId)
+            errorMessage = nil
+        } catch let error as NodeError {
+            // handle NodeError
+            let errorString = handleNodeError(error)
+            errorMessage = .init(title: errorString.title, detail: errorString.detail)//"Title: \(errorString.title) ... Detail: (\(errorString.detail))"//"Node error: \(error.localizedDescription)"
+            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
+        } catch {
+            // handle other errors
+            print("LDKNodeMonday /// error getting disconnect: \(error.localizedDescription)")
+            errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)//"Unexpected error: \(error.localizedDescription)"
+        }
     }
     
     func getColor() {
@@ -30,7 +47,8 @@ class DisconnectViewModel: ObservableObject {
 struct DisconnectView: View {
     @ObservedObject var viewModel: DisconnectViewModel
     @Environment(\.presentationMode) var presentationMode
-    
+    @State private var showingErrorAlert = false
+
     var body: some View {
         
         ZStack {
@@ -53,14 +71,34 @@ struct DisconnectView: View {
                 
                 Button("Disconnect Peer") {
                     viewModel.disconnect()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        self.presentationMode.wrappedValue.dismiss()
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//                        self.presentationMode.wrappedValue.dismiss()
+//                    }
+                    if showingErrorAlert == true {
+                        print(showingErrorAlert.description)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
                     }
                 }
                 .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 
             }
             .padding()
+            .alert(isPresented: $showingErrorAlert) {
+                Alert(
+                    title: Text(viewModel.errorMessage?.title ?? "Unknown"),
+                    message: Text(viewModel.errorMessage?.detail ?? ""),
+                    dismissButton: .default(Text("OK")) {
+                        viewModel.errorMessage = nil
+                    }
+                )
+            }
+            .onReceive(viewModel.$errorMessage) { errorMessage in
+                if errorMessage != nil {
+                    showingErrorAlert = true
+                }
+            }
             .onAppear {
                 viewModel.getColor()
             }
