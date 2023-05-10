@@ -45,6 +45,17 @@ class LightningNodeService {
     
     init(network: NetworkConnection) {
         
+        // Delete log file before `start` to keep log file small and loadable in Log View
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        let logFilePath = URL(fileURLWithPath: documentsPath).appendingPathComponent("ldk_node.log").path
+        do {
+            try FileManager.default.removeItem(atPath: logFilePath)
+            print("Log file deleted successfully")
+        } catch {
+            print("Error deleting log file: \(error.localizedDescription)")
+        }
+
+        
         let storageDirectoryPath = storageManager.getDocumentsDirectory()
         var esploraServerUrl = "http://blockstream.info/testnet/api/"
         var chosenNetwork = "testnet"
