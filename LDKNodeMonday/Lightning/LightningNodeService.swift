@@ -295,19 +295,14 @@ class LightningNodeService {
         }
 
     
-    func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) {
+    func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) throws {
         print("LDKNodeMonday /// closeChannel")
-        do {
-            try node.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
-        } catch let error as NodeError {
-            
-            handleNodeError(error)
-            
-        } catch {
-            print("LDKNodeMonday /// error on closeChannel: \(error.localizedDescription)")
-        }
+        try node.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
+        print("LDKNodeMonday /// closed channel to channelId: \(channelId) of counterpartyNodeId:  \(counterpartyNodeId)")
+
     }
-    
+
+
     func sendPayment(invoice: Invoice) async -> PaymentHash? {
         do {
             let paymentHash = try node.sendPayment(invoice: invoice)
