@@ -18,13 +18,13 @@ class AddressViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var errorMessage: NodeErrorMessage?
     
-    func syncWallets() {
-        LightningNodeService.shared.syncWallets()
-    }
+//    func syncWallets() {
+//        LightningNodeService.shared.syncWallets()
+//    }
     
     func getTotalOnchainBalanceSats() async {
         do {
-            guard let balance = try await LightningNodeService.shared.getTotalOnchainBalanceSats() else { return }
+            let balance = try await LightningNodeService.shared.getTotalOnchainBalanceSats() //else { return }
             let intBalance = Int(balance)
             let stringIntBalance = String(intBalance)
             print("LDKNodeMonday /// My total balance int string: \(stringIntBalance)")
@@ -52,7 +52,7 @@ class AddressViewModel: ObservableObject {
     
     func getSpendableOnchainBalanceSats() async {
         do {
-            guard let balance = try await LightningNodeService.shared.getSpendableOnchainBalanceSats() else { return }
+            let balance = try await LightningNodeService.shared.getSpendableOnchainBalanceSats() //else { return }
             let intBalance = Int(balance)
             let stringIntBalance = String(intBalance)
             print("LDKNodeMonday /// My spendable balance int string: \(stringIntBalance)")
@@ -81,13 +81,13 @@ class AddressViewModel: ObservableObject {
     func newFundingAddress() async {
         
         do {
-            guard let address = try await LightningNodeService.shared.newFundingAddress() else {
+            let address = try await LightningNodeService.shared.newFundingAddress() //else {
                 //                self.address = ""
                 //                DispatchQueue.main.async {
                 //                         self.address = ""
                 //                     }
-                return
-            }
+//                return
+//            }
             //            self.address = address
             DispatchQueue.main.async {
                 self.address = address
