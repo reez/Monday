@@ -16,9 +16,13 @@ class SendConfirmationViewModel: ObservableObject {
         self.invoice = invoice
     }
     
-    func sendPayment(invoice: Invoice) {
+    func sendPayment(invoice: Invoice) async {
         print("LDKNodeMonday /// Send Payment from Invoice: \(invoice)")
-        LightningNodeService.shared.sendPayment(invoice: invoice)
+        let paymentHash = await LightningNodeService.shared.sendPayment(invoice: invoice) // TODO: something w paymenthash
+        DispatchQueue.main.async {
+               //self.paymentHash = paymentHash // TODO: use this in UI
+            print("sendPayment returned paymentHash: \(paymentHash)")
+           }
     }
     
     func getColor() {
@@ -78,8 +82,10 @@ struct SendConfirmationView: View {
             }
             .padding()
             .onAppear {
-                viewModel.sendPayment(invoice: viewModel.invoice)
-                viewModel.getColor()
+                Task {
+                    await viewModel.sendPayment(invoice: viewModel.invoice)
+                    viewModel.getColor()
+                }
             }
             
         }

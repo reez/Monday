@@ -15,13 +15,17 @@ class ReceiveViewModel: ObservableObject {
     @Published var amountMsat: String = "" // TODO: make minimum 1/10/1000?
     @Published var networkColor = Color.gray
     
-    func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) {
-        guard let invoice = LightningNodeService.shared.receivePayment(
+    func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async {
+        guard let invoice = await LightningNodeService.shared.receivePayment(
             amountMsat: amountMsat,
             description: description,
             expirySecs: expirySecs
         ) else { return }
-        self.invoice = invoice
+        
+//        self.invoice = invoice
+        DispatchQueue.main.async {
+               self.invoice = invoice
+           }
     }
     
     func clearInvoice() {
@@ -83,11 +87,13 @@ struct ReceiveView: View {
                     .padding()
                     
                     Button("Create Invoice") {
-                        viewModel.receivePayment(
-                            amountMsat: UInt64(viewModel.amountMsat) ?? 0,
-                            description: "LDKNodeMonday",
-                            expirySecs: UInt32(3600)
-                        )
+                        Task {
+                            await viewModel.receivePayment(
+                                amountMsat: UInt64(viewModel.amountMsat) ?? 0,
+                                description: "LDKNodeMonday",
+                                expirySecs: UInt32(3600)
+                            )
+                        }
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     

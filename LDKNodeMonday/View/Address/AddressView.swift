@@ -21,20 +21,26 @@ class AddressViewModel: ObservableObject {
         LightningNodeService.shared.syncWallets()
     }
     
-    func getTotalOnchainBalanceSats() {
-        guard let balance = LightningNodeService.shared.getTotalOnchainBalanceSats() else { return }
+    func getTotalOnchainBalanceSats() async {
+        guard let balance = await LightningNodeService.shared.getTotalOnchainBalanceSats() else { return }
         let intBalance = Int(balance)
         let stringIntBalance = String(intBalance)
         print("LDKNodeMonday /// My total balance int string: \(stringIntBalance)")
-        self.totalBalance = stringIntBalance
+//        self.totalBalance = stringIntBalance
+        DispatchQueue.main.async {
+                 self.totalBalance = stringIntBalance
+             }
     }
     
-    func getSpendableOnchainBalanceSats() {
-        guard let balance = LightningNodeService.shared.getSpendableOnchainBalanceSats() else { return }
+    func getSpendableOnchainBalanceSats() async {
+        guard let balance = await LightningNodeService.shared.getSpendableOnchainBalanceSats() else { return }
         let intBalance = Int(balance)
         let stringIntBalance = String(intBalance)
         print("LDKNodeMonday /// My spendable balance int string: \(stringIntBalance)")
-        self.spendableBalance = stringIntBalance
+        //        self.spendableBalance = stringIntBalance
+        DispatchQueue.main.async {
+                 self.spendableBalance = stringIntBalance
+             }
     }
     
     func getAddress() {
@@ -92,7 +98,7 @@ struct AddressView: View {
                     
 //                    Text("Copy Address")
 //                        .bold()
-//                    
+//
 //                    Text("Receive bitcoin from other wallets or exchanges with these addresses.")
 //                        .foregroundColor(.secondary)
 //                        .multilineTextAlignment(.center)
@@ -149,8 +155,8 @@ struct AddressView: View {
                 .tint(viewModel.networkColor)
                 .onAppear {
                     Task {
-                        viewModel.getTotalOnchainBalanceSats()
-                        viewModel.getSpendableOnchainBalanceSats()
+                        await viewModel.getTotalOnchainBalanceSats()
+                        await viewModel.getSpendableOnchainBalanceSats()
                         viewModel.getAddress()
                         viewModel.getColor()
                     }

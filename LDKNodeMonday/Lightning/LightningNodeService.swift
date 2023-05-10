@@ -98,18 +98,32 @@ class LightningNodeService {
         do {
             try node.start()
             print("LDKNodeMonday /// Started node!")
+            
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            
+            
         } catch {
             print("LDKNodeMonday /// error starting node: \(error.localizedDescription)")
         }
     }
     
     func stop() {
+        
         do {
+            
             try node.stop()
             print("LDKNodeMonday /// Stopped node!")
+            
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            
         } catch {
             print("LDKNodeMonday /// error stopping node: \(error.localizedDescription)")
         }
+        
     }
     
     func nextEvent() {
@@ -173,7 +187,7 @@ class LightningNodeService {
         }
     }
     
-    func getSpendableOnchainBalanceSats() -> UInt64? {
+    func getSpendableOnchainBalanceSats() async -> UInt64? {
         do {
             let balance = try node.spendableOnchainBalanceSats()
             print("LDKNodeMonday /// My balance: \(balance)")
@@ -184,7 +198,7 @@ class LightningNodeService {
         }
     }
     
-    func getTotalOnchainBalanceSats() -> UInt64? {
+    func getTotalOnchainBalanceSats() async -> UInt64? {
         do {
             let balance = try node.totalOnchainBalanceSats()
             print("LDKNodeMonday /// My balance: \(balance)")
@@ -248,21 +262,18 @@ class LightningNodeService {
         }
     }
     
-    func sendPayment(invoice: Invoice) {
+    func sendPayment(invoice: Invoice) async -> PaymentHash? {
         do {
             let paymentHash = try node.sendPayment(invoice: invoice)
             print("LDKNodeMonday /// sendPayment paymentHash: \(paymentHash)")
+            return paymentHash
         } catch {
-            if let mine = error as? NodeError {
-                // TODO: do something when catching error here, you'll see it with a bad invoice like lnbc10u1pwzj6u7pp5p8l6arvcj6mpw4um4x7xvj2pw6j3q9g2q3e7f44plzupn5g5n5sdqsd5v5sxqrrssycnqar0dakjapqrxqzjccqzpgxqyz5vq5s5l5v0fydrf7g9j82pxf6jtakz6m8h6j4g6amw4m0rr4x2swk6jl9r9emr0r7jvkd8zjwd48azl6kwsuuc7s0vfh8y8z9p9xlkwlfh7yy43v8f8j3nfgqkg2qy7at94xj8f8r9ckzr0r
-                let _ = MondayNodeError(nodeError: mine)
-            } else {
-                print("LDKNodeMonday /// sendPayment couldn't equate error to Node Error")
-            }
+            print("LDKNodeMonday /// sendPayment couldn't equate error to Node Error")
+            return nil
         }
     }
     
-    func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) -> Invoice? {
+    func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async -> Invoice? {
         do {
             let invoice = try node.receivePayment(amountMsat: amountMsat, description: description, expirySecs: expirySecs)
             return invoice
