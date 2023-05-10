@@ -27,6 +27,10 @@ struct LogView: View {
                     .font(.system(.body, design: .monospaced))
                     .foregroundColor(.gray)
                 
+                Text("Note: Log file deleted before each app start")
+                    .font(.system(.caption, design: .monospaced))
+                    .foregroundColor(.gray)
+                
                 if isLoading {
                     
                     ProgressView()
