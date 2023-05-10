@@ -23,24 +23,21 @@ struct LogView: View {
             
             VStack {
                 
-                Text("ldk_node.log")
-                    .font(.system(.body, design: .monospaced))
-                    .foregroundColor(.gray)
-                
-                Text("Note: Log file deleted before each app start atm (because log file can get big and take a while to load here.)")
-                    .font(.system(.caption, design: .monospaced))
-                    .foregroundColor(.gray)
+                VStack(spacing: 6) {
+                    Text("ldk_node.log")
+                        .font(.system(.body, design: .monospaced))
+                    Text("Note: Log file deleted before each app start atm (because log file can get big and take a while to load here.)")
+                        .font(.system(.caption, design: .monospaced))
+                }
+                .foregroundColor(.gray)
                 
                 Rectangle()
                     .frame(height: 1)
                     .foregroundColor(.gray)
                 
                 if isLoading {
-                    
                     ProgressView()
-                    
                 } else {
-                    
                     ScrollView {
                         Text(logFileContents)
                             .font(.system(.caption, design: .monospaced))
@@ -48,13 +45,11 @@ struct LogView: View {
                     }
                     .frame(maxHeight: .infinity)
                     .padding(.top, 10)
-                    
-                    
                 }
+                
             }
             .padding()
             .onAppear {
-                
                 isLoading = true
                 DispatchQueue.global(qos: .background).async {
                     if let contents = try? String(contentsOfFile: self.logFilePath, encoding: .utf8) {
@@ -64,9 +59,10 @@ struct LogView: View {
                         }
                     }
                 }
-                
             }
+            
         }
+        
         
     }
     
