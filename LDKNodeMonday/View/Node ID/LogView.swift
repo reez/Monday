@@ -44,14 +44,15 @@ struct LogView: View {
                     ScrollView {
                         Text(logFileContents)
                             .font(.system(.caption, design: .monospaced))
+                            .foregroundColor(.primary)
                     }
                     .frame(maxHeight: .infinity)
                     .padding(.top, 10)
                     
+                    
                 }
             }
             .padding()
-            .background(Color.white)
             .onAppear {
                 
                 isLoading = true
