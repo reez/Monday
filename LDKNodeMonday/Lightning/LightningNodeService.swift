@@ -252,14 +252,38 @@ class LightningNodeService {
         }
     }
     
+//    func connectOpenChannel(
+//        nodeId: PublicKey,
+//        address: SocketAddr,
+//        channelAmountSats: UInt64,
+//        pushToCounterpartyMsat: UInt64?,
+//        announceChannel: Bool = true
+//    ) {
+//        do {
+//            try node.connectOpenChannel(
+//                nodeId: nodeId,
+//                address: address,
+//                channelAmountSats: channelAmountSats,
+//                pushToCounterpartyMsat: pushToCounterpartyMsat,
+//                announceChannel: true
+//            )
+//            print("LDKNodeMonday /// opened channel to \(nodeId):\(address) with amount \(channelAmountSats)")
+//        } catch let error as NodeError {
+//
+//            handleNodeError(error)
+//
+//        } catch {
+//            print("LDKNodeMonday /// error getting connectOpenChannel: \(error.localizedDescription)")
+//        }
+//    }
+    
     func connectOpenChannel(
-        nodeId: PublicKey,
-        address: SocketAddr,
-        channelAmountSats: UInt64,
-        pushToCounterpartyMsat: UInt64?,
-        announceChannel: Bool = true
-    ) {
-        do {
+            nodeId: PublicKey,
+            address: SocketAddr,
+            channelAmountSats: UInt64,
+            pushToCounterpartyMsat: UInt64?,
+            announceChannel: Bool = true
+        ) throws {
             try node.connectOpenChannel(
                 nodeId: nodeId,
                 address: address,
@@ -268,14 +292,8 @@ class LightningNodeService {
                 announceChannel: true
             )
             print("LDKNodeMonday /// opened channel to \(nodeId):\(address) with amount \(channelAmountSats)")
-        } catch let error as NodeError {
-            
-            handleNodeError(error)
-            
-        } catch {
-            print("LDKNodeMonday /// error getting connectOpenChannel: \(error.localizedDescription)")
         }
-    }
+
     
     func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) {
         print("LDKNodeMonday /// closeChannel")
@@ -385,11 +403,7 @@ extension LightningNodeService {
             let paymentHash = try node.sendSpontaneousPayment(amountMsat: amountMsat, nodeId: nodeId)
             print("LDKNodeMonday /// sendSpontaneousPayment paymentHash: \(paymentHash)")
         } catch {
-            if let mine = error as? NodeError {
-                let _ = MondayNodeError(nodeError: mine)
-            } else {
-                print("LDKNodeMonday /// sendSpontaneousPayment couldn't equate error to Node Error")
-            }
+            print("LDKNodeMonday /// sendSpontaneousPayment couldn't equate error to Node Error")            
         }
     }
     

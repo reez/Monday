@@ -15,15 +15,38 @@ class ChannelViewModel: ObservableObject {
     @Published var address: SocketAddr = ""
     @Published var channelAmountSats: String = ""
     @Published var networkColor = Color.gray
+    @Published var errorMessage: NodeErrorMessage?//String?
+
+//    func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) {
+//        LightningNodeService.shared.connectOpenChannel(
+//            nodeId: nodeId,
+//            address: address,
+//            channelAmountSats: channelAmountSats,
+//            pushToCounterpartyMsat: pushToCounterpartyMsat
+//        )
+//    }
     
     func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) {
-        LightningNodeService.shared.connectOpenChannel(
-            nodeId: nodeId,
-            address: address,
-            channelAmountSats: channelAmountSats,
-            pushToCounterpartyMsat: pushToCounterpartyMsat
-        )
-    }
+         do {
+             try LightningNodeService.shared.connectOpenChannel(
+                 nodeId: nodeId,
+                 address: address,
+                 channelAmountSats: channelAmountSats,
+                 pushToCounterpartyMsat: pushToCounterpartyMsat
+             )
+             // Clear any previous error message
+             errorMessage = nil
+         } catch let error as NodeError {
+             // handle NodeError
+             let errorString = handleNodeError(error)
+             errorMessage = .init(title: errorString.title, detail: errorString.detail)//"Title: \(errorString.title) ... Detail: (\(errorString.detail))"//"Node error: \(error.localizedDescription)"
+             print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
+         } catch {
+             // handle other errors
+             print("LDKNodeMonday /// error getting connectOpenChannel: \(error.localizedDescription)")
+             errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)//"Unexpected error: \(error.localizedDescription)"
+         }
+     }
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
@@ -37,7 +60,8 @@ struct ChannelView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
     let pasteboard = UIPasteboard.general
-    
+    @State private var showingErrorAlert = false
+
     var body: some View {
         
         ZStack {
@@ -199,9 +223,15 @@ struct ChannelView: View {
                         channelAmountSats: channelAmountSats,
                         pushToCounterpartyMsat: nil // TODO: actually make this inputtable
                     )
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        self.presentationMode.wrappedValue.dismiss()
+                    
+                    if showingErrorAlert == true {
+                        print(showingErrorAlert.description)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
                     }
+                    
+                   
                 } label: {
                     Text("Open Channel")
                 }
@@ -214,6 +244,20 @@ struct ChannelView: View {
             .navigationBarTitle("Channel")
             .sheet(isPresented: $isShowingScanner) {
                 CodeScannerView(codeTypes: [.qr], simulatedData: "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6", completion: handleScan)
+            }
+            .alert(isPresented: $showingErrorAlert) {
+                Alert(
+                    title: Text(viewModel.errorMessage?.title ?? "Unknown"),
+                    message: Text(viewModel.errorMessage?.detail ?? ""),
+                    dismissButton: .default(Text("OK")) {
+                        viewModel.errorMessage = nil
+                    }
+                )
+            }
+            .onReceive(viewModel.$errorMessage) { errorMessage in
+                if errorMessage != nil {
+                    showingErrorAlert = true
+                }
             }
             .onAppear {
                 viewModel.getColor()
