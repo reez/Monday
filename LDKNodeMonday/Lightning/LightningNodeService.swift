@@ -181,6 +181,10 @@ class LightningNodeService {
             let fundingAddress = try node.newFundingAddress()
             print("LDKNodeMonday /// Funding Address: \(fundingAddress)")
             return fundingAddress
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            return nil
         } catch {
             print("LDKNodeMonday /// error getting funding address: \(error.localizedDescription)")
             return nil
@@ -192,6 +196,10 @@ class LightningNodeService {
             let balance = try node.spendableOnchainBalanceSats()
             print("LDKNodeMonday /// My balance: \(balance)")
             return balance
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            return nil
         } catch {
             print("LDKNodeMonday /// error getting getSpendableOnchainBalanceSats: \(error.localizedDescription)")
             return nil
@@ -203,6 +211,10 @@ class LightningNodeService {
             let balance = try node.totalOnchainBalanceSats()
             print("LDKNodeMonday /// My balance: \(balance)")
             return balance
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            return nil
         } catch {
             print("LDKNodeMonday /// error getting getTotalOnchainBalanceSats: \(error.localizedDescription)")
             return nil
@@ -218,6 +230,10 @@ class LightningNodeService {
                 permanently: permanently
             )
             print("LDKNodeMonday /// connected to \(nodeId):\(address) (permanently \(permanently))")
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            
         } catch {
             print("LDKNodeMonday /// error on connect: \(error.localizedDescription)")
         }
@@ -227,6 +243,10 @@ class LightningNodeService {
         print("LDKNodeMonday /// disconnect")
         do {
             try node.disconnect(nodeId: nodeId)
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            
         } catch {
             print("LDKNodeMonday /// error on disconnect: \(error.localizedDescription)")
         }
@@ -248,6 +268,10 @@ class LightningNodeService {
                 announceChannel: true
             )
             print("LDKNodeMonday /// opened channel to \(nodeId):\(address) with amount \(channelAmountSats)")
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            
         } catch {
             print("LDKNodeMonday /// error getting connectOpenChannel: \(error.localizedDescription)")
         }
@@ -257,6 +281,10 @@ class LightningNodeService {
         print("LDKNodeMonday /// closeChannel")
         do {
             try node.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            
         } catch {
             print("LDKNodeMonday /// error on closeChannel: \(error.localizedDescription)")
         }
@@ -267,6 +295,10 @@ class LightningNodeService {
             let paymentHash = try node.sendPayment(invoice: invoice)
             print("LDKNodeMonday /// sendPayment paymentHash: \(paymentHash)")
             return paymentHash
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            return nil
         } catch {
             print("LDKNodeMonday /// sendPayment couldn't equate error to Node Error")
             return nil
@@ -277,6 +309,10 @@ class LightningNodeService {
         do {
             let invoice = try node.receivePayment(amountMsat: amountMsat, description: description, expirySecs: expirySecs)
             return invoice
+        } catch let error as NodeError {
+            
+            handleNodeError(error)
+            return nil
         } catch {
             print("LDKNodeMonday /// receivePayment couldn't equate error to Node Error")
             return nil
