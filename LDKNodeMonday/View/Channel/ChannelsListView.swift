@@ -35,6 +35,14 @@ struct ChannelsListView: View {
                 
                 VStack {
                     
+                    NavigationLink {
+                        PeersListView(viewModel: .init())
+                    } label: {
+                        Text("View Peers")
+                    }
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                    .padding()
+                    
                     NavigationLink(destination: ChannelView(viewModel: .init())) {
                         Text("Add Channel")
                     }
@@ -45,6 +53,7 @@ struct ChannelsListView: View {
                         
                         Text("No Channels")
                             .font(.system(.caption, design: .monospaced))
+                            .padding()
                         
                     } else {
                         
@@ -103,14 +112,7 @@ struct ChannelsListView: View {
                         
                     }
                     
-                    NavigationLink {
-                        PeersListView(viewModel: .init())
-                    } label: {
-                        Text("View Peers")
-                    }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                    .padding()
-                    .padding(.top, 50.0)
+            
                     
                 }
                 .padding()

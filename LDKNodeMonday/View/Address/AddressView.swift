@@ -90,12 +90,12 @@ struct AddressView: View {
                     
                     QRCodeView(address: viewModel.address)
                     
-                    Text("Copy Address")
-                        .bold()
-                    
-                    Text("Receive bitcoin from other wallets or exchanges with these addresses.")
-                        .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
+//                    Text("Copy Address")
+//                        .bold()
+//                    
+//                    Text("Receive bitcoin from other wallets or exchanges with these addresses.")
+//                        .foregroundColor(.secondary)
+//                        .multilineTextAlignment(.center)
                     
                     HStack(alignment: .center) {
                         

@@ -62,7 +62,7 @@ struct SendView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "doc.on.doc")
-                                Text("Paste Lightning Invoice")
+                                Text("Lightning Invoice from Pasteboard")
                             }
                             .foregroundColor(viewModel.networkColor)
                         }

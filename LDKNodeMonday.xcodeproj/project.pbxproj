@@ -178,7 +178,6 @@
 			isa = PBXGroup;
 			children = (
 				AE80116829A59918009B9967 /* TabHomeView.swift */,
-				AE0A02232A0AD71900F2479E /* LogView.swift */,
 				AEBAA4872A01A9060042EA82 /* Address */,
 				AEBAA4862A01A8FB0042EA82 /* Channel */,
 				AEBAA4882A01A90D0042EA82 /* Send */,
@@ -240,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				AE80116A29A59976009B9967 /* NodeIDView.swift */,
+				AE0A02232A0AD71900F2479E /* LogView.swift */,
 			);
 			path = "Node ID";
 			sourceTree = "<group>";

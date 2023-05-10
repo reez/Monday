@@ -78,7 +78,7 @@ struct ChannelView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "doc.on.doc")
-                                Text("Paste Node Address")
+                                Text("Node Address from Pasteboard")
                             }
                             .foregroundColor(viewModel.networkColor)
                         }

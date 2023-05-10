@@ -43,6 +43,7 @@ struct PeersListView: View {
                     
                     Text("No Peers")
                         .font(.system(.caption, design: .monospaced))
+                        .padding()
                     
                 } else {
                     

@@ -77,6 +77,15 @@ struct NodeIDView: View {
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding(.top, 100.0)
                     
+                    NavigationLink {
+                        LogView()
+                    } label: {
+                        Text("See Log File")
+                    }
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+
+
+                    
                 }
                 .padding()
                 .navigationTitle("Node ID")
