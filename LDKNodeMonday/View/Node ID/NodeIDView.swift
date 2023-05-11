@@ -54,7 +54,9 @@ class NodeIDViewModel: ObservableObject {
 struct NodeIDView: View {
     @ObservedObject var viewModel: NodeIDViewModel
     @State private var showingErrorAlert = false
-    
+    @State private var isCopied = false
+    @State private var showCheckmark = false
+
     var body: some View {
         
         NavigationView {
@@ -79,18 +81,40 @@ struct NodeIDView: View {
                             .foregroundColor(.secondary)
                             .font(.subheadline)
                         
-                        Button {
+//                        Button {
+//                            UIPasteboard.general.string = viewModel.nodeID
+//                            print("copied node id: \(viewModel.nodeID)")
+//                        } label: {
+//                            HStack {
+//                                Image(systemName: "doc.on.doc")
+//                                    .font(.subheadline)
+//                            }
+//                            .bold()
+//                            .foregroundColor(viewModel.networkColor)
+//                        }
+                        
+                        Button(action: {
                             UIPasteboard.general.string = viewModel.nodeID
                             print("copied node id: \(viewModel.nodeID)")
-                        } label: {
+
+                            // Update button state
+                            isCopied = true
+                            showCheckmark = true
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                // Revert button state after 2 seconds
+                                isCopied = false
+                                showCheckmark = false
+                            }
+                        }) {
                             HStack {
-                                Image(systemName: "doc.on.doc")
+                                Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
                                     .font(.subheadline)
                             }
                             .bold()
                             .foregroundColor(viewModel.networkColor)
-                            
                         }
+                        
                         
                     }
                     .padding(.horizontal)

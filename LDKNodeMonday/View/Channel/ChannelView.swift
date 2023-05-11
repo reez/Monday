@@ -83,7 +83,7 @@ struct ChannelView: View {
                             isShowingScanner = true
                         } label: {
                             Image(systemName: "qrcode")
-                            Text("Scan Node Address")
+                            Text("Scan")
                         }
                         .foregroundColor(viewModel.networkColor)
                         
@@ -107,8 +107,8 @@ struct ChannelView: View {
                             }
                         } label: {
                             HStack {
-                                Image(systemName: "doc.on.doc")
-                                Text("Node Address from Pasteboard")
+                                Image(systemName: "doc.on.clipboard.fill")
+                                Text("Paste")
                             }
                             .foregroundColor(viewModel.networkColor)
                         }

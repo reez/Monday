@@ -35,21 +35,20 @@ struct SendView: View {
                 
                 VStack {
                     
-                    HStack {
-                        Spacer()
+//                    PasteButton(payloadType: String.self) { strings in
+//                              //pastedText = strings[0]
+//                          }
+                    
+                    VStack(spacing: 20) {
+//                        Spacer()
                         Button {
                             isShowingScanner = true
                         } label: {
                             Image(systemName: "qrcode")
-                            Text("Scan Lightning Invoice")
+                            Text("Scan")
                         }
                         .foregroundColor(viewModel.networkColor)
                         
-                        Spacer()
-                    }
-                    
-                    HStack {
-                        Spacer()
                         Button {
                             if pasteboard.hasStrings {
                                 if let string = pasteboard.string {
@@ -61,14 +60,34 @@ struct SendView: View {
                             }
                         } label: {
                             HStack {
-                                Image(systemName: "doc.on.doc")
-                                Text("Lightning Invoice from Pasteboard")
+                                Image(systemName: "doc.on.clipboard.fill")
+                                Text("Paste")
                             }
                             .foregroundColor(viewModel.networkColor)
                         }
-                        Spacer()
                     }
-                    .padding()
+                    
+//                    HStack {
+//                        Spacer()
+//                        Button {
+//                            if pasteboard.hasStrings {
+//                                if let string = pasteboard.string {
+//                                    let lowercaseInvoice = string.lowercased()
+//                                    viewModel.invoice = lowercaseInvoice
+//                                } else {
+//                                    print("error: if let string = pasteboard.string")
+//                                }
+//                            }
+//                        } label: {
+//                            HStack {
+//                                Image(systemName: "doc.on.clipboard.fill")
+//                                Text("Paste")
+//                            }
+//                            .foregroundColor(viewModel.networkColor)
+//                        }
+//                        Spacer()
+//                    }
+//                    .padding()
                     
                     VStack(alignment: .leading) {
                         

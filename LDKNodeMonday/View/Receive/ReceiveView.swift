@@ -63,6 +63,8 @@ class ReceiveViewModel: ObservableObject {
 struct ReceiveView: View {
     @ObservedObject var viewModel: ReceiveViewModel
     @State private var showingErrorAlert = false
+    @State private var isCopied = false
+    @State private var showCheckmark = false
 
     var body: some View {
         
@@ -154,18 +156,40 @@ struct ReceiveView: View {
                             
                             Spacer()
                             
-                            Button {
+//                            Button {
+//                                UIPasteboard.general.string = viewModel.invoice
+//                                print("invoice copied: \(viewModel.invoice)")
+//                            } label: {
+//                                HStack {
+//                                    Image(systemName: "doc.on.doc")
+//                                        .font(.subheadline)
+//                                }
+//                                .bold()
+//                                .foregroundColor(viewModel.networkColor)
+//                            }
+                            
+                            Button(action: {
                                 UIPasteboard.general.string = viewModel.invoice
                                 print("invoice copied: \(viewModel.invoice)")
-                            } label: {
+
+                                // Update button state
+                                isCopied = true
+                                showCheckmark = true
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    // Revert button state after 2 seconds
+                                    isCopied = false
+                                    showCheckmark = false
+                                }
+                            }) {
                                 HStack {
-                                    Image(systemName: "doc.on.doc")
+                                    Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
                                         .font(.subheadline)
                                 }
                                 .bold()
                                 .foregroundColor(viewModel.networkColor)
-                                
                             }
+                            
                             
                         }
                         .padding()

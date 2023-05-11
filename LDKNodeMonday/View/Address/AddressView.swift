@@ -121,7 +121,9 @@ class AddressViewModel: ObservableObject {
 struct AddressView: View {
     @StateObject var viewModel: AddressViewModel //ObservedObject
     @State private var showingErrorAlert = false
-    
+    @State private var isCopied = false
+    @State private var showCheckmark = false
+
     var body: some View {
         
         NavigationView {
@@ -195,17 +197,40 @@ struct AddressView: View {
                         
                         Spacer()
                         
-                        Button {
+//                        Button {
+//                            UIPasteboard.general.string = viewModel.address
+//                            print("copied address: \(viewModel.address)")
+//                        } label: {
+//                            HStack {
+//                                Image(systemName: "doc.on.doc")
+//                                    .font(.subheadline)
+//                            }
+//                            .bold()
+//                        }
+                        
+                        
+                        Button(action: {
                             UIPasteboard.general.string = viewModel.address
-                            print("copied address: \(viewModel.address)")
-                        } label: {
+                            print("Copied address: \(viewModel.address)")
+                            
+                            // Update button state
+                            isCopied = true
+                            showCheckmark = true
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                // Revert button state after 2 seconds
+                                isCopied = false
+                                showCheckmark = false
+                            }
+                        }) {
                             HStack {
-                                Image(systemName: "doc.on.doc")
+                                Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
                                     .font(.subheadline)
                             }
                             .bold()
-                            
                         }
+                        
+                        
                         
                     }
                     
