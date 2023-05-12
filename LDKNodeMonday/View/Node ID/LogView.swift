@@ -24,10 +24,13 @@ struct LogView: View {
             VStack {
                 
                 VStack(spacing: 6) {
+                    
                     Text("ldk_node.log")
                         .font(.system(.body, design: .monospaced))
+                    
                     Text("Note: Log file deleted before each app start atm (because log file can get big and take a while to load here.)")
                         .font(.system(.caption, design: .monospaced))
+                    
                 }
                 .foregroundColor(.gray)
                 
@@ -62,7 +65,6 @@ struct LogView: View {
             }
             
         }
-        
         
     }
     

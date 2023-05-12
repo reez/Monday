@@ -111,9 +111,7 @@ struct ChannelsListView: View {
                         .listStyle(.plain)
                         
                     }
-                    
-            
-                    
+                                        
                 }
                 .padding()
                 .padding(.top)
@@ -124,7 +122,6 @@ struct ChannelsListView: View {
                 }
                 
             }
-            // .ignoresSafeArea() // This is pushing everything up on the screen 
             
         }
         

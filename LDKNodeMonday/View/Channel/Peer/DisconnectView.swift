@@ -12,32 +12,24 @@ import WalletUI
 class DisconnectViewModel: ObservableObject {
     @Published var nodeId: PublicKey
     @Published var networkColor = Color.gray
-    @Published var errorMessage: NodeErrorMessage?//String?
+    @Published var errorMessage: MondayNodeError?
 
     init(nodeId: PublicKey) {
         self.nodeId = nodeId
     }
-    
-//    func disconnect() {
-//        LightningNodeService.shared.disconnect(nodeId: self.nodeId)
-//    }
-    
+ 
     func disconnect() {
         do {
             try LightningNodeService.shared.disconnect(nodeId: self.nodeId)
             errorMessage = nil
         } catch let error as NodeError {
-            // handle NodeError
             let errorString = handleNodeError(error)
-//            errorMessage = .init(title: errorString.title, detail: errorString.detail)//"Title: \(errorString.title) ... Detail: (\(errorString.detail))"//"Node error: \(error.localizedDescription)"
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
             print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
-            // handle other errors
             print("LDKNodeMonday /// error getting disconnect: \(error.localizedDescription)")
-//            errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)//"Unexpected error: \(error.localizedDescription)"
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
@@ -76,16 +68,15 @@ struct DisconnectView: View {
                 .padding()
                 
                 Button("Disconnect Peer") {
+                    
                     viewModel.disconnect()
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//                        self.presentationMode.wrappedValue.dismiss()
-//                    }
                     if showingErrorAlert == true {
                         print(showingErrorAlert.description)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             self.presentationMode.wrappedValue.dismiss()
                         }
                     }
+                    
                 }
                 .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 

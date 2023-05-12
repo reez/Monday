@@ -34,13 +34,9 @@ struct SendView: View {
                 Color(uiColor: UIColor.systemBackground)
                 
                 VStack {
-                    
-//                    PasteButton(payloadType: String.self) { strings in
-//                              //pastedText = strings[0]
-//                          }
-                    
+                                        
                     VStack(spacing: 20) {
-//                        Spacer()
+
                         Button {
                             isShowingScanner = true
                         } label: {
@@ -50,6 +46,7 @@ struct SendView: View {
                         .foregroundColor(viewModel.networkColor)
                         
                         Button {
+                            
                             if pasteboard.hasStrings {
                                 if let string = pasteboard.string {
                                     let lowercaseInvoice = string.lowercased()
@@ -58,36 +55,17 @@ struct SendView: View {
                                     print("error: if let string = pasteboard.string")
                                 }
                             }
+                            
                         } label: {
+                            
                             HStack {
                                 Image(systemName: "doc.on.clipboard.fill")
                                 Text("Paste")
                             }
                             .foregroundColor(viewModel.networkColor)
+                            
                         }
                     }
-                    
-//                    HStack {
-//                        Spacer()
-//                        Button {
-//                            if pasteboard.hasStrings {
-//                                if let string = pasteboard.string {
-//                                    let lowercaseInvoice = string.lowercased()
-//                                    viewModel.invoice = lowercaseInvoice
-//                                } else {
-//                                    print("error: if let string = pasteboard.string")
-//                                }
-//                            }
-//                        } label: {
-//                            HStack {
-//                                Image(systemName: "doc.on.clipboard.fill")
-//                                Text("Paste")
-//                            }
-//                            .foregroundColor(viewModel.networkColor)
-//                        }
-//                        Spacer()
-//                    }
-//                    .padding()
                     
                     VStack(alignment: .leading) {
                         
@@ -108,16 +86,21 @@ struct SendView: View {
                                 )
                             
                             if !viewModel.invoice.isEmpty {
+                                
                                 HStack {
+                                    
                                     Spacer()
-                                    Button(action: {
+                                    
+                                    Button {
                                         self.viewModel.invoice = ""
-                                    }) {
+                                    } label: {
                                         Image(systemName: "xmark.circle.fill")
                                             .foregroundColor(.secondary)
                                     }
                                     .padding(.trailing, 8)
+                                    
                                 }
+                                
                             }
                             
                         }

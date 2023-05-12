@@ -14,7 +14,7 @@ class ReceiveViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""
     @Published var amountMsat: String = "" // TODO: make minimum 1/10/1000?
     @Published var networkColor = Color.gray
-    @Published var errorMessage: NodeErrorMessage?//String?
+    @Published var errorMessage: MondayNodeError?
 
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async {
         do {
@@ -23,29 +23,21 @@ class ReceiveViewModel: ObservableObject {
                 description: description,
                 expirySecs: expirySecs
             )
-            
-            //        self.invoice = invoice
             DispatchQueue.main.async {
                 self.invoice = invoice
             }
-        
     } catch let error as NodeError {
-        // handle NodeError
         let errorString = handleNodeError(error)
-//        errorMessage = .init(title: errorString.title, detail: errorString.detail)
         DispatchQueue.main.async {
             self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
         }
         print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
     } catch {
-        // handle other errors
         print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
-//        errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
         DispatchQueue.main.async {
             self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
         }
     }
-        
         
     }
     
@@ -93,16 +85,20 @@ struct ReceiveView: View {
                                 )
                             
                             if !viewModel.amountMsat.isEmpty {
+                                
                                 HStack {
+                                    
                                     Spacer()
-                                    Button(action: {
+                                    
+                                    Button {
                                         self.viewModel.amountMsat = ""
-                                    }) {
+                                    } label: {
                                         Image(systemName: "xmark.circle.fill")
                                             .foregroundColor(.secondary)
                                     }
                                     .padding(.trailing, 8)
                                 }
+                                
                             }
                             
                         }
@@ -117,8 +113,6 @@ struct ReceiveView: View {
                                 description: "LDKNodeMonday",
                                 expirySecs: UInt32(3600)
                             )
-                            
-                            
                         }
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
@@ -156,32 +150,16 @@ struct ReceiveView: View {
                             
                             Spacer()
                             
-//                            Button {
-//                                UIPasteboard.general.string = viewModel.invoice
-//                                print("invoice copied: \(viewModel.invoice)")
-//                            } label: {
-//                                HStack {
-//                                    Image(systemName: "doc.on.doc")
-//                                        .font(.subheadline)
-//                                }
-//                                .bold()
-//                                .foregroundColor(viewModel.networkColor)
-//                            }
-                            
-                            Button(action: {
+                            Button {
                                 UIPasteboard.general.string = viewModel.invoice
                                 print("invoice copied: \(viewModel.invoice)")
-
-                                // Update button state
                                 isCopied = true
                                 showCheckmark = true
-                                
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    // Revert button state after 2 seconds
                                     isCopied = false
                                     showCheckmark = false
                                 }
-                            }) {
+                            } label: {
                                 HStack {
                                     Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
                                         .font(.subheadline)
@@ -189,7 +167,6 @@ struct ReceiveView: View {
                                 .bold()
                                 .foregroundColor(viewModel.networkColor)
                             }
-                            
                             
                         }
                         .padding()

@@ -20,12 +20,6 @@
 		AE5C4FD829A5577F00BE3285 /* WalletUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE5C4FD729A5577F00BE3285 /* WalletUI */; };
 		AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */; };
 		AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5702A00947B009E16E3 /* ReceiveView.swift */; };
-		AE6BB5732A0171F1009E16E3 /* EventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5722A0171F1009E16E3 /* EventsView.swift */; };
-		AE6BB5752A017D77009E16E3 /* ChannelReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5742A017D77009E16E3 /* ChannelReadyView.swift */; };
-		AE6BB5772A017DE1009E16E3 /* PaymentSuccessfulView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5762A017DE1009E16E3 /* PaymentSuccessfulView.swift */; };
-		AE6BB5792A017DEA009E16E3 /* PaymentFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5782A017DEA009E16E3 /* PaymentFailedView.swift */; };
-		AE6BB57B2A017DF2009E16E3 /* PaymentReceivedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB57A2A017DF2009E16E3 /* PaymentReceivedView.swift */; };
-		AE6BB57D2A017DFA009E16E3 /* ChannelClosedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB57C2A017DFA009E16E3 /* ChannelClosedView.swift */; };
 		AE80116929A59918009B9967 /* TabHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116829A59918009B9967 /* TabHomeView.swift */; };
 		AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* NodeIDView.swift */; };
 		AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelView.swift */; };
@@ -33,11 +27,8 @@
 		AE83142829AEDDAD00088A70 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142729AEDDAD00088A70 /* SendView.swift */; };
 		AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */; };
 		AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9422692A007D6C007E4F12 /* ChannelsListView.swift */; };
-		AE996E7A2A09471400D410E6 /* ChannelPendingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE996E792A09471400D410E6 /* ChannelPendingView.swift */; };
-		AEBAA4812A01A6BB0042EA82 /* LDKNodeMondayEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4802A01A6BB0042EA82 /* LDKNodeMondayEvent.swift */; };
 		AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4822A01A80A0042EA82 /* PeersListView.swift */; };
 		AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48C2A01A93B0042EA82 /* PeerView.swift */; };
-		AEBAA48F2A01C03A0042EA82 /* StopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48E2A01C03A0042EA82 /* StopView.swift */; };
 		AEBAA4922A01C34A0042EA82 /* ChannelCloseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4912A01C34A0042EA82 /* ChannelCloseView.swift */; };
 		AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */; };
 		AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */; };
@@ -60,12 +51,6 @@
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extensions.swift"; sourceTree = "<group>"; };
 		AE6BB5702A00947B009E16E3 /* ReceiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveView.swift; sourceTree = "<group>"; };
-		AE6BB5722A0171F1009E16E3 /* EventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsView.swift; sourceTree = "<group>"; };
-		AE6BB5742A017D77009E16E3 /* ChannelReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelReadyView.swift; sourceTree = "<group>"; };
-		AE6BB5762A017DE1009E16E3 /* PaymentSuccessfulView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSuccessfulView.swift; sourceTree = "<group>"; };
-		AE6BB5782A017DEA009E16E3 /* PaymentFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFailedView.swift; sourceTree = "<group>"; };
-		AE6BB57A2A017DF2009E16E3 /* PaymentReceivedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentReceivedView.swift; sourceTree = "<group>"; };
-		AE6BB57C2A017DFA009E16E3 /* ChannelClosedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelClosedView.swift; sourceTree = "<group>"; };
 		AE80116829A59918009B9967 /* TabHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeView.swift; sourceTree = "<group>"; };
 		AE80116A29A59976009B9967 /* NodeIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDView.swift; sourceTree = "<group>"; };
 		AE80116C29A59AF4009B9967 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
@@ -74,11 +59,8 @@
 		AE8D877429B145F100F2B918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		AE9422692A007D6C007E4F12 /* ChannelsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListView.swift; sourceTree = "<group>"; };
-		AE996E792A09471400D410E6 /* ChannelPendingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelPendingView.swift; sourceTree = "<group>"; };
-		AEBAA4802A01A6BB0042EA82 /* LDKNodeMondayEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKNodeMondayEvent.swift; sourceTree = "<group>"; };
 		AEBAA4822A01A80A0042EA82 /* PeersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersListView.swift; sourceTree = "<group>"; };
 		AEBAA48C2A01A93B0042EA82 /* PeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerView.swift; sourceTree = "<group>"; };
-		AEBAA48E2A01C03A0042EA82 /* StopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopView.swift; sourceTree = "<group>"; };
 		AEBAA4912A01C34A0042EA82 /* ChannelCloseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelCloseView.swift; sourceTree = "<group>"; };
 		AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectView.swift; sourceTree = "<group>"; };
 		AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
@@ -153,25 +135,10 @@
 			isa = PBXGroup;
 			children = (
 				AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */,
-				AEBAA4802A01A6BB0042EA82 /* LDKNodeMondayEvent.swift */,
 				AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */,
 				AE83142529AED67B00088A70 /* LightningNodeError.swift */,
 			);
 			path = Lightning;
-			sourceTree = "<group>";
-		};
-		AE6BB57E2A0181A6009E16E3 /* Event */ = {
-			isa = PBXGroup;
-			children = (
-				AE6BB5722A0171F1009E16E3 /* EventsView.swift */,
-				AE6BB5742A017D77009E16E3 /* ChannelReadyView.swift */,
-				AE996E792A09471400D410E6 /* ChannelPendingView.swift */,
-				AE6BB57C2A017DFA009E16E3 /* ChannelClosedView.swift */,
-				AE6BB57A2A017DF2009E16E3 /* PaymentReceivedView.swift */,
-				AE6BB5782A017DEA009E16E3 /* PaymentFailedView.swift */,
-				AE6BB5762A017DE1009E16E3 /* PaymentSuccessfulView.swift */,
-			);
-			path = Event;
 			sourceTree = "<group>";
 		};
 		AE80116E29A5A64F009B9967 /* View */ = {
@@ -183,8 +150,6 @@
 				AEBAA4882A01A90D0042EA82 /* Send */,
 				AEBAA4892A01A9130042EA82 /* Receive */,
 				AEBAA48A2A01A91C0042EA82 /* Node ID */,
-				AE6BB57E2A0181A6009E16E3 /* Event */,
-				AEBAA4902A01C1770042EA82 /* Stop */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -193,7 +158,6 @@
 			isa = PBXGroup;
 			children = (
 				AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */,
-				AEE5B7692A09C722001E5E59 /* Peer.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -250,16 +214,9 @@
 				AEBAA4822A01A80A0042EA82 /* PeersListView.swift */,
 				AEBAA48C2A01A93B0042EA82 /* PeerView.swift */,
 				AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */,
+				AEE5B7692A09C722001E5E59 /* Peer.swift */,
 			);
 			path = Peer;
-			sourceTree = "<group>";
-		};
-		AEBAA4902A01C1770042EA82 /* Stop */ = {
-			isa = PBXGroup;
-			children = (
-				AEBAA48E2A01C03A0042EA82 /* StopView.swift */,
-			);
-			path = Stop;
 			sourceTree = "<group>";
 		};
 		AEE8FDE029F8581400406DD9 /* Extensions */ = {
@@ -357,11 +314,8 @@
 				AE001CDD29F5EBEC006CA7D1 /* SendConfirmationView.swift in Sources */,
 				AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */,
 				AEBAA4922A01C34A0042EA82 /* ChannelCloseView.swift in Sources */,
-				AE6BB5772A017DE1009E16E3 /* PaymentSuccessfulView.swift in Sources */,
 				AE0A02242A0AD71900F2479E /* LogView.swift in Sources */,
-				AE6BB57B2A017DF2009E16E3 /* PaymentReceivedView.swift in Sources */,
 				AE83142829AEDDAD00088A70 /* SendView.swift in Sources */,
-				AEBAA4812A01A6BB0042EA82 /* LDKNodeMondayEvent.swift in Sources */,
 				AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
 				AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */,
@@ -370,21 +324,15 @@
 				AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */,
 				AEE4CD0129ABC0DB00BF1BF9 /* QRCodeView.swift in Sources */,
 				AE80116929A59918009B9967 /* TabHomeView.swift in Sources */,
-				AE6BB5752A017D77009E16E3 /* ChannelReadyView.swift in Sources */,
 				AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */,
-				AE996E7A2A09471400D410E6 /* ChannelPendingView.swift in Sources */,
 				AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */,
-				AE6BB5792A017DEA009E16E3 /* PaymentFailedView.swift in Sources */,
 				AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
-				AE6BB57D2A017DFA009E16E3 /* ChannelClosedView.swift in Sources */,
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */,
 				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
 				AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */,
 				AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */,
-				AEBAA48F2A01C03A0042EA82 /* StopView.swift in Sources */,
-				AE6BB5732A0171F1009E16E3 /* EventsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

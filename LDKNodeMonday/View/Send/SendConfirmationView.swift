@@ -11,7 +11,7 @@ import LightningDevKitNode
 class SendConfirmationViewModel: ObservableObject {
     @Published var invoice: String = ""
     @Published var networkColor = Color.gray
-    @Published var errorMessage: NodeErrorMessage?//String?
+    @Published var errorMessage: MondayNodeError?
     @Published var paymentHash: PaymentHash?
 
     init(invoice: String) {
@@ -20,28 +20,23 @@ class SendConfirmationViewModel: ObservableObject {
     
     func sendPayment(invoice: Invoice) async  {
         print("LDKNodeMonday /// Send Payment from Invoice: \(invoice)")
-
         do {
             let paymentHash = try await LightningNodeService.shared.sendPayment(invoice: invoice)
             DispatchQueue.main.async {
                 self.paymentHash = paymentHash
             }
         } catch let error as NodeError {
-            // handle NodeError
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
             print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
-            // handle other errors
             print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
-//            errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
-        
     }
     
     func getColor() {
@@ -104,20 +99,6 @@ struct SendConfirmationView: View {
                 
             }
             .padding()
-            //            .alert(isPresented: $showingErrorAlert) {
-            //                Alert(
-            //                    title: Text(viewModel.errorMessage?.title ?? "Unknown"),
-            //                    message: Text(viewModel.errorMessage?.detail ?? ""),
-            //                    dismissButton: .default(Text("OK")) {
-            //                        viewModel.errorMessage = nil
-            //                    }
-            //                )
-            //            }
-            //            .onReceive(viewModel.$errorMessage) { errorMessage in
-            //                if errorMessage != nil {
-            //                    showingErrorAlert = true
-            //                }
-            //            }
             .onAppear {
                 Task {
                     await viewModel.sendPayment(invoice: viewModel.invoice)
