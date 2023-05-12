@@ -10,14 +10,14 @@ import LightningDevKitNode
 import WalletUI
 
 class DisconnectViewModel: ObservableObject {
-    @Published var nodeId: PublicKey
-    @Published var networkColor = Color.gray
     @Published var errorMessage: MondayNodeError?
-
+    @Published var networkColor = Color.gray
+    @Published var nodeId: PublicKey
+    
     init(nodeId: PublicKey) {
         self.nodeId = nodeId
     }
- 
+    
     func disconnect() {
         do {
             try LightningNodeService.shared.disconnect(nodeId: self.nodeId)
@@ -27,9 +27,7 @@ class DisconnectViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
-            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
-            print("LDKNodeMonday /// error getting disconnect: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
@@ -46,7 +44,7 @@ struct DisconnectView: View {
     @ObservedObject var viewModel: DisconnectViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var showingErrorAlert = false
-
+    
     var body: some View {
         
         ZStack {
@@ -71,7 +69,6 @@ struct DisconnectView: View {
                     
                     viewModel.disconnect()
                     if showingErrorAlert == true {
-                        print(showingErrorAlert.description)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             self.presentationMode.wrappedValue.dismiss()
                         }

@@ -10,15 +10,15 @@ import LightningDevKitNode
 import WalletUI
 
 class NodeIDViewModel: ObservableObject {
-    @Published var nodeID: String = ""
-    @Published var networkColor = Color.gray
     @Published var errorMessage: MondayNodeError?
+    @Published var networkColor = Color.gray
+    @Published var nodeID: String = ""
     
     func getNodeID() {
         let nodeID = LightningNodeService.shared.nodeId()
         self.nodeID = nodeID
     }
-
+    
     func stop() {
         do {
             try LightningNodeService.shared.stop()
@@ -27,9 +27,7 @@ class NodeIDViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
-            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
-            print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
@@ -45,10 +43,10 @@ class NodeIDViewModel: ObservableObject {
 
 struct NodeIDView: View {
     @ObservedObject var viewModel: NodeIDViewModel
-    @State private var showingErrorAlert = false
     @State private var isCopied = false
     @State private var showCheckmark = false
-
+    @State private var showingErrorAlert = false
+    
     var body: some View {
         
         NavigationView {
@@ -75,7 +73,6 @@ struct NodeIDView: View {
                         
                         Button {
                             UIPasteboard.general.string = viewModel.nodeID
-                            print("copied node id: \(viewModel.nodeID)")
                             isCopied = true
                             showCheckmark = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

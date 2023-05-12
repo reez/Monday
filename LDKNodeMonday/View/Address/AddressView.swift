@@ -11,19 +11,18 @@ import WalletUI
 
 class AddressViewModel: ObservableObject {
     @Published var address: String = ""
-    @Published var synced: Bool = false
     @Published var balance: String = "0"
-    @Published var totalBalance: String = "0"
-    @Published var spendableBalance: String = "0"
-    @Published var networkColor = Color.gray
     @Published var errorMessage: MondayNodeError?
+    @Published var networkColor = Color.gray
+    @Published var spendableBalance: String = "0"
+    @Published var synced: Bool = false
+    @Published var totalBalance: String = "0"
     
     func getTotalOnchainBalanceSats() async {
         do {
             let balance = try await LightningNodeService.shared.getTotalOnchainBalanceSats()
             let intBalance = Int(balance)
             let stringIntBalance = String(intBalance)
-            print("LDKNodeMonday /// My total balance int string: \(stringIntBalance)")
             DispatchQueue.main.async {
                 self.totalBalance = stringIntBalance
             }
@@ -32,9 +31,7 @@ class AddressViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
-            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
-            print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
@@ -46,7 +43,6 @@ class AddressViewModel: ObservableObject {
             let balance = try await LightningNodeService.shared.getSpendableOnchainBalanceSats()
             let intBalance = Int(balance)
             let stringIntBalance = String(intBalance)
-            print("LDKNodeMonday /// My spendable balance int string: \(stringIntBalance)")
             DispatchQueue.main.async {
                 self.spendableBalance = stringIntBalance
             }
@@ -55,9 +51,7 @@ class AddressViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
-            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
-            print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
@@ -75,9 +69,7 @@ class AddressViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
-            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
-            print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
@@ -93,10 +85,10 @@ class AddressViewModel: ObservableObject {
 
 struct AddressView: View {
     @StateObject var viewModel: AddressViewModel // ObservedObject
-    @State private var showingErrorAlert = false
     @State private var isCopied = false
     @State private var showCheckmark = false
-
+    @State private var showingErrorAlert = false
+    
     var body: some View {
         
         NavigationView {
@@ -163,11 +155,10 @@ struct AddressView: View {
                         }
                         
                         Spacer()
-                                                
+                        
                         Button {
                             
                             UIPasteboard.general.string = viewModel.address
-                            print("Copied address: \(viewModel.address)")
                             isCopied = true
                             showCheckmark = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

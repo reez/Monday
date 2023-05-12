@@ -11,8 +11,8 @@ import WalletUI
 
 class ChannelCloseViewModel: ObservableObject {
     @Published var channel: ChannelDetails
-    @Published var networkColor = Color.gray
     @Published var errorMessage: MondayNodeError?
+    @Published var networkColor = Color.gray
     
     init(channel: ChannelDetails) {
         self.channel = channel
@@ -30,9 +30,7 @@ class ChannelCloseViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
-            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
-            print("LDKNodeMonday /// error getting close: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
@@ -160,10 +158,9 @@ struct ChannelCloseView: View {
                 .padding()
                 
                 Button("Close Channel") {
-
+                    
                     viewModel.close()
                     if showingErrorAlert == true {
-                        print(showingErrorAlert.description)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             self.presentationMode.wrappedValue.dismiss()
                         }

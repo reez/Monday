@@ -10,8 +10,8 @@ import LightningDevKitNode
 import WalletUI
 
 class PeersListViewModel: ObservableObject {
-    @Published var peers: [PeerDetails] = []
     @Published var networkColor = Color.gray
+    @Published var peers: [PeerDetails] = []
     
     func listPeers() {
         self.peers = LightningNodeService.shared.listPeers()

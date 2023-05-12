@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct LogView: View {
-    @State private var logFileContents = ""
     @State private var isLoading = false
+    @State private var logFileContents = ""
     
     var logFilePath: String {
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]

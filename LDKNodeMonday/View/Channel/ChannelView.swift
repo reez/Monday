@@ -11,33 +11,31 @@ import WalletUI
 import CodeScanner
 
 class ChannelViewModel: ObservableObject {
-    @Published var nodeId: PublicKey = ""
     @Published var address: SocketAddr = ""
     @Published var channelAmountSats: String = ""
-    @Published var networkColor = Color.gray
     @Published var errorMessage: MondayNodeError?
+    @Published var networkColor = Color.gray
+    @Published var nodeId: PublicKey = ""
     
     func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) {
-         do {
-             try LightningNodeService.shared.connectOpenChannel(
-                 nodeId: nodeId,
-                 address: address,
-                 channelAmountSats: channelAmountSats,
-                 pushToCounterpartyMsat: pushToCounterpartyMsat
-             )
-             errorMessage = nil
-         } catch let error as NodeError {
-             let errorString = handleNodeError(error)
-             DispatchQueue.main.async {
-                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
-             }
-             print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
-         } catch {
-             print("LDKNodeMonday /// error getting connectOpenChannel: \(error.localizedDescription)")
-             DispatchQueue.main.async {
-                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
-             }
-         }
+        do {
+            try LightningNodeService.shared.connectOpenChannel(
+                nodeId: nodeId,
+                address: address,
+                channelAmountSats: channelAmountSats,
+                pushToCounterpartyMsat: pushToCounterpartyMsat
+            )
+            errorMessage = nil
+        } catch let error as NodeError {
+            let errorString = handleNodeError(error)
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+            }
+        }
     }
     
     func getColor() {
@@ -51,8 +49,8 @@ struct ChannelView: View {
     @ObservedObject var viewModel: ChannelViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
-    let pasteboard = UIPasteboard.general
     @State private var showingErrorAlert = false
+    let pasteboard = UIPasteboard.general
     
     var body: some View {
         
@@ -239,7 +237,6 @@ struct ChannelView: View {
                     )
                     
                     if showingErrorAlert == true {
-                        print(showingErrorAlert.description)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             self.presentationMode.wrappedValue.dismiss()
                         }
@@ -292,8 +289,6 @@ extension ChannelView {
         isShowingScanner = false
         switch result {
         case .success(let result):
-            print("Scanning succeeded: \(result)")
-            print("peer to: \n \(result.string)")
             let scannedQRCode = result.string.lowercased()
             if let peer = scannedQRCode.parseConnectionInfo() {
                 viewModel.nodeId = peer.nodeID

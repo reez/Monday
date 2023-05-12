@@ -34,9 +34,9 @@ struct SendView: View {
                 Color(uiColor: UIColor.systemBackground)
                 
                 VStack {
-                                        
+                    
                     VStack(spacing: 20) {
-
+                        
                         Button {
                             isShowingScanner = true
                         } label: {
@@ -144,8 +144,6 @@ extension SendView {
         isShowingScanner = false
         switch result {
         case .success(let result):
-            print("Scanning succeeded: \(result)")
-            print("invoice: \n \(result.string)")
             let invoice = result.string.lowercased()
             viewModel.invoice = invoice
         case .failure(let error):

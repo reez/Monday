@@ -11,10 +11,10 @@ import WalletUI
 import CodeScanner
 
 class PeerViewModel: ObservableObject {
-    @Published var nodeId: PublicKey = ""
     @Published var address: SocketAddr = ""
-    @Published var networkColor = Color.gray
     @Published var errorMessage: MondayNodeError?
+    @Published var networkColor = Color.gray
+    @Published var nodeId: PublicKey = ""
     
     func connect(
         nodeId: PublicKey,
@@ -32,9 +32,7 @@ class PeerViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
-            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
-            print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
@@ -53,9 +51,9 @@ struct PeerView: View {
     @ObservedObject var viewModel: PeerViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
-    let pasteboard = UIPasteboard.general
     @State private var showingErrorAlert = false
-
+    let pasteboard = UIPasteboard.general
+    
     var body: some View {
         
         ZStack {
@@ -192,7 +190,6 @@ struct PeerView: View {
                         address: viewModel.address
                     )
                     if showingErrorAlert == true {
-                        print(showingErrorAlert.description)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             self.presentationMode.wrappedValue.dismiss()
                         }
@@ -244,8 +241,6 @@ extension PeerView {
         isShowingScanner = false
         switch result {
         case .success(let result):
-            print("Scanning succeeded: \(result)")
-            print("peer to: \n \(result.string)")
             let scannedQRCode = result.string.lowercased()
             if let peer = scannedQRCode.parseConnectionInfo() {
                 viewModel.nodeId = peer.nodeID

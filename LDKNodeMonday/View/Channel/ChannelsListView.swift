@@ -111,7 +111,7 @@ struct ChannelsListView: View {
                         .listStyle(.plain)
                         
                     }
-                                        
+                    
                 }
                 .padding()
                 .padding(.top)

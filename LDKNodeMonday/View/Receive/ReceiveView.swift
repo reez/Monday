@@ -11,11 +11,11 @@ import LightningDevKitNode
 import WalletUI
 
 class ReceiveViewModel: ObservableObject {
-    @Published var invoice: PublicKey = ""
     @Published var amountMsat: String = "" // TODO: make minimum 1/10/1000?
-    @Published var networkColor = Color.gray
+    @Published var invoice: PublicKey = ""
     @Published var errorMessage: MondayNodeError?
-
+    @Published var networkColor = Color.gray
+    
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async {
         do {
             let invoice = try await LightningNodeService.shared.receivePayment(
@@ -26,18 +26,16 @@ class ReceiveViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.invoice = invoice
             }
-    } catch let error as NodeError {
-        let errorString = handleNodeError(error)
-        DispatchQueue.main.async {
-            self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+        } catch let error as NodeError {
+            let errorString = handleNodeError(error)
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+            }
         }
-        print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
-    } catch {
-        print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
-        DispatchQueue.main.async {
-            self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
-        }
-    }
         
     }
     
@@ -54,10 +52,10 @@ class ReceiveViewModel: ObservableObject {
 
 struct ReceiveView: View {
     @ObservedObject var viewModel: ReceiveViewModel
-    @State private var showingErrorAlert = false
     @State private var isCopied = false
     @State private var showCheckmark = false
-
+    @State private var showingErrorAlert = false
+    
     var body: some View {
         
         NavigationView {
@@ -152,7 +150,6 @@ struct ReceiveView: View {
                             
                             Button {
                                 UIPasteboard.general.string = viewModel.invoice
-                                print("invoice copied: \(viewModel.invoice)")
                                 isCopied = true
                                 showCheckmark = true
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

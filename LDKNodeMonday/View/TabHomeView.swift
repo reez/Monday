@@ -19,7 +19,6 @@ class TabHomeViewModel: ObservableObject {
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         self.networkColor = color
-        print("got colors")
     }
     
 }
@@ -73,7 +72,7 @@ struct TabHomeView: View {
                             systemImage: "person"
                         )
                     }
-                            
+                
             }
             
         }

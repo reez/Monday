@@ -9,17 +9,16 @@ import SwiftUI
 import LightningDevKitNode
 
 class SendConfirmationViewModel: ObservableObject {
+    @Published var errorMessage: MondayNodeError?
     @Published var invoice: String = ""
     @Published var networkColor = Color.gray
-    @Published var errorMessage: MondayNodeError?
     @Published var paymentHash: PaymentHash?
-
+    
     init(invoice: String) {
         self.invoice = invoice
     }
     
     func sendPayment(invoice: Invoice) async  {
-        print("LDKNodeMonday /// Send Payment from Invoice: \(invoice)")
         do {
             let paymentHash = try await LightningNodeService.shared.sendPayment(invoice: invoice)
             DispatchQueue.main.async {
@@ -30,9 +29,7 @@ class SendConfirmationViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
-            print("Title: \(errorString.title) ... Detail: \(errorString.detail))")
         } catch {
-            print("LDKNodeMonday /// error getting connect: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
