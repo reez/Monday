@@ -19,21 +19,6 @@ class NodeIDViewModel: ObservableObject {
         self.nodeID = nodeID
     }
     
-    func stop() {
-        do {
-            try LightningNodeService.shared.stop()
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
-            }
-        }
-    }
-    
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         self.networkColor = color
@@ -90,12 +75,6 @@ struct NodeIDView: View {
                         
                     }
                     .padding(.horizontal)
-                    
-                    Button("Stop Node") {
-                        viewModel.stop()
-                    }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                    .padding(.top, 100.0)
                     
                     NavigationLink {
                         LogView()
