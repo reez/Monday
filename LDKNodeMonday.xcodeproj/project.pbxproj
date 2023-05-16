@@ -15,6 +15,7 @@
 		AE17E8E129A402E40058C9C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */; };
 		AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */; };
 		AE48445329F1BDBD007E37C7 /* LightningDevKitNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE48445229F1BDBD007E37C7 /* LightningDevKitNode */; };
+		AE4C15B22A1316D100AA8917 /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C15B12A1316D100AA8917 /* BalanceView.swift */; };
 		AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */; };
 		AE5C4FD529A5565700BE3285 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AE5C4FD429A5565700BE3285 /* README.md */; };
 		AE5C4FD829A5577F00BE3285 /* WalletUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE5C4FD729A5577F00BE3285 /* WalletUI */; };
@@ -47,6 +48,7 @@
 		AE17E8DD29A402E40058C9C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeService.swift; sourceTree = "<group>"; };
+		AE4C15B12A1316D100AA8917 /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
 		AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningStorage.swift; sourceTree = "<group>"; };
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extensions.swift"; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 		AEBAA4872A01A9060042EA82 /* Address */ = {
 			isa = PBXGroup;
 			children = (
+				AE4C15B12A1316D100AA8917 /* BalanceView.swift */,
 				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
 				AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */,
 			);
@@ -331,6 +334,7 @@
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */,
 				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
+				AE4C15B22A1316D100AA8917 /* BalanceView.swift in Sources */,
 				AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */,
 				AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */,
 			);

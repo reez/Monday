@@ -11,56 +11,12 @@ import WalletUI
 
 class AddressViewModel: ObservableObject {
     @Published var address: String = ""
-    @Published var balance: String = "0"
     @Published var errorMessage: MondayNodeError?
     @Published var networkColor = Color.gray
-    @Published var spendableBalance: String = "0"
-    @Published var synced: Bool = false
-    @Published var totalBalance: String = "0"
-    
-    func getTotalOnchainBalanceSats() async {
-        do {
-            let balance = try await LightningNodeService.shared.getTotalOnchainBalanceSats()
-            let intBalance = Int(balance)
-            let stringIntBalance = String(intBalance)
-            DispatchQueue.main.async {
-                self.totalBalance = stringIntBalance
-            }
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
-            }
-        }
-    }
-    
-    func getSpendableOnchainBalanceSats() async {
-        do {
-            let balance = try await LightningNodeService.shared.getSpendableOnchainBalanceSats()
-            let intBalance = Int(balance)
-            let stringIntBalance = String(intBalance)
-            DispatchQueue.main.async {
-                self.spendableBalance = stringIntBalance
-            }
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
-            }
-        }
-    }
     
     func newFundingAddress() async {
         do {
-            let address = try await LightningNodeService.shared.newFundingAddress() //else {
+            let address = try await LightningNodeService.shared.newFundingAddress()
             DispatchQueue.main.async {
                 self.address = address
             }
@@ -84,7 +40,7 @@ class AddressViewModel: ObservableObject {
 }
 
 struct AddressView: View {
-    @StateObject var viewModel: AddressViewModel // ObservedObject
+    @ObservedObject var viewModel: AddressViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingErrorAlert = false
@@ -99,29 +55,6 @@ struct AddressView: View {
                 VStack {
                     
                     Spacer()
-                    
-                    VStack {
-                        
-                        HStack(alignment: .lastTextBaseline) {
-                            
-                            Text(viewModel.totalBalance.formattedAmount())
-                                .textStyle(BitcoinTitle1())
-                            
-                            Text("Total Sats")
-                                .foregroundColor(.secondary)
-                                .textStyle(BitcoinTitle5())
-                                .baselineOffset(2)
-                            
-                        }
-                        
-                        HStack(spacing: 4) {
-                            Text(viewModel.totalBalance.formattedAmount())
-                            Text("Spendable Sats")
-                        }
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        
-                    }
                     
                     QRCodeView(address: viewModel.address)
                     
@@ -200,8 +133,6 @@ struct AddressView: View {
                 }
                 .onAppear {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getSpendableOnchainBalanceSats()
                         await viewModel.newFundingAddress()
                         viewModel.getColor()
                     }
