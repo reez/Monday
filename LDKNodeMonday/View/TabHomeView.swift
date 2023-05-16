@@ -24,7 +24,7 @@ class TabHomeViewModel: ObservableObject {
 }
 
 struct TabHomeView: View {
-    @ObservedObject var viewModel: TabHomeViewModel
+    @StateObject var viewModel: TabHomeViewModel
     
     var body: some View {
         
@@ -33,10 +33,18 @@ struct TabHomeView: View {
             
             TabView {
                 
-                AddressView(viewModel: .init())
+//                AddressView(viewModel: .init())
+//                    .tabItem {
+//                        Label(
+//                            "Address",
+//                            systemImage: "bitcoinsign"
+//                        )
+//                    }
+                
+                BalanceView(viewModel: .init())
                     .tabItem {
                         Label(
-                            "Address",
+                            "Balance",
                             systemImage: "bitcoinsign"
                         )
                     }
@@ -74,15 +82,22 @@ struct TabHomeView: View {
                     }
                 
             }
+            .tint(viewModel.networkColor)
+            .onAppear {
+                Task {
+                    try await viewModel.start()
+                    viewModel.getColor()
+                }
+            }
             
         }
-        .tint(viewModel.networkColor)
-        .onAppear {
-            Task {
-                try await viewModel.start()
-                viewModel.getColor()
-            }
-        }
+//        .tint(viewModel.networkColor)
+//        .onAppear {
+//            Task {
+//                try await viewModel.start()
+//                viewModel.getColor()
+//            }
+//        }
         
     }
     

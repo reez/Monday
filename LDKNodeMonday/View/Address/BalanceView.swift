@@ -183,7 +183,6 @@ struct BalanceView: View {
                     Task {
                         await viewModel.getTotalOnchainBalanceSats()
                         await viewModel.getSpendableOnchainBalanceSats()
-                        //                        await viewModel.newFundingAddress()
                         viewModel.getColor()
                     }
                 }
