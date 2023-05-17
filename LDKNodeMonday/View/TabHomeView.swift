@@ -12,9 +12,9 @@ import WalletUI
 class TabHomeViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     
-    func start() async throws {
-        try await LightningNodeService.shared.start()
-    }
+//    func start() async throws {
+//        try await LightningNodeService.shared.start()
+//    }
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
@@ -85,7 +85,7 @@ struct TabHomeView: View {
             .tint(viewModel.networkColor)
             .onAppear {
                 Task {
-                    try await viewModel.start()
+//                    try await viewModel.start()
                     viewModel.getColor()
                 }
             }

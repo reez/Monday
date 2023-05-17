@@ -25,18 +25,18 @@ struct SendView: View {
     @ObservedObject var viewModel: SendViewModel
     @State private var isShowingScanner = false
     let pasteboard = UIPasteboard.general
-    
+
     var body: some View {
-        
+
         NavigationView {
-            
+
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
-                
+
                 VStack {
-                    
+
                     VStack(spacing: 20) {
-                        
+
                         Button {
                             isShowingScanner = true
                         } label: {
@@ -44,9 +44,9 @@ struct SendView: View {
                             Text("Scan")
                         }
                         .foregroundColor(viewModel.networkColor)
-                        
+
                         Button {
-                            
+
                             if pasteboard.hasStrings {
                                 if let string = pasteboard.string {
                                     let lowercaseInvoice = string.lowercased()
@@ -55,25 +55,25 @@ struct SendView: View {
                                     print("error: if let string = pasteboard.string")
                                 }
                             }
-                            
+
                         } label: {
-                            
+
                             HStack {
                                 Image(systemName: "doc.on.clipboard.fill")
                                 Text("Paste")
                             }
                             .foregroundColor(viewModel.networkColor)
-                            
+
                         }
                     }
-                    
+
                     VStack(alignment: .leading) {
-                        
+
                         Text("Invoice")
                             .bold()
-                        
+
                         ZStack {
-                            
+
                             TextField("lnbc10u1pwz...8f8r9ckzr0r", text: $viewModel.invoice)
                                 .frame(height: 48)
                                 .truncationMode(.middle)
@@ -84,13 +84,13 @@ struct SendView: View {
                                         .stroke(lineWidth: 1.0)
                                         .foregroundColor(.secondary)
                                 )
-                            
+
                             if !viewModel.invoice.isEmpty {
-                                
+
                                 HStack {
-                                    
+
                                     Spacer()
-                                    
+
                                     Button {
                                         self.viewModel.invoice = ""
                                     } label: {
@@ -98,16 +98,16 @@ struct SendView: View {
                                             .foregroundColor(.secondary)
                                     }
                                     .padding(.trailing, 8)
-                                    
+
                                 }
-                                
+
                             }
-                            
+
                         }
-                        
+
                     }
                     .padding()
-                    
+
                     NavigationLink(
                         destination:
                             SendConfirmationView(
@@ -119,7 +119,7 @@ struct SendView: View {
                         Text("Send")
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                    
+
                 }
                 .padding()
                 .navigationTitle("Send")
@@ -129,14 +129,16 @@ struct SendView: View {
                 .onAppear {
                     viewModel.getColor()
                 }
-                
+
             }
             .ignoresSafeArea()
-            
+
         }
-        
+
     }
 }
+
+
 
 extension SendView {
     
