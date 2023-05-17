@@ -34,7 +34,9 @@ class AddressViewModel: ObservableObject {
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
-        self.networkColor = color
+        DispatchQueue.main.async {
+            self.networkColor = color
+        }
     }
     
 }
@@ -90,7 +92,6 @@ struct AddressView: View {
                         Spacer()
                         
                         Button {
-                            
                             UIPasteboard.general.string = viewModel.address
                             isCopied = true
                             showCheckmark = true
@@ -98,15 +99,12 @@ struct AddressView: View {
                                 isCopied = false
                                 showCheckmark = false
                             }
-                            
                         } label: {
-                            
                             HStack {
                                 Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
                                     .font(.subheadline)
                             }
                             .bold()
-                            
                         }
                         
                     }

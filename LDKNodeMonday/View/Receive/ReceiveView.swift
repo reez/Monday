@@ -45,7 +45,9 @@ class ReceiveViewModel: ObservableObject {
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
-        self.networkColor = color
+        DispatchQueue.main.async {
+            self.networkColor = color
+        }
     }
     
 }
@@ -178,7 +180,6 @@ struct ReceiveView: View {
                     
                 }
                 .padding()
-                .navigationTitle("Receive")
                 .alert(isPresented: $showingErrorAlert) {
                     Alert(
                         title: Text(viewModel.errorMessage?.title ?? "Unknown"),

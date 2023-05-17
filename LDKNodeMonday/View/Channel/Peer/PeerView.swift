@@ -42,7 +42,9 @@ class PeerViewModel: ObservableObject {
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
-        self.networkColor = color
+        DispatchQueue.main.async {
+            self.networkColor = color
+        }
     }
     
 }
@@ -61,22 +63,25 @@ struct PeerView: View {
             
             VStack {
                 
-                VStack(alignment: .leading) {
+                HStack {
                     
-                    HStack {
-                        
-                        Spacer()
-                        
-                        Button {
-                            isShowingScanner = true
-                        } label: {
-                            Image(systemName: "qrcode")
-                            Text("Scan")
-                        }
-                        .foregroundColor(viewModel.networkColor)
-                        
-                        Spacer()
+                    Spacer()
+                    
+                    Button {
+                        isShowingScanner = true
+                    } label: {
+                        Image(systemName: "qrcode.viewfinder")
+                            .font(.largeTitle)
                     }
+                    .foregroundColor(viewModel.networkColor)
+                    .padding(.top)
+                    
+                }
+                .padding(.top)
+                
+                Spacer()
+                
+                VStack(alignment: .leading) {
                     
                     HStack {
                         
@@ -97,8 +102,8 @@ struct PeerView: View {
                             }
                         } label: {
                             HStack {
-                                Image(systemName: "doc.on.clipboard.fill")
-                                Text("Paste")
+                                Image(systemName: "doc.on.doc")
+                                    .font(.largeTitle)
                             }
                             .foregroundColor(viewModel.networkColor)
                         }
@@ -184,7 +189,6 @@ struct PeerView: View {
                 .padding()
                 
                 Button {
-                    
                     viewModel.connect(
                         nodeId: viewModel.nodeId,
                         address: viewModel.address
@@ -194,12 +198,13 @@ struct PeerView: View {
                             self.presentationMode.wrappedValue.dismiss()
                         }
                     }
-                    
                 } label: {
                     Text("Connect Peer")
                 }
                 .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 .padding()
+                
+                Spacer()
                 
             }
             .padding()

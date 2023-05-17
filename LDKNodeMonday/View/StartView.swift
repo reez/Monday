@@ -20,22 +20,23 @@ class StartViewModel: ObservableObject {
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
-        self.networkColor = color
+        DispatchQueue.main.async {
+            self.networkColor = color
+        }
     }
     
 }
 
 struct StartView: View {
     @ObservedObject var viewModel: StartViewModel
-
+    
     var body: some View {
         
         ZStack {
             Color(uiColor: UIColor.systemBackground)
-
+            
             VStack {
                 if viewModel.isStarted {
-                    // How should I best go to TabHomeView when node is started?
                     TabHomeView(viewModel: .init())
                 } else {
                     Text("Starting...")

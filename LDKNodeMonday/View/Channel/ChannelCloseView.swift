@@ -39,7 +39,9 @@ class ChannelCloseViewModel: ObservableObject {
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
-        self.networkColor = color
+        DispatchQueue.main.async {
+            self.networkColor = color
+        }
     }
     
 }

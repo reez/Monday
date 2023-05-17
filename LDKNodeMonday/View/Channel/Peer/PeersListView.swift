@@ -19,12 +19,15 @@ class PeersListViewModel: ObservableObject {
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
-        self.networkColor = color
+        DispatchQueue.main.async {
+            self.networkColor = color
+        }
     }
     
 }
 struct PeersListView: View {
     @ObservedObject var viewModel: PeersListViewModel
+    @State private var isViewPeerPresented = false
     
     var body: some View {
         
@@ -33,8 +36,10 @@ struct PeersListView: View {
             
             VStack {
                 
-                NavigationLink(destination: PeerView(viewModel: .init())) {
-                    Text("Connect Peer")
+                Button {
+                    isViewPeerPresented = true
+                } label: {
+                    Text("View Peer")
                 }
                 .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 .padding()
@@ -121,8 +126,13 @@ struct PeersListView: View {
             .padding()
             .padding(.top)
             .onAppear {
-                viewModel.listPeers()
-                viewModel.getColor()
+                Task {
+                    viewModel.listPeers()
+                    viewModel.getColor()
+                }
+            }
+            .sheet(isPresented: $isViewPeerPresented) {
+                PeerView(viewModel: .init())
             }
             
         }

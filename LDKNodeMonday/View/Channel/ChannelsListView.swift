@@ -19,12 +19,18 @@ class ChannelsListViewModel: ObservableObject {
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
-        self.networkColor = color
+        DispatchQueue.main.async {
+            self.networkColor = color
+        }
     }
     
 }
 struct ChannelsListView: View {
     @ObservedObject var viewModel: ChannelsListViewModel
+    @State private var isSendPresented = false
+    @State private var isReceivePresented = false
+    @State private var isViewPeersPresented = false
+    @State private var isAddChannelPresented = false
     
     var body: some View {
         
@@ -35,15 +41,17 @@ struct ChannelsListView: View {
                 
                 VStack {
                     
-                    NavigationLink {
-                        PeersListView(viewModel: .init())
+                    Button {
+                        isViewPeersPresented = true
                     } label: {
                         Text("View Peers")
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding()
                     
-                    NavigationLink(destination: ChannelView(viewModel: .init())) {
+                    Button {
+                        isAddChannelPresented = true
+                    } label: {
                         Text("Add Channel")
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
@@ -112,6 +120,37 @@ struct ChannelsListView: View {
                         
                     }
                     
+                    Spacer()
+                    
+                    HStack {
+                        
+                        Button {
+                            isSendPresented = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "arrow.up")
+                                Text("Send")
+                            }
+                        }
+                        .tint(viewModel.networkColor)
+                        .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
+                        
+                        Spacer()
+                        
+                        Button {
+                            isReceivePresented = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "arrow.down")
+                                Text("Receive")
+                            }
+                        }
+                        .tint(viewModel.networkColor)
+                        .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
+                        
+                    }
+                    .padding()
+                    
                 }
                 .padding()
                 .padding(.top)
@@ -119,6 +158,18 @@ struct ChannelsListView: View {
                 .onAppear {
                     viewModel.listChannels()
                     viewModel.getColor()
+                }
+                .sheet(isPresented: $isSendPresented) {
+                    SendView(viewModel: .init())
+                }
+                .sheet(isPresented: $isReceivePresented) {
+                    ReceiveView(viewModel: .init())
+                }
+                .sheet(isPresented: $isViewPeersPresented) {
+                    PeersListView(viewModel: .init())
+                }
+                .sheet(isPresented: $isAddChannelPresented) {
+                    ChannelView(viewModel: .init())
                 }
                 
             }

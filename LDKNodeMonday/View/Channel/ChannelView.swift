@@ -40,7 +40,9 @@ class ChannelViewModel: ObservableObject {
     
     func getColor() {
         let color = LightningNodeService.shared.networkColor
-        self.networkColor = color
+        DispatchQueue.main.async {
+            self.networkColor = color
+        }
     }
     
 }
@@ -59,23 +61,25 @@ struct ChannelView: View {
             
             VStack {
                 
-                VStack(alignment: .leading) {
+                HStack {
                     
-                    HStack {
-                        
-                        Spacer()
-                        
-                        Button {
-                            isShowingScanner = true
-                        } label: {
-                            Image(systemName: "qrcode")
-                            Text("Scan")
-                        }
-                        .foregroundColor(viewModel.networkColor)
-                        
-                        Spacer()
-                        
+                    Spacer()
+                    
+                    Button {
+                        isShowingScanner = true
+                    } label: {
+                        Image(systemName: "qrcode.viewfinder")
+                            .font(.largeTitle)
                     }
+                    .foregroundColor(viewModel.networkColor)
+                    .padding(.top)
+                    
+                }
+                .padding(.top)
+                
+                Spacer()
+                
+                VStack(alignment: .leading) {
                     
                     HStack {
                         
@@ -99,8 +103,8 @@ struct ChannelView: View {
                         } label: {
                             
                             HStack {
-                                Image(systemName: "doc.on.clipboard.fill")
-                                Text("Paste")
+                                Image(systemName: "doc.on.doc")
+                                    .font(.largeTitle)
                             }
                             .foregroundColor(viewModel.networkColor)
                             
@@ -248,9 +252,10 @@ struct ChannelView: View {
                 .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 .padding()
                 
+                Spacer()
+                
             }
             .padding()
-            .navigationBarTitle("Channel")
             .sheet(isPresented: $isShowingScanner) {
                 CodeScannerView(
                     codeTypes: [.qr],

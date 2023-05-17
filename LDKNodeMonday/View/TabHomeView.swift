@@ -12,13 +12,11 @@ import WalletUI
 class TabHomeViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     
-//    func start() async throws {
-//        try await LightningNodeService.shared.start()
-//    }
-    
     func getColor() {
         let color = LightningNodeService.shared.networkColor
-        self.networkColor = color
+        DispatchQueue.main.async {
+            self.networkColor = color
+        }
     }
     
 }
@@ -33,18 +31,10 @@ struct TabHomeView: View {
             
             TabView {
                 
-//                AddressView(viewModel: .init())
-//                    .tabItem {
-//                        Label(
-//                            "Address",
-//                            systemImage: "bitcoinsign"
-//                        )
-//                    }
-                
                 BalanceView(viewModel: .init())
                     .tabItem {
                         Label(
-                            "Balance",
+                            "Bitcoin",
                             systemImage: "bitcoinsign"
                         )
                     }
@@ -52,31 +42,15 @@ struct TabHomeView: View {
                 ChannelsListView(viewModel: .init())
                     .tabItem {
                         Label(
-                            "Channel",
-                            systemImage: "person.line.dotted.person"
-                        )
-                    }
-                
-                SendView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Send",
-                            systemImage: "arrow.up"
-                        )
-                    }
-                
-                ReceiveView(viewModel: .init())
-                    .tabItem {
-                        Label(
-                            "Receive",
-                            systemImage: "arrow.down"
+                            "Lightning",
+                            systemImage: "bolt.fill"
                         )
                     }
                 
                 NodeIDView(viewModel: .init())
                     .tabItem {
                         Label(
-                            "Node ID",
+                            "Node",
                             systemImage: "person"
                         )
                     }
@@ -85,19 +59,11 @@ struct TabHomeView: View {
             .tint(viewModel.networkColor)
             .onAppear {
                 Task {
-//                    try await viewModel.start()
                     viewModel.getColor()
                 }
             }
             
         }
-//        .tint(viewModel.networkColor)
-//        .onAppear {
-//            Task {
-//                try await viewModel.start()
-//                viewModel.getColor()
-//            }
-//        }
         
     }
     
