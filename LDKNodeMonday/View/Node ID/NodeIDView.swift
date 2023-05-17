@@ -47,10 +47,7 @@ struct NodeIDView: View {
                         .font(.largeTitle)
                         .foregroundColor(viewModel.networkColor)
                     
-                    Text("Node ID")
-                        .textStyle(BitcoinTitle5())
-                    
-                    HStack(alignment: .bottom) {
+                    HStack(alignment: .center) {
                         
                         Text(viewModel.nodeID)
                             .truncationMode(.middle)
@@ -68,8 +65,10 @@ struct NodeIDView: View {
                             }
                         } label: {
                             HStack {
-                                Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                    .font(.subheadline)
+                                withAnimation {
+                                    Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
+                                        .font(.subheadline)
+                                }
                             }
                             .bold()
                             .foregroundColor(viewModel.networkColor)

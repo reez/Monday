@@ -6,16 +6,31 @@
 //
 
 import SwiftUI
+import LightningDevKitNode
+import WalletUI
 
 class StartViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var isStarted: Bool = false
-    
+    @Published var errorMessage: MondayNodeError?
+
     func start() async throws {
-        try await LightningNodeService.shared.start()
-        DispatchQueue.main.async {
-            self.isStarted = true
+        do {
+            try await LightningNodeService.shared.start()
+            DispatchQueue.main.async {
+                self.isStarted = true
+            }
+        } catch let error as NodeError {
+            let errorString = handleNodeError(error)
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+            }
         }
+        
     }
     
     func getColor() {
@@ -29,7 +44,8 @@ class StartViewModel: ObservableObject {
 
 struct StartView: View {
     @ObservedObject var viewModel: StartViewModel
-    
+    @State private var showingErrorAlert = false
+
     var body: some View {
         
         ZStack {
@@ -44,12 +60,22 @@ struct StartView: View {
                 }
                 
             }
+            .padding()
             .tint(viewModel.networkColor)
             .onAppear {
                 Task {
                     try await viewModel.start()
                     viewModel.getColor()
                 }
+            }
+            .alert(isPresented: $showingErrorAlert) {
+                Alert(
+                    title: Text(viewModel.errorMessage?.title ?? "Unknown"),
+                    message: Text(viewModel.errorMessage?.detail ?? ""),
+                    dismissButton: .default(Text("OK")) {
+                        viewModel.errorMessage = nil
+                    }
+                )
             }
             
         }

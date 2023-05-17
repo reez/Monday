@@ -160,8 +160,10 @@ struct ReceiveView: View {
                                 }
                             } label: {
                                 HStack {
-                                    Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                        .font(.subheadline)
+                                    withAnimation {
+                                        Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
+                                            .font(.subheadline)
+                                    }
                                 }
                                 .bold()
                                 .foregroundColor(viewModel.networkColor)
