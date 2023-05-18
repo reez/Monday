@@ -34,7 +34,7 @@ struct TabHomeView: View {
                 BalanceView(viewModel: .init())
                     .tabItem {
                         Label(
-                            "Bitcoin",
+                            "",
                             systemImage: "bitcoinsign"
                         )
                     }
@@ -42,7 +42,7 @@ struct TabHomeView: View {
                 ChannelsListView(viewModel: .init())
                     .tabItem {
                         Label(
-                            "Lightning",
+                            "",
                             systemImage: "bolt.fill"
                         )
                     }
@@ -50,7 +50,7 @@ struct TabHomeView: View {
                 NodeIDView(viewModel: .init())
                     .tabItem {
                         Label(
-                            "Node",
+                            "",
                             systemImage: "person"
                         )
                     }
