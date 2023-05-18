@@ -21,9 +21,6 @@ class ChannelViewModel: ObservableObject {
 
     
     func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) async {
-//        DispatchQueue.main.async {
-//            self.isProgressViewShowing = true
-//        }
         do {
             try await LightningNodeService.shared.connectOpenChannel(
                 nodeId: nodeId,

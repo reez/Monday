@@ -23,9 +23,6 @@ class PeerViewModel: ObservableObject {
         address: SocketAddr//,
         //        permanently: Bool
     ) async {
-//        DispatchQueue.main.async {
-//            self.isProgressViewShowing = true
-//        }
         do {
             try await LightningNodeService.shared.connect(
                 nodeId: nodeId,
