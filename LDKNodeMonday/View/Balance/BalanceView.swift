@@ -15,6 +15,9 @@ class BalanceViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var spendableBalance: String = "0"
     @Published var totalBalance: String = "0"
+    @Published var isSpendableBalanceFinished: Bool = false
+    @Published var isTotalBalanceFinished: Bool = false
+
     
     func getTotalOnchainBalanceSats() async {
         do {
@@ -23,6 +26,7 @@ class BalanceViewModel: ObservableObject {
             let stringIntBalance = String(intBalance)
             DispatchQueue.main.async {
                 self.totalBalance = stringIntBalance
+                self.isTotalBalanceFinished = true
             }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
@@ -43,6 +47,7 @@ class BalanceViewModel: ObservableObject {
             let stringIntBalance = String(intBalance)
             DispatchQueue.main.async {
                 self.spendableBalance = stringIntBalance
+                self.isSpendableBalanceFinished = true
             }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
@@ -85,10 +90,15 @@ struct BalanceView: View {
                     
                     VStack {
                         
+                        
                         HStack(alignment: .lastTextBaseline) {
                             
-                            Text(viewModel.totalBalance.formattedAmount())
-                                .textStyle(BitcoinTitle1())
+                            if viewModel.isTotalBalanceFinished {
+                                Text(viewModel.totalBalance.formattedAmount())
+                                    .textStyle(BitcoinTitle1())
+                            } else {
+                                ProgressView()
+                            }
                             
                             Text("Total Sats")
                                 .foregroundColor(.secondary)
@@ -96,9 +106,14 @@ struct BalanceView: View {
                                 .baselineOffset(2)
                             
                         }
+                       
                         
                         HStack(spacing: 4) {
-                            Text(viewModel.totalBalance.formattedAmount())
+                            if viewModel.isSpendableBalanceFinished {
+                                Text(viewModel.totalBalance.formattedAmount())
+                            } else {
+                                ProgressView()
+                            }
                             Text("Spendable Sats")
                         }
                         .font(.caption)

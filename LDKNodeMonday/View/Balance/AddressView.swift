@@ -13,12 +13,14 @@ class AddressViewModel: ObservableObject {
     @Published var address: String = ""
     @Published var errorMessage: MondayNodeError?
     @Published var networkColor = Color.gray
-    
+    @Published var isAddressFinished: Bool = false
+
     func newFundingAddress() async {
         do {
             let address = try await LightningNodeService.shared.newFundingAddress()
             DispatchQueue.main.async {
                 self.address = address
+                self.isAddressFinished = true
             }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
@@ -77,15 +79,24 @@ struct AddressView: View {
                         
                         VStack(alignment: .leading, spacing: 5.0) {
                             
-                            Text("Bitcoin Network")
-                                .font(.caption)
-                                .bold()
-                            
-                            Text(viewModel.address)
-                                .font(.caption)
-                                .truncationMode(.middle)
-                                .lineLimit(1)
-                                .foregroundColor(.secondary)
+                            if viewModel.isAddressFinished {
+                                
+                                Text("Bitcoin Network")
+                                    .font(.caption)
+                                    .bold()
+                                
+                                Text(viewModel.address)
+                                    .font(.caption)
+                                    .truncationMode(.middle)
+                                    .lineLimit(1)
+                                    .foregroundColor(.secondary)
+                            } else {
+                                HStack {
+                                    Spacer()
+                                    ProgressView()
+                                    Spacer()
+                                }
+                            }
                             
                         }
                         

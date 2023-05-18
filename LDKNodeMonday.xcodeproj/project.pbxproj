@@ -150,10 +150,8 @@
 			children = (
 				AE80116829A59918009B9967 /* TabHomeView.swift */,
 				AE186B8D2A1540B700338463 /* StartView.swift */,
-				AEBAA4872A01A9060042EA82 /* Address */,
+				AEBAA4872A01A9060042EA82 /* Balance */,
 				AEBAA4862A01A8FB0042EA82 /* Channel */,
-				AEBAA4882A01A90D0042EA82 /* Send */,
-				AEBAA4892A01A9130042EA82 /* Receive */,
 				AEBAA48A2A01A91C0042EA82 /* Node ID */,
 			);
 			path = View;
@@ -173,19 +171,21 @@
 				AE9422692A007D6C007E4F12 /* ChannelsListView.swift */,
 				AE80116C29A59AF4009B9967 /* ChannelView.swift */,
 				AEBAA4912A01C34A0042EA82 /* ChannelCloseView.swift */,
+				AEBAA4882A01A90D0042EA82 /* Send */,
+				AEBAA4892A01A9130042EA82 /* Receive */,
 				AEBAA48B2A01A9300042EA82 /* Peer */,
 			);
 			path = Channel;
 			sourceTree = "<group>";
 		};
-		AEBAA4872A01A9060042EA82 /* Address */ = {
+		AEBAA4872A01A9060042EA82 /* Balance */ = {
 			isa = PBXGroup;
 			children = (
 				AE4C15B12A1316D100AA8917 /* BalanceView.swift */,
 				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
 				AEE4CD0029ABC0DB00BF1BF9 /* QRCodeView.swift */,
 			);
-			path = Address;
+			path = Balance;
 			sourceTree = "<group>";
 		};
 		AEBAA4882A01A90D0042EA82 /* Send */ = {

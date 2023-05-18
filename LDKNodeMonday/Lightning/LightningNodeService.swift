@@ -127,7 +127,7 @@ class LightningNodeService {
         return balance
     }
     
-    func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) throws {
+    func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) async throws {
         print("LDKNodeMonday /// connect")
         try node.connect(
             nodeId: nodeId,
@@ -147,7 +147,7 @@ class LightningNodeService {
         channelAmountSats: UInt64,
         pushToCounterpartyMsat: UInt64?,
         announceChannel: Bool = true
-    ) throws {
+    ) async throws {
         try node.connectOpenChannel(
             nodeId: nodeId,
             address: address,

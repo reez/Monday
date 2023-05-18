@@ -15,14 +15,19 @@ class PeerViewModel: ObservableObject {
     @Published var errorMessage: MondayNodeError?
     @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey = ""
-    
+    @Published var isPeerFinished: Bool = false
+    @Published var isProgressViewShowing: Bool = false
+
     func connect(
         nodeId: PublicKey,
         address: SocketAddr//,
         //        permanently: Bool
-    ){
+    ) async {
+//        DispatchQueue.main.async {
+//            self.isProgressViewShowing = true
+//        }
         do {
-            try LightningNodeService.shared.connect(
+            try await LightningNodeService.shared.connect(
                 nodeId: nodeId,
                 address: address,
                 permanently: true//permanently
@@ -31,10 +36,14 @@ class PeerViewModel: ObservableObject {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+                self.isPeerFinished = true
+                self.isProgressViewShowing = false
             }
         } catch {
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.isPeerFinished = true
+                self.isProgressViewShowing = false
             }
         }
         
@@ -113,6 +122,14 @@ struct PeerView: View {
                     }
                     .padding()
                     
+                    if viewModel.isProgressViewShowing {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                    }
+                    
                     Text("Node ID")
                         .bold()
                     
@@ -189,10 +206,13 @@ struct PeerView: View {
                 .padding()
                 
                 Button {
-                    viewModel.connect(
-                        nodeId: viewModel.nodeId,
-                        address: viewModel.address
-                    )
+                    self.viewModel.isProgressViewShowing = true
+                    Task {
+                        await viewModel.connect(
+                            nodeId: viewModel.nodeId,
+                            address: viewModel.address
+                        )
+                    }
                     if showingErrorAlert == true {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             self.presentationMode.wrappedValue.dismiss()

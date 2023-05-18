@@ -16,23 +16,35 @@ class ChannelViewModel: ObservableObject {
     @Published var errorMessage: MondayNodeError?
     @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey = ""
+    @Published var isOpenChannelFinished: Bool = false
+    @Published var isProgressViewShowing: Bool = false
+
     
-    func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) {
+    func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) async {
+//        DispatchQueue.main.async {
+//            self.isProgressViewShowing = true
+//        }
         do {
-            try LightningNodeService.shared.connectOpenChannel(
+            try await LightningNodeService.shared.connectOpenChannel(
                 nodeId: nodeId,
                 address: address,
                 channelAmountSats: channelAmountSats,
                 pushToCounterpartyMsat: pushToCounterpartyMsat
             )
-            errorMessage = nil
+            DispatchQueue.main.async {
+                self.errorMessage = nil
+                self.isOpenChannelFinished = true
+                self.isProgressViewShowing = false
+            }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
+                self.isProgressViewShowing = false
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
+                self.isProgressViewShowing = false
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
@@ -54,7 +66,7 @@ struct ChannelView: View {
     @State private var showingErrorAlert = false
     let pasteboard = UIPasteboard.general
     @State private var keyboardOffset: CGFloat = 0
-
+    
     var body: some View {
         
         ZStack {
@@ -117,6 +129,14 @@ struct ChannelView: View {
                             
                         }
                         .padding()
+                        
+                        if viewModel.isProgressViewShowing {
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                Spacer()
+                            }
+                        }
                         
                         Text("Node ID")
                             .bold()
@@ -234,14 +254,16 @@ struct ChannelView: View {
                     .padding()
                     
                     Button {
-                        
+                        self.viewModel.isProgressViewShowing = true
                         let channelAmountSats = UInt64(viewModel.channelAmountSats) ?? UInt64(101010)
-                        viewModel.openChannel(
-                            nodeId: viewModel.nodeId,
-                            address: viewModel.address,
-                            channelAmountSats: channelAmountSats,
-                            pushToCounterpartyMsat: nil // TODO: actually make this inputtable
-                        )
+                        Task {
+                            await viewModel.openChannel(
+                                nodeId: viewModel.nodeId,
+                                address: viewModel.address,
+                                channelAmountSats: channelAmountSats,
+                                pushToCounterpartyMsat: nil // TODO: actually make this inputtable
+                            )
+                        }
                         
                         if showingErrorAlert == true {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -286,15 +308,20 @@ struct ChannelView: View {
                 
             }
             .offset(y: keyboardOffset)
-               .animation(.easeInOut)
-               .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
-                   let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
-                   let height = value?.height ?? 0
-                   keyboardOffset = -height / 2
-               }
-               .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                   keyboardOffset = 0
-               }
+//            .animation(.easeInOut)
+            .onChange(of: keyboardOffset) { _ in
+                        withAnimation {
+                            // Empty closure to trigger animation
+                        }
+                    }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
+                let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+                let height = value?.height ?? 0
+                keyboardOffset = -height / 2
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                keyboardOffset = 0
+            }
             
         }
         .ignoresSafeArea()
