@@ -135,7 +135,7 @@ struct PeerView: View {
                         TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
                             .frame(height: 48)
                             .truncationMode(.middle)
-                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
                             .cornerRadius(5)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 5)
@@ -171,7 +171,7 @@ struct PeerView: View {
                         TextField("172.18.0.2:9735", text: $viewModel.address)
                             .frame(height: 48)
                             .truncationMode(.middle)
-                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
                             .cornerRadius(5)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 5)

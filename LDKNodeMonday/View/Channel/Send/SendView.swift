@@ -67,7 +67,7 @@ struct SendView: View {
                             TextField("lnbc10u1pwz...8f8r9ckzr0r", text: $viewModel.invoice)
                                 .frame(height: 48)
                                 .truncationMode(.middle)
-                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
                                 .cornerRadius(5)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 5)

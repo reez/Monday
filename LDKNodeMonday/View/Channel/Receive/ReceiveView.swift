@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 import LightningDevKitNode
 import WalletUI
 
@@ -76,7 +75,7 @@ struct ReceiveView: View {
                             
                             TextField("125000", text: $viewModel.amountMsat)
                                 .frame(height: 48)
-                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
                                 .cornerRadius(5)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 5)
@@ -116,6 +115,7 @@ struct ReceiveView: View {
                         }
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                    .padding(.bottom, 100.0)
                     
                     if viewModel.invoice != "" {
                         
