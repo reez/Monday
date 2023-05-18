@@ -53,233 +53,248 @@ struct ChannelView: View {
     @State private var isShowingScanner = false
     @State private var showingErrorAlert = false
     let pasteboard = UIPasteboard.general
-    
+    @State private var keyboardOffset: CGFloat = 0
+
     var body: some View {
         
         ZStack {
             Color(uiColor: UIColor.systemBackground)
             
-            VStack {
+            ScrollView {
                 
-                HStack {
-                    
-                    Spacer()
-                    
-                    Button {
-                        isShowingScanner = true
-                    } label: {
-                        Image(systemName: "qrcode.viewfinder")
-                            .font(.largeTitle)
-                    }
-                    .foregroundColor(viewModel.networkColor)
-                    .padding(.top)
-                    
-                }
-                .padding(.top)
-                
-                Spacer()
-                
-                VStack(alignment: .leading) {
+                VStack {
                     
                     HStack {
                         
                         Spacer()
                         
                         Button {
+                            isShowingScanner = true
+                        } label: {
+                            Image(systemName: "qrcode.viewfinder")
+                                .font(.largeTitle)
+                        }
+                        .foregroundColor(viewModel.networkColor)
+                        .padding(.top)
+                        
+                    }
+                    .padding(.top)
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .leading) {
+                        
+                        HStack {
                             
-                            if pasteboard.hasStrings {
-                                if let string = pasteboard.string {
-                                    if let peer = string.parseConnectionInfo() {
-                                        viewModel.nodeId = peer.nodeID
-                                        viewModel.address = peer.address
+                            Spacer()
+                            
+                            Button {
+                                
+                                if pasteboard.hasStrings {
+                                    if let string = pasteboard.string {
+                                        if let peer = string.parseConnectionInfo() {
+                                            viewModel.nodeId = peer.nodeID
+                                            viewModel.address = peer.address
+                                        } else {
+                                            print("Paste parsing did not work")
+                                        }
                                     } else {
-                                        print("Paste parsing did not work")
+                                        print("error: if let string = pasteboard.string")
                                     }
-                                } else {
-                                    print("error: if let string = pasteboard.string")
+                                }
+                                
+                            } label: {
+                                
+                                HStack {
+                                    Image(systemName: "doc.on.doc")
+                                        .font(.largeTitle)
+                                }
+                                .foregroundColor(viewModel.networkColor)
+                                
+                            }
+                            
+                            Spacer()
+                            
+                        }
+                        .padding()
+                        
+                        Text("Node ID")
+                            .bold()
+                        
+                        ZStack {
+                            
+                            TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
+                                .frame(height: 48)
+                                .truncationMode(.middle)
+                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                                .cornerRadius(5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(lineWidth: 1.0)
+                                        .foregroundColor(.secondary)
+                                )
+                            
+                            if !viewModel.nodeId.isEmpty {
+                                HStack {
+                                    Spacer()
+                                    Button(action: {
+                                        self.viewModel.nodeId = ""
+                                    }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding(.trailing, 8)
                                 }
                             }
                             
-                        } label: {
-                            
-                            HStack {
-                                Image(systemName: "doc.on.doc")
-                                    .font(.largeTitle)
-                            }
-                            .foregroundColor(viewModel.networkColor)
-                            
                         }
-                        
-                        Spacer()
                         
                     }
                     .padding()
                     
-                    Text("Node ID")
-                        .bold()
-                    
-                    ZStack {
+                    VStack(alignment: .leading) {
                         
-                        TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
-                            .frame(height: 48)
-                            .truncationMode(.middle)
-                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                            .cornerRadius(5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(lineWidth: 1.0)
-                                    .foregroundColor(.secondary)
-                            )
+                        Text("Address")
+                            .bold()
                         
-                        if !viewModel.nodeId.isEmpty {
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    self.viewModel.nodeId = ""
-                                }) {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.secondary)
-                                }
-                                .padding(.trailing, 8)
-                            }
-                        }
-                        
-                    }
-                    
-                }
-                .padding()
-                
-                VStack(alignment: .leading) {
-                    
-                    Text("Address")
-                        .bold()
-                    
-                    ZStack {
-                        
-                        TextField("172.18.0.2:9735", text: $viewModel.address)
-                            .frame(height: 48)
-                            .truncationMode(.middle)
-                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                            .cornerRadius(5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(lineWidth: 1.0)
-                                    .foregroundColor(.secondary)
-                            )
-                        
-                        if !viewModel.address.isEmpty {
+                        ZStack {
                             
-                            HStack {
-                                
-                                Spacer()
-                                
-                                Button {
-                                    self.viewModel.address = ""
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
+                            TextField("172.18.0.2:9735", text: $viewModel.address)
+                                .frame(height: 48)
+                                .truncationMode(.middle)
+                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                                .cornerRadius(5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(lineWidth: 1.0)
                                         .foregroundColor(.secondary)
+                                )
+                            
+                            if !viewModel.address.isEmpty {
+                                
+                                HStack {
+                                    
+                                    Spacer()
+                                    
+                                    Button {
+                                        self.viewModel.address = ""
+                                    } label: {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding(.trailing, 8)
+                                    
                                 }
-                                .padding(.trailing, 8)
                                 
                             }
                             
                         }
                         
                     }
+                    .padding()
                     
-                }
-                .padding()
-                
-                VStack(alignment: .leading) {
-                    
-                    Text("Sats")
-                        .bold()
-                    
-                    ZStack {
+                    VStack(alignment: .leading) {
                         
-                        TextField("125000", text: $viewModel.channelAmountSats)
-                            .frame(height: 48)
-                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
-                            .cornerRadius(5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(lineWidth: 1.0)
-                                    .foregroundColor(.secondary)
-                            )
+                        Text("Sats")
+                            .bold()
                         
-                        if !viewModel.channelAmountSats.isEmpty {
+                        ZStack {
                             
-                            HStack {
-                                
-                                Spacer()
-                                
-                                Button {
-                                    self.viewModel.channelAmountSats = ""
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
+                            TextField("125000", text: $viewModel.channelAmountSats)
+                                .frame(height: 48)
+                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
+                                .cornerRadius(5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(lineWidth: 1.0)
                                         .foregroundColor(.secondary)
+                                )
+                            
+                            if !viewModel.channelAmountSats.isEmpty {
+                                
+                                HStack {
+                                    
+                                    Spacer()
+                                    
+                                    Button {
+                                        self.viewModel.channelAmountSats = ""
+                                    } label: {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding(.trailing, 8)
+                                    
                                 }
-                                .padding(.trailing, 8)
                                 
                             }
                             
                         }
                         
                     }
+                    .padding()
+                    
+                    Button {
+                        
+                        let channelAmountSats = UInt64(viewModel.channelAmountSats) ?? UInt64(101010)
+                        viewModel.openChannel(
+                            nodeId: viewModel.nodeId,
+                            address: viewModel.address,
+                            channelAmountSats: channelAmountSats,
+                            pushToCounterpartyMsat: nil // TODO: actually make this inputtable
+                        )
+                        
+                        if showingErrorAlert == true {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                self.presentationMode.wrappedValue.dismiss()
+                            }
+                        }
+                        
+                    } label: {
+                        Text("Open Channel")
+                    }
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                    .padding()
+                    
+                    Spacer()
                     
                 }
                 .padding()
-                
-                Button {
-                    
-                    let channelAmountSats = UInt64(viewModel.channelAmountSats) ?? UInt64(101010)
-                    viewModel.openChannel(
-                        nodeId: viewModel.nodeId,
-                        address: viewModel.address,
-                        channelAmountSats: channelAmountSats,
-                        pushToCounterpartyMsat: nil // TODO: actually make this inputtable
+                .sheet(isPresented: $isShowingScanner) {
+                    CodeScannerView(
+                        codeTypes: [.qr],
+                        simulatedData: "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6",
+                        completion: handleScan
                     )
-                    
-                    if showingErrorAlert == true {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                            self.presentationMode.wrappedValue.dismiss()
+                }
+                .alert(isPresented: $showingErrorAlert) {
+                    Alert(
+                        title: Text(viewModel.errorMessage?.title ?? "Unknown"),
+                        message: Text(viewModel.errorMessage?.detail ?? ""),
+                        dismissButton: .default(Text("OK")) {
+                            viewModel.errorMessage = nil
                         }
-                    }
-                    
-                } label: {
-                    Text("Open Channel")
+                    )
                 }
-                .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                .padding()
-                
-                Spacer()
-                
-            }
-            .padding()
-            .sheet(isPresented: $isShowingScanner) {
-                CodeScannerView(
-                    codeTypes: [.qr],
-                    simulatedData: "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6",
-                    completion: handleScan
-                )
-            }
-            .alert(isPresented: $showingErrorAlert) {
-                Alert(
-                    title: Text(viewModel.errorMessage?.title ?? "Unknown"),
-                    message: Text(viewModel.errorMessage?.detail ?? ""),
-                    dismissButton: .default(Text("OK")) {
-                        viewModel.errorMessage = nil
+                .onReceive(viewModel.$errorMessage) { errorMessage in
+                    if errorMessage != nil {
+                        showingErrorAlert = true
                     }
-                )
-            }
-            .onReceive(viewModel.$errorMessage) { errorMessage in
-                if errorMessage != nil {
-                    showingErrorAlert = true
                 }
+                .onAppear {
+                    viewModel.getColor()
+                }
+                
             }
-            .onAppear {
-                viewModel.getColor()
-            }
+            .offset(y: keyboardOffset)
+               .animation(.easeInOut)
+               .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
+                   let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+                   let height = value?.height ?? 0
+                   keyboardOffset = -height / 2
+               }
+               .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                   keyboardOffset = 0
+               }
             
         }
         .ignoresSafeArea()

@@ -27,7 +27,7 @@ class PeersListViewModel: ObservableObject {
 }
 struct PeersListView: View {
     @ObservedObject var viewModel: PeersListViewModel
-    @State private var isViewPeerPresented = false
+    @State private var isAddPeerPresented = false
     
     var body: some View {
         
@@ -37,9 +37,9 @@ struct PeersListView: View {
             VStack {
                 
                 Button {
-                    isViewPeerPresented = true
+                    isAddPeerPresented = true
                 } label: {
-                    Text("View Peer")
+                    Text("Add Peer")
                 }
                 .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 .padding()
@@ -131,7 +131,7 @@ struct PeersListView: View {
                     viewModel.getColor()
                 }
             }
-            .sheet(isPresented: $isViewPeerPresented) {
+            .sheet(isPresented: $isAddPeerPresented) {
                 PeerView(viewModel: .init())
             }
             
