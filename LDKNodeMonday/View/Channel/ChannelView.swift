@@ -63,7 +63,8 @@ struct ChannelView: View {
     @State private var showingErrorAlert = false
     let pasteboard = UIPasteboard.general
     @State private var keyboardOffset: CGFloat = 0
-    
+    @FocusState private var isFocused: Bool
+
     var body: some View {
         
         ZStack {
@@ -99,19 +100,29 @@ struct ChannelView: View {
                             
                             Button {
                                 
-                                if pasteboard.hasStrings {
-                                    if let string = pasteboard.string {
-                                        if let peer = string.parseConnectionInfo() {
-                                            viewModel.nodeId = peer.nodeID
-                                            viewModel.address = peer.address
+                                // [Pasteboard] ...requesting item failed with error: Error Domain=PBErrorDomain Code=13 "Operation not authorized." UserInfo={NSLocalizedDescription=Operation not authorized.}
+
+                                    if pasteboard.hasStrings {
+                                        if let string = pasteboard.string {
+                                            if let peer = string.parseConnectionInfo() {
+                                                viewModel.nodeId = peer.nodeID
+                                                viewModel.address = peer.address
+                                            } else {
+                                                print("Paste parsing did not work")
+                                                self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Connection info could not be parsed.")
+                                            }
                                         } else {
-                                            print("Paste parsing did not work")
+                                            print("error: if let string = pasteboard.string")
+                                            self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Text from Pasteboard not found.")
                                         }
                                     } else {
-                                        print("error: if let string = pasteboard.string")
+                                        print("pasteboard has no strings")
+                                        DispatchQueue.main.async {
+                                            self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Pasteboard has no text.")
+                                        }
+
                                     }
-                                }
-                                
+                           
                             } label: {
                                 
                                 HStack {
@@ -251,6 +262,7 @@ struct ChannelView: View {
                     .padding()
                     
                     Button {
+                        isFocused = false
                         self.viewModel.isProgressViewShowing = true
                         let channelAmountSats = UInt64(viewModel.channelAmountSats) ?? UInt64(101010)
                         Task {
@@ -278,6 +290,7 @@ struct ChannelView: View {
                     
                 }
                 .padding()
+                .focused($isFocused)
                 .sheet(isPresented: $isShowingScanner) {
                     CodeScannerView(
                         codeTypes: [.qr],

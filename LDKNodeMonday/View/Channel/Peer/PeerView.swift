@@ -61,7 +61,8 @@ struct PeerView: View {
     @State private var isShowingScanner = false
     @State private var showingErrorAlert = false
     let pasteboard = UIPasteboard.general
-    
+    @FocusState private var isFocused: Bool
+
     var body: some View {
         
         ZStack {
@@ -225,6 +226,7 @@ struct PeerView: View {
                 
             }
             .padding()
+            .focused($isFocused)
             .sheet(isPresented: $isShowingScanner) {
                 CodeScannerView(
                     codeTypes: [.qr],

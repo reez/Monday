@@ -162,10 +162,10 @@ struct ChannelCloseView: View {
                 Button("Close Channel") {
                     
                     viewModel.close()
-                    if showingErrorAlert == true {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    if showingErrorAlert == false {
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             self.presentationMode.wrappedValue.dismiss()
-                        }
+//                        }
                     }
                     
                 }

@@ -112,6 +112,7 @@ struct ChannelsListView: View {
                                     }
                                     
                                 }
+                                .listRowBackground(Color.clear)
                                 
                             }
                             
@@ -159,16 +160,48 @@ struct ChannelsListView: View {
                     viewModel.listChannels()
                     viewModel.getColor()
                 }
-                .sheet(isPresented: $isSendPresented) {
+//                .sheet(isPresented: $isSendPresented) {
+//                    SendView(viewModel: .init())
+//                }
+                .sheet(isPresented: $isSendPresented, onDismiss: {
+                    // Perform any necessary actions upon dismissal of the sheet
+                    // This closure will be called when the sheet is dismissed
+                    // You can trigger the refresh process or update the data here
+                    viewModel.listChannels()
+                }) {
                     SendView(viewModel: .init())
                 }
-                .sheet(isPresented: $isReceivePresented) {
+//                .sheet(isPresented: $isReceivePresented) {
+//                    ReceiveView(viewModel: .init())
+//                }
+                .sheet(isPresented: $isReceivePresented, onDismiss: {
+                    // Perform any necessary actions upon dismissal of the sheet
+                    // This closure will be called when the sheet is dismissed
+                    // You can trigger the refresh process or update the data here
+                    viewModel.listChannels()
+                }) {
                     ReceiveView(viewModel: .init())
                 }
-                .sheet(isPresented: $isViewPeersPresented) {
+//                .sheet(isPresented: $isViewPeersPresented) {
+//                    PeersListView(viewModel: .init())
+//                }
+                .sheet(isPresented: $isViewPeersPresented, onDismiss: {
+                    // Perform any necessary actions upon dismissal of the sheet
+                    // This closure will be called when the sheet is dismissed
+                    // You can trigger the refresh process or update the data here
+                    viewModel.listChannels()
+                }) {
                     PeersListView(viewModel: .init())
                 }
-                .sheet(isPresented: $isAddChannelPresented) {
+//                .sheet(isPresented: $isAddChannelPresented) {
+//                    ChannelView(viewModel: .init())
+//                }
+                .sheet(isPresented: $isAddChannelPresented, onDismiss: {
+                    // Perform any necessary actions upon dismissal of the sheet
+                    // This closure will be called when the sheet is dismissed
+                    // You can trigger the refresh process or update the data here
+                    viewModel.listChannels()
+                }) {
                     ChannelView(viewModel: .init())
                 }
                 

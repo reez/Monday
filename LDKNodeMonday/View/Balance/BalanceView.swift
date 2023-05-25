@@ -170,11 +170,23 @@ struct BalanceView: View {
                         isSheetPresented = true
                     }
                     .padding()
-                    .sheet(isPresented: $isSheetPresented) {
+//                    .sheet(isPresented: $isSheetPresented) {
+//                        AddressView(viewModel: .init())
+//                    }
+                    .sheet(isPresented: $isSheetPresented, onDismiss: {
+                        // Perform any necessary actions upon dismissal of the sheet
+                        // This closure will be called when the sheet is dismissed
+                        // You can trigger the refresh process or update the data here
+                        Task {
+                            await viewModel.getTotalOnchainBalanceSats()
+                            await viewModel.getSpendableOnchainBalanceSats()
+                        }
+                    }) {
                         AddressView(viewModel: .init())
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding()
+               
                     
                     Spacer()
                     
