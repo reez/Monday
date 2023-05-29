@@ -43,7 +43,7 @@ struct ChannelCloseView: View {
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Balance mSat:")
+                        Text("Balance msat:")
                         Text(viewModel.channel.balanceMsat.description)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
