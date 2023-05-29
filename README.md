@@ -3,7 +3,13 @@
 ## An experimental iOS app using [ldk-node](https://github.com/lightningdevkit/ldk-node)
 
 ### Functionality
-*Testnet/Regtest/Signet*
+
+This is a work in progress and provides support for: 
+- testnet
+- regtest
+- signet
+
+This is not to be reckless:tm:ly used on mainnet.
 
 #### Implemented
 
