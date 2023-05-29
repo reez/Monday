@@ -16,7 +16,6 @@
 		AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */; };
 		AE186B8E2A1540B700338463 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE186B8D2A1540B700338463 /* StartView.swift */; };
 		AE48445329F1BDBD007E37C7 /* LightningDevKitNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE48445229F1BDBD007E37C7 /* LightningDevKitNode */; };
-		AE49E84A2A24F849002623E8 /* BitcoinNetworkColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8492A24F849002623E8 /* BitcoinNetworkColor.swift */; };
 		AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84B2A24F96F002623E8 /* Constants.swift */; };
 		AE49E84E2A24FDD7002623E8 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */; };
 		AE49E8502A2535E3002623E8 /* TabHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84F2A2535E3002623E8 /* TabHomeViewModel.swift */; };
@@ -67,7 +66,6 @@
 		AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeService.swift; sourceTree = "<group>"; };
 		AE186B8D2A1540B700338463 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
-		AE49E8492A24F849002623E8 /* BitcoinNetworkColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitcoinNetworkColor.swift; sourceTree = "<group>"; };
 		AE49E84B2A24F96F002623E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		AE49E84F2A2535E3002623E8 /* TabHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeViewModel.swift; sourceTree = "<group>"; };
@@ -333,7 +331,6 @@
 			isa = PBXGroup;
 			children = (
 				AE83142529AED67B00088A70 /* MondayNodeError.swift */,
-				AE49E8492A24F849002623E8 /* BitcoinNetworkColor.swift */,
 				AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */,
 				AE49E84B2A24F96F002623E8 /* Constants.swift */,
 			);
@@ -481,7 +478,6 @@
 			files = (
 				AE83142629AED67B00088A70 /* MondayNodeError.swift in Sources */,
 				AE49E84E2A24FDD7002623E8 /* FileManager+Extensions.swift in Sources */,
-				AE49E84A2A24F849002623E8 /* BitcoinNetworkColor.swift in Sources */,
 				AE49E8562A253674002623E8 /* AddressViewModel.swift in Sources */,
 				AE186B8E2A1540B700338463 /* StartView.swift in Sources */,
 				AE49E8602A253761002623E8 /* SendConfirmationViewModel.swift in Sources */,

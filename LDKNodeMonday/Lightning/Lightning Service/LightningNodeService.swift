@@ -26,25 +26,25 @@ class LightningNodeService {
         // Delete log file before `start` to keep log file small and loadable in Log View
         try? FileManager.deleteLDKNodeLogFile()
         
-        var esploraServerUrl = EsploraServerURLNetwork.signet
-        var chosenNetwork = ChosenNetwork.signet
+        var esploraServerUrl = Constants.Config.EsploraServerURLNetwork.signet
+        var chosenNetwork = Constants.Config.ChosenNetwork.signet
         
         switch network {
             
         case .regtest:
-            chosenNetwork = ChosenNetwork.regtest
-            esploraServerUrl = EsploraServerURLNetwork.regtest
-            self.networkColor = BitcoinNetworkColor.regtest.color
+            chosenNetwork = Constants.Config.ChosenNetwork.regtest
+            esploraServerUrl = Constants.Config.EsploraServerURLNetwork.regtest
+            self.networkColor = Constants.BitcoinNetworkColor.regtest.color
             
         case .signet:
-            chosenNetwork = ChosenNetwork.signet
-            esploraServerUrl = EsploraServerURLNetwork.signet
-            self.networkColor = BitcoinNetworkColor.signet.color
+            chosenNetwork = Constants.Config.ChosenNetwork.signet
+            esploraServerUrl = Constants.Config.EsploraServerURLNetwork.signet
+            self.networkColor = Constants.BitcoinNetworkColor.signet.color
             
         case .testnet:
-            chosenNetwork = ChosenNetwork.testnet
-            esploraServerUrl = EsploraServerURLNetwork.testnet
-            self.networkColor = BitcoinNetworkColor.testnet.color
+            chosenNetwork = Constants.Config.ChosenNetwork.testnet
+            esploraServerUrl = Constants.Config.EsploraServerURLNetwork.testnet
+            self.networkColor = Constants.BitcoinNetworkColor.testnet.color
             
         }
         
@@ -52,10 +52,10 @@ class LightningNodeService {
             storageDirPath: storageManager.getDocumentsDirectory(),
             esploraServerUrl: esploraServerUrl,
             network: chosenNetwork,
-            listeningAddress: Constants.listeningAddress,
-            defaultCltvExpiryDelta: Constants.DefaultCltvExpiryDelta
+            listeningAddress: Constants.Config.listeningAddress,
+            defaultCltvExpiryDelta: Constants.Config.DefaultCltvExpiryDelta
         )
-        print("LDKNodeMonday /// config: \(config)")
+        print("LDKNodeMonday /// \n config: \n \(config)")
         
         let nodeBuilder = Builder.fromConfig(config: config)
         let node = nodeBuilder.build()
