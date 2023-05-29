@@ -9,22 +9,6 @@ import SwiftUI
 import LightningDevKitNode
 import WalletUI
 
-class PeersListViewModel: ObservableObject {
-    @Published var networkColor = Color.gray
-    @Published var peers: [PeerDetails] = []
-    
-    func listPeers() {
-        self.peers = LightningNodeService.shared.listPeers()
-    }
-    
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
-        }
-    }
-    
-}
 struct PeersListView: View {
     @ObservedObject var viewModel: PeersListViewModel
     @State private var isAddPeerPresented = false

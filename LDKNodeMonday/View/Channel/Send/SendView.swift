@@ -10,19 +10,6 @@ import LightningDevKitNode
 import WalletUI
 import CodeScanner
 
-class SendViewModel: ObservableObject {
-    @Published var invoice: PublicKey = ""
-    @Published var networkColor = Color.gray
-    
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
-        }
-    }
-    
-}
-
 struct SendView: View {
     @ObservedObject var viewModel: SendViewModel
     @State private var isShowingScanner = false

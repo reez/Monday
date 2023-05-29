@@ -9,48 +9,6 @@ import SwiftUI
 import LightningDevKitNode
 import WalletUI
 
-class ReceiveViewModel: ObservableObject {
-    @Published var amountMsat: String = ""
-    @Published var invoice: PublicKey = ""
-    @Published var errorMessage: MondayNodeError?
-    @Published var networkColor = Color.gray
-    
-    func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async {
-        do {
-            let invoice = try await LightningNodeService.shared.receivePayment(
-                amountMsat: amountMsat,
-                description: description,
-                expirySecs: expirySecs
-            )
-            DispatchQueue.main.async {
-                self.invoice = invoice
-            }
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
-            }
-        }
-        
-    }
-    
-    func clearInvoice() {
-        self.invoice = ""
-    }
-    
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
-        }
-    }
-    
-}
-
 struct ReceiveView: View {
     @ObservedObject var viewModel: ReceiveViewModel
     @State private var isCopied = false

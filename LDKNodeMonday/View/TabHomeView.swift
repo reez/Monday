@@ -9,18 +9,6 @@ import SwiftUI
 import LightningDevKitNode
 import WalletUI
 
-class TabHomeViewModel: ObservableObject {
-    @Published var networkColor = Color.gray
-    
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
-        }
-    }
-    
-}
-
 struct TabHomeView: View {
     @StateObject var viewModel: TabHomeViewModel
     

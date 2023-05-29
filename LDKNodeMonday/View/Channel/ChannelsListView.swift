@@ -9,22 +9,6 @@ import SwiftUI
 import LightningDevKitNode
 import WalletUI
 
-class ChannelsListViewModel: ObservableObject {
-    @Published var channels: [ChannelDetails] = []
-    @Published var networkColor = Color.gray
-    
-    func listChannels() {
-        self.channels = LightningNodeService.shared.listChannels()
-    }
-    
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
-        }
-    }
-    
-}
 struct ChannelsListView: View {
     @ObservedObject var viewModel: ChannelsListViewModel
     @State private var isSendPresented = false
