@@ -61,4 +61,4 @@ This app is not to be reckless:tm:ly used on mainnet.
 
 [@notmandatory](https://github.com/notmandatory) for getting this up and running with me on a Monday.
 
-Most importantly [@tnull](https://github.com/tnull) and the [Lightning Dev Kit](https://github.com/lightningdevkit) team/project (and also the [BDK](https://bitcoindevkit.org/) team/project which `ldk-node` uses).
+Most importantly [@tnull](https://github.com/tnull) and the [Lightning Dev Kit](https://lightningdevkit.org) team/project (and also the [Bitcoin Dev Kit](https://bitcoindevkit.org/) team/project which `ldk-node` uses).
