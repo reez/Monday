@@ -51,16 +51,16 @@ This app is not to be reckless:tm:ly used on mainnet.
 
 ### Swift Packages
 
-- ldk-node (version 0.0.4) via [jurvis/ldk-node](https://github.com/jurvis/ldk-node)
+- ldk-node (version 0.0.4) via `[jurvis/ldk-node](https://github.com/jurvis/ldk-node)`
 
-- Bitcoin UI Kit via [WalletUI](https://github.com/reez/WalletUI)
+- Bitcoin UI Kit via `[WalletUI](https://github.com/reez/WalletUI)`
 
-- QR Code Scanner via [Code Scanner](https://github.com/twostraws/CodeScanner)
+- QR Code Scanner via `[Code Scanner](https://github.com/twostraws/CodeScanner)`
 
 ### Thanks
 
 [@notmandatory](https://github.com/notmandatory) for getting this up and running with me on a Monday.
 
-[@tnull](https://github.com/tnull) most importantly 
+[@tnull](https://github.com/tnull) most importantly. 
 
 The [Lightning Dev Kit](https://lightningdevkit.org) team/project and the [Bitcoin Dev Kit](https://bitcoindevkit.org/) team/project, `ldk-node` is built using both.
