@@ -173,7 +173,8 @@
 		AE49E8482A24F81C002623E8 /* Bitcoin */ = {
 			isa = PBXGroup;
 			children = (
-				AEBAA4872A01A9060042EA82 /* Balance */,
+				AE49E8752A253B06002623E8 /* View */,
+				AE49E8762A253B0D002623E8 /* View Model */,
 			);
 			path = Bitcoin;
 			sourceTree = "<group>";
@@ -346,15 +347,6 @@
 				AE49E86D2A253A9A002623E8 /* View Model */,
 			);
 			path = Channel;
-			sourceTree = "<group>";
-		};
-		AEBAA4872A01A9060042EA82 /* Balance */ = {
-			isa = PBXGroup;
-			children = (
-				AE49E8752A253B06002623E8 /* View */,
-				AE49E8762A253B0D002623E8 /* View Model */,
-			);
-			path = Balance;
 			sourceTree = "<group>";
 		};
 		AEBAA4882A01A90D0042EA82 /* Send */ = {
