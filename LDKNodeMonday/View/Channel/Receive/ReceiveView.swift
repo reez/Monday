@@ -10,7 +10,7 @@ import LightningDevKitNode
 import WalletUI
 
 class ReceiveViewModel: ObservableObject {
-    @Published var amountMsat: String = "" // TODO: make minimum 1/10/1000?
+    @Published var amountMsat: String = ""
     @Published var invoice: PublicKey = ""
     @Published var errorMessage: MondayNodeError?
     @Published var networkColor = Color.gray

@@ -271,7 +271,7 @@ struct ChannelAddView: View {
                                 nodeId: viewModel.nodeId,
                                 address: viewModel.address,
                                 channelAmountSats: channelAmountSats,
-                                pushToCounterpartyMsat: nil // TODO: actually make this inputtable
+                                pushToCounterpartyMsat: nil
                             )
                             
                             if viewModel.isOpenChannelFinished == true {

@@ -76,7 +76,13 @@ struct SendConfirmationView: View {
                 }
                 .padding(.horizontal, 50.0)
                 
-                Text(viewModel.invoice.bolt11amount().formattedAmount())
+                if let amount = viewModel.invoice.bolt11amount() {
+                    Text(amount.formattedAmount())
+                } else {
+                    Text("Unable to Parse Formatted Amount")
+                }
+                
+//                Text(viewModel.invoice.bolt11amount().formattedAmount())
                 
                 Text(viewModel.paymentHash?.description ?? "No Payment Hash")
                     .font(.caption)
@@ -84,10 +90,14 @@ struct SendConfirmationView: View {
                 Spacer()
                 
                 VStack(spacing: 10) {
-                    
-                    Text("\(viewModel.invoice.bolt11amount().formattedAmount()) sats")
-                        .font(.largeTitle)
-                        .bold()
+                    if let amount = viewModel.invoice.bolt11amount() {
+                        Text("\(amount.formattedAmount()) sats")
+                            .font(.largeTitle)
+                            .bold()
+                    }
+//                    Text("\(viewModel.invoice.bolt11amount().formattedAmount()) sats")
+//                        .font(.largeTitle)
+//                        .bold()
                     
                     Text(Date.now.formattedDate())
                         .foregroundColor(.secondary)

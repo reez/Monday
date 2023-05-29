@@ -9,23 +9,22 @@ import Foundation
 
 extension String {
     
-    // TODO: fix all cases, don't return empty string
-    func bolt11amount() -> String {
+    func bolt11amount() -> String? {
         let regex = try! NSRegularExpression(pattern: "ln.*?(\\d+)", options: [])
         if let match = regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count)) {
             let range = match.range(at: 1)
             if let swiftRange = Range(range, in: self) {
                 let numberString = self[swiftRange]
-                let number = Int(numberString)
-                let conversion = (number ?? 0) * 100
-                return String(conversion)
-            } else {
-                return ""
+                if let number = Int(numberString) {
+                    let conversion = number * 100
+                    return String(conversion)
+                }
             }
-        } else {
-            return ""
         }
+        
+        return nil
     }
+
     
     func formattedAmount() -> String {
         let formatter = NumberFormatter()
