@@ -30,82 +30,57 @@ struct PeersListView: View {
                     .padding()
                     
                     if viewModel.peers.isEmpty {
-                        
                         Text("No Peers")
                             .font(.system(.caption, design: .monospaced))
                             .padding()
-                        
                     } else {
-                        
                         List {
-                            
                             ForEach(viewModel.peers, id: \.self) { peer in
-                                
                                 NavigationLink {
                                     DisconnectView(viewModel: .init(nodeId: peer.nodeId))
                                 } label: {
-                                    
                                     VStack {
-                                        
                                         HStack(alignment: .center) {
-                                            
                                             ZStack {
-                                                
                                                 Circle()
                                                     .frame(width: 50.0, height: 50.0)
                                                     .foregroundColor(viewModel.networkColor)
-                                                
                                                 Image(systemName: "person.line.dotted.person")
                                                     .font(.subheadline)
                                                     .foregroundColor(Color(uiColor: .systemBackground))
                                                     .bold()
-                                                
                                             }
-                                            
                                             VStack(alignment: .leading, spacing: 5.0) {
-                                                
                                                 HStack {
-                                                    
                                                     peer.isConnected ?
                                                     HStack(spacing: 2) {
                                                         Image(systemName: "checkmark")
                                                         Text("Connected")
                                                     }
                                                     .font(.caption)
-                                                    .bold()
-                                                    :
+                                                    .bold() :
                                                     HStack {
                                                         Image(systemName: "xmark")
                                                         Text("Not Connected")
                                                     }
                                                     .font(.caption)
                                                     .bold()
-                                                    
                                                 }
-                                                
                                                 Text("\(peer.nodeId) ")
                                                     .font(.caption)
                                                     .truncationMode(.middle)
                                                     .lineLimit(1)
                                                     .foregroundColor(.secondary)
-                                                
                                             }
-                                            
                                             Spacer()
-                                            
                                         }
                                         .padding()
-                                        
                                     }
-                                    
                                 }
                                 .listRowBackground(Color.clear)
-                                
                             }
-                            
                         }
                         .listStyle(.plain)
-                        
                     }
                     
                 }
@@ -117,13 +92,7 @@ struct PeersListView: View {
                         viewModel.getColor()
                     }
                 }
-//                .sheet(isPresented: $isAddPeerPresented) {
-//                    PeerView(viewModel: .init())
-//                }
                 .sheet(isPresented: $isAddPeerPresented, onDismiss: {
-                    // Perform any necessary actions upon dismissal of the sheet
-                    // This closure will be called when the sheet is dismissed
-                    // You can trigger the refresh process or update the data here
                     Task {
                         viewModel.listPeers()
                     }

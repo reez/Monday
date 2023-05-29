@@ -28,28 +28,21 @@ struct AddressView: View {
                     QRCodeView(address: viewModel.address)
                     
                     HStack(alignment: .center) {
-                        
                         ZStack {
-                            
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 50.0, height: 50.0)
                                 .foregroundColor(viewModel.networkColor)
-                            
                             Image(systemName: "bitcoinsign")
                                 .font(.title)
                                 .foregroundColor(Color(uiColor: .systemBackground))
                                 .bold()
-                            
                         }
                         
                         VStack(alignment: .leading, spacing: 5.0) {
-                            
                             if viewModel.isAddressFinished {
-                                
                                 Text("Bitcoin Network")
                                     .font(.caption)
                                     .bold()
-                                
                                 Text(viewModel.address)
                                     .font(.caption)
                                     .truncationMode(.middle)
@@ -62,7 +55,6 @@ struct AddressView: View {
                                     Spacer()
                                 }
                             }
-                            
                         }
                         
                         Spacer()

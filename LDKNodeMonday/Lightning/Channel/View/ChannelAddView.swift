@@ -28,9 +28,7 @@ struct ChannelAddView: View {
                 VStack {
                     
                     HStack {
-                        
                         Spacer()
-                        
                         Button {
                             isShowingScanner = true
                         } label: {
@@ -39,7 +37,6 @@ struct ChannelAddView: View {
                         }
                         .foregroundColor(viewModel.networkColor)
                         .padding(.top)
-                        
                     }
                     .padding(.top)
                     
@@ -48,13 +45,9 @@ struct ChannelAddView: View {
                     VStack(alignment: .leading) {
                         
                         HStack {
-                            
                             Spacer()
-                            
                             Button {
-                                
                                 // [Pasteboard] ...requesting item failed with error: Error Domain=PBErrorDomain Code=13 "Operation not authorized." UserInfo={NSLocalizedDescription=Operation not authorized.}
-
                                     if pasteboard.hasStrings {
                                         if let string = pasteboard.string {
                                             if let peer = string.parseConnectionInfo() {
@@ -70,21 +63,15 @@ struct ChannelAddView: View {
                                         DispatchQueue.main.async {
                                             self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Pasteboard has no text.")
                                         }
-
                                     }
-                           
                             } label: {
-                                
                                 HStack {
                                     Image(systemName: "doc.on.doc")
                                         .font(.largeTitle)
                                 }
                                 .foregroundColor(viewModel.networkColor)
-                                
                             }
-                            
                             Spacer()
-                            
                         }
                         .padding()
                         
@@ -100,7 +87,6 @@ struct ChannelAddView: View {
                             .bold()
                         
                         ZStack {
-                            
                             TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
                                 .keyboardType(.numbersAndPunctuation)
                                 .frame(height: 48)
@@ -112,7 +98,6 @@ struct ChannelAddView: View {
                                         .stroke(lineWidth: 1.0)
                                         .foregroundColor(.secondary)
                                 )
-                            
                             if !viewModel.nodeId.isEmpty {
                                 HStack {
                                     Spacer()
@@ -125,7 +110,6 @@ struct ChannelAddView: View {
                                     .padding(.trailing, 8)
                                 }
                             }
-                            
                         }
                         
                     }
@@ -137,7 +121,6 @@ struct ChannelAddView: View {
                             .bold()
                         
                         ZStack {
-                            
                             TextField("172.18.0.2:9735", text: $viewModel.address)
                                 .keyboardType(.numbersAndPunctuation)
                                 .frame(height: 48)
@@ -149,7 +132,6 @@ struct ChannelAddView: View {
                                         .stroke(lineWidth: 1.0)
                                         .foregroundColor(.secondary)
                                 )
-                            
                             if !viewModel.address.isEmpty {
                                 
                                 HStack {
@@ -167,7 +149,6 @@ struct ChannelAddView: View {
                                 }
                                 
                             }
-                            
                         }
                         
                     }
@@ -179,7 +160,6 @@ struct ChannelAddView: View {
                             .bold()
                         
                         ZStack {
-                            
                             TextField("125000", text: $viewModel.channelAmountSats)
                                 .keyboardType(.numbersAndPunctuation)
                                 .frame(height: 48)
@@ -190,7 +170,6 @@ struct ChannelAddView: View {
                                         .stroke(lineWidth: 1.0)
                                         .foregroundColor(.secondary)
                                 )
-                            
                             if !viewModel.channelAmountSats.isEmpty {
                                 
                                 HStack {
@@ -206,9 +185,7 @@ struct ChannelAddView: View {
                                     .padding(.trailing, 8)
                                     
                                 }
-                                
                             }
-                            
                         }
                         
                     }
@@ -224,15 +201,12 @@ struct ChannelAddView: View {
                                 channelAmountSats: channelAmountSats,
                                 pushToCounterpartyMsat: nil
                             )
-                            
                             if viewModel.isOpenChannelFinished == true {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                     self.presentationMode.wrappedValue.dismiss()
                                 }
                             }
-                            
                         }
-                        
                     } label: {
                         Text("Open Channel")
                     }
@@ -290,11 +264,7 @@ struct ChannelAddView: View {
             }
             .offset(y: keyboardOffset)
 //            .animation(.easeInOut)
-            .onChange(of: keyboardOffset) { _ in
-                        withAnimation {
-                            // Empty closure to trigger animation
-                        }
-                    }
+            .onChange(of: keyboardOffset) { _ in withAnimation { /* Empty closure to trigger animation*/ } }
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
                 let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
                 let height = value?.height ?? 0

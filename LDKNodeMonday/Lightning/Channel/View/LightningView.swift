@@ -42,76 +42,53 @@ struct LightningView: View {
                     .padding()
                     
                     if viewModel.channels.isEmpty {
-                        
                         Text("No Channels")
                             .font(.system(.caption, design: .monospaced))
                             .padding()
-                        
                     } else {
-                        
                         List {
-                            
                             ForEach(viewModel.channels, id: \.self) { channel in
-                                
                                 NavigationLink {
                                     ChannelCloseView(
                                         viewModel: .init(channel: channel),
                                         refreshFlag: $refreshFlag
                                     )
                                 } label: {
-                                    
                                     VStack {
-                                        
                                         HStack(alignment: .center) {
-                                            
                                             ZStack {
-                                                
                                                 Circle()
                                                     .frame(width: 50.0, height: 50.0)
                                                     .foregroundColor(viewModel.networkColor)
-                                                
                                                 Image(systemName: "person.line.dotted.person")
                                                     .font(.subheadline)
                                                     .foregroundColor(Color(uiColor: .systemBackground))
                                                     .bold()
-                                                
                                             }
-                                            
                                             VStack(alignment: .leading, spacing: 5.0) {
-                                                
                                                 Text("\(channel.channelValueSatoshis) sats ")
                                                     .font(.caption)
                                                     .bold()
-                                                
                                                 Text(channel.counterpartyNodeId)
                                                     .font(.caption)
                                                     .truncationMode(.middle)
                                                     .lineLimit(1)
                                                     .foregroundColor(.secondary)
-                                                
                                             }
-                                            
                                             Spacer()
-                                            
                                         }
                                         .padding()
-                                        
                                     }
-                                    
                                 }
                                 .listRowBackground(Color.clear)
-                                
                             }
-                            
                         }
                         .listStyle(.plain)
-                        
                     }
                     
                     Spacer()
                     
                     HStack {
-                        
                         Button {
                             isSendPresented = true
                         } label: {
@@ -122,9 +99,7 @@ struct LightningView: View {
                         }
                         .tint(viewModel.networkColor)
                         .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
-                        
                         Spacer()
-                        
                         Button {
                             isReceivePresented = true
                         } label: {
@@ -135,7 +110,6 @@ struct LightningView: View {
                         }
                         .tint(viewModel.networkColor)
                         .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
-                        
                     }
                     .padding()
                     
@@ -148,7 +122,7 @@ struct LightningView: View {
                     viewModel.getColor()
                     if refreshFlag {
                         viewModel.listChannels()
-                        refreshFlag = false // Reset the flag
+                        refreshFlag = false
                     }
                 }
                 .sheet(isPresented: $isSendPresented, onDismiss: {

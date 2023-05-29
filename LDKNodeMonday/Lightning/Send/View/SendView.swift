@@ -24,7 +24,6 @@ struct SendView: View {
                 VStack {
                     
                     VStack(spacing: 20) {
-                        
                         Button {
                             if pasteboard.hasStrings {
                                 if let string = pasteboard.string {

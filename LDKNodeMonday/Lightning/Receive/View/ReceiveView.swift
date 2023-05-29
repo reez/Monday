@@ -29,7 +29,6 @@ struct ReceiveView: View {
                             .bold()
                         
                         ZStack {
-                            
                             TextField("125000", text: $viewModel.amountMsat)
                                 .frame(height: 48)
                                 .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
@@ -39,13 +38,9 @@ struct ReceiveView: View {
                                         .stroke(lineWidth: 1.0)
                                         .foregroundColor(.secondary)
                                 )
-                            
                             if !viewModel.amountMsat.isEmpty {
-                                
                                 HStack {
-                                    
                                     Spacer()
-                                    
                                     Button {
                                         self.viewModel.amountMsat = ""
                                     } label: {
@@ -54,9 +49,7 @@ struct ReceiveView: View {
                                     }
                                     .padding(.trailing, 8)
                                 }
-                                
                             }
-                            
                         }
                         
                     }
@@ -77,32 +70,25 @@ struct ReceiveView: View {
                     if viewModel.invoice != "" {
                         
                         HStack(alignment: .center) {
-                            
                             ZStack {
-                                
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 50.0, height: 50.0)
                                     .foregroundColor(viewModel.networkColor)
-                                
                                 Image(systemName: "bolt.fill")
                                     .font(.title)
                                     .foregroundColor(Color(uiColor: .systemBackground))
                                     .bold()
-                                
                             }
                             
                             VStack(alignment: .leading, spacing: 5.0) {
-                                
                                 Text("Lightning Network")
                                     .font(.caption)
                                     .bold()
-                                
                                 Text(viewModel.invoice)
                                     .font(.caption)
                                     .truncationMode(.middle)
                                     .lineLimit(1)
                                     .foregroundColor(.secondary)
-                                
                             }
                             
                             Spacer()

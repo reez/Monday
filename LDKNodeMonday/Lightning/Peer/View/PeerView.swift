@@ -25,9 +25,7 @@ struct PeerView: View {
             VStack {
                 
                 HStack {
-                    
                     Spacer()
-                    
                     Button {
                         isShowingScanner = true
                     } label: {
@@ -36,7 +34,6 @@ struct PeerView: View {
                     }
                     .foregroundColor(viewModel.networkColor)
                     .padding(.top)
-                    
                 }
                 .padding(.top)
                 
@@ -45,9 +42,7 @@ struct PeerView: View {
                 VStack(alignment: .leading) {
                     
                     HStack {
-                        
                         Spacer()
-                        
                         Button {
                             if pasteboard.hasStrings {
                                 if let string = pasteboard.string {
@@ -70,7 +65,6 @@ struct PeerView: View {
                         }
                         
                         Spacer()
-                        
                     }
                     .padding()
                     
@@ -86,7 +80,6 @@ struct PeerView: View {
                         .bold()
                     
                     ZStack {
-                        
                         TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
                             .frame(height: 48)
                             .truncationMode(.middle)
@@ -97,7 +90,6 @@ struct PeerView: View {
                                     .stroke(lineWidth: 1.0)
                                     .foregroundColor(.secondary)
                             )
-                        
                         if !viewModel.nodeId.isEmpty {
                             HStack {
                                 Spacer()
@@ -110,9 +102,7 @@ struct PeerView: View {
                                 .padding(.trailing, 8)
                             }
                         }
-                        
                     }
-                    
                 }
                 .padding()
                 
@@ -122,7 +112,6 @@ struct PeerView: View {
                         .bold()
                     
                     ZStack {
-                        
                         TextField("172.18.0.2:9735", text: $viewModel.address)
                             .frame(height: 48)
                             .truncationMode(.middle)
@@ -133,13 +122,9 @@ struct PeerView: View {
                                     .stroke(lineWidth: 1.0)
                                     .foregroundColor(.secondary)
                             )
-                        
                         if !viewModel.address.isEmpty {
-                            
                             HStack {
-                                
                                 Spacer()
-                                
                                 Button {
                                     self.viewModel.address = ""
                                 } label: {
@@ -147,11 +132,8 @@ struct PeerView: View {
                                         .foregroundColor(.secondary)
                                 }
                                 .padding(.trailing, 8)
-                                
                             }
-                            
                         }
-                        
                     }
                     
                 }

@@ -305,6 +305,23 @@
 			path = "Lightning Service";
 			sourceTree = "<group>";
 		};
+		AE49E87A2A2544DC002623E8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				AE80116A29A59976009B9967 /* NodeIDView.swift */,
+				AE0A02232A0AD71900F2479E /* LogView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AE49E87B2A2544E1002623E8 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
 		AE5C4FD329A5550100BE3285 /* Lightning */ = {
 			isa = PBXGroup;
 			children = (
@@ -367,9 +384,8 @@
 		AEBAA48A2A01A91C0042EA82 /* Node ID */ = {
 			isa = PBXGroup;
 			children = (
-				AE80116A29A59976009B9967 /* NodeIDView.swift */,
-				AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */,
-				AE0A02232A0AD71900F2479E /* LogView.swift */,
+				AE49E87A2A2544DC002623E8 /* View */,
+				AE49E87B2A2544E1002623E8 /* View Model */,
 			);
 			path = "Node ID";
 			sourceTree = "<group>";

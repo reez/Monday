@@ -22,102 +22,63 @@ struct ChannelCloseView: View {
             VStack {
                 
                 VStack(spacing: 10) {
-                    
                     HStack {
-                        
                         Text("Channel ID:")
-                        
                         Text(viewModel.channel.channelId.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
-                        
                     }
-                    
                     HStack {
-                        
                         Text("Counterparty Node ID:")
-                        
                         Text(viewModel.channel.counterpartyNodeId.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
-                        
                     }
-                    
                     HStack {
-                        
                         Text("Channel Value Satoshis:")
-                        
                         Text(viewModel.channel.channelValueSatoshis.description)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
-                        
                     }
-                    
                     HStack {
-                        
                         Text("Balance mSat:")
-                        
                         Text(viewModel.channel.balanceMsat.description)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
-                        
                     }
-                    
                     HStack {
-                        
                         Text("Outbound Capacity (mSat):")
-                        
                         Text(viewModel.channel.outboundCapacityMsat.description)
                             .foregroundColor(.secondary)
-                        
                     }
-                    
                     HStack {
-                        
                         Text("Inbound Capacity (mSat):")
-                        
                         Text(viewModel.channel.inboundCapacityMsat.description)
                             .foregroundColor(.secondary)
-                        
                     }
-                    
                     if let confirm = viewModel.channel.confirmations {
-                        
                         HStack {
-                            
                             Text("Confirmations:")
-                            
                             Text(confirm.description)
                                 .foregroundColor(.secondary)
-                            
                         }
-                        
                     }
-                    
                     HStack {
-                        
                         Text("Is Channel Ready:")
-                        
                         Text(viewModel.channel.isChannelReady.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
-                        
                     }
-                    
                     HStack {
-                        
                         Text("Is Usable:")
-                        
                         Text(viewModel.channel.isUsable.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
-                        
                     }
-                    
                 }
                 .font(.system(.caption, design: .monospaced))
                 .padding()

@@ -27,25 +27,18 @@ struct BitcoinView: View {
                     Spacer()
                     
                     VStack {
-                        
-                        
                         HStack(alignment: .lastTextBaseline) {
-                            
                             if viewModel.isTotalBalanceFinished {
                                 Text(viewModel.totalBalance.formattedAmount())
                                     .textStyle(BitcoinTitle1())
                             } else {
                                 ProgressView()
                             }
-                            
                             Text("Total Sats")
                                 .foregroundColor(.secondary)
                                 .textStyle(BitcoinTitle5())
                                 .baselineOffset(2)
-                            
                         }
-                       
-                        
                         HStack(spacing: 4) {
                             if viewModel.isSpendableBalanceFinished {
                                 Text(viewModel.totalBalance.formattedAmount())
@@ -56,13 +49,10 @@ struct BitcoinView: View {
                         }
                         .font(.caption)
                         .foregroundColor(.secondary)
-                        
                     }
                     
                     List {
-                        
                         Section(header: Text("*Transaction List Placeholder*")) {
-                            
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text("Item 11111111111111111")
@@ -72,7 +62,6 @@ struct BitcoinView: View {
                                 Text("Item 111111111")
                             }
                             .redacted(reason: .placeholder)
-                            
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text("Item 11111111111111111")
@@ -82,7 +71,6 @@ struct BitcoinView: View {
                                 Text("Item 1111111111111")
                             }
                             .redacted(reason: .placeholder)
-                            
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text("Item 11111111111111111")
@@ -92,9 +80,7 @@ struct BitcoinView: View {
                                 Text("Item 1111")
                             }
                             .redacted(reason: .placeholder)
-                            
                         }
-                        
                     }
                     .frame(maxWidth: .infinity, maxHeight: 300)
                     .listStyle(PlainListStyle())
@@ -108,13 +94,7 @@ struct BitcoinView: View {
                         isSheetPresented = true
                     }
                     .padding()
-//                    .sheet(isPresented: $isSheetPresented) {
-//                        AddressView(viewModel: .init())
-//                    }
                     .sheet(isPresented: $isSheetPresented, onDismiss: {
-                        // Perform any necessary actions upon dismissal of the sheet
-                        // This closure will be called when the sheet is dismissed
-                        // You can trigger the refresh process or update the data here
                         Task {
                             await viewModel.getTotalOnchainBalanceSats()
                             await viewModel.getSpendableOnchainBalanceSats()
@@ -124,7 +104,6 @@ struct BitcoinView: View {
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding()
-               
                     
                     Spacer()
                     

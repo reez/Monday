@@ -21,20 +21,16 @@ struct SendConfirmationView: View {
                 Spacer()
                 
                 VStack(spacing: 10) {
-                    
                     Image(systemName: "bitcoinsign.circle.fill")
                         .font(.system(size: 100))
                         .foregroundColor(viewModel.networkColor)
-                    
                     Text("Sats paid")
                         .bold()
-                    
                     Text("\(viewModel.invoice)")
                         .truncationMode(.middle)
                         .lineLimit(1)
                         .foregroundColor(.secondary)
                         .padding(.horizontal)
-                    
                 }
                 .padding(.horizontal, 50.0)
                 
@@ -43,9 +39,7 @@ struct SendConfirmationView: View {
                 } else {
                     Text("Unable to Parse Formatted Amount")
                 }
-                
-//                Text(viewModel.invoice.bolt11amount().formattedAmount())
-                
+
                 Text(viewModel.paymentHash?.description ?? "No Payment Hash")
                     .font(.caption)
                 
@@ -57,13 +51,8 @@ struct SendConfirmationView: View {
                             .font(.largeTitle)
                             .bold()
                     }
-//                    Text("\(viewModel.invoice.bolt11amount().formattedAmount()) sats")
-//                        .font(.largeTitle)
-//                        .bold()
-                    
                     Text(Date.now.formattedDate())
-                        .foregroundColor(.secondary)
-                    
+                        .foregroundColor(.secondary)                    
                 }
                 
                 Spacer()
