@@ -51,11 +51,11 @@ This app is not to be reckless:tm:ly used on mainnet.
 
 ### Swift Packages
 
-- ldk-node (version 0.0.4) via `[jurvis/ldk-node](https://github.com/jurvis/ldk-node)`
+- ldk-node (version 0.0.4) via [jurvis/ldk-node](https://github.com/jurvis/ldk-node)
 
-- Bitcoin UI Kit via `[WalletUI](https://github.com/reez/WalletUI)`
+- Bitcoin UI Kit via [WalletUI](https://github.com/reez/WalletUI)
 
-- QR Code Scanner via `[Code Scanner](https://github.com/twostraws/CodeScanner)`
+- QR Code Scanner via [Code Scanner](https://github.com/twostraws/CodeScanner)
 
 ### Thanks
 
