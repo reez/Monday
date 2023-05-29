@@ -7,35 +7,47 @@
 
 #### Implemented
 
-- [x] Start Node
+- [x] Start Node `start`
 
-- [x] Get Node ID
+- [x] Stop Node `stop`
 
-- [x] Get Wallet Address
+- [x] Node ID `nodeId`
 
-- [x] See Total Balance
+- [x] Wallet Address `newFundingAddress`
 
-- [x] See Spendable Balance
+- [x] Spendable Balance `getSpendableOnchainBalanceSats`
 
-- [x] Open Channel
+- [x] Total Balance `getTotalOnchainBalanceSats`
 
-- [x] Close Channel
+- [x] Connect Peer `connect`
 
-- [x] Send Sats
+- [x] Disconnect Peer `disconnect`
 
-- [x] Connect Peer
+- [x] Open Channel `connectOpenChannel`
 
-- [x] Disconnect Peer
+- [x] Close Channel `closeChannel`
+
+- [x] Send `sendPayment`
+
+- [x] Receive `receivePayment`
+
+- [x] List Peers `listPeers`
+
+- [x] List Channels `listChannels`
 
 #### Not Implemented
 
-- [ ] Event Handling
+- [ ] Event Handling 
+
+- [ ] All Payment variations
 
 ### Dependencies
 
 - ldk-node (version 0.0.4) via [jurvis/ldk-node](https://github.com/jurvis/ldk-node)
 
 - Bitcoin UI Kit via [WalletUI](https://github.com/reez/WalletUI)
+
+- QR Code Scanner via [Code Scanner](https://github.com/twostraws/CodeScanner)
 
 ### Thanks
 
