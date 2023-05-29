@@ -4,12 +4,12 @@
 
 ### Functionality
 
-This is a work in progress and provides support for: 
+This app is a work in progress and provides default implementations for: 
 - testnet
-- regtest
-- signet
+- regtest via [tnull](https://github.com/tnull/ldk-node-workshop)
+- signet via [mutiny-net](https://github.com/MutinyWallet/mutiny-net)
 
-This is not to be reckless:tm:ly used on mainnet.
+This app is not to be reckless:tm:ly used on mainnet.
 
 #### Implemented
 
