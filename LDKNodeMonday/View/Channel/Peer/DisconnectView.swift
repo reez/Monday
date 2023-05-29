@@ -76,6 +76,12 @@ struct DisconnectView: View {
 //                        }
                     }
                     
+                    if showingErrorAlert == true {
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            self.presentationMode.wrappedValue.dismiss()
+//                        }
+                    }
+                    
                 }
                 .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 

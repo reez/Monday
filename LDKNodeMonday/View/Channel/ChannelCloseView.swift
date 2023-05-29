@@ -50,7 +50,8 @@ struct ChannelCloseView: View {
     @ObservedObject var viewModel: ChannelCloseViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var showingErrorAlert = false
-    
+    @Binding var refreshFlag: Bool
+
     var body: some View {
         
         ZStack {
@@ -160,14 +161,13 @@ struct ChannelCloseView: View {
                 .padding()
                 
                 Button("Close Channel") {
-                    
                     viewModel.close()
+                    refreshFlag = true
                     if showingErrorAlert == false {
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                             self.presentationMode.wrappedValue.dismiss()
-//                        }
+                        }
                     }
-                    
                 }
                 .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                 
@@ -224,7 +224,8 @@ struct ChannelCloseView_Previews: PreviewProvider {
                     isPublic: true,
                     cltvExpiryDelta: nil
                 )
-            )
+            ),
+            refreshFlag: .constant(false)
         )
         
         ChannelCloseView(
@@ -250,7 +251,8 @@ struct ChannelCloseView_Previews: PreviewProvider {
                     isPublic: true,
                     cltvExpiryDelta: nil
                 )
-            )
+            ),
+            refreshFlag: .constant(false)
         )
         .environment(\.colorScheme, .dark)
         

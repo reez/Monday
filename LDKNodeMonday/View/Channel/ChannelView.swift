@@ -21,6 +21,9 @@ class ChannelViewModel: ObservableObject {
 
     
     func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) async {
+        DispatchQueue.main.async {
+            self.isProgressViewShowing = true
+        }
         do {
             try await LightningNodeService.shared.connectOpenChannel(
                 nodeId: nodeId,
@@ -152,6 +155,7 @@ struct ChannelView: View {
                         ZStack {
                             
                             TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
+                                .keyboardType(.numbersAndPunctuation)
                                 .frame(height: 48)
                                 .truncationMode(.middle)
                                 .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
@@ -188,6 +192,7 @@ struct ChannelView: View {
                         ZStack {
                             
                             TextField("172.18.0.2:9735", text: $viewModel.address)
+                                .keyboardType(.numbersAndPunctuation)
                                 .frame(height: 48)
                                 .truncationMode(.middle)
                                 .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
@@ -229,6 +234,7 @@ struct ChannelView: View {
                         ZStack {
                             
                             TextField("125000", text: $viewModel.channelAmountSats)
+                                .keyboardType(.numbersAndPunctuation)
                                 .frame(height: 48)
                                 .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
                                 .cornerRadius(5)
@@ -263,7 +269,6 @@ struct ChannelView: View {
                     
                     Button {
                         isFocused = false
-                        self.viewModel.isProgressViewShowing = true
                         let channelAmountSats = UInt64(viewModel.channelAmountSats) ?? UInt64(101010)
                         Task {
                             await viewModel.openChannel(
@@ -272,13 +277,31 @@ struct ChannelView: View {
                                 channelAmountSats: channelAmountSats,
                                 pushToCounterpartyMsat: nil // TODO: actually make this inputtable
                             )
+                            
+                            if viewModel.isOpenChannelFinished == true {
+                                print("True")
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                    self.presentationMode.wrappedValue.dismiss()
+                                }
+                            }
+                            
+//                            if showingErrorAlert == false {
+////                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+////                                    self.presentationMode.wrappedValue.dismiss()
+////                                }
+//                                print("error false")
+//                            }
+//                            
+//                            if showingErrorAlert == true {
+////                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+////                                    self.presentationMode.wrappedValue.dismiss()
+////                                }
+//                                print("error true")
+//                            }
+                            
                         }
                         
-                        if showingErrorAlert == true {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                self.presentationMode.wrappedValue.dismiss()
-                            }
-                        }
+ 
                         
                     } label: {
                         Text("Open Channel")

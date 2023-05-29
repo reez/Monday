@@ -16,6 +16,9 @@
 		AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */; };
 		AE186B8E2A1540B700338463 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE186B8D2A1540B700338463 /* StartView.swift */; };
 		AE48445329F1BDBD007E37C7 /* LightningDevKitNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE48445229F1BDBD007E37C7 /* LightningDevKitNode */; };
+		AE49E84A2A24F849002623E8 /* BitcoinNetworkColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8492A24F849002623E8 /* BitcoinNetworkColor.swift */; };
+		AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84B2A24F96F002623E8 /* Constants.swift */; };
+		AE49E84E2A24FDD7002623E8 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */; };
 		AE4C15B22A1316D100AA8917 /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C15B12A1316D100AA8917 /* BalanceView.swift */; };
 		AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */; };
 		AE5C4FD529A5565700BE3285 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AE5C4FD429A5565700BE3285 /* README.md */; };
@@ -50,6 +53,9 @@
 		AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeService.swift; sourceTree = "<group>"; };
 		AE186B8D2A1540B700338463 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
+		AE49E8492A24F849002623E8 /* BitcoinNetworkColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitcoinNetworkColor.swift; sourceTree = "<group>"; };
+		AE49E84B2A24F96F002623E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		AE4C15B12A1316D100AA8917 /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
 		AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningStorage.swift; sourceTree = "<group>"; };
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -110,6 +116,7 @@
 			children = (
 				AE8D877429B145F100F2B918 /* Info.plist */,
 				AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */,
+				AE49E8482A24F81C002623E8 /* Bitcoin */,
 				AE80116E29A5A64F009B9967 /* View */,
 				AE5C4FD329A5550100BE3285 /* Lightning */,
 				AEE8FDE029F8581400406DD9 /* Extensions */,
@@ -133,6 +140,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE49E8482A24F81C002623E8 /* Bitcoin */ = {
+			isa = PBXGroup;
+			children = (
+				AE49E8492A24F849002623E8 /* BitcoinNetworkColor.swift */,
+			);
+			path = Bitcoin;
 			sourceTree = "<group>";
 		};
 		AE5C4FD329A5550100BE3285 /* Lightning */ = {
@@ -161,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */,
+				AE49E84B2A24F96F002623E8 /* Constants.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -231,6 +247,7 @@
 				AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */,
 				AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */,
 				AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */,
+				AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -317,6 +334,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE83142629AED67B00088A70 /* LightningNodeError.swift in Sources */,
+				AE49E84E2A24FDD7002623E8 /* FileManager+Extensions.swift in Sources */,
+				AE49E84A2A24F849002623E8 /* BitcoinNetworkColor.swift in Sources */,
 				AE186B8E2A1540B700338463 /* StartView.swift in Sources */,
 				AE001CDD29F5EBEC006CA7D1 /* SendConfirmationView.swift in Sources */,
 				AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */,
@@ -341,6 +360,7 @@
 				AE4C15B22A1316D100AA8917 /* BalanceView.swift in Sources */,
 				AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */,
 				AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */,
+				AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

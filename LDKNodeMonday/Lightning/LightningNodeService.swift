@@ -9,27 +9,6 @@ import Foundation
 import LightningDevKitNode
 import SwiftUI
 
-enum BitcoinNetworkColor {
-    case regtest
-    case signet
-    case mainnet
-    case testnet
-    
-    var color: Color {
-        switch self {
-        case .regtest:
-            return Color.green
-        case .signet:
-            return Color.yellow
-        case .mainnet:
-            return Color.orange // I'm just going to make it orange instead of black //Color.black
-        case .testnet:
-            return Color.red
-        }
-    }
-}
-
-
 class LightningNodeService {
     private let node: Node
     private let storageManager = LightningStorage()
@@ -37,7 +16,7 @@ class LightningNodeService {
     
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService(network: .regtest)
+            static let instance = LightningNodeService(network: .signet)
         }
         return Singleton.instance
     }
@@ -45,45 +24,56 @@ class LightningNodeService {
     init(network: NetworkConnection) {
         
         // Delete log file before `start` to keep log file small and loadable in Log View
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        let logFilePath = URL(fileURLWithPath: documentsPath).appendingPathComponent("ldk_node.log").path
-        do {
-            try FileManager.default.removeItem(atPath: logFilePath)
-            print("Log file deleted successfully")
-        } catch {
-            print("Error deleting log file: \(error.localizedDescription)")
-        }
+//        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+//        let logFilePath = URL(fileURLWithPath: documentsPath).appendingPathComponent("ldk_node.log").path
+//        do {
+//            try FileManager.default.removeItem(atPath: logFilePath)
+//            print("Log file deleted successfully")
+//        } catch {
+//            print("Error deleting log file: \(error.localizedDescription)")
+//        }
+        FileManager.deleteLogFile()
+
         
-        let storageDirectoryPath = storageManager.getDocumentsDirectory()
-        var esploraServerUrl = "http://blockstream.info/testnet/api/"
-        var chosenNetwork = "testnet"
-        var listeningAddress: String? = nil
-        let defaultCltvExpiryDelta = UInt32(2048)
+//        let storageDirectoryPath = storageManager.getDocumentsDirectory()
+        var esploraServerUrl: String = EsploraServerURLNetwork.signet
+        var chosenNetwork = ChosenNetwork.signet
+//        var listeningAddress: String? = nil
+//        let defaultCltvExpiryDelta = Constants.DefaultCltvExpiryDelta//UInt32(2048)
         
         switch network {
             
         case .regtest:
             chosenNetwork = "regtest"
-            esploraServerUrl = "http://ldk-node.tnull.de:3002"//"http://127.0.0.1:3002"
-            listeningAddress = "127.0.0.1:2323"
+            esploraServerUrl = "http://ldk-node.tnull.de:3002"
+//            listeningAddress = Constants.listeningAddress
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
             self.networkColor = BitcoinNetworkColor.regtest.color
+            
+            
+            
+        case .signet:
+            chosenNetwork = "signet"
+            esploraServerUrl = "https://mutinynet.com/api"
+//            listeningAddress = Constants.listeningAddress
+            print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
+            self.networkColor = BitcoinNetworkColor.signet.color
             
         case .testnet:
             chosenNetwork = "testnet"
             esploraServerUrl = "http://blockstream.info/testnet/api/"
-            listeningAddress = "0.0.0.0:9735"
+//            listeningAddress = Constants.listeningAddress
             print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
             self.networkColor = BitcoinNetworkColor.testnet.color
             
         }
         
         let config = Config(
-            storageDirPath: storageDirectoryPath,
+            storageDirPath: storageManager.getDocumentsDirectory(),//storageDirectoryPath,
             esploraServerUrl: esploraServerUrl,
             network: chosenNetwork,
-            listeningAddress: listeningAddress,
-            defaultCltvExpiryDelta: defaultCltvExpiryDelta
+            listeningAddress: Constants.listeningAddress,//listeningAddress,
+            defaultCltvExpiryDelta: Constants.DefaultCltvExpiryDelta//defaultCltvExpiryDelta
         )
         print("LDKNodeMonday /// config: \(config)")
         
@@ -261,4 +251,18 @@ extension LightningNodeService {
         return payment
     }
     
+}
+
+extension LightningNodeService {
+    func deleteLogFile() {
+         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+         let logFilePath = documentsPath.appendingPathComponent("ldk_node.log")
+         
+         do {
+             try FileManager.default.removeItem(at: logFilePath)
+             print("Log file deleted successfully")
+         } catch {
+             print("Error deleting log file: \(error.localizedDescription)")
+         }
+     }
 }
