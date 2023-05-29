@@ -1,10 +1,12 @@
 # Monday
 
-## An experimental iOS app using [ldk-node](https://github.com/lightningdevkit/ldk-node)
+## An example iOS app using [ldk-node](https://github.com/lightningdevkit/ldk-node)
 
 ### Functionality
 
-This app is a work in progress and provides default implementations for: 
+This app is an experimental work in progress. 
+
+It provides default implementations for: 
 - testnet
 - regtest via [tnull](https://github.com/tnull/ldk-node-workshop)
 - signet via [mutiny-net](https://github.com/MutinyWallet/mutiny-net)
@@ -47,7 +49,7 @@ This app is not to be reckless:tm:ly used on mainnet.
 
 - [ ] All Payment variations
 
-### Dependencies
+### Swift Packages
 
 - ldk-node (version 0.0.4) via [jurvis/ldk-node](https://github.com/jurvis/ldk-node)
 
@@ -59,4 +61,6 @@ This app is not to be reckless:tm:ly used on mainnet.
 
 [@notmandatory](https://github.com/notmandatory) for getting this up and running with me on a Monday.
 
-Most importantly [tnull](https://github.com/tnull) and the [Lightning Dev Kit](https://github.com/lightningdevkit) team/project.
+Most importantly [tnull](https://github.com/tnull) and the [Lightning Dev Kit](https://github.com/lightningdevkit) team/project (and the [BDK](https://bitcoindevkit.org/) team/project which ldk-node uses).
+
+A ready-to-go Lightning node library built using [LDK](https://lightningdevkit.org/) and [BDK](https://bitcoindevkit.org/).
