@@ -8,15 +8,9 @@
 import Foundation
 
 extension FileManager {
-    static func deleteLogFile() {
+    static func deleteLDKNodeLogFile() throws {
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         let logFilePath = URL(fileURLWithPath: documentsPath).appendingPathComponent("ldk_node.log").path
-        
-        do {
-            try FileManager.default.removeItem(atPath: logFilePath)
-            print("Log file deleted successfully")
-        } catch {
-            print("Error deleting log file: \(error.localizedDescription)")
-        }
+        try FileManager.default.removeItem(atPath: logFilePath)
     }
 }

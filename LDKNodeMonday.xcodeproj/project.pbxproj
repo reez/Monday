@@ -27,7 +27,7 @@
 		AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5702A00947B009E16E3 /* ReceiveView.swift */; };
 		AE80116929A59918009B9967 /* TabHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116829A59918009B9967 /* TabHomeView.swift */; };
 		AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* NodeIDView.swift */; };
-		AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelView.swift */; };
+		AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelAddView.swift */; };
 		AE83142629AED67B00088A70 /* LightningNodeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142529AED67B00088A70 /* LightningNodeError.swift */; };
 		AE83142829AEDDAD00088A70 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142729AEDDAD00088A70 /* SendView.swift */; };
 		AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */; };
@@ -63,7 +63,7 @@
 		AE6BB5702A00947B009E16E3 /* ReceiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveView.swift; sourceTree = "<group>"; };
 		AE80116829A59918009B9967 /* TabHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeView.swift; sourceTree = "<group>"; };
 		AE80116A29A59976009B9967 /* NodeIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDView.swift; sourceTree = "<group>"; };
-		AE80116C29A59AF4009B9967 /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
+		AE80116C29A59AF4009B9967 /* ChannelAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelAddView.swift; sourceTree = "<group>"; };
 		AE83142529AED67B00088A70 /* LightningNodeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeError.swift; sourceTree = "<group>"; };
 		AE83142729AEDDAD00088A70 /* SendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendView.swift; sourceTree = "<group>"; };
 		AE8D877429B145F100F2B918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				AE9422692A007D6C007E4F12 /* ChannelsListView.swift */,
-				AE80116C29A59AF4009B9967 /* ChannelView.swift */,
+				AE80116C29A59AF4009B9967 /* ChannelAddView.swift */,
 				AEBAA4912A01C34A0042EA82 /* ChannelCloseView.swift */,
 				AEBAA4882A01A90D0042EA82 /* Send */,
 				AEBAA4892A01A9130042EA82 /* Receive */,
@@ -355,7 +355,7 @@
 				AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
-				AE80116D29A59AF4009B9967 /* ChannelView.swift in Sources */,
+				AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */,
 				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
 				AE4C15B22A1316D100AA8917 /* BalanceView.swift in Sources */,
 				AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */,

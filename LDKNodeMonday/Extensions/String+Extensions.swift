@@ -46,7 +46,6 @@ extension String {
             let address = String(self[self.index(after: atIndex)...])
             return Peer(nodeID: nodeID, address: address)
         } else {
-            print("Invalid parseConnectionInfo")
             return nil
         }
     }

@@ -24,56 +24,36 @@ class LightningNodeService {
     init(network: NetworkConnection) {
         
         // Delete log file before `start` to keep log file small and loadable in Log View
-//        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-//        let logFilePath = URL(fileURLWithPath: documentsPath).appendingPathComponent("ldk_node.log").path
-//        do {
-//            try FileManager.default.removeItem(atPath: logFilePath)
-//            print("Log file deleted successfully")
-//        } catch {
-//            print("Error deleting log file: \(error.localizedDescription)")
-//        }
-        FileManager.deleteLogFile()
-
+        try? FileManager.deleteLDKNodeLogFile()
         
-//        let storageDirectoryPath = storageManager.getDocumentsDirectory()
-        var esploraServerUrl: String = EsploraServerURLNetwork.signet
+        var esploraServerUrl = EsploraServerURLNetwork.signet
         var chosenNetwork = ChosenNetwork.signet
-//        var listeningAddress: String? = nil
-//        let defaultCltvExpiryDelta = Constants.DefaultCltvExpiryDelta//UInt32(2048)
         
         switch network {
             
         case .regtest:
-            chosenNetwork = "regtest"
-            esploraServerUrl = "http://ldk-node.tnull.de:3002"
-//            listeningAddress = Constants.listeningAddress
-            print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
+            chosenNetwork = ChosenNetwork.regtest
+            esploraServerUrl = EsploraServerURLNetwork.regtest
             self.networkColor = BitcoinNetworkColor.regtest.color
             
-            
-            
         case .signet:
-            chosenNetwork = "signet"
-            esploraServerUrl = "https://mutinynet.com/api"
-//            listeningAddress = Constants.listeningAddress
-            print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
+            chosenNetwork = ChosenNetwork.signet
+            esploraServerUrl = EsploraServerURLNetwork.signet
             self.networkColor = BitcoinNetworkColor.signet.color
             
         case .testnet:
-            chosenNetwork = "testnet"
-            esploraServerUrl = "http://blockstream.info/testnet/api/"
-//            listeningAddress = Constants.listeningAddress
-            print("LDKNodeMonday /// Network chosen: \(chosenNetwork)")
+            chosenNetwork = ChosenNetwork.testnet
+            esploraServerUrl = EsploraServerURLNetwork.testnet
             self.networkColor = BitcoinNetworkColor.testnet.color
             
         }
         
         let config = Config(
-            storageDirPath: storageManager.getDocumentsDirectory(),//storageDirectoryPath,
+            storageDirPath: storageManager.getDocumentsDirectory(),
             esploraServerUrl: esploraServerUrl,
             network: chosenNetwork,
-            listeningAddress: Constants.listeningAddress,//listeningAddress,
-            defaultCltvExpiryDelta: Constants.DefaultCltvExpiryDelta//defaultCltvExpiryDelta
+            listeningAddress: Constants.listeningAddress,
+            defaultCltvExpiryDelta: Constants.DefaultCltvExpiryDelta
         )
         print("LDKNodeMonday /// config: \(config)")
         
@@ -85,7 +65,6 @@ class LightningNodeService {
     func start() async throws {
         try node.start()
         print("LDKNodeMonday /// Started node!")
-        // TODO: Handle error in TabView
     }
     
     func stop() throws {
@@ -107,13 +86,13 @@ class LightningNodeService {
     
     func getSpendableOnchainBalanceSats() async throws -> UInt64 {
         let balance = try node.spendableOnchainBalanceSats()
-        print("LDKNodeMonday /// My balance: \(balance)")
+        print("LDKNodeMonday /// My spendable onchain balance: \(balance)")
         return balance
     }
     
     func getTotalOnchainBalanceSats() async throws -> UInt64 {
         let balance = try node.totalOnchainBalanceSats()
-        print("LDKNodeMonday /// My balance: \(balance)")
+        print("LDKNodeMonday /// My total onchain balance: \(balance)")
         return balance
     }
     
@@ -187,82 +166,54 @@ extension LightningNodeService {
     
     func nextEvent() {
         let _ = node.nextEvent()
-        print("LDKNodeMonday /// nextEvent")
     }
     
     func eventHandled() {
         node.eventHandled()
-        print("LDKNodeMonday /// eventHandled")
     }
     
     func listeningAddress() -> SocketAddr? {
         guard let address = node.listeningAddress() else { return nil }
-        print("LDKNodeMonday /// listeningAddress: \(address)")
         return address
     }
     
     func sendToOnchainAddress(address: Address, amountMsat: UInt64) throws -> Txid {
         let txId = try node.sendToOnchainAddress(address: address, amountMsat: amountMsat)
-        print("LDKNodeMonday /// sendToOnchainAddress txId: \(txId)")
         return txId
     }
     
     func sendAllToOnchainAddress(address: Address) throws -> Txid {
         let txId = try node.sendAllToOnchainAddress(address: address)
-        print("LDKNodeMonday /// sendAllToOnchainAddress txId: \(txId)")
         return txId
     }
     
     func syncWallets() throws {
         try node.syncWallets()
-        print("LDKNodeMonday /// Wallet synced!")
     }
     
     func sendPaymentUsingAmount(invoice: Invoice, amountMsat: UInt64) throws -> PaymentHash {
-        print("LDKNodeMonday /// sendPaymentUsingAmount")
         let paymentHash = try node.sendPaymentUsingAmount(invoice: invoice, amountMsat: amountMsat)
-        print("LDKNodeMonday /// sendPaymentUsingAmount paymentHash: \(paymentHash)")
         return paymentHash
     }
     
     func sendSpontaneousPayment(amountMsat: UInt64, nodeId: String) throws -> PaymentHash {
         let paymentHash = try node.sendSpontaneousPayment(amountMsat: amountMsat, nodeId: nodeId)
-        print("LDKNodeMonday /// sendSpontaneousPayment paymentHash: \(paymentHash)")
         return paymentHash
     }
     
     func receiveVariableAmountPayment(description: String, expirySecs: UInt32) throws -> Invoice {
-        print("LDKNodeMonday /// receiveVariableAmountPayment")
         let invoice = try node.receiveVariableAmountPayment(description: description, expirySecs: expirySecs)
-        print("LDKNodeMonday /// receiveVariableAmountPayment invoice: \(invoice)")
         return invoice
     }
     
     func paymentInfo(paymentHash: PaymentHash) -> PaymentDetails? {
-        print("LDKNodeMonday /// paymentInfo")
         guard let paymentDetails = node.payment(paymentHash: paymentHash) else { return nil }
-        print("LDKNodeMonday /// paymentInfo: \(paymentDetails)")
         return paymentDetails
     }
     
     func removePayment(paymentHash: PaymentHash) throws -> Bool {
         let payment = try node.removePayment(paymentHash: paymentHash)
-        print("LDKNodeMonday /// paymentInfo: \(payment)")
         return payment
     }
     
-}
-
-extension LightningNodeService {
-    func deleteLogFile() {
-         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-         let logFilePath = documentsPath.appendingPathComponent("ldk_node.log")
-         
-         do {
-             try FileManager.default.removeItem(at: logFilePath)
-             print("Log file deleted successfully")
-         } catch {
-             print("Error deleting log file: \(error.localizedDescription)")
-         }
-     }
 }

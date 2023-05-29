@@ -1,5 +1,5 @@
 //
-//  ChannelView.swift
+//  ChannelAddView.swift
 //  LDKNodeMonday
 //
 //  Created by Matthew Ramsden on 2/21/23.
@@ -10,7 +10,7 @@ import LightningDevKitNode
 import WalletUI
 import CodeScanner
 
-class ChannelViewModel: ObservableObject {
+class ChannelAddViewModel: ObservableObject {
     @Published var address: SocketAddr = ""
     @Published var channelAmountSats: String = ""
     @Published var errorMessage: MondayNodeError?
@@ -18,7 +18,6 @@ class ChannelViewModel: ObservableObject {
     @Published var nodeId: PublicKey = ""
     @Published var isOpenChannelFinished: Bool = false
     @Published var isProgressViewShowing: Bool = false
-
     
     func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) async {
         DispatchQueue.main.async {
@@ -59,8 +58,8 @@ class ChannelViewModel: ObservableObject {
     
 }
 
-struct ChannelView: View {
-    @ObservedObject var viewModel: ChannelViewModel
+struct ChannelAddView: View {
+    @ObservedObject var viewModel: ChannelAddViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
     @State private var showingErrorAlert = false
@@ -111,15 +110,12 @@ struct ChannelView: View {
                                                 viewModel.nodeId = peer.nodeID
                                                 viewModel.address = peer.address
                                             } else {
-                                                print("Paste parsing did not work")
                                                 self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Connection info could not be parsed.")
                                             }
                                         } else {
-                                            print("error: if let string = pasteboard.string")
                                             self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Text from Pasteboard not found.")
                                         }
                                     } else {
-                                        print("pasteboard has no strings")
                                         DispatchQueue.main.async {
                                             self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Pasteboard has no text.")
                                         }
@@ -279,29 +275,12 @@ struct ChannelView: View {
                             )
                             
                             if viewModel.isOpenChannelFinished == true {
-                                print("True")
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                     self.presentationMode.wrappedValue.dismiss()
                                 }
                             }
                             
-//                            if showingErrorAlert == false {
-////                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-////                                    self.presentationMode.wrappedValue.dismiss()
-////                                }
-//                                print("error false")
-//                            }
-//                            
-//                            if showingErrorAlert == true {
-////                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-////                                    self.presentationMode.wrappedValue.dismiss()
-////                                }
-//                                print("error true")
-//                            }
-                            
                         }
-                        
- 
                         
                     } label: {
                         Text("Open Channel")
@@ -321,6 +300,24 @@ struct ChannelView: View {
                         completion: handleScan
                     )
                 }
+//                .sheet(isPresented: $isShowingScanner) {
+//                    CodeScannerView(
+//                        codeTypes: [.qr],
+//                        simulatedData: "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6"
+//                    ) { result in
+//                        do {
+//                            try handleScan(result: result)
+//                            // Code to execute if handleScan is successful
+//                        } catch HandleScanError.qrParsingFailed {
+//                            // Code to handle the QR parsing error
+//                        } catch let error as ScanError {
+//                            // Code to handle other ScanError errors
+//                            print("Scanning failed: \(error.localizedDescription)")
+//                        } catch {
+//                            // Code to handle any other errors
+//                        }
+//                    }
+//                }
                 .alert(isPresented: $showingErrorAlert) {
                     Alert(
                         title: Text(viewModel.errorMessage?.title ?? "Unknown"),
@@ -363,8 +360,8 @@ struct ChannelView: View {
     
 }
 
-extension ChannelView {
-    
+extension ChannelAddView {
+
     func handleScan(result: Result<ScanResult, ScanError>) {
         isShowingScanner = false
         switch result {
@@ -380,13 +377,36 @@ extension ChannelView {
             print("Scanning failed: \(error.localizedDescription)")
         }
     }
-    
+
 }
+
+//extension ChannelAddView {
+//    enum HandleScanError: Error {
+//        case qrParsingFailed
+//    }
+//
+//    func handleScan(result: Result<ScanResult, ScanError>) throws {
+//        isShowingScanner = false
+//        switch result {
+//        case .success(let result):
+//            let scannedQRCode = result.string.lowercased()
+//            if let peer = scannedQRCode.parseConnectionInfo() {
+//                viewModel.nodeId = peer.nodeID
+//                viewModel.address = peer.address
+//            } else {
+//                throw HandleScanError.qrParsingFailed
+//            }
+//        case .failure(let error):
+//            throw error
+//        }
+//    }
+//
+//}
 
 struct ChannelView_Previews: PreviewProvider {
     static var previews: some View {
-        ChannelView(viewModel: .init())
-        ChannelView(viewModel: .init())
+        ChannelAddView(viewModel: .init())
+        ChannelAddView(viewModel: .init())
             .environment(\.colorScheme, .dark)
     }
 }

@@ -22,6 +22,5 @@ struct LDKNodeMondayApp: App {
 class AppDelegate: NSObject, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         try? LightningNodeService.shared.stop()
-        print("applicationWillTerminate: Node stopped")
     }
 }

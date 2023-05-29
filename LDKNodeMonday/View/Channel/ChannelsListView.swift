@@ -186,7 +186,7 @@ struct ChannelsListView: View {
                 .sheet(isPresented: $isAddChannelPresented, onDismiss: {
                     viewModel.listChannels()
                 }) {
-                    ChannelView(viewModel: .init())
+                    ChannelAddView(viewModel: .init())
                 }
                 
             }
