@@ -1,5 +1,5 @@
 //
-//  LightningNodeError.swift
+//  MondayNodeError.swift
 //  LDKNodeMonday
 //
 //  Created by Matthew Ramsden on 2/28/23.

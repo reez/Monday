@@ -9,7 +9,7 @@ import SwiftUI
 import LightningDevKitNode
 import WalletUI
 
-class ChannelsListViewModel: ObservableObject {
+class LightningViewViewModel: ObservableObject {
     @Published var channels: [ChannelDetails] = []
     @Published var networkColor = Color.gray
     

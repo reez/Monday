@@ -1,5 +1,5 @@
 //
-//  BalanceView.swift
+//  BitcoinView.swift
 //  LDKNodeMonday
 //
 //  Created by Matthew Ramsden on 5/15/23.
@@ -9,8 +9,8 @@ import SwiftUI
 import LightningDevKitNode
 import WalletUI
 
-struct BalanceView: View {
-    @StateObject var viewModel: BalanceViewModel // ObservedObject
+struct BitcoinView: View {
+    @StateObject var viewModel: BitcoinViewModel // ObservedObject
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingErrorAlert = false
@@ -166,8 +166,8 @@ struct BalanceView: View {
 
 struct BalanceView_Previews: PreviewProvider {
     static var previews: some View {
-        BalanceView(viewModel: .init())
-        BalanceView(viewModel: .init())
+        BitcoinView(viewModel: .init())
+        BitcoinView(viewModel: .init())
             .environment(\.colorScheme, .dark)
     }
 }

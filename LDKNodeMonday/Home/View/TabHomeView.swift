@@ -19,7 +19,7 @@ struct TabHomeView: View {
             
             TabView {
                 
-                BalanceView(viewModel: .init())
+                BitcoinView(viewModel: .init())
                     .tabItem {
                         Label(
                             "",
@@ -27,7 +27,7 @@ struct TabHomeView: View {
                         )
                     }
                 
-                ChannelsListView(viewModel: .init())
+                LightningView(viewModel: .init())
                     .tabItem {
                         Label(
                             "",

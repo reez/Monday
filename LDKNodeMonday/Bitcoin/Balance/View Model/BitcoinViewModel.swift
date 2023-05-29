@@ -9,7 +9,7 @@ import SwiftUI
 import LightningDevKitNode
 import WalletUI
 
-class BalanceViewModel: ObservableObject {
+class BitcoinViewModel: ObservableObject {
     @Published var balance: String = "0"
     @Published var errorMessage: MondayNodeError?
     @Published var networkColor = Color.gray
