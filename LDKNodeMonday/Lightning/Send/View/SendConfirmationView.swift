@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
 
 struct SendConfirmationView: View {
     @ObservedObject var viewModel: SendConfirmationViewModel

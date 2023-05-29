@@ -7,7 +7,6 @@
 
 import SwiftUI
 import LightningDevKitNode
-import WalletUI
 import CodeScanner
 
 class ChannelAddViewModel: ObservableObject {

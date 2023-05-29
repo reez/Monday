@@ -7,7 +7,6 @@
 
 import SwiftUI
 import LightningDevKitNode
-import WalletUI
 
 class PeersListViewModel: ObservableObject {
     @Published var networkColor = Color.gray

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import LightningDevKitNode
-import WalletUI
 
 class SendViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import LightningDevKitNode
-import WalletUI
 
 class PeerViewModel: ObservableObject {
     @Published var address: SocketAddr = ""

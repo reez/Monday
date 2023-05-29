@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
 import WalletUI
 
 struct StartView: View {
@@ -25,7 +24,6 @@ struct StartView: View {
                     Text("Starting...")
                     ProgressView()
                 }
-                
             }
             .padding()
             .tint(viewModel.networkColor)

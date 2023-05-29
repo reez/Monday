@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
 import WalletUI
 
 struct LightningView: View {

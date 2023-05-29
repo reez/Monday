@@ -7,7 +7,6 @@
 
 import SwiftUI
 import LightningDevKitNode
-import WalletUI
 
 class AddressViewModel: ObservableObject {
     @Published var address: String = ""

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
 import WalletUI
 
 class NodeIDViewModel: ObservableObject {

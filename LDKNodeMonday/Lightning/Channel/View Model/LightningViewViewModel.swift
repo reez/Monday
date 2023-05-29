@@ -7,7 +7,6 @@
 
 import SwiftUI
 import LightningDevKitNode
-import WalletUI
 
 class LightningViewViewModel: ObservableObject {
     @Published var channels: [ChannelDetails] = []

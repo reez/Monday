@@ -7,7 +7,6 @@
 
 import SwiftUI
 import LightningDevKitNode
-import WalletUI
 
 class ReceiveViewModel: ObservableObject {
     @Published var amountMsat: String = ""

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import LightningDevKitNode
-import WalletUI
 
 class ChannelCloseViewModel: ObservableObject {
     @Published var channel: ChannelDetails

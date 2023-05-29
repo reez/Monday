@@ -7,7 +7,6 @@
 
 import SwiftUI
 import LightningDevKitNode
-import WalletUI
 
 class DisconnectViewModel: ObservableObject {
     @Published var errorMessage: MondayNodeError?
