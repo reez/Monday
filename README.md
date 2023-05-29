@@ -1,7 +1,7 @@
 # Monday
 
 ## An experimental iOS app using [ldk-node](https://github.com/lightningdevkit/ldk-node)
-*Swift/SwiftUI*
+*Swift + SwiftUI*
 
 ### Functionality
 *Testnet/Regtest/Signet*
