@@ -1,5 +1,5 @@
 //
-//  LightningView.swift
+//  ChannelsListView.swift
 //  LDKNodeMonday
 //
 //  Created by Matthew Ramsden on 5/1/23.
@@ -8,8 +8,8 @@
 import SwiftUI
 import WalletUI
 
-struct LightningView: View {
-    @ObservedObject var viewModel: LightningViewViewModel
+struct ChannelsListView: View {
+    @ObservedObject var viewModel: ChannelsListViewModel
     @State private var isSendPresented = false
     @State private var isReceivePresented = false
     @State private var isViewPeersPresented = false
@@ -156,8 +156,8 @@ struct LightningView: View {
 
 struct ChannelsListView_Previews: PreviewProvider {
     static var previews: some View {
-        LightningView(viewModel: .init())
-        LightningView(viewModel: .init())
+        ChannelsListView(viewModel: .init())
+        ChannelsListView(viewModel: .init())
             .environment(\.colorScheme, .dark)
     }
 }

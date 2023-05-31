@@ -26,7 +26,7 @@ struct TabHomeView: View {
                         )
                     }
                 
-                LightningView(viewModel: .init())
+                ChannelsListView(viewModel: .init())
                     .tabItem {
                         Label(
                             "",

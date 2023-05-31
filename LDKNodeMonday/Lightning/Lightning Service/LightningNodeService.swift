@@ -23,7 +23,6 @@ class LightningNodeService {
     
     init(network: NetworkConnection) {
         
-        // Delete log file before `start` to keep log file small and loadable in Log View
         try? FileManager.deleteLDKNodeLogFile()
         
         var esploraServerUrl = Constants.Config.EsploraServerURLNetwork.signet
@@ -80,24 +79,20 @@ class LightningNodeService {
     
     func newFundingAddress() async throws -> String {
         let fundingAddress = try node.newFundingAddress()
-        print("LDKNodeMonday /// Funding Address: \(fundingAddress)")
         return fundingAddress
     }
     
     func getSpendableOnchainBalanceSats() async throws -> UInt64 {
         let balance = try node.spendableOnchainBalanceSats()
-        print("LDKNodeMonday /// My spendable onchain balance: \(balance)")
         return balance
     }
     
     func getTotalOnchainBalanceSats() async throws -> UInt64 {
         let balance = try node.totalOnchainBalanceSats()
-        print("LDKNodeMonday /// My total onchain balance: \(balance)")
         return balance
     }
     
     func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) async throws {
-        print("LDKNodeMonday /// connect")
         try node.connect(
             nodeId: nodeId,
             address: address,
@@ -106,7 +101,6 @@ class LightningNodeService {
     }
     
     func disconnect(nodeId: PublicKey) throws {
-        print("LDKNodeMonday /// disconnect")
         try node.disconnect(nodeId: nodeId)
     }
     
@@ -127,35 +121,27 @@ class LightningNodeService {
         print("LDKNodeMonday /// opened channel to \(nodeId):\(address) with amount \(channelAmountSats)")
     }
     
-    
     func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) throws {
-        print("LDKNodeMonday /// closeChannel")
         try node.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
-        print("LDKNodeMonday /// closed channel to channelId: \(channelId) of counterpartyNodeId:  \(counterpartyNodeId)")
     }
     
     func sendPayment(invoice: Invoice) async throws -> PaymentHash {
         let paymentHash = try node.sendPayment(invoice: invoice)
-        print("LDKNodeMonday /// sendPayment paymentHash: \(paymentHash)")
         return paymentHash
     }
     
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async throws -> Invoice {
         let invoice = try node.receivePayment(amountMsat: amountMsat, description: description, expirySecs: expirySecs)
-        print("LDKNodeMonday /// receivePayment invoice: \(invoice)")
         return invoice
     }
     
     func listPeers() -> [PeerDetails] {
-        print("LDKNodeMonday /// listPeers")
         let peers = node.listPeers()
-        print("LDKNodeMonday /// listPeers peers: \(peers)")
         return peers
     }
     
     func listChannels() -> [ChannelDetails] {
         let channels = node.listChannels()
-        print("LDKNodeMonday /// listChannels: \(channels)")
         return channels
     }
     

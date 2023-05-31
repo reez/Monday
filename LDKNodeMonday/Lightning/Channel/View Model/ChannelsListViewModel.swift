@@ -8,7 +8,7 @@
 import SwiftUI
 import LightningDevKitNode
 
-class LightningViewViewModel: ObservableObject {
+class ChannelsListViewModel: ObservableObject {
     @Published var channels: [ChannelDetails] = []
     @Published var networkColor = Color.gray
     

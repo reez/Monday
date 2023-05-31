@@ -1,8 +1,8 @@
 # Monday
 
-## An example iOS app using [ldk-node](https://github.com/lightningdevkit/ldk-node)
+An example iOS app using [ldk-node](https://github.com/lightningdevkit/ldk-node)
 
-### Functionality
+## Functionality
 
 This app is an experimental work in progress. 
 
@@ -11,7 +11,7 @@ It provides default implementations for:
 - regtest via [tnull](https://github.com/tnull/ldk-node-workshop)
 - signet via [mutiny-net](https://github.com/MutinyWallet/mutiny-net)
 
-#### Implemented
+### Implemented
 
 - [x] Start Node `start`
 
@@ -41,13 +41,13 @@ It provides default implementations for:
 
 - [x] List Channels `listChannels`
 
-#### Not Implemented
+### Not Implemented
 
 - [ ] Event Handling 
 
 - [ ] All Payment variations
 
-### Swift Packages
+## Swift Packages
 
 - ldk-node (version 0.0.4) via [jurvis/ldk-node](https://github.com/jurvis/ldk-node)
 
@@ -55,7 +55,7 @@ It provides default implementations for:
 
 - QR Code Scanner via [Code Scanner](https://github.com/twostraws/CodeScanner)
 
-### Thanks
+## Thanks
 
 [@notmandatory](https://github.com/notmandatory) for getting this up and running with me on a Monday.
 

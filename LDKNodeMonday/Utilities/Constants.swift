@@ -43,6 +43,7 @@ struct Constants {
                 // Supposed to be `Color.black`
                 // ... but I'm just going to make it `Color.orange`
                 // ... since `Color.black` might not work well for both light+dark mode
+                // ... and `Color.orange` just makes more sense to me
                 return Color.orange
             case .testnet:
                 return Color.red

@@ -9,7 +9,7 @@ import SwiftUI
 import WalletUI
 
 struct BitcoinView: View {
-    @StateObject var viewModel: BitcoinViewModel // ObservedObject
+    @StateObject var viewModel: BitcoinViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingErrorAlert = false

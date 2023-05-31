@@ -14,10 +14,10 @@ struct ChannelAddView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
     @State private var showingErrorAlert = false
-    let pasteboard = UIPasteboard.general
     @State private var keyboardOffset: CGFloat = 0
     @FocusState private var isFocused: Bool
-    
+    let pasteboard = UIPasteboard.general
+
     var body: some View {
         
         ZStack {
@@ -47,7 +47,6 @@ struct ChannelAddView: View {
                         HStack {
                             Spacer()
                             Button {
-                                // [Pasteboard] ...requesting item failed with error: Error Domain=PBErrorDomain Code=13 "Operation not authorized." UserInfo={NSLocalizedDescription=Operation not authorized.}
                                 if pasteboard.hasStrings {
                                     if let string = pasteboard.string {
                                         if let peer = string.parseConnectionInfo() {
@@ -225,24 +224,6 @@ struct ChannelAddView: View {
                         completion: handleScan
                     )
                 }
-                //                .sheet(isPresented: $isShowingScanner) {
-                //                    CodeScannerView(
-                //                        codeTypes: [.qr],
-                //                        simulatedData: "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6"
-                //                    ) { result in
-                //                        do {
-                //                            try handleScan(result: result)
-                //                            // Code to execute if handleScan is successful
-                //                        } catch HandleScanError.qrParsingFailed {
-                //                            // Code to handle the QR parsing error
-                //                        } catch let error as ScanError {
-                //                            // Code to handle other ScanError errors
-                //                            print("Scanning failed: \(error.localizedDescription)")
-                //                        } catch {
-                //                            // Code to handle any other errors
-                //                        }
-                //                    }
-                //                }
                 .alert(isPresented: $showingErrorAlert) {
                     Alert(
                         title: Text(viewModel.errorMessage?.title ?? "Unknown"),
@@ -263,8 +244,7 @@ struct ChannelAddView: View {
                 
             }
             .offset(y: keyboardOffset)
-            //            .animation(.easeInOut)
-            .onChange(of: keyboardOffset) { _ in withAnimation { /* Empty closure to trigger animation*/ } }
+            .onChange(of: keyboardOffset) { _ in withAnimation { } }
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
                 let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
                 let height = value?.height ?? 0
@@ -300,29 +280,6 @@ extension ChannelAddView {
     }
     
 }
-
-//extension ChannelAddView {
-//    enum HandleScanError: Error {
-//        case qrParsingFailed
-//    }
-//
-//    func handleScan(result: Result<ScanResult, ScanError>) throws {
-//        isShowingScanner = false
-//        switch result {
-//        case .success(let result):
-//            let scannedQRCode = result.string.lowercased()
-//            if let peer = scannedQRCode.parseConnectionInfo() {
-//                viewModel.nodeId = peer.nodeID
-//                viewModel.address = peer.address
-//            } else {
-//                throw HandleScanError.qrParsingFailed
-//            }
-//        case .failure(let error):
-//            throw error
-//        }
-//    }
-//
-//}
 
 struct ChannelView_Previews: PreviewProvider {
     static var previews: some View {
