@@ -9,7 +9,7 @@ import SwiftUI
 import WalletUI
 
 class NodeIDViewModel: ObservableObject {
-    @Published var errorMessage: MondayNodeError?
+    @Published var nodeError: MondayError?
     @Published var networkColor = Color.gray
     @Published var nodeID: String = ""
     

@@ -54,7 +54,6 @@ class LightningNodeService {
             listeningAddress: Constants.Config.listeningAddress,
             defaultCltvExpiryDelta: Constants.Config.DefaultCltvExpiryDelta
         )
-        print("LDKNodeMonday /// \n config: \n \(config)")
         
         let nodeBuilder = Builder.fromConfig(config: config)
         let node = nodeBuilder.build()
@@ -63,17 +62,14 @@ class LightningNodeService {
     
     func start() async throws {
         try node.start()
-        print("LDKNodeMonday /// Started node!")
     }
     
     func stop() throws {
         try node.stop()
-        print("LDKNodeMonday /// Stopped node!")
     }
     
     func nodeId() -> String {
         let nodeID = node.nodeId()
-        print("LDKNodeMonday /// My node ID: \(nodeID)")
         return nodeID
     }
     
@@ -118,7 +114,6 @@ class LightningNodeService {
             pushToCounterpartyMsat: pushToCounterpartyMsat,
             announceChannel: true
         )
-        print("LDKNodeMonday /// opened channel to \(nodeId):\(address) with amount \(channelAmountSats)")
     }
     
     func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) throws {

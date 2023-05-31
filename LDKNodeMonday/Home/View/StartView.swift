@@ -10,7 +10,7 @@ import WalletUI
 
 struct StartView: View {
     @ObservedObject var viewModel: StartViewModel
-    @State private var showingErrorAlert = false
+    @State private var showingNodeErrorAlert = false
     
     var body: some View {
         
@@ -33,12 +33,12 @@ struct StartView: View {
                     viewModel.getColor()
                 }
             }
-            .alert(isPresented: $showingErrorAlert) {
+            .alert(isPresented: $showingNodeErrorAlert) {
                 Alert(
-                    title: Text(viewModel.errorMessage?.title ?? "Unknown"),
-                    message: Text(viewModel.errorMessage?.detail ?? ""),
+                    title: Text(viewModel.nodeError?.title ?? "Unknown"),
+                    message: Text(viewModel.nodeError?.detail ?? ""),
                     dismissButton: .default(Text("OK")) {
-                        viewModel.errorMessage = nil
+                        viewModel.nodeError = nil
                     }
                 )
             }

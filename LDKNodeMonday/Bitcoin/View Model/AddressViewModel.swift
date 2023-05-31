@@ -10,7 +10,7 @@ import LightningDevKitNode
 
 class AddressViewModel: ObservableObject {
     @Published var address: String = ""
-    @Published var errorMessage: MondayNodeError?
+    @Published var nodeError: MondayError?
     @Published var networkColor = Color.gray
     @Published var isAddressFinished: Bool = false
     
@@ -24,11 +24,11 @@ class AddressViewModel: ObservableObject {
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
-                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+                self.nodeError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
-                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.nodeError = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
     }

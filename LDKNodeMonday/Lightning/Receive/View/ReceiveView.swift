@@ -12,7 +12,7 @@ struct ReceiveView: View {
     @ObservedObject var viewModel: ReceiveViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
-    @State private var showingErrorAlert = false
+    @State private var showingNodeErrorAlert = false
     
     var body: some View {
         
@@ -125,18 +125,18 @@ struct ReceiveView: View {
                     
                 }
                 .padding()
-                .alert(isPresented: $showingErrorAlert) {
+                .alert(isPresented: $showingNodeErrorAlert) {
                     Alert(
-                        title: Text(viewModel.errorMessage?.title ?? "Unknown"),
-                        message: Text(viewModel.errorMessage?.detail ?? ""),
+                        title: Text(viewModel.nodeError?.title ?? "Unknown"),
+                        message: Text(viewModel.nodeError?.detail ?? ""),
                         dismissButton: .default(Text("OK")) {
-                            viewModel.errorMessage = nil
+                            viewModel.nodeError = nil
                         }
                     )
                 }
-                .onReceive(viewModel.$errorMessage) { errorMessage in
+                .onReceive(viewModel.$nodeError) { errorMessage in
                     if errorMessage != nil {
-                        showingErrorAlert = true
+                        showingNodeErrorAlert = true
                     }
                 }
                 .onAppear {
