@@ -13,7 +13,8 @@ struct PeerView: View {
     @ObservedObject var viewModel: PeerViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
-    @State private var showingErrorAlert = false
+    @State private var showingNodeErrorAlert = false
+    @State private var showingParseErrorAlert = false
     let pasteboard = UIPasteboard.general
     @FocusState private var isFocused: Bool
     
@@ -50,10 +51,10 @@ struct PeerView: View {
                                         viewModel.nodeId = peer.nodeID
                                         viewModel.address = peer.address
                                     } else {
-                                        print("Paste parsing did not work")
+                                        self.viewModel.parseError = .init(title: "Paste Parsing Error", detail: "Failed to parse the Pasteboard.")
                                     }
                                 } else {
-                                    print("error: if let string = pasteboard.string")
+                                    self.viewModel.parseError = .init(title: "Paste Parsing Error", detail: "Nothing found in the Pasteboard.")
                                 }
                             }
                         } label: {
@@ -147,13 +148,13 @@ struct PeerView: View {
                             address: viewModel.address
                         )
                     }
-                    if showingErrorAlert == true {
+                    if showingNodeErrorAlert == true {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             self.presentationMode.wrappedValue.dismiss()
                         }
                     }
                     
-                    if showingErrorAlert == false {
+                    if showingNodeErrorAlert == false {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             self.presentationMode.wrappedValue.dismiss()
                         }
@@ -177,18 +178,32 @@ struct PeerView: View {
                     completion: handleScan
                 )
             }
-            .alert(isPresented: $showingErrorAlert) {
+            .alert(isPresented: $showingNodeErrorAlert) {
                 Alert(
-                    title: Text(viewModel.errorMessage?.title ?? "Unknown"),
-                    message: Text(viewModel.errorMessage?.detail ?? ""),
+                    title: Text(viewModel.nodeError?.title ?? "Unknown"),
+                    message: Text(viewModel.nodeError?.detail ?? ""),
                     dismissButton: .default(Text("OK")) {
-                        viewModel.errorMessage = nil
+                        viewModel.nodeError = nil
                     }
                 )
             }
-            .onReceive(viewModel.$errorMessage) { errorMessage in
+            .onReceive(viewModel.$nodeError) { errorMessage in
                 if errorMessage != nil {
-                    showingErrorAlert = true
+                    showingNodeErrorAlert = true
+                }
+            }
+            .alert(isPresented: $showingParseErrorAlert) {
+                Alert(
+                    title: Text(viewModel.parseError?.title ?? "Unknown"),
+                    message: Text(viewModel.parseError?.detail ?? ""),
+                    dismissButton: .default(Text("OK")) {
+                        viewModel.parseError = nil
+                    }
+                )
+            }
+            .onReceive(viewModel.$parseError) { errorMessage in
+                if errorMessage != nil {
+                    showingParseErrorAlert = true
                 }
             }
             .onAppear {
@@ -213,10 +228,10 @@ extension PeerView {
                 viewModel.nodeId = peer.nodeID
                 viewModel.address = peer.address
             } else {
-                print("QR parsing did not work")
+                self.viewModel.parseError = .init(title: "QR Parsing Error", detail: "Failed to parse the QR code.")
             }
         case .failure(let error):
-            print("Scanning failed: \(error.localizedDescription)")
+            self.viewModel.parseError = .init(title: "Scan Error", detail: error.localizedDescription)
         }
     }
     

@@ -13,11 +13,12 @@ struct ChannelAddView: View {
     @ObservedObject var viewModel: ChannelAddViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
-    @State private var showingErrorAlert = false
+    @State private var showingNodeErrorAlert = false
+    @State private var showingParseErrorAlert = false
     @State private var keyboardOffset: CGFloat = 0
     @FocusState private var isFocused: Bool
     let pasteboard = UIPasteboard.general
-
+    
     var body: some View {
         
         ZStack {
@@ -53,14 +54,14 @@ struct ChannelAddView: View {
                                             viewModel.nodeId = peer.nodeID
                                             viewModel.address = peer.address
                                         } else {
-                                            self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Connection info could not be parsed.")
+                                            self.viewModel.nodeError = .init(title: "Unexpected error", detail: "Connection info could not be parsed.")
                                         }
                                     } else {
-                                        self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Text from Pasteboard not found.")
+                                        self.viewModel.nodeError = .init(title: "Unexpected error", detail: "Text from Pasteboard not found.")
                                     }
                                 } else {
                                     DispatchQueue.main.async {
-                                        self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Pasteboard has no text.")
+                                        self.viewModel.nodeError = .init(title: "Unexpected error", detail: "Pasteboard has no text.")
                                     }
                                 }
                             } label: {
@@ -224,18 +225,32 @@ struct ChannelAddView: View {
                         completion: handleScan
                     )
                 }
-                .alert(isPresented: $showingErrorAlert) {
+                .alert(isPresented: $showingNodeErrorAlert) {
                     Alert(
-                        title: Text(viewModel.errorMessage?.title ?? "Unknown"),
-                        message: Text(viewModel.errorMessage?.detail ?? ""),
+                        title: Text(viewModel.nodeError?.title ?? "Unknown"),
+                        message: Text(viewModel.nodeError?.detail ?? ""),
                         dismissButton: .default(Text("OK")) {
-                            viewModel.errorMessage = nil
+                            viewModel.nodeError = nil
                         }
                     )
                 }
-                .onReceive(viewModel.$errorMessage) { errorMessage in
+                .onReceive(viewModel.$nodeError) { errorMessage in
                     if errorMessage != nil {
-                        showingErrorAlert = true
+                        showingNodeErrorAlert = true
+                    }
+                }
+                .alert(isPresented: $showingParseErrorAlert) {
+                    Alert(
+                        title: Text(viewModel.parseError?.title ?? "Unknown"),
+                        message: Text(viewModel.parseError?.detail ?? ""),
+                        dismissButton: .default(Text("OK")) {
+                            viewModel.parseError = nil
+                        }
+                    )
+                }
+                .onReceive(viewModel.$parseError) { errorMessage in
+                    if errorMessage != nil {
+                        showingParseErrorAlert = true
                     }
                 }
                 .onAppear {
@@ -272,10 +287,10 @@ extension ChannelAddView {
                 viewModel.nodeId = peer.nodeID
                 viewModel.address = peer.address
             } else {
-                print("QR parsing did not work")
+                viewModel.parseError = .init(title: "QR Parsing Error", detail: "Failed to parse the QR code.")
             }
         case .failure(let error):
-            print("Scanning failed: \(error.localizedDescription)")
+            viewModel.parseError = .init(title: "Scan Error", detail: error.localizedDescription)
         }
     }
     

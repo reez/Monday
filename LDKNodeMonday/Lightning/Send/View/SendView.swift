@@ -12,6 +12,7 @@ import CodeScanner
 struct SendView: View {
     @ObservedObject var viewModel: SendViewModel
     @State private var isShowingScanner = false
+    @State private var showingParseErrorAlert = false
     let pasteboard = UIPasteboard.general
     
     var body: some View {
@@ -30,8 +31,10 @@ struct SendView: View {
                                     let lowercaseInvoice = string.lowercased()
                                     viewModel.invoice = lowercaseInvoice
                                 } else {
-                                    print("error: if let string = pasteboard.string")
+                                    self.viewModel.parseError = .init(title: "Paste Parsing Error", detail: "Failed to parse the Pasteboard.")
                                 }
+                            } else {
+                                self.viewModel.parseError = .init(title: "Paste Parsing Error", detail: "Nothing found in the Pasteboard.")
                             }
                         } label: {
                             HStack {
@@ -109,6 +112,20 @@ struct SendView: View {
                 .sheet(isPresented: $isShowingScanner) {
                     CodeScannerView(codeTypes: [.qr], simulatedData: "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6", completion: handleScan)
                 }
+                .alert(isPresented: $showingParseErrorAlert) {
+                    Alert(
+                        title: Text(viewModel.parseError?.title ?? "Unknown"),
+                        message: Text(viewModel.parseError?.detail ?? ""),
+                        dismissButton: .default(Text("OK")) {
+                            viewModel.parseError = nil
+                        }
+                    )
+                }
+                .onReceive(viewModel.$parseError) { errorMessage in
+                    if errorMessage != nil {
+                        showingParseErrorAlert = true
+                    }
+                }
                 .onAppear {
                     viewModel.getColor()
                 }
@@ -130,7 +147,7 @@ extension SendView {
             let invoice = result.string.lowercased()
             viewModel.invoice = invoice
         case .failure(let error):
-            print("Scanning failed: \(error.localizedDescription)")
+            self.viewModel.parseError = .init(title: "Scan Error", detail: error.localizedDescription)
         }
     }
     

@@ -11,7 +11,7 @@ import WalletUI
 struct DisconnectView: View {
     @ObservedObject var viewModel: DisconnectViewModel
     @Environment(\.presentationMode) var presentationMode
-    @State private var showingErrorAlert = false
+    @State private var showingNodeErrorAlert = false
     
     var body: some View {
         
@@ -35,11 +35,11 @@ struct DisconnectView: View {
                     
                     viewModel.disconnect()
                     
-                    if showingErrorAlert == false {
+                    if showingNodeErrorAlert == false {
                         self.presentationMode.wrappedValue.dismiss()
                     }
                     
-                    if showingErrorAlert == true {
+                    if showingNodeErrorAlert == true {
                         self.presentationMode.wrappedValue.dismiss()
                     }
                     
@@ -48,18 +48,18 @@ struct DisconnectView: View {
                 
             }
             .padding()
-            .alert(isPresented: $showingErrorAlert) {
+            .alert(isPresented: $showingNodeErrorAlert) {
                 Alert(
-                    title: Text(viewModel.errorMessage?.title ?? "Unknown"),
-                    message: Text(viewModel.errorMessage?.detail ?? ""),
+                    title: Text(viewModel.nodeError?.title ?? "Unknown"),
+                    message: Text(viewModel.nodeError?.detail ?? ""),
                     dismissButton: .default(Text("OK")) {
-                        viewModel.errorMessage = nil
+                        viewModel.nodeError = nil
                     }
                 )
             }
-            .onReceive(viewModel.$errorMessage) { errorMessage in
+            .onReceive(viewModel.$nodeError) { errorMessage in
                 if errorMessage != nil {
-                    showingErrorAlert = true
+                    showingNodeErrorAlert = true
                 }
             }
             .onAppear {

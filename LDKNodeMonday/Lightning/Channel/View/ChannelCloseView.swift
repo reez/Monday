@@ -11,7 +11,7 @@ import WalletUI
 struct ChannelCloseView: View {
     @ObservedObject var viewModel: ChannelCloseViewModel
     @Environment(\.presentationMode) var presentationMode
-    @State private var showingErrorAlert = false
+    @State private var showingNodeErrorAlert = false
     @Binding var refreshFlag: Bool
     
     var body: some View {
@@ -86,7 +86,7 @@ struct ChannelCloseView: View {
                 Button("Close Channel") {
                     viewModel.close()
                     refreshFlag = true
-                    if showingErrorAlert == false {
+                    if showingNodeErrorAlert == false {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                             self.presentationMode.wrappedValue.dismiss()
                         }
@@ -96,18 +96,18 @@ struct ChannelCloseView: View {
                 
             }
             .padding()
-            .alert(isPresented: $showingErrorAlert) {
+            .alert(isPresented: $showingNodeErrorAlert) {
                 Alert(
-                    title: Text(viewModel.errorMessage?.title ?? "Unknown"),
-                    message: Text(viewModel.errorMessage?.detail ?? ""),
+                    title: Text(viewModel.nodeError?.title ?? "Unknown"),
+                    message: Text(viewModel.nodeError?.detail ?? ""),
                     dismissButton: .default(Text("OK")) {
-                        viewModel.errorMessage = nil
+                        viewModel.nodeError = nil
                     }
                 )
             }
-            .onReceive(viewModel.$errorMessage) { errorMessage in
+            .onReceive(viewModel.$nodeError) { errorMessage in
                 if errorMessage != nil {
-                    showingErrorAlert = true
+                    showingNodeErrorAlert = true
                 }
             }
             .onAppear {

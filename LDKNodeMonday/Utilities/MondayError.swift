@@ -8,12 +8,12 @@
 import Foundation
 import LightningDevKitNode
 
-struct MondayNodeError {
+struct MondayError {
     let title: String
     let detail: String
 }
 
-func handleNodeError(_ error: NodeError) -> MondayNodeError {
+func handleNodeError(_ error: NodeError) -> MondayError {
     
     switch error {
         

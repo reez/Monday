@@ -11,7 +11,8 @@ import LightningDevKitNode
 class SendViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""
     @Published var networkColor = Color.gray
-    
+    @Published var parseError: MondayError?
+
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         DispatchQueue.main.async {

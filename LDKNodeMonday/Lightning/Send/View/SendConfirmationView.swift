@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SendConfirmationView: View {
     @ObservedObject var viewModel: SendConfirmationViewModel
-    @State private var showingErrorAlert = false
     
     var body: some View {
         

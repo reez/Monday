@@ -10,7 +10,7 @@ import LightningDevKitNode
 
 class ChannelCloseViewModel: ObservableObject {
     @Published var channel: ChannelDetails
-    @Published var errorMessage: MondayNodeError?
+    @Published var nodeError: MondayError?
     @Published var networkColor = Color.gray
     
     init(channel: ChannelDetails) {
@@ -23,15 +23,15 @@ class ChannelCloseViewModel: ObservableObject {
                 channelId: self.channel.channelId,
                 counterpartyNodeId: self.channel.counterpartyNodeId
             )
-            errorMessage = nil
+            nodeError = nil
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
-                self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
+                self.nodeError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
-                self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.nodeError = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
     }
