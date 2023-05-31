@@ -15,7 +15,7 @@ struct LightningView: View {
     @State private var isViewPeersPresented = false
     @State private var isAddChannelPresented = false
     @State private var refreshFlag = false
-
+    
     var body: some View {
         
         NavigationView {

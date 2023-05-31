@@ -13,7 +13,7 @@ struct ChannelCloseView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var showingErrorAlert = false
     @Binding var refreshFlag: Bool
-
+    
     var body: some View {
         
         ZStack {

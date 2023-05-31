@@ -39,7 +39,7 @@ struct SendConfirmationView: View {
                 } else {
                     Text("Unable to Parse Formatted Amount")
                 }
-
+                
                 Text(viewModel.paymentHash?.description ?? "No Payment Hash")
                     .font(.caption)
                 

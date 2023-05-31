@@ -11,8 +11,6 @@ It provides default implementations for:
 - regtest via [tnull](https://github.com/tnull/ldk-node-workshop)
 - signet via [mutiny-net](https://github.com/MutinyWallet/mutiny-net)
 
-This app is not to be reckless:tm:ly used on mainnet.
-
 #### Implemented
 
 - [x] Start Node `start`

@@ -17,7 +17,7 @@ struct ChannelAddView: View {
     let pasteboard = UIPasteboard.general
     @State private var keyboardOffset: CGFloat = 0
     @FocusState private var isFocused: Bool
-
+    
     var body: some View {
         
         ZStack {
@@ -48,22 +48,22 @@ struct ChannelAddView: View {
                             Spacer()
                             Button {
                                 // [Pasteboard] ...requesting item failed with error: Error Domain=PBErrorDomain Code=13 "Operation not authorized." UserInfo={NSLocalizedDescription=Operation not authorized.}
-                                    if pasteboard.hasStrings {
-                                        if let string = pasteboard.string {
-                                            if let peer = string.parseConnectionInfo() {
-                                                viewModel.nodeId = peer.nodeID
-                                                viewModel.address = peer.address
-                                            } else {
-                                                self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Connection info could not be parsed.")
-                                            }
+                                if pasteboard.hasStrings {
+                                    if let string = pasteboard.string {
+                                        if let peer = string.parseConnectionInfo() {
+                                            viewModel.nodeId = peer.nodeID
+                                            viewModel.address = peer.address
                                         } else {
-                                            self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Text from Pasteboard not found.")
+                                            self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Connection info could not be parsed.")
                                         }
                                     } else {
-                                        DispatchQueue.main.async {
-                                            self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Pasteboard has no text.")
-                                        }
+                                        self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Text from Pasteboard not found.")
                                     }
+                                } else {
+                                    DispatchQueue.main.async {
+                                        self.viewModel.errorMessage = .init(title: "Unexpected error", detail: "Pasteboard has no text.")
+                                    }
+                                }
                             } label: {
                                 HStack {
                                     Image(systemName: "doc.on.doc")
@@ -225,24 +225,24 @@ struct ChannelAddView: View {
                         completion: handleScan
                     )
                 }
-//                .sheet(isPresented: $isShowingScanner) {
-//                    CodeScannerView(
-//                        codeTypes: [.qr],
-//                        simulatedData: "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6"
-//                    ) { result in
-//                        do {
-//                            try handleScan(result: result)
-//                            // Code to execute if handleScan is successful
-//                        } catch HandleScanError.qrParsingFailed {
-//                            // Code to handle the QR parsing error
-//                        } catch let error as ScanError {
-//                            // Code to handle other ScanError errors
-//                            print("Scanning failed: \(error.localizedDescription)")
-//                        } catch {
-//                            // Code to handle any other errors
-//                        }
-//                    }
-//                }
+                //                .sheet(isPresented: $isShowingScanner) {
+                //                    CodeScannerView(
+                //                        codeTypes: [.qr],
+                //                        simulatedData: "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6"
+                //                    ) { result in
+                //                        do {
+                //                            try handleScan(result: result)
+                //                            // Code to execute if handleScan is successful
+                //                        } catch HandleScanError.qrParsingFailed {
+                //                            // Code to handle the QR parsing error
+                //                        } catch let error as ScanError {
+                //                            // Code to handle other ScanError errors
+                //                            print("Scanning failed: \(error.localizedDescription)")
+                //                        } catch {
+                //                            // Code to handle any other errors
+                //                        }
+                //                    }
+                //                }
                 .alert(isPresented: $showingErrorAlert) {
                     Alert(
                         title: Text(viewModel.errorMessage?.title ?? "Unknown"),
@@ -263,7 +263,7 @@ struct ChannelAddView: View {
                 
             }
             .offset(y: keyboardOffset)
-//            .animation(.easeInOut)
+            //            .animation(.easeInOut)
             .onChange(of: keyboardOffset) { _ in withAnimation { /* Empty closure to trigger animation*/ } }
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
                 let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
@@ -282,7 +282,7 @@ struct ChannelAddView: View {
 }
 
 extension ChannelAddView {
-
+    
     func handleScan(result: Result<ScanResult, ScanError>) {
         isShowingScanner = false
         switch result {
@@ -298,7 +298,7 @@ extension ChannelAddView {
             print("Scanning failed: \(error.localizedDescription)")
         }
     }
-
+    
 }
 
 //extension ChannelAddView {

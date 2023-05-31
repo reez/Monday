@@ -12,7 +12,7 @@ class StartViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var isStarted: Bool = false
     @Published var errorMessage: MondayNodeError?
-
+    
     func start() async throws {
         do {
             try await LightningNodeService.shared.start()

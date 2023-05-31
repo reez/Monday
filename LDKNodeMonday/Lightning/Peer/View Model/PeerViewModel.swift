@@ -13,9 +13,9 @@ class PeerViewModel: ObservableObject {
     @Published var errorMessage: MondayNodeError?
     @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey = ""
-//    @Published var isPeerFinished: Bool = false
+    //    @Published var isPeerFinished: Bool = false
     @Published var isProgressViewShowing: Bool = false
-
+    
     func connect(
         nodeId: PublicKey,
         address: SocketAddr//,
@@ -31,13 +31,13 @@ class PeerViewModel: ObservableObject {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: errorString.title, detail: errorString.detail)
-//                self.isPeerFinished = true
+                //                self.isPeerFinished = true
                 self.isProgressViewShowing = false
             }
         } catch {
             DispatchQueue.main.async {
                 self.errorMessage = .init(title: "Unexpected error", detail: error.localizedDescription)
-//                self.isPeerFinished = true
+                //                self.isPeerFinished = true
                 self.isProgressViewShowing = false
             }
         }

@@ -11,7 +11,7 @@ import WalletUI
 struct StartView: View {
     @ObservedObject var viewModel: StartViewModel
     @State private var showingErrorAlert = false
-
+    
     var body: some View {
         
         ZStack {

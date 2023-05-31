@@ -13,7 +13,7 @@ class AddressViewModel: ObservableObject {
     @Published var errorMessage: MondayNodeError?
     @Published var networkColor = Color.gray
     @Published var isAddressFinished: Bool = false
-
+    
     func newFundingAddress() async {
         do {
             let address = try await LightningNodeService.shared.newFundingAddress()

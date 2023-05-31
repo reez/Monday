@@ -16,7 +16,7 @@ struct PeerView: View {
     @State private var showingErrorAlert = false
     let pasteboard = UIPasteboard.general
     @FocusState private var isFocused: Bool
-
+    
     var body: some View {
         
         ZStack {

@@ -15,7 +15,7 @@ struct PeersListView: View {
     var body: some View {
         
         NavigationView {
-        
+            
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
                 

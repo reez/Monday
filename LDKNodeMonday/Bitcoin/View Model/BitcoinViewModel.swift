@@ -16,7 +16,7 @@ class BitcoinViewModel: ObservableObject {
     @Published var totalBalance: String = "0"
     @Published var isSpendableBalanceFinished: Bool = false
     @Published var isTotalBalanceFinished: Bool = false
-
+    
     
     func getTotalOnchainBalanceSats() async {
         do {

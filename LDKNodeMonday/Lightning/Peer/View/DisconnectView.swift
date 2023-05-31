@@ -35,15 +35,15 @@ struct DisconnectView: View {
                     
                     viewModel.disconnect()
                     if showingErrorAlert == false {
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                            self.presentationMode.wrappedValue.dismiss()
-//                        }
+                        //                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self.presentationMode.wrappedValue.dismiss()
+                        //                        }
                     }
                     
                     if showingErrorAlert == true {
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                            self.presentationMode.wrappedValue.dismiss()
-//                        }
+                        //                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self.presentationMode.wrappedValue.dismiss()
+                        //                        }
                     }
                     
                 }
