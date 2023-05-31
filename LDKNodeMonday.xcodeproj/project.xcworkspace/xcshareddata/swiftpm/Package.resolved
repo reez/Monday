@@ -1,12 +1,21 @@
 {
   "pins" : [
     {
+      "identity" : "codescanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/twostraws/CodeScanner",
+      "state" : {
+        "revision" : "4b2f9c57d03bfe94e6b45572e0c908c1433c32b2",
+        "version" : "2.3.2"
+      }
+    },
+    {
       "identity" : "ldk-node",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jurvis/ldk-node.git",
       "state" : {
-        "revision" : "835b09224c67fa6b32866c9277672eb489e8bbcf",
-        "version" : "0.0.2"
+        "revision" : "b7e5b3356e223f6a61eba2d123e2bea8faa7332e",
+        "version" : "0.0.4"
       }
     },
     {

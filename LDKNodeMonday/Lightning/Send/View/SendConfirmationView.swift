@@ -6,26 +6,10 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
-
-class SendConfirmationViewModel: ObservableObject {
-    @Published var invoice: String = ""
-    
-    init(
-        invoice: String
-    ) {
-        self.invoice = invoice
-    }
-    
-    func sendPayment(invoice: Invoice) {
-        print("LDKNodeMonday /// Send Payment from Invoice: \(invoice)")
-        LightningNodeService.shared.sendPayment(invoice: invoice)
-    }
-    
-}
 
 struct SendConfirmationView: View {
     @ObservedObject var viewModel: SendConfirmationViewModel
+    @State private var showingErrorAlert = false
     
     var body: some View {
         
@@ -38,8 +22,8 @@ struct SendConfirmationView: View {
                 
                 VStack(spacing: 10) {
                     Image(systemName: "bitcoinsign.circle.fill")
-                        .foregroundColor(.orange)
                         .font(.system(size: 100))
+                        .foregroundColor(viewModel.networkColor)
                     Text("Sats paid")
                         .bold()
                     Text("\(viewModel.invoice)")
@@ -50,23 +34,36 @@ struct SendConfirmationView: View {
                 }
                 .padding(.horizontal, 50.0)
                 
-                Text(viewModel.invoice.bolt11amount().formattedAmount())
+                if let amount = viewModel.invoice.bolt11amount() {
+                    Text(amount.formattedAmount())
+                } else {
+                    Text("Unable to Parse Formatted Amount")
+                }
+                
+                Text(viewModel.paymentHash?.description ?? "No Payment Hash")
+                    .font(.caption)
                 
                 Spacer()
                 
                 VStack(spacing: 10) {
-                    Text("\(viewModel.invoice.bolt11amount().formattedAmount()) sats")
-                        .font(.largeTitle)
-                        .bold()
+                    if let amount = viewModel.invoice.bolt11amount() {
+                        Text("\(amount.formattedAmount()) sats")
+                            .font(.largeTitle)
+                            .bold()
+                    }
                     Text(Date.now.formattedDate())
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.secondary)                    
                 }
                 
                 Spacer()
                 
             }
+            .padding()
             .onAppear {
-                viewModel.sendPayment(invoice: viewModel.invoice)
+                Task {
+                    await viewModel.sendPayment(invoice: viewModel.invoice)
+                    viewModel.getColor()
+                }
             }
             
         }

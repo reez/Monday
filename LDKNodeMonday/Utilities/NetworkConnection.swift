@@ -9,5 +9,6 @@ import Foundation
 
 enum NetworkConnection: String {
     case regtest
+    case signet
     case testnet
 }
