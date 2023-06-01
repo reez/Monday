@@ -12,7 +12,7 @@ struct AddressView: View {
     @ObservedObject var viewModel: AddressViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
-    @State private var showingNodeErrorAlert = false
+    @State private var showingAddressViewErrorAlert = false
     
     var body: some View {
         
@@ -85,18 +85,18 @@ struct AddressView: View {
                 .padding()
                 .navigationTitle("Address")
                 .tint(viewModel.networkColor)
-                .alert(isPresented: $showingNodeErrorAlert) {
+                .alert(isPresented: $showingAddressViewErrorAlert) {
                     Alert(
-                        title: Text(viewModel.nodeError?.title ?? "Unknown"),
-                        message: Text(viewModel.nodeError?.detail ?? ""),
+                        title: Text(viewModel.addressViewError?.title ?? "Unknown"),
+                        message: Text(viewModel.addressViewError?.detail ?? ""),
                         dismissButton: .default(Text("OK")) {
-                            viewModel.nodeError = nil
+                            viewModel.addressViewError = nil
                         }
                     )
                 }
-                .onReceive(viewModel.$nodeError) { errorMessage in
+                .onReceive(viewModel.$addressViewError) { errorMessage in
                     if errorMessage != nil {
-                        showingNodeErrorAlert = true
+                        showingAddressViewErrorAlert = true
                     }
                 }
                 .onAppear {

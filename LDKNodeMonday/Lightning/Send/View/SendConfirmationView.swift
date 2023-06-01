@@ -23,7 +23,7 @@ struct SendConfirmationView: View {
                     Image(systemName: "bitcoinsign.circle.fill")
                         .font(.system(size: 100))
                         .foregroundColor(viewModel.networkColor)
-                    Text("Sats paid")
+                    Text("Sats payment")
                         .bold()
                     Text("\(viewModel.invoice)")
                         .truncationMode(.middle)

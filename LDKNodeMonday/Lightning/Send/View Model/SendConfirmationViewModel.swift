@@ -9,7 +9,7 @@ import SwiftUI
 import LightningDevKitNode
 
 class SendConfirmationViewModel: ObservableObject {
-    @Published var nodeError: MondayError?
+    @Published var sendConfirmationViewError: MondayError?
     @Published var invoice: String = ""
     @Published var networkColor = Color.gray
     @Published var paymentHash: PaymentHash?
@@ -27,11 +27,11 @@ class SendConfirmationViewModel: ObservableObject {
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
-                self.nodeError = .init(title: errorString.title, detail: errorString.detail)
+                self.sendConfirmationViewError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
-                self.nodeError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.sendConfirmationViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
     }

@@ -12,8 +12,7 @@ import CodeScanner
 class ChannelAddViewModel: ObservableObject {
     @Published var address: SocketAddr = ""
     @Published var channelAmountSats: String = ""
-    @Published var nodeError: MondayError?
-    @Published var parseError: MondayError?
+    @Published var channelAddViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey = ""
     @Published var isOpenChannelFinished: Bool = false
@@ -31,7 +30,7 @@ class ChannelAddViewModel: ObservableObject {
                 pushToCounterpartyMsat: pushToCounterpartyMsat
             )
             DispatchQueue.main.async {
-                self.nodeError = nil
+                self.channelAddViewError = nil
                 self.isOpenChannelFinished = true
                 self.isProgressViewShowing = false
             }
@@ -39,12 +38,12 @@ class ChannelAddViewModel: ObservableObject {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
                 self.isProgressViewShowing = false
-                self.nodeError = .init(title: errorString.title, detail: errorString.detail)
+                self.channelAddViewError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
                 self.isProgressViewShowing = false
-                self.nodeError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.channelAddViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
     }

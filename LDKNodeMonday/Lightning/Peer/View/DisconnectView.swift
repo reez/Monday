@@ -11,7 +11,7 @@ import WalletUI
 struct DisconnectView: View {
     @ObservedObject var viewModel: DisconnectViewModel
     @Environment(\.presentationMode) var presentationMode
-    @State private var showingNodeErrorAlert = false
+    @State private var showingDisconnectViewErrorAlert = false
     
     var body: some View {
         
@@ -35,11 +35,11 @@ struct DisconnectView: View {
                     
                     viewModel.disconnect()
                     
-                    if showingNodeErrorAlert == false {
+                    if showingDisconnectViewErrorAlert == false {
                         self.presentationMode.wrappedValue.dismiss()
                     }
                     
-                    if showingNodeErrorAlert == true {
+                    if showingDisconnectViewErrorAlert == true {
                         self.presentationMode.wrappedValue.dismiss()
                     }
                     
@@ -48,18 +48,18 @@ struct DisconnectView: View {
                 
             }
             .padding()
-            .alert(isPresented: $showingNodeErrorAlert) {
+            .alert(isPresented: $showingDisconnectViewErrorAlert) {
                 Alert(
-                    title: Text(viewModel.nodeError?.title ?? "Unknown"),
-                    message: Text(viewModel.nodeError?.detail ?? ""),
+                    title: Text(viewModel.disconnectViewError?.title ?? "Unknown"),
+                    message: Text(viewModel.disconnectViewError?.detail ?? ""),
                     dismissButton: .default(Text("OK")) {
-                        viewModel.nodeError = nil
+                        viewModel.disconnectViewError = nil
                     }
                 )
             }
-            .onReceive(viewModel.$nodeError) { errorMessage in
+            .onReceive(viewModel.$disconnectViewError) { errorMessage in
                 if errorMessage != nil {
-                    showingNodeErrorAlert = true
+                    showingDisconnectViewErrorAlert = true
                 }
             }
             .onAppear {

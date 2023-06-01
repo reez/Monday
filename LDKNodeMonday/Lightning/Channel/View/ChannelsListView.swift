@@ -49,7 +49,7 @@ struct ChannelsListView: View {
                         List {
                             ForEach(viewModel.channels, id: \.self) { channel in
                                 NavigationLink {
-                                    ChannelCloseView(
+                                    ChannelDetailView(
                                         viewModel: .init(channel: channel),
                                         refreshFlag: $refreshFlag
                                     )
@@ -84,6 +84,9 @@ struct ChannelsListView: View {
                             }
                         }
                         .listStyle(.plain)
+                        .refreshable {
+                            viewModel.listChannels()
+                        }
                     }
                     
                     Spacer()

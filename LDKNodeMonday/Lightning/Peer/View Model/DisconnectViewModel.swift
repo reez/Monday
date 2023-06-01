@@ -9,7 +9,7 @@ import SwiftUI
 import LightningDevKitNode
 
 class DisconnectViewModel: ObservableObject {
-    @Published var nodeError: MondayError?
+    @Published var disconnectViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey
     
@@ -20,15 +20,15 @@ class DisconnectViewModel: ObservableObject {
     func disconnect() {
         do {
             try LightningNodeService.shared.disconnect(nodeId: self.nodeId)
-            nodeError = nil
+            disconnectViewError = nil
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
-                self.nodeError = .init(title: errorString.title, detail: errorString.detail)
+                self.disconnectViewError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
-                self.nodeError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.disconnectViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
     }

@@ -11,7 +11,7 @@ import LightningDevKitNode
 class ReceiveViewModel: ObservableObject {
     @Published var amountMsat: String = ""
     @Published var invoice: PublicKey = ""
-    @Published var nodeError: MondayError?
+    @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
     
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async {
@@ -27,11 +27,11 @@ class ReceiveViewModel: ObservableObject {
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
-                self.nodeError = .init(title: errorString.title, detail: errorString.detail)
+                self.receiveViewError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
-                self.nodeError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.receiveViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
         

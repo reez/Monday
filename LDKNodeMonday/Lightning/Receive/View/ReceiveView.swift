@@ -12,7 +12,8 @@ struct ReceiveView: View {
     @ObservedObject var viewModel: ReceiveViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
-    @State private var showingNodeErrorAlert = false
+    @State private var showingReceiveViewErrorAlert = false
+    @State private var isKeyboardVisible = false
     
     var body: some View {
         
@@ -25,11 +26,12 @@ struct ReceiveView: View {
                     
                     VStack(alignment: .leading) {
                         
-                        Text("Amount (mSat)")
+                        Text("Amount (msat)")
                             .bold()
                         
                         ZStack {
                             TextField("125000", text: $viewModel.amountMsat)
+                                .keyboardType(.numberPad)
                                 .frame(height: 48)
                                 .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
                                 .cornerRadius(5)
@@ -63,6 +65,8 @@ struct ReceiveView: View {
                                 expirySecs: UInt32(3600)
                             )
                         }
+                        // Dismiss the keyboard
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding(.bottom, 100.0)
@@ -125,19 +129,25 @@ struct ReceiveView: View {
                     
                 }
                 .padding()
-                .alert(isPresented: $showingNodeErrorAlert) {
+                .alert(isPresented: $showingReceiveViewErrorAlert) {
                     Alert(
-                        title: Text(viewModel.nodeError?.title ?? "Unknown"),
-                        message: Text(viewModel.nodeError?.detail ?? ""),
+                        title: Text(viewModel.receiveViewError?.title ?? "Unknown"),
+                        message: Text(viewModel.receiveViewError?.detail ?? ""),
                         dismissButton: .default(Text("OK")) {
-                            viewModel.nodeError = nil
+                            viewModel.receiveViewError = nil
                         }
                     )
                 }
-                .onReceive(viewModel.$nodeError) { errorMessage in
+                .onReceive(viewModel.$receiveViewError) { errorMessage in
                     if errorMessage != nil {
-                        showingNodeErrorAlert = true
+                        showingReceiveViewErrorAlert = true
                     }
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                    isKeyboardVisible = true
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                    isKeyboardVisible = false
                 }
                 .onAppear {
                     viewModel.getColor()
