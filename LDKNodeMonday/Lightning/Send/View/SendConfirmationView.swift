@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SendConfirmationView: View {
     @ObservedObject var viewModel: SendConfirmationViewModel
+    @State private var isCopied = false
+    @State private var showCheckmark = false
     
     var body: some View {
         
@@ -23,35 +25,63 @@ struct SendConfirmationView: View {
                     Image(systemName: "bitcoinsign.circle.fill")
                         .font(.system(size: 100))
                         .foregroundColor(viewModel.networkColor)
-                    Text("Sats payment")
+                    Text("Sats payment sent")
                         .bold()
-                    Text("\(viewModel.invoice)")
-                        .truncationMode(.middle)
-                        .lineLimit(1)
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal)
+                    HStack(alignment: .center) {
+                        Text(viewModel.invoice)
+                            .truncationMode(.middle)
+                            .lineLimit(1)
+                            .foregroundColor(.secondary)
+                            .font(.subheadline)
+                        Button {
+                            UIPasteboard.general.string = viewModel.invoice
+                            isCopied = true
+                            showCheckmark = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                isCopied = false
+                                showCheckmark = false
+                            }
+                        } label: {
+                            HStack {
+                                withAnimation {
+                                    Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
+                                        .font(.subheadline)
+                                }
+                            }
+                            .bold()
+                            .foregroundColor(viewModel.networkColor)
+                        }
+                        
+                    }
+                    .padding(.horizontal)
                 }
                 .padding(.horizontal, 50.0)
                 
-                if let amount = viewModel.invoice.bolt11amount() {
-                    Text(amount.formattedAmount())
+                if let hash = viewModel.paymentHash {
+                    Text("Payment Hash: \(hash)")
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .font(.caption)
                 } else {
-                    Text("Unable to Parse Formatted Amount")
+                    Text("No Payment Hash")
+                        .font(.caption)
                 }
-                
-                Text(viewModel.paymentHash?.description ?? "No Payment Hash")
-                    .font(.caption)
                 
                 Spacer()
                 
                 VStack(spacing: 10) {
-                    if let amount = viewModel.invoice.bolt11amount() {
-                        Text("\(amount.formattedAmount()) sats")
+                    
+                    if let invoice = viewModel.invoice.bolt11amount(), let number = Int(invoice) {
+                        let msat = number / 1000
+                        Text("\(msat.description.formattedAmount()) sats")
                             .font(.largeTitle)
                             .bold()
+                    } else {
+                        Text("Unable to Parse Formatted Amount")
                     }
+                    
                     Text(Date.now.formattedDate())
-                        .foregroundColor(.secondary)                    
+                        .foregroundColor(.secondary)
                 }
                 
                 Spacer()

@@ -21,9 +21,10 @@ struct ChannelDetailView: View {
             
             VStack {
                 
-                VStack(spacing: 10) {
+                VStack(alignment: .leading, spacing: 10) {
                     HStack {
                         Text("Channel ID:")
+                        Spacer()
                         Text(viewModel.channel.channelId.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
@@ -31,6 +32,7 @@ struct ChannelDetailView: View {
                     }
                     HStack {
                         Text("Counterparty Node ID:")
+                        Spacer()
                         Text(viewModel.channel.counterpartyNodeId.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
@@ -38,35 +40,41 @@ struct ChannelDetailView: View {
                     }
                     HStack {
                         Text("Channel Value Satoshis:")
+                        Spacer()
                         Text(viewModel.channel.channelValueSatoshis.description)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                     }
                     HStack {
                         Text("Balance (msat):")
+                        Spacer()
                         Text(viewModel.channel.balanceMsat.description)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                     }
                     HStack {
                         Text("Outbound Capacity (msat):")
+                        Spacer()
                         Text(viewModel.channel.outboundCapacityMsat.description)
                             .foregroundColor(.secondary)
                     }
                     HStack {
                         Text("Inbound Capacity (msat):")
+                        Spacer()
                         Text(viewModel.channel.inboundCapacityMsat.description)
                             .foregroundColor(.secondary)
                     }
                     if let confirm = viewModel.channel.confirmations {
                         HStack {
                             Text("Confirmations:")
+                            Spacer()
                             Text(confirm.description)
                                 .foregroundColor(.secondary)
                         }
                     }
                     HStack {
                         Text("Is Channel Ready:")
+                        Spacer()
                         Text(viewModel.channel.isChannelReady.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
@@ -74,6 +82,7 @@ struct ChannelDetailView: View {
                     }
                     HStack {
                         Text("Is Usable:")
+                        Spacer()
                         Text(viewModel.channel.isUsable.description)
                             .truncationMode(.middle)
                             .lineLimit(1)

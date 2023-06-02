@@ -56,7 +56,7 @@ struct ChannelAddView: View {
                                             viewModel.channelAddViewError = .init(title: "Unexpected error", detail: "Connection info could not be parsed.")
                                         }
                                     } else {
-                                        viewModel.channelAddViewError = .init(title: "Unexpected error", detail: "Text from Pasteboard not found.")
+                                        //viewModel.channelAddViewError = .init(title: "Unexpected error", detail: "Text from Pasteboard not found.")
                                     }
                                 } else {
                                     DispatchQueue.main.async {
@@ -87,6 +87,9 @@ struct ChannelAddView: View {
                         
                         ZStack {
                             TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
+                                .onChange(of: viewModel.nodeId) { newValue in
+                                    viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
+                                }
                                 .keyboardType(.numbersAndPunctuation)
                                 .frame(height: 48)
                                 .truncationMode(.middle)
@@ -121,6 +124,9 @@ struct ChannelAddView: View {
                         
                         ZStack {
                             TextField("172.18.0.2:9735", text: $viewModel.address)
+                                .onChange(of: viewModel.nodeId) { newValue in
+                                    viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
+                                }
                                 .keyboardType(.numbersAndPunctuation)
                                 .frame(height: 48)
                                 .truncationMode(.middle)
@@ -238,6 +244,7 @@ struct ChannelAddView: View {
                         showingChannelAddViewErrorAlert = true
                     }
                 }
+                .onReceive(viewModel.$isOpenChannelFinished){ _ in }
                 .onAppear {
                     viewModel.getColor()
                 }

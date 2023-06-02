@@ -7,7 +7,6 @@
 
 import SwiftUI
 import LightningDevKitNode
-import CodeScanner
 
 class ChannelAddViewModel: ObservableObject {
     @Published var address: SocketAddr = ""
@@ -22,30 +21,30 @@ class ChannelAddViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.isProgressViewShowing = true
         }
-        do {
-            try await LightningNodeService.shared.connectOpenChannel(
-                nodeId: nodeId,
-                address: address,
-                channelAmountSats: channelAmountSats,
-                pushToCounterpartyMsat: pushToCounterpartyMsat
-            )
-            DispatchQueue.main.async {
-                self.channelAddViewError = nil
-                self.isOpenChannelFinished = true
-                self.isProgressViewShowing = false
-            }
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.isProgressViewShowing = false
-                self.channelAddViewError = .init(title: errorString.title, detail: errorString.detail)
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.isProgressViewShowing = false
-                self.channelAddViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
-            }
-        }
+            do {
+                try await LightningNodeService.shared.connectOpenChannel(
+                    nodeId: nodeId,
+                    address: address,
+                    channelAmountSats: channelAmountSats,
+                    pushToCounterpartyMsat: pushToCounterpartyMsat
+                )
+                DispatchQueue.main.async {
+                    self.channelAddViewError = nil
+                    self.isOpenChannelFinished = true
+                    self.isProgressViewShowing = false
+                }
+            } catch let error as NodeError {
+                let errorString = handleNodeError(error)
+                DispatchQueue.main.async {
+                    self.isProgressViewShowing = false
+                    self.channelAddViewError = .init(title: errorString.title, detail: errorString.detail)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.isProgressViewShowing = false
+                    self.channelAddViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                }
+            }        
     }
     
     func getColor() {

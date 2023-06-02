@@ -16,7 +16,7 @@ class LightningNodeService {
     
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService(network: .signet)
+            static let instance = LightningNodeService(network: .regtest)
         }
         return Singleton.instance
     }
@@ -25,8 +25,8 @@ class LightningNodeService {
         
         try? FileManager.deleteLDKNodeLogFile()
         
-        var esploraServerUrl = Constants.Config.EsploraServerURLNetwork.signet
-        var chosenNetwork = Constants.Config.ChosenNetwork.signet
+        var esploraServerUrl = Constants.Config.EsploraServerURLNetwork.regtest
+        var chosenNetwork = Constants.Config.ChosenNetwork.regtest
         
         switch network {
             

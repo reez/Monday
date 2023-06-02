@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreImage.CIFilterBuiltins
 
-struct QRCodeView: View {
+struct QRCodeViewBitcoin: View {
     var address: String
     
     var body: some View {
@@ -20,7 +20,7 @@ struct QRCodeView: View {
     }
 }
 
-extension QRCodeView {
+extension QRCodeViewBitcoin {
     func generateQRCode(from string: String) -> UIImage {
         let context = CIContext()
         let filter = CIFilter.qrCodeGenerator()
@@ -38,6 +38,6 @@ extension QRCodeView {
 
 struct QRCodeView_Previews: PreviewProvider {
     static var previews: some View {
-        QRCodeView(address: "tb1qz9hhk2qlsmdanrzgl38uv86hqnqe5vyszrld7s")
+        QRCodeViewBitcoin(address: "tb1qz9hhk2qlsmdanrzgl38uv86hqnqe5vyszrld7s")
     }
 }

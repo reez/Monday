@@ -25,7 +25,7 @@ struct AddressView: View {
                     
                     Spacer()
                     
-                    QRCodeView(address: viewModel.address)
+                    QRCodeViewBitcoin(address: viewModel.address)
                     
                     HStack(alignment: .center) {
                         ZStack {

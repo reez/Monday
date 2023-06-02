@@ -47,7 +47,7 @@ struct ChannelsListView: View {
                             .padding()
                     } else {
                         List {
-                            ForEach(viewModel.channels, id: \.self) { channel in
+                            ForEach(viewModel.channels.sorted(by: { $0.channelValueSatoshis > $1.channelValueSatoshis }), id: \.self) { channel in
                                 NavigationLink {
                                     ChannelDetailView(
                                         viewModel: .init(channel: channel),
