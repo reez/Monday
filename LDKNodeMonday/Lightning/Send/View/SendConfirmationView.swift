@@ -60,7 +60,7 @@ struct SendConfirmationView: View {
                 if let hash = viewModel.paymentHash {
                     Text("Payment Hash: \(hash)")
                         .lineLimit(1)
-                        .truncationMode(.tail)
+                        .truncationMode(.middle)
                         .font(.caption)
                 } else {
                     Text("No Payment Hash")
