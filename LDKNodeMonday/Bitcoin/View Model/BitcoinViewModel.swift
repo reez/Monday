@@ -10,7 +10,7 @@ import LightningDevKitNode
 
 class BitcoinViewModel: ObservableObject {
     @Published var balance: String = "0"
-    @Published var nodeError: MondayError?
+    @Published var bitcoinViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var spendableBalance: String = "0"
     @Published var totalBalance: String = "0"
@@ -30,11 +30,11 @@ class BitcoinViewModel: ObservableObject {
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
-                self.nodeError = .init(title: errorString.title, detail: errorString.detail)
+                self.bitcoinViewError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
-                self.nodeError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.bitcoinViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
     }
@@ -51,11 +51,11 @@ class BitcoinViewModel: ObservableObject {
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
-                self.nodeError = .init(title: errorString.title, detail: errorString.detail)
+                self.bitcoinViewError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
-                self.nodeError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.bitcoinViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
     }

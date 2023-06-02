@@ -12,7 +12,8 @@ struct ReceiveView: View {
     @ObservedObject var viewModel: ReceiveViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
-    @State private var showingNodeErrorAlert = false
+    @State private var showingReceiveViewErrorAlert = false
+    @State private var isKeyboardVisible = false
     
     var body: some View {
         
@@ -25,11 +26,12 @@ struct ReceiveView: View {
                     
                     VStack(alignment: .leading) {
                         
-                        Text("Amount (mSat)")
+                        Text("Sats")
                             .bold()
                         
                         ZStack {
                             TextField("125000", text: $viewModel.amountMsat)
+                                .keyboardType(.numberPad)
                                 .frame(height: 48)
                                 .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
                                 .cornerRadius(5)
@@ -57,63 +59,70 @@ struct ReceiveView: View {
                     
                     Button("Create Invoice") {
                         Task {
+                            let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
                             await viewModel.receivePayment(
-                                amountMsat: UInt64(viewModel.amountMsat) ?? 0,
+                                amountMsat: amountMsat,
                                 description: "LDKNodeMonday",
                                 expirySecs: UInt32(3600)
                             )
                         }
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                    .padding(.bottom, 100.0)
                     
                     if viewModel.invoice != "" {
                         
-                        HStack(alignment: .center) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 50.0, height: 50.0)
-                                    .foregroundColor(viewModel.networkColor)
-                                Image(systemName: "bolt.fill")
-                                    .font(.title)
-                                    .foregroundColor(Color(uiColor: .systemBackground))
-                                    .bold()
-                            }
+                        VStack {
                             
-                            VStack(alignment: .leading, spacing: 5.0) {
-                                Text("Lightning Network")
-                                    .font(.caption)
-                                    .bold()
-                                Text(viewModel.invoice)
-                                    .font(.caption)
-                                    .truncationMode(.middle)
-                                    .lineLimit(1)
-                                    .foregroundColor(.secondary)
-                            }
+                            QRCodeViewLightning(invoice: viewModel.invoice)
                             
-                            Spacer()
-                            
-                            Button {
-                                UIPasteboard.general.string = viewModel.invoice
-                                isCopied = true
-                                showCheckmark = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    isCopied = false
-                                    showCheckmark = false
+                            HStack(alignment: .center) {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 50.0, height: 50.0)
+                                        .foregroundColor(viewModel.networkColor)
+                                    Image(systemName: "bolt.fill")
+                                        .font(.title)
+                                        .foregroundColor(Color(uiColor: .systemBackground))
+                                        .bold()
                                 }
-                            } label: {
-                                HStack {
-                                    withAnimation {
-                                        Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                            .font(.subheadline)
+                                
+                                VStack(alignment: .leading, spacing: 5.0) {
+                                    Text("Lightning Network")
+                                        .font(.caption)
+                                        .bold()
+                                    Text(viewModel.invoice)
+                                        .font(.caption)
+                                        .truncationMode(.middle)
+                                        .lineLimit(1)
+                                        .foregroundColor(.secondary)
+                                }
+                                
+                                Spacer()
+                                
+                                Button {
+                                    UIPasteboard.general.string = viewModel.invoice
+                                    isCopied = true
+                                    showCheckmark = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        isCopied = false
+                                        showCheckmark = false
                                     }
+                                } label: {
+                                    HStack {
+                                        withAnimation {
+                                            Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
+                                                .font(.subheadline)
+                                        }
+                                    }
+                                    .bold()
+                                    .foregroundColor(viewModel.networkColor)
                                 }
-                                .bold()
-                                .foregroundColor(viewModel.networkColor)
+                                
                             }
+                            .padding()
                             
                         }
-                        .padding()
                         
                         Button("Clear Invoice") {
                             viewModel.clearInvoice()
@@ -125,19 +134,25 @@ struct ReceiveView: View {
                     
                 }
                 .padding()
-                .alert(isPresented: $showingNodeErrorAlert) {
+                .alert(isPresented: $showingReceiveViewErrorAlert) {
                     Alert(
-                        title: Text(viewModel.nodeError?.title ?? "Unknown"),
-                        message: Text(viewModel.nodeError?.detail ?? ""),
+                        title: Text(viewModel.receiveViewError?.title ?? "Unknown"),
+                        message: Text(viewModel.receiveViewError?.detail ?? ""),
                         dismissButton: .default(Text("OK")) {
-                            viewModel.nodeError = nil
+                            viewModel.receiveViewError = nil
                         }
                     )
                 }
-                .onReceive(viewModel.$nodeError) { errorMessage in
+                .onReceive(viewModel.$receiveViewError) { errorMessage in
                     if errorMessage != nil {
-                        showingNodeErrorAlert = true
+                        showingReceiveViewErrorAlert = true
                     }
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                    isKeyboardVisible = true
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                    isKeyboardVisible = false
                 }
                 .onAppear {
                     viewModel.getColor()

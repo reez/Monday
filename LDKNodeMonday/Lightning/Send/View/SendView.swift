@@ -144,7 +144,7 @@ extension SendView {
         isShowingScanner = false
         switch result {
         case .success(let result):
-            let invoice = result.string.lowercased()
+            let invoice = result.string.lowercased().replacingOccurrences(of: "lightning:", with: "")
             viewModel.invoice = invoice
         case .failure(let error):
             self.viewModel.parseError = .init(title: "Scan Error", detail: error.localizedDescription)

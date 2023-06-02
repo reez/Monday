@@ -8,10 +8,10 @@
 import SwiftUI
 import WalletUI
 
-struct ChannelCloseView: View {
-    @ObservedObject var viewModel: ChannelCloseViewModel
+struct ChannelDetailView: View {
+    @ObservedObject var viewModel: ChannelDetailViewModel
     @Environment(\.presentationMode) var presentationMode
-    @State private var showingNodeErrorAlert = false
+    @State private var showingChannelDetailViewErrorAlert = false
     @Binding var refreshFlag: Bool
     
     var body: some View {
@@ -21,9 +21,10 @@ struct ChannelCloseView: View {
             
             VStack {
                 
-                VStack(spacing: 10) {
+                VStack(alignment: .leading, spacing: 10) {
                     HStack {
                         Text("Channel ID:")
+                        Spacer()
                         Text(viewModel.channel.channelId.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
@@ -31,6 +32,7 @@ struct ChannelCloseView: View {
                     }
                     HStack {
                         Text("Counterparty Node ID:")
+                        Spacer()
                         Text(viewModel.channel.counterpartyNodeId.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
@@ -38,35 +40,41 @@ struct ChannelCloseView: View {
                     }
                     HStack {
                         Text("Channel Value Satoshis:")
+                        Spacer()
                         Text(viewModel.channel.channelValueSatoshis.description)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Balance msat:")
+                        Text("Balance (msat):")
+                        Spacer()
                         Text(viewModel.channel.balanceMsat.description)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Outbound Capacity (mSat):")
+                        Text("Outbound Capacity (msat):")
+                        Spacer()
                         Text(viewModel.channel.outboundCapacityMsat.description)
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Inbound Capacity (mSat):")
+                        Text("Inbound Capacity (msat):")
+                        Spacer()
                         Text(viewModel.channel.inboundCapacityMsat.description)
                             .foregroundColor(.secondary)
                     }
                     if let confirm = viewModel.channel.confirmations {
                         HStack {
                             Text("Confirmations:")
+                            Spacer()
                             Text(confirm.description)
                                 .foregroundColor(.secondary)
                         }
                     }
                     HStack {
                         Text("Is Channel Ready:")
+                        Spacer()
                         Text(viewModel.channel.isChannelReady.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
@@ -74,6 +82,7 @@ struct ChannelCloseView: View {
                     }
                     HStack {
                         Text("Is Usable:")
+                        Spacer()
                         Text(viewModel.channel.isUsable.description)
                             .truncationMode(.middle)
                             .lineLimit(1)
@@ -86,7 +95,7 @@ struct ChannelCloseView: View {
                 Button("Close Channel") {
                     viewModel.close()
                     refreshFlag = true
-                    if showingNodeErrorAlert == false {
+                    if showingChannelDetailViewErrorAlert == false {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                             self.presentationMode.wrappedValue.dismiss()
                         }
@@ -96,18 +105,18 @@ struct ChannelCloseView: View {
                 
             }
             .padding()
-            .alert(isPresented: $showingNodeErrorAlert) {
+            .alert(isPresented: $showingChannelDetailViewErrorAlert) {
                 Alert(
-                    title: Text(viewModel.nodeError?.title ?? "Unknown"),
-                    message: Text(viewModel.nodeError?.detail ?? ""),
+                    title: Text(viewModel.channelDetailViewError?.title ?? "Unknown"),
+                    message: Text(viewModel.channelDetailViewError?.detail ?? ""),
                     dismissButton: .default(Text("OK")) {
-                        viewModel.nodeError = nil
+                        viewModel.channelDetailViewError = nil
                     }
                 )
             }
-            .onReceive(viewModel.$nodeError) { errorMessage in
+            .onReceive(viewModel.$channelDetailViewError) { errorMessage in
                 if errorMessage != nil {
-                    showingNodeErrorAlert = true
+                    showingChannelDetailViewErrorAlert = true
                 }
             }
             .onAppear {
@@ -124,7 +133,7 @@ struct ChannelCloseView_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        ChannelCloseView(
+        ChannelDetailView(
             viewModel: .init(
                 channel: .init(
                     channelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8",
@@ -151,7 +160,7 @@ struct ChannelCloseView_Previews: PreviewProvider {
             refreshFlag: .constant(false)
         )
         
-        ChannelCloseView(
+        ChannelDetailView(
             viewModel: .init(
                 channel: .init(
                     channelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8",

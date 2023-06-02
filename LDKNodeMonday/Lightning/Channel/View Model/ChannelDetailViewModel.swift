@@ -8,9 +8,9 @@
 import SwiftUI
 import LightningDevKitNode
 
-class ChannelCloseViewModel: ObservableObject {
+class ChannelDetailViewModel: ObservableObject {
     @Published var channel: ChannelDetails
-    @Published var nodeError: MondayError?
+    @Published var channelDetailViewError: MondayError?
     @Published var networkColor = Color.gray
     
     init(channel: ChannelDetails) {
@@ -23,15 +23,15 @@ class ChannelCloseViewModel: ObservableObject {
                 channelId: self.channel.channelId,
                 counterpartyNodeId: self.channel.counterpartyNodeId
             )
-            nodeError = nil
+            channelDetailViewError = nil
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
-                self.nodeError = .init(title: errorString.title, detail: errorString.detail)
+                self.channelDetailViewError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
-                self.nodeError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.channelDetailViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
     }

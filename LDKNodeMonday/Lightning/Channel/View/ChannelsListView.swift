@@ -47,9 +47,9 @@ struct ChannelsListView: View {
                             .padding()
                     } else {
                         List {
-                            ForEach(viewModel.channels, id: \.self) { channel in
+                            ForEach(viewModel.channels.sorted(by: { $0.channelValueSatoshis > $1.channelValueSatoshis }), id: \.self) { channel in
                                 NavigationLink {
-                                    ChannelCloseView(
+                                    ChannelDetailView(
                                         viewModel: .init(channel: channel),
                                         refreshFlag: $refreshFlag
                                     )
@@ -84,6 +84,9 @@ struct ChannelsListView: View {
                             }
                         }
                         .listStyle(.plain)
+                        .refreshable {
+                            viewModel.listChannels()
+                        }
                     }
                     
                     Spacer()

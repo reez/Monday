@@ -11,7 +11,7 @@ import LightningDevKitNode
 class StartViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var isStarted: Bool = false
-    @Published var nodeError: MondayError?
+    @Published var startViewError: MondayError?
     
     func start() async throws {
         do {
@@ -22,11 +22,11 @@ class StartViewModel: ObservableObject {
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
-                self.nodeError = .init(title: errorString.title, detail: errorString.detail)
+                self.startViewError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
             DispatchQueue.main.async {
-                self.nodeError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.startViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
             }
         }
         

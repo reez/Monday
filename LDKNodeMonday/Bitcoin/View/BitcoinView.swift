@@ -12,7 +12,7 @@ struct BitcoinView: View {
     @StateObject var viewModel: BitcoinViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
-    @State private var showingNodeErrorAlert = false
+    @State private var showingBitcoinViewErrorAlert = false
     @State private var isSheetPresented = false
     
     var body: some View {
@@ -111,18 +111,18 @@ struct BitcoinView: View {
                 .padding()
                 .navigationTitle("Balance")
                 .tint(viewModel.networkColor)
-                .alert(isPresented: $showingNodeErrorAlert) {
+                .alert(isPresented: $showingBitcoinViewErrorAlert) {
                     Alert(
-                        title: Text(viewModel.nodeError?.title ?? "Unknown"),
-                        message: Text(viewModel.nodeError?.detail ?? ""),
+                        title: Text(viewModel.bitcoinViewError?.title ?? "Unknown"),
+                        message: Text(viewModel.bitcoinViewError?.detail ?? ""),
                         dismissButton: .default(Text("OK")) {
-                            viewModel.nodeError = nil
+                            viewModel.bitcoinViewError = nil
                         }
                     )
                 }
-                .onReceive(viewModel.$nodeError) { errorMessage in
+                .onReceive(viewModel.$bitcoinViewError) { errorMessage in
                     if errorMessage != nil {
-                        showingNodeErrorAlert = true
+                        showingBitcoinViewErrorAlert = true
                     }
                 }
                 .onAppear {

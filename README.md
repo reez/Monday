@@ -8,8 +8,8 @@ This app is an experimental work in progress.
 
 It provides default implementations for: 
 - testnet
-- regtest via [tnull](https://github.com/tnull/ldk-node-workshop)
-- signet via [mutiny-net](https://github.com/MutinyWallet/mutiny-net)
+- regtest *via [tnull](https://github.com/tnull/ldk-node-workshop)*
+- signet *via [mutiny-net](https://github.com/MutinyWallet/mutiny-net)*
 
 ### Implemented
 

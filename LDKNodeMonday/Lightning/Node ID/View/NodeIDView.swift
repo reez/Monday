@@ -12,7 +12,7 @@ struct NodeIDView: View {
     @ObservedObject var viewModel: NodeIDViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
-    @State private var showingNodeErrorAlert = false
+    @State private var showingNodeIDErrorAlert = false
     
     var body: some View {
         
@@ -65,18 +65,18 @@ struct NodeIDView: View {
                 }
                 .padding()
                 .navigationTitle("Node ID")
-                .alert(isPresented: $showingNodeErrorAlert) {
+                .alert(isPresented: $showingNodeIDErrorAlert) {
                     Alert(
-                        title: Text(viewModel.nodeError?.title ?? "Unknown"),
-                        message: Text(viewModel.nodeError?.detail ?? ""),
+                        title: Text(viewModel.nodeIDError?.title ?? "Unknown"),
+                        message: Text(viewModel.nodeIDError?.detail ?? ""),
                         dismissButton: .default(Text("OK")) {
-                            viewModel.nodeError = nil
+                            viewModel.nodeIDError = nil
                         }
                     )
                 }
-                .onReceive(viewModel.$nodeError) { errorMessage in
+                .onReceive(viewModel.$nodeIDError) { errorMessage in
                     if errorMessage != nil {
-                        showingNodeErrorAlert = true
+                        showingNodeIDErrorAlert = true
                     }
                 }
                 .onAppear {
