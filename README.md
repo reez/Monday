@@ -2,6 +2,8 @@
 
 An example iOS app using [ldk-node](https://github.com/lightningdevkit/ldk-node)
 
+![Screenshot](Docs/lightning.png)
+
 ## Functionality
 
 This app is an experimental work in progress. 
