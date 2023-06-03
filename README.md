@@ -2,7 +2,7 @@
 
 An example iOS app using [ldk-node](https://github.com/lightningdevkit/ldk-node)
 
-<img src="Docs/lightning.png" alt="Screenshot" width="372" height="809">
+<img src="Docs/lightning.png" alt="Screenshot" width="236" height="511">
 
 ## Functionality
 
