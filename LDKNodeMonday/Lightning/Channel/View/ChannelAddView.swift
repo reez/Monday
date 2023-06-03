@@ -207,7 +207,7 @@ struct ChannelAddView: View {
                                 pushToCounterpartyMsat: nil
                             )
                             if viewModel.isOpenChannelFinished == true {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                                     self.presentationMode.wrappedValue.dismiss()
                                 }
                             }
