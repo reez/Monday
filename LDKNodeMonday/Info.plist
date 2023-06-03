@@ -18,6 +18,8 @@
 		</dict>
 	</dict>
 	<key>NSPasteboardUsageDescription</key>
-	<string> "To allow users to copy and paste text between the app and other apps"</string>
+	<string> &quot;To allow users to copy and paste text between the app and other apps&quot;</string>
+	<key>UISupportsDocumentBrowser</key>
+	<true/>
 </dict>
 </plist>
