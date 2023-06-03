@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct LDKNodeMondayApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
+    
     var body: some Scene {
         WindowGroup {
             StartView(viewModel: .init())
