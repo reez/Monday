@@ -148,13 +148,13 @@ struct PeerView: View {
                         )
                     }
                     if showingPeerViewErrorAlert == true {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                             self.presentationMode.wrappedValue.dismiss()
                         }
                     }
                     
                     if showingPeerViewErrorAlert == false {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                             self.presentationMode.wrappedValue.dismiss()
                         }
                     }
