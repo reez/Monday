@@ -22,11 +22,9 @@ struct SendConfirmationView: View {
                 Spacer()
                 
                 VStack(spacing: 10) {
-                    Image(systemName: "bitcoinsign.circle.fill")
+                    Image(systemName: "bolt.fill")
                         .font(.system(size: 100))
                         .foregroundColor(viewModel.networkColor)
-                    Text("Sats payment sent")
-                        .bold()
                     HStack(alignment: .center) {
                         Text(viewModel.invoice)
                             .truncationMode(.middle)
