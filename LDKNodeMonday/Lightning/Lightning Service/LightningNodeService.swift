@@ -52,9 +52,9 @@ class LightningNodeService {
             esploraServerUrl: esploraServerUrl,
             network: chosenNetwork,
             listeningAddress: Constants.Config.listeningAddress,
-            defaultCltvExpiryDelta: Constants.Config.DefaultCltvExpiryDelta
+            defaultCltvExpiryDelta: Constants.Config.defaultCltvExpiryDelta
         )
-        
+
         let nodeBuilder = Builder.fromConfig(config: config)
         let node = nodeBuilder.build()
         self.node = node

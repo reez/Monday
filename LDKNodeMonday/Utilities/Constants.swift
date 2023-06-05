@@ -12,7 +12,7 @@ struct Constants {
     
     struct Config {
         static let listeningAddress = "0.0.0.0:9735"
-        static let DefaultCltvExpiryDelta = UInt32(2048)
+        static let defaultCltvExpiryDelta = UInt32(2048)
         
         struct EsploraServerURLNetwork {
             static let regtest = "http://ldk-node.tnull.de:3002"
