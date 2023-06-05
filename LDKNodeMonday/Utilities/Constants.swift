@@ -12,15 +12,17 @@ struct Constants {
     
     struct Config {
         static let listeningAddress = "0.0.0.0:9735"
-        static let defaultCltvExpiryDelta = UInt32(2048)
+        static let defaultCltvExpiryDelta = UInt32(144)
         
         struct EsploraServerURLNetwork {
+            static let mainnet = "https://blockstream.info/api"
             static let regtest = "http://ldk-node.tnull.de:3002"
             static let signet = "https://mutinynet.com/api"
             static let testnet = "http://blockstream.info/testnet/api/"
         }
         
         struct ChosenNetwork {
+            static let mainnet = "mainnet"
             static let regtest = "regtest"
             static let signet = "signet"
             static let testnet = "testnet"
