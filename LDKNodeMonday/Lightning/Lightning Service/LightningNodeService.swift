@@ -49,7 +49,8 @@ class LightningNodeService {
             
         case .bitcoin:
             nodeBuilder.setGossipSourceRgs(rgsServerUrl: "https://rapidsync.lightningdevkit.org/snapshot/")
-            self.networkColor = .orange
+            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
+            self.networkColor = Constants.BitcoinNetworkColor.mainnet.color
             
         }
         
