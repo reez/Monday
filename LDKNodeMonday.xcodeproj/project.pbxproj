@@ -15,7 +15,6 @@
 		AE17E8E129A402E40058C9C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */; };
 		AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */; };
 		AE186B8E2A1540B700338463 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE186B8D2A1540B700338463 /* StartView.swift */; };
-		AE48445329F1BDBD007E37C7 /* LightningDevKitNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE48445229F1BDBD007E37C7 /* LightningDevKitNode */; };
 		AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84B2A24F96F002623E8 /* Constants.swift */; };
 		AE49E84E2A24FDD7002623E8 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */; };
 		AE49E8502A2535E3002623E8 /* TabHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84F2A2535E3002623E8 /* TabHomeViewModel.swift */; };
@@ -44,7 +43,6 @@
 		AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelAddView.swift */; };
 		AE83142629AED67B00088A70 /* MondayError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142529AED67B00088A70 /* MondayError.swift */; };
 		AE83142829AEDDAD00088A70 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE83142729AEDDAD00088A70 /* SendView.swift */; };
-		AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */; };
 		AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9422692A007D6C007E4F12 /* ChannelsListView.swift */; };
 		AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4822A01A80A0042EA82 /* PeersListView.swift */; };
 		AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48C2A01A93B0042EA82 /* PeerView.swift */; };
@@ -55,6 +53,7 @@
 		AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE5B7692A09C722001E5E59 /* Peer.swift */; };
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
 		AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */; };
+		AEEC3B192A2FB4F700AD784E /* LightningDevKitNode in Frameworks */ = {isa = PBXBuildFile; productRef = AEEC3B182A2FB4F700AD784E /* LightningDevKitNode */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,7 +94,6 @@
 		AE83142529AED67B00088A70 /* MondayError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MondayError.swift; sourceTree = "<group>"; };
 		AE83142729AEDDAD00088A70 /* SendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendView.swift; sourceTree = "<group>"; };
 		AE8D877429B145F100F2B918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		AE9422692A007D6C007E4F12 /* ChannelsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListView.swift; sourceTree = "<group>"; };
 		AEBAA4822A01A80A0042EA82 /* PeersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersListView.swift; sourceTree = "<group>"; };
 		AEBAA48C2A01A93B0042EA82 /* PeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerView.swift; sourceTree = "<group>"; };
@@ -105,6 +103,7 @@
 		AEE5B7692A09C722001E5E59 /* Peer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
 		AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		AEEC3B172A2FB4D900AD784E /* swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = swift; path = "../ldk-node/bindings/swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE48445329F1BDBD007E37C7 /* LightningDevKitNode in Frameworks */,
+				AEEC3B192A2FB4F700AD784E /* LightningDevKitNode in Frameworks */,
 				AE5C4FD829A5577F00BE3285 /* WalletUI in Frameworks */,
 				AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */,
 			);
@@ -124,6 +123,7 @@
 		AE17E8CD29A402E30058C9C9 = {
 			isa = PBXGroup;
 			children = (
+				AEEC3B162A2FB4D900AD784E /* Packages */,
 				AE5C4FD429A5565700BE3285 /* README.md */,
 				AE17E8D829A402E30058C9C9 /* LDKNodeMonday */,
 				AE17E8D729A402E30058C9C9 /* Products */,
@@ -351,7 +351,6 @@
 			isa = PBXGroup;
 			children = (
 				AE83142529AED67B00088A70 /* MondayError.swift */,
-				AE931D8729AA79DF00F7F2F7 /* NetworkConnection.swift */,
 				AE49E84B2A24F96F002623E8 /* Constants.swift */,
 			);
 			path = Utilities;
@@ -414,6 +413,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		AEEC3B162A2FB4D900AD784E /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				AEEC3B172A2FB4D900AD784E /* swift */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -432,8 +439,8 @@
 			name = LDKNodeMonday;
 			packageProductDependencies = (
 				AE5C4FD729A5577F00BE3285 /* WalletUI */,
-				AE48445229F1BDBD007E37C7 /* LightningDevKitNode */,
 				AEE5B7642A09B1FC001E5E59 /* CodeScanner */,
+				AEEC3B182A2FB4F700AD784E /* LightningDevKitNode */,
 			);
 			productName = LDKNodeMonday;
 			productReference = AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */;
@@ -465,7 +472,6 @@
 			mainGroup = AE17E8CD29A402E30058C9C9;
 			packageReferences = (
 				AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */,
-				AE48444F29F1BDA2007E37C7 /* XCRemoteSwiftPackageReference "ldk-node" */,
 				AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = AE17E8D729A402E30058C9C9 /* Products */;
@@ -534,7 +540,6 @@
 				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
 				AE49E8522A253618002623E8 /* StartViewModel.swift in Sources */,
 				AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */,
-				AE931D8829AA79DF00F7F2F7 /* NetworkConnection.swift in Sources */,
 				AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */,
 				AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */,
 			);
@@ -745,14 +750,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AE48444F29F1BDA2007E37C7 /* XCRemoteSwiftPackageReference "ldk-node" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jurvis/ldk-node.git";
-			requirement = {
-				kind = exactVersion;
-				version = 0.0.4;
-			};
-		};
 		AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/reez/WalletUI.git";
@@ -772,11 +769,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AE48445229F1BDBD007E37C7 /* LightningDevKitNode */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AE48444F29F1BDA2007E37C7 /* XCRemoteSwiftPackageReference "ldk-node" */;
-			productName = LightningDevKitNode;
-		};
 		AE5C4FD729A5577F00BE3285 /* WalletUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */;
@@ -786,6 +778,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
+		};
+		AEEC3B182A2FB4F700AD784E /* LightningDevKitNode */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LightningDevKitNode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

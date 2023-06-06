@@ -9,7 +9,7 @@ import SwiftUI
 import LightningDevKitNode
 
 class PeerViewModel: ObservableObject {
-    @Published var address: SocketAddr = ""
+    @Published var address: String = ""
     @Published var peerViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey = ""
@@ -17,7 +17,7 @@ class PeerViewModel: ObservableObject {
     
     func connect(
         nodeId: PublicKey,
-        address: SocketAddr
+        address: String
     ) async {
         do {
             try await LightningNodeService.shared.connect(

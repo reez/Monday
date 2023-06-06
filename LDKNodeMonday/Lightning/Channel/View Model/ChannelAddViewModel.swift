@@ -9,7 +9,7 @@ import SwiftUI
 import LightningDevKitNode
 
 class ChannelAddViewModel: ObservableObject {
-    @Published var address: SocketAddr = ""
+    @Published var address: String = ""
     @Published var channelAmountSats: String = ""
     @Published var channelAddViewError: MondayError?
     @Published var networkColor = Color.gray
@@ -17,7 +17,7 @@ class ChannelAddViewModel: ObservableObject {
     @Published var isOpenChannelFinished: Bool = false
     @Published var isProgressViewShowing: Bool = false
     
-    func openChannel(nodeId: PublicKey, address: SocketAddr, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) async {
+    func openChannel(nodeId: PublicKey, address: String, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) async {
         DispatchQueue.main.async {
             self.isProgressViewShowing = true
         }

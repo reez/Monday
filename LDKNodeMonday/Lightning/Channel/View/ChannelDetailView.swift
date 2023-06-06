@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WalletUI
+import LightningDevKitNode
 
 struct ChannelDetailView: View {
     @ObservedObject var viewModel: ChannelDetailViewModel
@@ -129,64 +130,33 @@ struct ChannelDetailView: View {
     }
 }
 
+
 struct ChannelCloseView_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        ChannelDetailView(
-            viewModel: .init(
-                channel: .init(
-                    channelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8",
-                    counterpartyNodeId: "0204ad94e0ac2e1bba3f03edfbc95aa5a7d3114a12a22610a7adba123f1f01d437",
-                    fundingTxo: nil,
-                    shortChannelId: nil,
-                    outboundScidAlias: nil,
-                    inboundScidAlias: nil,
-                    channelValueSatoshis: UInt64(1),
-                    unspendablePunishmentReserve: nil,
-                    userChannelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8",
-                    balanceMsat: UInt64(2),
-                    outboundCapacityMsat: UInt64(3),
-                    inboundCapacityMsat: UInt64(4),
-                    confirmationsRequired: nil,
-                    confirmations: nil,
-                    isOutbound: true,
-                    isChannelReady: true,
-                    isUsable: false,
-                    isPublic: true,
-                    cltvExpiryDelta: nil
-                )
-            ),
-            refreshFlag: .constant(false)
+        let channel = ChannelDetails.init(
+            channelId: ChannelId(stringLiteral: "channelID"),
+            counterpartyNodeId: PublicKey(stringLiteral: "counterpartyNodeId"),
+            fundingTxo: nil,
+            channelValueSatoshis: UInt64(1000),
+            unspendablePunishmentReserve: nil,
+            userChannelId: UserChannelId(stringLiteral: "userChannelId"),
+            feerateSatPer1000Weight: UInt32(20),
+            balanceMsat: UInt64(2000),
+            outboundCapacityMsat: UInt64(500),
+            inboundCapacityMsat: UInt64(400),
+            confirmationsRequired: nil,
+            confirmations: nil,
+            isOutbound: false,
+            isChannelReady: true,
+            isUsable: true,
+            isPublic: true,
+            cltvExpiryDelta: nil
         )
-        
-        ChannelDetailView(
-            viewModel: .init(
-                channel: .init(
-                    channelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8",
-                    counterpartyNodeId: "0204ad94e0ac2e1bba3f03edfbc95aa5a7d3114a12a22610a7adba123f1f01d437",
-                    fundingTxo: nil,
-                    shortChannelId: nil,
-                    outboundScidAlias: nil,
-                    inboundScidAlias: nil,
-                    channelValueSatoshis: UInt64(1),
-                    unspendablePunishmentReserve: nil,
-                    userChannelId: "2ff575465c3aed395d5eaafbf0cd69bb1397b52dd34adfcc558a533ef62363a8",
-                    balanceMsat: UInt64(2),
-                    outboundCapacityMsat: UInt64(3),
-                    inboundCapacityMsat: UInt64(4),
-                    confirmationsRequired: nil,
-                    confirmations: nil,
-                    isOutbound: true,
-                    isChannelReady: true,
-                    isUsable: false,
-                    isPublic: true,
-                    cltvExpiryDelta: nil
-                )
-            ),
-            refreshFlag: .constant(false)
-        )
-        .environment(\.colorScheme, .dark)
+        ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
+        ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
+                .environment(\.colorScheme, .dark)
         
     }
     

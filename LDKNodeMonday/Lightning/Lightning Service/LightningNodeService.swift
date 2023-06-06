@@ -10,7 +10,7 @@ import LightningDevKitNode
 import SwiftUI
 
 class LightningNodeService {
-    private let node: Node
+    private let node: LdkNode
     private let storageManager = LightningStorage()
     var networkColor = Color.black
     
@@ -21,42 +21,40 @@ class LightningNodeService {
         return Singleton.instance
     }
     
-    init(network: NetworkConnection) {
+    init(network: Network) {
         
         try? FileManager.deleteLDKNodeLogFile()
         
-        var esploraServerUrl = Constants.Config.EsploraServerURLNetwork.regtest
-        var chosenNetwork = Constants.Config.ChosenNetwork.regtest
+        let nodeBuilder = Builder()
         
         switch network {
             
         case .regtest:
-            chosenNetwork = Constants.Config.ChosenNetwork.regtest
-            esploraServerUrl = Constants.Config.EsploraServerURLNetwork.regtest
+            nodeBuilder.setNetwork(network: .regtest)
+            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.regtest)
+            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
             self.networkColor = Constants.BitcoinNetworkColor.regtest.color
             
         case .signet:
-            chosenNetwork = Constants.Config.ChosenNetwork.signet
-            esploraServerUrl = Constants.Config.EsploraServerURLNetwork.signet
+            nodeBuilder.setNetwork(network: .signet)
+            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.signet)
+            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
             
         case .testnet:
-            chosenNetwork = Constants.Config.ChosenNetwork.testnet
-            esploraServerUrl = Constants.Config.EsploraServerURLNetwork.testnet
+            nodeBuilder.setNetwork(network: .testnet)
+            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.testnet)
+            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
             self.networkColor = Constants.BitcoinNetworkColor.testnet.color
+            
+        case .bitcoin:
+            nodeBuilder.setGossipSourceRgs(rgsServerUrl: "https://rapidsync.lightningdevkit.org/snapshot/")
+            self.networkColor = .orange
             
         }
         
-        let config = Config(
-            storageDirPath: storageManager.getDocumentsDirectory(),
-            esploraServerUrl: esploraServerUrl,
-            network: chosenNetwork,
-            listeningAddress: Constants.Config.listeningAddress,
-            defaultCltvExpiryDelta: Constants.Config.defaultCltvExpiryDelta
-        )
-
-        let nodeBuilder = Builder.fromConfig(config: config)
         let node = nodeBuilder.build()
+        
         self.node = node
     }
     
@@ -88,7 +86,7 @@ class LightningNodeService {
         return balance
     }
     
-    func connect(nodeId: PublicKey, address: SocketAddr, permanently: Bool) async throws {
+    func connect(nodeId: PublicKey, address: String, permanently: Bool) async throws {
         try node.connect(
             nodeId: nodeId,
             address: address,
@@ -102,7 +100,7 @@ class LightningNodeService {
     
     func connectOpenChannel(
         nodeId: PublicKey,
-        address: SocketAddr,
+        address: String,
         channelAmountSats: UInt64,
         pushToCounterpartyMsat: UInt64?,
         announceChannel: Bool = true
@@ -153,7 +151,7 @@ extension LightningNodeService {
         node.eventHandled()
     }
     
-    func listeningAddress() -> SocketAddr? {
+    func listeningAddress() -> String? {
         guard let address = node.listeningAddress() else { return nil }
         return address
     }
