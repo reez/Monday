@@ -53,7 +53,7 @@ It provides default implementations for:
 
 ## Swift Packages
 
-- ldk-node (version 0.0.4) via [jurvis/ldk-node](https://github.com/jurvis/ldk-node)
+- ldk-node (version 0.1-alpha.1)
 
 - Bitcoin UI Kit via [WalletUI](https://github.com/reez/WalletUI)
 
