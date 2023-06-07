@@ -27,29 +27,8 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .ConnectionFailed(message: let message):
         return .init(title: "ConnectionFailed", detail: message)
         
-    case .AddressInvalid(message: let message):
-        return .init(title: "AddressInvalid", detail: message)
-        
-    case .PublicKeyInvalid(message: let message):
-        return .init(title: "PublicKeyInvalid", detail: message)
-        
-    case .PaymentHashInvalid(message: let message):
-        return .init(title: "PaymentHashInvalid", detail: message)
-        
-    case .NonUniquePaymentHash(message: let message):
-        return .init(title: "NonUniquePaymentHash", detail: message)
-        
     case .InvoiceCreationFailed(message: let message):
         return .init(title: "InvoiceCreationFailed", detail: message)
-        
-    case .ChannelIdInvalid(message: let message):
-        return .init(title: "ChannelIdInvalid", detail: message)
-        
-    case .NetworkInvalid(message: let message):
-        return .init(title: "NetworkInvalid", detail: message)
-        
-    case .PeerInfoParseFailed(message: let message):
-        return .init(title: "PeerInfoParseFailed", detail: message)
         
     case .ChannelCreationFailed(message: let message):
         return .init(title: "ChannelCreationFailed", detail: message)
@@ -62,18 +41,9 @@ func handleNodeError(_ error: NodeError) -> MondayError {
         
     case .WalletOperationFailed(message: let message):
         return .init(title: "WalletOperationFailed", detail: message)
-        
-    case .WalletSigningFailed(message: let message):
-        return .init(title: "WalletSigningFailed", detail: message)
-        
+   
     case .TxSyncFailed(message: let message):
         return .init(title: "TxSyncFailed", detail: message)
-        
-    case .PaymentPreimageInvalid(message: let message):
-        return .init(title: "PaymentPreimageInvalid", detail: message)
-        
-    case .PaymentSecretInvalid(message: let message):
-        return .init(title: "PaymentSecretInvalid", detail: message)
         
     case .InvalidAmount(message: let message):
         return .init(title: "InvalidAmount", detail: message)
@@ -83,13 +53,53 @@ func handleNodeError(_ error: NodeError) -> MondayError {
         
     case .InsufficientFunds(message: let message):
         return .init(title: "InsufficientFunds", detail: message)
-        
-    case .PaymentFailed(message: let message):
-        return .init(title: "PaymentFailed", detail: message)
-        
+         
     case .OnchainTxCreationFailed(message: let message):
         return .init(title: "OnchainTxCreationFailed", detail: message)
         
+    case .PaymentSendingFailed(message: let message):
+        return .init(title: "PaymentSendingFailed", detail: message)
+
+    case .OnchainTxSigningFailed(message: let message):
+        return .init(title: "OnchainTxSigningFailed", detail: message)
+
+    case .MessageSigningFailed(message: let message):
+        // TODO:
+        return .init(title: "MessageSigningFailed", detail: message)
+
+    case .GossipUpdateFailed(message: let message):
+        return .init(title: "GossipUpdateFailed", detail: message)
+
+    case .InvalidAddress(message: let message):
+        return .init(title: "InvalidAddress", detail: message)
+
+    case .InvalidNetAddress(message: let message):
+        return .init(title: "InvalidNetAddress", detail: message)
+
+    case .InvalidPublicKey(message: let message):
+        return .init(title: "InvalidPublicKey", detail: message)
+
+    case .InvalidSecretKey(message: let message):
+        return .init(title: "InvalidSecretKey", detail: message)
+
+    case .InvalidPaymentHash(message: let message):
+        return .init(title: "InvalidPaymentHash", detail: message)
+
+    case .InvalidPaymentPreimage(message: let message):
+        return .init(title: "InvalidPaymentPreimage", detail: message)
+
+    case .InvalidPaymentSecret(message: let message):
+        return .init(title: "InvalidPaymentSecret", detail: message)
+
+    case .InvalidChannelId(message: let message):
+        return .init(title: "InvalidChannelId", detail: message)
+
+    case .InvalidNetwork(message: let message):
+        return .init(title: "InvalidNetwork", detail: message)
+
+    case .DuplicatePayment(message: let message):
+        return .init(title: "DuplicatePayment", detail: message)
+
     }
     
 }

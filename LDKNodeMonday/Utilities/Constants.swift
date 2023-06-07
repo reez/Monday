@@ -11,28 +11,30 @@ import SwiftUI
 struct Constants {
     
     struct Config {
-        static let listeningAddress = "0.0.0.0:9735"
-        static let defaultCltvExpiryDelta = UInt32(144)
-        
+
         struct EsploraServerURLNetwork {
-            static let mainnet = "https://blockstream.info/api"
+            struct Bitcoin {
+                static let bitcoin_blockstream = "https://blockstream.info/api"
+                static let bitcoin_mempoolspace = "https://mempool.space/api"
+            }
+//            static let bitcoin_blockstream = "https://blockstream.info/api"
+//            static let bitcoin_blockstream = "https://blockstream.info/api"
             static let regtest = "http://ldk-node.tnull.de:3002"
             static let signet = "https://mutinynet.com/api"
             static let testnet = "http://blockstream.info/testnet/api/"
         }
         
-        struct ChosenNetwork {
-            static let mainnet = "mainnet"
-            static let regtest = "regtest"
-            static let signet = "signet"
-            static let testnet = "testnet"
+        struct RGSServerURLNetwork {
+            static let bitcoin = "https://rapidsync.lightningdevkit.org/snapshot/"
+            static let testnet = "https://rapidsync.lightningdevkit.org/testnet/snapshot/"
         }
+        
     }
     
     enum BitcoinNetworkColor {
+        case bitcoin
         case regtest
         case signet
-        case mainnet
         case testnet
         
         var color: Color {
@@ -41,7 +43,7 @@ struct Constants {
                 return Color.green
             case .signet:
                 return Color.yellow
-            case .mainnet:
+            case .bitcoin:
                 // Supposed to be `Color.black`
                 // ... but I'm just going to make it `Color.orange`
                 // ... since `Color.black` might not work well for both light+dark mode

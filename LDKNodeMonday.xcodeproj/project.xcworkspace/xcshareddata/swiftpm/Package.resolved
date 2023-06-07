@@ -10,15 +10,6 @@
       }
     },
     {
-      "identity" : "ldk-node",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jurvis/ldk-node.git",
-      "state" : {
-        "revision" : "b7e5b3356e223f6a61eba2d123e2bea8faa7332e",
-        "version" : "0.0.4"
-      }
-    },
-    {
       "identity" : "walletui",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/reez/WalletUI.git",
