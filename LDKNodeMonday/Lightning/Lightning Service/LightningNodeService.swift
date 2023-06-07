@@ -132,7 +132,7 @@ class LightningNodeService {
             address: address,
             channelAmountSats: channelAmountSats,
             pushToCounterpartyMsat: pushToCounterpartyMsat,
-            announceChannel: true
+            announceChannel: false
         )
     }
     
