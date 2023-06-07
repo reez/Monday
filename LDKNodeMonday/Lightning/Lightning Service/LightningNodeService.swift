@@ -25,38 +25,59 @@ class LightningNodeService {
         
         try? FileManager.deleteLDKNodeLogFile()
         
-        let nodeBuilder = Builder()
+        let config = Config(
+            storageDirPath: storageManager.getDocumentsDirectory(),
+            network: .bitcoin,
+            listeningAddress: "0.0.0.0:9735",
+            defaultCltvExpiryDelta: UInt32(144),
+            onchainWalletSyncIntervalSecs: UInt64(60),
+            walletSyncIntervalSecs: UInt64(20),
+            feeRateCacheUpdateIntervalSecs: UInt64(600),
+            logLevel: .debug
+        )
         
-        switch network {
-            
-        case .regtest:
-            nodeBuilder.setNetwork(network: .regtest)
-            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.regtest)
-            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
-            self.networkColor = Constants.BitcoinNetworkColor.regtest.color
-            
-        case .signet:
-            nodeBuilder.setNetwork(network: .signet)
-            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.signet)
-            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
-            self.networkColor = Constants.BitcoinNetworkColor.signet.color
-            
-        case .testnet:
-            nodeBuilder.setNetwork(network: .testnet)
-            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.testnet)
-            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
-            self.networkColor = Constants.BitcoinNetworkColor.testnet.color
-            
-        case .bitcoin:
-            nodeBuilder.setGossipSourceRgs(rgsServerUrl: "https://rapidsync.lightningdevkit.org/snapshot/")
-            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
-            self.networkColor = Constants.BitcoinNetworkColor.mainnet.color
-            
-        }
+        let nodeBuilder = Builder.fromConfig(config: config)
+        nodeBuilder.setGossipSourceRgs(rgsServerUrl: "https://rapidsync.lightningdevkit.org/snapshot/")
+        nodeBuilder.setEsploraServer(esploraServerUrl: "https://mempool.space/api")
+        
+        self.networkColor = Constants.BitcoinNetworkColor.mainnet.color
         
         let node = nodeBuilder.build()
-        
         self.node = node
+
+        
+        //let nodeBuilder = Builder()
+
+//        switch network {
+//
+//        case .regtest:
+//            nodeBuilder.setNetwork(network: .regtest)
+//            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.regtest)
+//            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
+//            self.networkColor = Constants.BitcoinNetworkColor.regtest.color
+//
+//        case .signet:
+//            nodeBuilder.setNetwork(network: .signet)
+//            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.signet)
+//            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
+//            self.networkColor = Constants.BitcoinNetworkColor.signet.color
+//
+//        case .testnet:
+//            nodeBuilder.setNetwork(network: .testnet)
+//            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.testnet)
+//            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
+//            self.networkColor = Constants.BitcoinNetworkColor.testnet.color
+//
+//        case .bitcoin:
+//            nodeBuilder.setGossipSourceRgs(rgsServerUrl: "https://rapidsync.lightningdevkit.org/snapshot/")
+//            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
+//            nodeBuilder.setEsploraServer(esploraServerUrl: "https://mempool.space/api")
+//            self.networkColor = Constants.BitcoinNetworkColor.mainnet.color
+//
+//        }
+        
+//        let node = nodeBuilder.build()
+//        self.node = node
     }
     
     func start() async throws {
@@ -167,9 +188,9 @@ extension LightningNodeService {
         return txId
     }
     
-    func syncWallets() throws {
-        try node.syncWallets()
-    }
+//    func syncWallets() throws {
+//        try node.syncWallets()
+//    }
     
     func sendPaymentUsingAmount(invoice: Invoice, amountMsat: UInt64) throws -> PaymentHash {
         let paymentHash = try node.sendPaymentUsingAmount(invoice: invoice, amountMsat: amountMsat)
