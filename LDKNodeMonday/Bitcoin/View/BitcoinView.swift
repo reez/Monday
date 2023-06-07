@@ -41,7 +41,7 @@ struct BitcoinView: View {
                         }
                         HStack(spacing: 4) {
                             if viewModel.isSpendableBalanceFinished {
-                                Text(viewModel.totalBalance.formattedAmount())
+                                Text(viewModel.spendableBalance.formattedAmount())
                             } else {
                                 ProgressView()
                             }
