@@ -172,7 +172,7 @@ extension LightningNodeService {
     }
     
     func syncWallets() throws {
-        try node.syncWallets()
+        try ldkNode.syncWallets()
     }
     
     func sendPaymentUsingAmount(invoice: Invoice, amountMsat: UInt64) throws -> PaymentHash {
