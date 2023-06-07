@@ -143,6 +143,11 @@ class LightningNodeService {
         return channels
     }
     
+    func sendAllToOnchain(address: Address) async throws -> Txid {
+        let txId = try ldkNode.sendAllToOnchainAddress(address: address)
+        return txId
+    }
+    
 }
 
 // Currently unused

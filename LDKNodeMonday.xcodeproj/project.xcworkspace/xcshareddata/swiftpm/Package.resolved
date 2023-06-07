@@ -1,23 +1,25 @@
 {
-  "pins" : [
-    {
-      "identity" : "codescanner",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/twostraws/CodeScanner",
-      "state" : {
-        "revision" : "4b2f9c57d03bfe94e6b45572e0c908c1433c32b2",
-        "version" : "2.3.2"
+  "object": {
+    "pins": [
+      {
+        "package": "CodeScanner",
+        "repositoryURL": "https://github.com/twostraws/CodeScanner",
+        "state": {
+          "branch": null,
+          "revision": "4b2f9c57d03bfe94e6b45572e0c908c1433c32b2",
+          "version": "2.3.2"
+        }
+      },
+      {
+        "package": "WalletUI",
+        "repositoryURL": "https://github.com/reez/WalletUI.git",
+        "state": {
+          "branch": "main",
+          "revision": "0e53ff7a1930051071c3c04acc03b07bc8bf580c",
+          "version": null
+        }
       }
-    },
-    {
-      "identity" : "walletui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/reez/WalletUI.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "0e53ff7a1930051071c3c04acc03b07bc8bf580c"
-      }
-    }
-  ],
-  "version" : 2
+    ]
+  },
+  "version": 1
 }

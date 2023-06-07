@@ -13,8 +13,9 @@ struct BitcoinView: View {
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
-    @State private var isSheetPresented = false
-    
+    @State private var isAddressSheetPresented = false
+    @State private var isSendSheetPresented = false
+
     var body: some View {
         
         NavigationView {
@@ -91,10 +92,10 @@ struct BitcoinView: View {
                     }
                     
                     Button("Get New Address") {
-                        isSheetPresented = true
+                        isAddressSheetPresented = true
                     }
                     .padding()
-                    .sheet(isPresented: $isSheetPresented, onDismiss: {
+                    .sheet(isPresented: $isAddressSheetPresented, onDismiss: {
                         Task {
                             await viewModel.getTotalOnchainBalanceSats()
                             await viewModel.getSpendableOnchainBalanceSats()
@@ -103,7 +104,20 @@ struct BitcoinView: View {
                         AddressView(viewModel: .init())
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                    
+                    Button("Send All To Address") {
+                        isSendSheetPresented = true
+                    }
                     .padding()
+                    .sheet(isPresented: $isSendSheetPresented, onDismiss: {
+                        Task {
+                            await viewModel.getTotalOnchainBalanceSats()
+                            await viewModel.getSpendableOnchainBalanceSats()
+                        }
+                    }) {
+                        SendBitcoinView(viewModel: .init())
+                    }
+                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     
                     Spacer()
                     
