@@ -10,7 +10,7 @@ import LightningDevKitNode
 import SwiftUI
 
 class LightningNodeService {
-    private let node: LdkNode
+    private let ldkNode: LdkNode
     private let storageManager = LightningStorage()
     var networkColor = Color.black
     
@@ -27,7 +27,7 @@ class LightningNodeService {
         
         let config = Config(
             storageDirPath: storageManager.getDocumentsDirectory(),
-            network: .bitcoin,
+            network: network,
             listeningAddress: "0.0.0.0:9735",
             defaultCltvExpiryDelta: UInt32(144),
             onchainWalletSyncIntervalSecs: UInt64(60),
@@ -35,81 +35,64 @@ class LightningNodeService {
             feeRateCacheUpdateIntervalSecs: UInt64(600),
             logLevel: .debug
         )
-        
         let nodeBuilder = Builder.fromConfig(config: config)
-        nodeBuilder.setGossipSourceRgs(rgsServerUrl: "https://rapidsync.lightningdevkit.org/snapshot/")
-        nodeBuilder.setEsploraServer(esploraServerUrl: "https://mempool.space/api")
-        
-        self.networkColor = Constants.BitcoinNetworkColor.mainnet.color
-        
-        let node = nodeBuilder.build()
-        self.node = node
+                
+        switch network {
+            
+        case .bitcoin:
+            nodeBuilder.setGossipSourceRgs(rgsServerUrl: Constants.Config.RGSServerURLNetwork.bitcoin)
+            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.Bitcoin.bitcoin_mempoolspace)
+            self.networkColor = Constants.BitcoinNetworkColor.bitcoin.color
 
-        
-        //let nodeBuilder = Builder()
+        case .regtest:
+            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.regtest)
+            self.networkColor = Constants.BitcoinNetworkColor.regtest.color
 
-//        switch network {
-//
-//        case .regtest:
-//            nodeBuilder.setNetwork(network: .regtest)
-//            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.regtest)
-//            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
-//            self.networkColor = Constants.BitcoinNetworkColor.regtest.color
-//
-//        case .signet:
-//            nodeBuilder.setNetwork(network: .signet)
-//            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.signet)
-//            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
-//            self.networkColor = Constants.BitcoinNetworkColor.signet.color
-//
-//        case .testnet:
-//            nodeBuilder.setNetwork(network: .testnet)
-//            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.testnet)
-//            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
-//            self.networkColor = Constants.BitcoinNetworkColor.testnet.color
-//
-//        case .bitcoin:
-//            nodeBuilder.setGossipSourceRgs(rgsServerUrl: "https://rapidsync.lightningdevkit.org/snapshot/")
-//            nodeBuilder.setStorageDirPath(storageDirPath: storageManager.getDocumentsDirectory())
-//            nodeBuilder.setEsploraServer(esploraServerUrl: "https://mempool.space/api")
-//            self.networkColor = Constants.BitcoinNetworkColor.mainnet.color
-//
-//        }
+        case .signet:
+            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.signet)
+            self.networkColor = Constants.BitcoinNetworkColor.signet.color
+
+        case .testnet:
+            nodeBuilder.setGossipSourceRgs(rgsServerUrl: Constants.Config.RGSServerURLNetwork.testnet)
+            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.testnet)
+            self.networkColor = Constants.BitcoinNetworkColor.testnet.color
+
+        }
         
-//        let node = nodeBuilder.build()
-//        self.node = node
+        let ldkNode = nodeBuilder.build()
+        self.ldkNode = ldkNode
     }
     
     func start() async throws {
-        try node.start()
+        try ldkNode.start()
     }
     
     func stop() throws {
-        try node.stop()
+        try ldkNode.stop()
     }
     
     func nodeId() -> String {
-        let nodeID = node.nodeId()
+        let nodeID = ldkNode.nodeId()
         return nodeID
     }
     
     func newFundingAddress() async throws -> String {
-        let fundingAddress = try node.newFundingAddress()
+        let fundingAddress = try ldkNode.newFundingAddress()
         return fundingAddress
     }
     
     func getSpendableOnchainBalanceSats() async throws -> UInt64 {
-        let balance = try node.spendableOnchainBalanceSats()
+        let balance = try ldkNode.spendableOnchainBalanceSats()
         return balance
     }
     
     func getTotalOnchainBalanceSats() async throws -> UInt64 {
-        let balance = try node.totalOnchainBalanceSats()
+        let balance = try ldkNode.totalOnchainBalanceSats()
         return balance
     }
     
     func connect(nodeId: PublicKey, address: String, permanently: Bool) async throws {
-        try node.connect(
+        try ldkNode.connect(
             nodeId: nodeId,
             address: address,
             permanently: permanently
@@ -117,7 +100,7 @@ class LightningNodeService {
     }
     
     func disconnect(nodeId: PublicKey) throws {
-        try node.disconnect(nodeId: nodeId)
+        try ldkNode.disconnect(nodeId: nodeId)
     }
     
     func connectOpenChannel(
@@ -127,7 +110,7 @@ class LightningNodeService {
         pushToCounterpartyMsat: UInt64?,
         announceChannel: Bool = true
     ) async throws {
-        try node.connectOpenChannel(
+        try ldkNode.connectOpenChannel(
             nodeId: nodeId,
             address: address,
             channelAmountSats: channelAmountSats,
@@ -137,26 +120,26 @@ class LightningNodeService {
     }
     
     func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) throws {
-        try node.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
+        try ldkNode.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
     }
     
     func sendPayment(invoice: Invoice) async throws -> PaymentHash {
-        let paymentHash = try node.sendPayment(invoice: invoice)
+        let paymentHash = try ldkNode.sendPayment(invoice: invoice)
         return paymentHash
     }
     
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async throws -> Invoice {
-        let invoice = try node.receivePayment(amountMsat: amountMsat, description: description, expirySecs: expirySecs)
+        let invoice = try ldkNode.receivePayment(amountMsat: amountMsat, description: description, expirySecs: expirySecs)
         return invoice
     }
     
     func listPeers() -> [PeerDetails] {
-        let peers = node.listPeers()
+        let peers = ldkNode.listPeers()
         return peers
     }
     
     func listChannels() -> [ChannelDetails] {
-        let channels = node.listChannels()
+        let channels = ldkNode.listChannels()
         return channels
     }
     
@@ -166,54 +149,54 @@ class LightningNodeService {
 extension LightningNodeService {
     
     func nextEvent() {
-        let _ = node.nextEvent()
+        let _ = ldkNode.nextEvent()
     }
     
     func eventHandled() {
-        node.eventHandled()
+        ldkNode.eventHandled()
     }
     
     func listeningAddress() -> String? {
-        guard let address = node.listeningAddress() else { return nil }
+        guard let address = ldkNode.listeningAddress() else { return nil }
         return address
     }
     
     func sendToOnchainAddress(address: Address, amountMsat: UInt64) throws -> Txid {
-        let txId = try node.sendToOnchainAddress(address: address, amountMsat: amountMsat)
+        let txId = try ldkNode.sendToOnchainAddress(address: address, amountMsat: amountMsat)
         return txId
     }
     
     func sendAllToOnchainAddress(address: Address) throws -> Txid {
-        let txId = try node.sendAllToOnchainAddress(address: address)
+        let txId = try ldkNode.sendAllToOnchainAddress(address: address)
         return txId
     }
     
-//    func syncWallets() throws {
-//        try node.syncWallets()
-//    }
+    func syncWallets() throws {
+        try node.syncWallets()
+    }
     
     func sendPaymentUsingAmount(invoice: Invoice, amountMsat: UInt64) throws -> PaymentHash {
-        let paymentHash = try node.sendPaymentUsingAmount(invoice: invoice, amountMsat: amountMsat)
+        let paymentHash = try ldkNode.sendPaymentUsingAmount(invoice: invoice, amountMsat: amountMsat)
         return paymentHash
     }
     
     func sendSpontaneousPayment(amountMsat: UInt64, nodeId: String) throws -> PaymentHash {
-        let paymentHash = try node.sendSpontaneousPayment(amountMsat: amountMsat, nodeId: nodeId)
+        let paymentHash = try ldkNode.sendSpontaneousPayment(amountMsat: amountMsat, nodeId: nodeId)
         return paymentHash
     }
     
     func receiveVariableAmountPayment(description: String, expirySecs: UInt32) throws -> Invoice {
-        let invoice = try node.receiveVariableAmountPayment(description: description, expirySecs: expirySecs)
+        let invoice = try ldkNode.receiveVariableAmountPayment(description: description, expirySecs: expirySecs)
         return invoice
     }
     
     func paymentInfo(paymentHash: PaymentHash) -> PaymentDetails? {
-        guard let paymentDetails = node.payment(paymentHash: paymentHash) else { return nil }
+        guard let paymentDetails = ldkNode.payment(paymentHash: paymentHash) else { return nil }
         return paymentDetails
     }
     
     func removePayment(paymentHash: PaymentHash) throws -> Bool {
-        let payment = try node.removePayment(paymentHash: paymentHash)
+        let payment = try ldkNode.removePayment(paymentHash: paymentHash)
         return payment
     }
     
