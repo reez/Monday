@@ -9,10 +9,16 @@ import SwiftUI
 import LightningDevKitNode
 
 class SendBitcoinViewModel: ObservableObject {
+    let spendableBalance: String
+    @Published var address: String = ""
     @Published var txId: String = ""
     @Published var sendViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var isSendFinished: Bool = false
+    
+    init(spendableBalance: String) {
+        self.spendableBalance = spendableBalance
+    }
     
     func sendAllToOnchain(address: String) async {
         do {

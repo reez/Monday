@@ -64,7 +64,6 @@ func handleNodeError(_ error: NodeError) -> MondayError {
         return .init(title: "OnchainTxSigningFailed", detail: message)
 
     case .MessageSigningFailed(message: let message):
-        // TODO:
         return .init(title: "MessageSigningFailed", detail: message)
 
     case .GossipUpdateFailed(message: let message):

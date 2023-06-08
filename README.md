@@ -45,6 +45,8 @@ It provides default implementations for:
 
 - [x] List Channels `listChannels`
 
+- [x] Send All Onchain
+
 ### Not Implemented
 
 - [ ] Event Handling 
