@@ -13,8 +13,9 @@ struct BitcoinView: View {
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
-    @State private var isSheetPresented = false
-    
+    @State private var isAddressSheetPresented = false
+    @State private var isSendSheetPresented = false
+
     var body: some View {
         
         NavigationView {
@@ -50,6 +51,7 @@ struct BitcoinView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                     }
+                    .padding(.top, 100)
                     
                     List {
                         Section(header: Text("*Transaction List Placeholder*")) {
@@ -90,23 +92,35 @@ struct BitcoinView: View {
                         await viewModel.getSpendableOnchainBalanceSats()
                     }
                     
-                    Button("Get New Address") {
-                        isSheetPresented = true
-                    }
-                    .padding()
-                    .sheet(isPresented: $isSheetPresented, onDismiss: {
-                        Task {
-                            await viewModel.getTotalOnchainBalanceSats()
-                            await viewModel.getSpendableOnchainBalanceSats()
+                    Spacer()
+                    
+                    HStack {
+                        Button {
+                            isSendSheetPresented = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "arrow.up")
+                                Text("Send")
+                            }
                         }
-                    }) {
-                        AddressView(viewModel: .init())
+                        .tint(viewModel.networkColor)
+                        .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
+                        Spacer()
+                        Button {
+                            isAddressSheetPresented = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "arrow.down")
+                                Text("Receive")
+                            }
+                        }
+                        .tint(viewModel.networkColor)
+                        .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
                     }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding()
                     
                     Spacer()
-                    
+                                        
                 }
                 .padding()
                 .navigationTitle("Balance")
@@ -131,6 +145,22 @@ struct BitcoinView: View {
                         await viewModel.getSpendableOnchainBalanceSats()
                         viewModel.getColor()
                     }
+                }
+                .sheet(isPresented: $isAddressSheetPresented, onDismiss: {
+                    Task {
+                        await viewModel.getTotalOnchainBalanceSats()
+                        await viewModel.getSpendableOnchainBalanceSats()
+                    }
+                }) {
+                    AddressView(viewModel: .init())
+                }
+                .sheet(isPresented: $isSendSheetPresented, onDismiss: {
+                    Task {
+                        await viewModel.getTotalOnchainBalanceSats()
+                        await viewModel.getSpendableOnchainBalanceSats()
+                    }
+                }) {
+                    SendBitcoinView(viewModel: .init(spendableBalance: viewModel.spendableBalance))
                 }
                 
             }
