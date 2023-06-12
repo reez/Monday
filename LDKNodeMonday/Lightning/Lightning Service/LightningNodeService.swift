@@ -16,7 +16,7 @@ class LightningNodeService {
     
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService(network: .bitcoin)
+            static let instance = LightningNodeService(network: .regtest)
         }
         return Singleton.instance
     }
