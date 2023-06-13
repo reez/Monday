@@ -27,25 +27,10 @@ struct ChannelAddView: View {
                 
                 VStack {
                     
-                    HStack {
-                        Spacer()
-                        Button {
-                            isShowingScanner = true
-                        } label: {
-                            Image(systemName: "qrcode.viewfinder")
-                                .font(.largeTitle)
-                        }
-                        .foregroundColor(viewModel.networkColor)
-                        .padding(.top)
-                    }
-                    .padding(.top)
-                    
-                    Spacer()
-                    
-                    VStack(alignment: .leading) {
+                    VStack() {
                         
                         HStack {
-                            Spacer()
+                            
                             Button {
                                 if pasteboard.hasStrings {
                                     if let string = pasteboard.string {
@@ -66,13 +51,26 @@ struct ChannelAddView: View {
                             } label: {
                                 HStack {
                                     Image(systemName: "doc.on.doc")
-                                        .font(.largeTitle)
+                                    Text("Paste")
                                 }
-                                .foregroundColor(viewModel.networkColor)
                             }
+                            
                             Spacer()
+                            
+                            Button {
+                                isShowingScanner = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: "qrcode.viewfinder")
+                                    Text("Scan")
+                                }
+                            }
+                            
                         }
-                        .padding()
+                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.bordered)
+                        .tint(viewModel.networkColor)
+                        .padding(.bottom)
                         
                         if viewModel.isProgressViewShowing {
                             HStack {
@@ -82,24 +80,25 @@ struct ChannelAddView: View {
                             }
                         }
                         
-                        Text("Node ID")
-                            .bold()
+                        HStack {
+                            Text("Node ID")
+                                .bold()
+                            Spacer()
+                        }
                         
                         ZStack {
-                            TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
-                                .onChange(of: viewModel.nodeId) { newValue in
-                                    viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
-                                }
-                                .keyboardType(.numbersAndPunctuation)
-                                .frame(height: 48)
-                                .truncationMode(.middle)
-                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
-                                .cornerRadius(5)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .stroke(lineWidth: 1.0)
-                                        .foregroundColor(.secondary)
-                                )
+                            
+                            TextField(
+                                "03a5b467d7f...4c2b099b8250c",
+                                text: $viewModel.nodeId
+                            )
+                            .onChange(of: viewModel.nodeId) { newValue in
+                                viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
+                            }
+                            .keyboardType(.numbersAndPunctuation)
+                            .truncationMode(.middle)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
+                            
                             if !viewModel.nodeId.isEmpty {
                                 HStack {
                                     Spacer()
@@ -115,7 +114,8 @@ struct ChannelAddView: View {
                         }
                         
                     }
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.bottom, 10)
                     
                     VStack(alignment: .leading) {
                         
@@ -123,20 +123,17 @@ struct ChannelAddView: View {
                             .bold()
                         
                         ZStack {
-                            TextField("172.18.0.2:9735", text: $viewModel.address)
-                                .onChange(of: viewModel.nodeId) { newValue in
-                                    viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
-                                }
-                                .keyboardType(.numbersAndPunctuation)
-                                .frame(height: 48)
-                                .truncationMode(.middle)
-                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
-                                .cornerRadius(5)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .stroke(lineWidth: 1.0)
-                                        .foregroundColor(.secondary)
-                                )
+                            TextField(
+                                "172.18.0.2:9735",
+                                text: $viewModel.address
+                            )
+                            .onChange(of: viewModel.nodeId) { newValue in
+                                viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
+                            }
+                            .keyboardType(.numbersAndPunctuation)
+                            .truncationMode(.middle)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
+                            
                             if !viewModel.address.isEmpty {
                                 
                                 HStack {
@@ -157,7 +154,8 @@ struct ChannelAddView: View {
                         }
                         
                     }
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.bottom, 10)
                     
                     VStack(alignment: .leading) {
                         
@@ -165,16 +163,13 @@ struct ChannelAddView: View {
                             .bold()
                         
                         ZStack {
-                            TextField("125000", text: $viewModel.channelAmountSats)
-                                .keyboardType(.numberPad)
-                                .frame(height: 48)
-                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
-                                .cornerRadius(5)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .stroke(lineWidth: 1.0)
-                                        .foregroundColor(.secondary)
-                                )
+                            TextField(
+                                "125000",
+                                text: $viewModel.channelAmountSats
+                            )
+                            .keyboardType(.numberPad)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
+                            
                             if !viewModel.channelAmountSats.isEmpty {
                                 
                                 HStack {
@@ -194,7 +189,8 @@ struct ChannelAddView: View {
                         }
                         
                     }
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.bottom, 10)
                     
                     Button {
                         isFocused = false
@@ -217,8 +213,6 @@ struct ChannelAddView: View {
                     }
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     .padding()
-                    
-                    Spacer()
                     
                 }
                 .padding()
@@ -249,16 +243,6 @@ struct ChannelAddView: View {
                     viewModel.getColor()
                 }
                 
-            }
-            .offset(y: keyboardOffset)
-            .onChange(of: keyboardOffset) { _ in withAnimation { } }
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
-                let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
-                let height = value?.height ?? 0
-                keyboardOffset = -height / 2
-            }
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                keyboardOffset = 0
             }
             
         }

@@ -24,7 +24,8 @@ struct SendView: View {
                 
                 VStack {
                     
-                    VStack(spacing: 20) {
+                    HStack {
+                        
                         Button {
                             if pasteboard.hasStrings {
                                 if let string = pasteboard.string {
@@ -38,12 +39,27 @@ struct SendView: View {
                             }
                         } label: {
                             HStack {
-                                Image(systemName: "doc.on.clipboard.fill")
-                                    .font(.largeTitle)
+                                Image(systemName: "doc.on.doc")
+                                Text("Paste")
                             }
-                            .foregroundColor(viewModel.networkColor)
                         }
+                        
+                        Spacer()
+                        
+                        Button {
+                            isShowingScanner = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "qrcode.viewfinder")
+                                Text("Scan")
+                            }
+                        }
+                        
                     }
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.bordered)
+                    .tint(viewModel.networkColor)
+                    .padding(.bottom)
                     
                     VStack(alignment: .leading) {
                         
@@ -52,16 +68,12 @@ struct SendView: View {
                         
                         ZStack {
                             
-                            TextField("lnbc10u1pwz...8f8r9ckzr0r", text: $viewModel.invoice)
-                                .frame(height: 48)
-                                .truncationMode(.middle)
-                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
-                                .cornerRadius(5)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .stroke(lineWidth: 1.0)
-                                        .foregroundColor(.secondary)
-                                )
+                            TextField(
+                                "lnbc10u1pwz...8f8r9ckzr0r",
+                                text: $viewModel.invoice
+                            )
+                            .truncationMode(.middle)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
                             
                             if !viewModel.invoice.isEmpty {
                                 
@@ -100,15 +112,6 @@ struct SendView: View {
                     
                 }
                 .padding()
-                .toolbar{
-                    Button {
-                        isShowingScanner = true
-                    } label: {
-                        Image(systemName: "qrcode.viewfinder")
-                            .font(.largeTitle)
-                    }
-                    .foregroundColor(viewModel.networkColor)
-                }
                 .sheet(isPresented: $isShowingScanner) {
                     CodeScannerView(codeTypes: [.qr], simulatedData: "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6", completion: handleScan)
                 }

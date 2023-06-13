@@ -15,7 +15,7 @@ struct BitcoinView: View {
     @State private var showingBitcoinViewErrorAlert = false
     @State private var isAddressSheetPresented = false
     @State private var isSendSheetPresented = false
-
+    
     var body: some View {
         
         NavigationView {
@@ -40,6 +40,7 @@ struct BitcoinView: View {
                                 .textStyle(BitcoinTitle5())
                                 .baselineOffset(2)
                         }
+                        .animation(.default) // 'animation' was deprecated in iOS 15.0: Use withAnimation or animation(_:value:) instead.
                         HStack(spacing: 4) {
                             if viewModel.isSpendableBalanceFinished {
                                 Text(viewModel.spendableBalance.formattedAmount())
@@ -48,6 +49,7 @@ struct BitcoinView: View {
                             }
                             Text("Spendable Sats")
                         }
+                        .animation(.default) // 'animation' was deprecated in iOS 15.0: Use withAnimation or animation(_:value:) instead.
                         .font(.caption)
                         .foregroundColor(.secondary)
                     }
@@ -85,7 +87,7 @@ struct BitcoinView: View {
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: 300)
-                    .listStyle(PlainListStyle())
+                    .listStyle(.plain)
                     .padding()
                     .refreshable {
                         await viewModel.getTotalOnchainBalanceSats()
@@ -120,7 +122,7 @@ struct BitcoinView: View {
                     .padding()
                     
                     Spacer()
-                                        
+                    
                 }
                 .padding()
                 .navigationTitle("Balance")
@@ -153,6 +155,7 @@ struct BitcoinView: View {
                     }
                 }) {
                     AddressView(viewModel: .init())
+                        .presentationDetents([.medium])
                 }
                 .sheet(isPresented: $isSendSheetPresented, onDismiss: {
                     Task {
@@ -161,6 +164,7 @@ struct BitcoinView: View {
                     }
                 }) {
                     SendBitcoinView(viewModel: .init(spendableBalance: viewModel.spendableBalance))
+                        .presentationDetents([.medium])
                 }
                 
             }

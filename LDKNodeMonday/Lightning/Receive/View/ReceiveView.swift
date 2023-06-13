@@ -30,16 +30,13 @@ struct ReceiveView: View {
                             .bold()
                         
                         ZStack {
-                            TextField("125000", text: $viewModel.amountMsat)
-                                .keyboardType(.numberPad)
-                                .frame(height: 48)
-                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
-                                .cornerRadius(5)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .stroke(lineWidth: 1.0)
-                                        .foregroundColor(.secondary)
-                                )
+                            TextField(
+                                "125000",
+                                text: $viewModel.amountMsat
+                            )
+                            .keyboardType(.numberPad)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
+                            
                             if !viewModel.amountMsat.isEmpty {
                                 HStack {
                                     Spacer()
@@ -71,63 +68,68 @@ struct ReceiveView: View {
                     .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
                     
                     if viewModel.invoice != "" {
+                        QRCodeViewLightning(invoice: viewModel.invoice)
+                    } else {
+                        QRCodeViewLightning(invoice: viewModel.invoice)
+                            .blur(radius: 15)
+                    }
+                    
+                    VStack {
                         
-                        VStack {
+                        HStack(alignment: .center) {
                             
-                            QRCodeViewLightning(invoice: viewModel.invoice)
-                            
-                            HStack(alignment: .center) {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 50.0, height: 50.0)
-                                        .foregroundColor(viewModel.networkColor)
-                                    Image(systemName: "bolt.fill")
-                                        .font(.title)
-                                        .foregroundColor(Color(uiColor: .systemBackground))
-                                        .bold()
-                                }
-                                
-                                VStack(alignment: .leading, spacing: 5.0) {
-                                    Text("Lightning Network")
-                                        .font(.caption)
-                                        .bold()
-                                    Text(viewModel.invoice)
-                                        .font(.caption)
-                                        .truncationMode(.middle)
-                                        .lineLimit(1)
-                                        .foregroundColor(.secondary)
-                                }
-                                
-                                Spacer()
-                                
-                                Button {
-                                    UIPasteboard.general.string = viewModel.invoice
-                                    isCopied = true
-                                    showCheckmark = true
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                        isCopied = false
-                                        showCheckmark = false
-                                    }
-                                } label: {
-                                    HStack {
-                                        withAnimation {
-                                            Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                                .font(.subheadline)
-                                        }
-                                    }
-                                    .bold()
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 50.0, height: 50.0)
                                     .foregroundColor(viewModel.networkColor)
-                                }
-                                
+                                Image(systemName: "bolt.fill")
+                                    .font(.title)
+                                    .foregroundColor(Color(uiColor: .systemBackground))
+                                    .bold()
                             }
-                            .padding()
+                            
+                            VStack(alignment: .leading, spacing: 5.0) {
+                                Text("Lightning Network")
+                                    .font(.caption)
+                                    .bold()
+                                Text(viewModel.invoice)
+                                    .font(.caption)
+                                    .truncationMode(.middle)
+                                    .lineLimit(1)
+                                    .foregroundColor(.secondary)
+                                    .redacted(reason: viewModel.invoice == "" ? .placeholder : [])
+                            }
+                            
+                            Spacer()
+                            
+                            Button {
+                                UIPasteboard.general.string = viewModel.invoice
+                                isCopied = true
+                                showCheckmark = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    isCopied = false
+                                    showCheckmark = false
+                                }
+                            } label: {
+                                HStack {
+                                    withAnimation {
+                                        Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
+                                            .font(.subheadline)
+                                    }
+                                }
+                                .bold()
+                                .foregroundColor(viewModel.networkColor)
+                            }
                             
                         }
+                        .padding()
                         
                         Button("Clear Invoice") {
                             viewModel.clearInvoice()
                         }
-                        .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.bordered)
+                        .tint(viewModel.networkColor)
                         .padding()
                         
                     }

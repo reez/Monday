@@ -132,6 +132,7 @@ struct ChannelsListView: View {
                     viewModel.listChannels()
                 }) {
                     SendView(viewModel: .init())
+                        .presentationDetents([.medium])
                 }
                 .sheet(isPresented: $isReceivePresented, onDismiss: {
                     viewModel.listChannels()
@@ -142,14 +143,17 @@ struct ChannelsListView: View {
                     viewModel.listChannels()
                 }) {
                     PeersListView(viewModel: .init())
+                        .presentationDetents([.medium])
                 }
                 .sheet(isPresented: $isAddChannelPresented, onDismiss: {
                     viewModel.listChannels()
                 }) {
                     ChannelAddView(viewModel: .init())
+                        .presentationDetents([.medium])
                 }
                 
             }
+            
             
         }
         

@@ -98,6 +98,7 @@ struct PeersListView: View {
                     }
                 }) {
                     PeerView(viewModel: .init())
+                        .presentationDetents([.medium])
                 }
                 
             }

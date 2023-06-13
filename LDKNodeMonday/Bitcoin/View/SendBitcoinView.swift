@@ -16,7 +16,7 @@ struct SendBitcoinView: View {
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
     let pasteboard = UIPasteboard.general
-
+    
     var body: some View {
         
         NavigationView {
@@ -26,16 +26,8 @@ struct SendBitcoinView: View {
                 
                 VStack {
                     
-                    HStack(alignment: .center, spacing: 4) {
-                        Text(viewModel.spendableBalance.formattedAmount())
-                            .textStyle(BitcoinTitle1())
-                        Text("Sats")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.bottom, 50.0)
-                    
-                    VStack(spacing: 20) {
+                    HStack {
+                        
                         Button {
                             if pasteboard.hasStrings {
                                 if let string = pasteboard.string {
@@ -49,12 +41,27 @@ struct SendBitcoinView: View {
                             }
                         } label: {
                             HStack {
-                                Image(systemName: "doc.on.clipboard.fill")
-                                    .font(.largeTitle)
+                                Image(systemName: "doc.on.doc")
+                                Text("Paste")
                             }
-                            .foregroundColor(viewModel.networkColor)
                         }
+                        
+                        Spacer()
+                        
+                        Button {
+                            isShowingScanner = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "qrcode.viewfinder")
+                                Text("Scan")
+                            }
+                        }
+                        
                     }
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.bordered)
+                    .tint(viewModel.networkColor)
+                    .padding(.bottom)
                     
                     VStack(alignment: .leading) {
                         
@@ -64,15 +71,8 @@ struct SendBitcoinView: View {
                         ZStack {
                             
                             TextField("1BvBMSEYstWet...m4GFg7xJaNVN2", text: $viewModel.address)
-                                .frame(height: 48)
                                 .truncationMode(.middle)
-                                .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
-                                .cornerRadius(5)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .stroke(lineWidth: 1.0)
-                                        .foregroundColor(.secondary)
-                                )
+                                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
                             
                             if !viewModel.address.isEmpty {
                                 HStack {
@@ -136,15 +136,6 @@ struct SendBitcoinView: View {
                     
                 }
                 .padding()
-                .toolbar{
-                    Button {
-                        isShowingScanner = true
-                    } label: {
-                        Image(systemName: "qrcode.viewfinder")
-                            .font(.largeTitle)
-                    }
-                    .foregroundColor(viewModel.networkColor)
-                }
                 .sheet(isPresented: $isShowingScanner) {
                     CodeScannerView(codeTypes: [.qr], simulatedData: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2", completion: handleScan)
                 }

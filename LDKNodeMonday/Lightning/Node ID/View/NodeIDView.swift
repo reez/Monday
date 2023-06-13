@@ -29,10 +29,12 @@ struct NodeIDView: View {
                     
                     HStack(alignment: .center) {
                         Text(viewModel.nodeID)
+                            .frame(width: 200, height: 50)
                             .truncationMode(.middle)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                             .font(.subheadline)
+                            .animation(.easeInOut)
                         Button {
                             UIPasteboard.general.string = viewModel.nodeID
                             isCopied = true
@@ -43,7 +45,7 @@ struct NodeIDView: View {
                             }
                         } label: {
                             HStack {
-                                withAnimation {
+                                withAnimation { // add a better animation here
                                     Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
                                         .font(.subheadline)
                                 }
