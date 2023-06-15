@@ -100,7 +100,6 @@ struct ChannelsListView: View {
                                 Text("Send")
                             }
                         }
-                        .tint(viewModel.networkColor)
                         .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
                         Spacer()
                         Button {
@@ -111,14 +110,12 @@ struct ChannelsListView: View {
                                 Text("Receive")
                             }
                         }
-                        .tint(viewModel.networkColor)
                         .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
                     }
                     .padding()
                     
                 }
                 .padding()
-                .padding(.top)
                 .navigationTitle("\(viewModel.channels.count) Channels")
                 .onAppear {
                     viewModel.listChannels()
@@ -132,24 +129,30 @@ struct ChannelsListView: View {
                     viewModel.listChannels()
                 }) {
                     SendView(viewModel: .init())
+                        .presentationDetents([.height(300)])
                 }
                 .sheet(isPresented: $isReceivePresented, onDismiss: {
                     viewModel.listChannels()
                 }) {
                     ReceiveView(viewModel: .init())
+                        .presentationDetents([.medium, .large])
+                        .presentationDragIndicator(.visible)
                 }
                 .sheet(isPresented: $isViewPeersPresented, onDismiss: {
                     viewModel.listChannels()
                 }) {
                     PeersListView(viewModel: .init())
+                        .presentationDetents([.medium])
                 }
                 .sheet(isPresented: $isAddChannelPresented, onDismiss: {
                     viewModel.listChannels()
                 }) {
                     ChannelAddView(viewModel: .init())
+                        .presentationDetents([.medium])
                 }
                 
             }
+            
             
         }
         

@@ -82,8 +82,7 @@ struct AddressView: View {
                     Spacer()
                     
                 }
-                .padding()
-                .navigationTitle("Address")
+                .padding(.all, 40.0)
                 .tint(viewModel.networkColor)
                 .alert(isPresented: $showingAddressViewErrorAlert) {
                     Alert(

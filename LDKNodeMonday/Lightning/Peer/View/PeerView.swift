@@ -24,25 +24,10 @@ struct PeerView: View {
             
             VStack {
                 
-                HStack {
-                    Spacer()
-                    Button {
-                        isShowingScanner = true
-                    } label: {
-                        Image(systemName: "qrcode.viewfinder")
-                            .font(.largeTitle)
-                    }
-                    .foregroundColor(viewModel.networkColor)
-                    .padding(.top)
-                }
-                .padding(.top)
-                
-                Spacer()
-                
                 VStack(alignment: .leading) {
                     
                     HStack {
-                        Spacer()
+                        
                         Button {
                             if pasteboard.hasStrings {
                                 if let string = pasteboard.string {
@@ -59,14 +44,26 @@ struct PeerView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "doc.on.doc")
-                                    .font(.largeTitle)
+                                Text("Paste")
                             }
-                            .foregroundColor(viewModel.networkColor)
                         }
                         
                         Spacer()
+                        
+                        Button {
+                            isShowingScanner = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "qrcode.viewfinder")
+                                Text("Scan")
+                            }
+                        }
+                        
                     }
-                    .padding()
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.bordered)
+                    .tint(viewModel.networkColor)
+                    .padding(.bottom)
                     
                     if viewModel.isProgressViewShowing {
                         HStack {
@@ -80,16 +77,13 @@ struct PeerView: View {
                         .bold()
                     
                     ZStack {
-                        TextField("03a5b467d7f...4c2b099b8250c", text: $viewModel.nodeId)
-                            .frame(height: 48)
-                            .truncationMode(.middle)
-                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
-                            .cornerRadius(5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(lineWidth: 1.0)
-                                    .foregroundColor(.secondary)
-                            )
+                        TextField(
+                            "03a5b467d7f...4c2b099b8250c",
+                            text: $viewModel.nodeId
+                        )
+                        .truncationMode(.middle)
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
+                        
                         if !viewModel.nodeId.isEmpty {
                             HStack {
                                 Spacer()
@@ -112,16 +106,14 @@ struct PeerView: View {
                         .bold()
                     
                     ZStack {
-                        TextField("172.18.0.2:9735", text: $viewModel.address)
-                            .frame(height: 48)
-                            .truncationMode(.middle)
-                            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 32))
-                            .cornerRadius(5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(lineWidth: 1.0)
-                                    .foregroundColor(.secondary)
-                            )
+                        
+                        TextField(
+                            "172.18.0.2:9735",
+                            text: $viewModel.address
+                        )
+                        .truncationMode(.middle)
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
+                        
                         if !viewModel.address.isEmpty {
                             HStack {
                                 Spacer()

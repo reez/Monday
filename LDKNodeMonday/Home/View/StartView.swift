@@ -21,8 +21,14 @@ struct StartView: View {
                 if viewModel.isStarted {
                     TabHomeView(viewModel: .init())
                 } else {
-                    Text("Starting...")
-                    ProgressView()
+                        ProgressView {
+                            HStack {
+                                Image(systemName: "bolt.fill")
+                                    .foregroundColor(Color(red: 119/255, green: 243/255, blue: 205/255))
+                                Text("Starting Node")
+                            }
+                            .font(.caption)
+                        }
                 }
             }
             .padding()
@@ -53,5 +59,7 @@ struct StartView: View {
 struct StartView_Previews: PreviewProvider {
     static var previews: some View {
         StartView(viewModel: .init())
+        StartView(viewModel: .init())
+            .environment(\.colorScheme, .dark)
     }
 }
