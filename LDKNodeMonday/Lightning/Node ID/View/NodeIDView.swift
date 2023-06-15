@@ -45,7 +45,7 @@ struct NodeIDView: View {
                             }
                         } label: {
                             HStack {
-                                withAnimation { // add a better animation here
+                                withAnimation {
                                     Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
                                         .font(.subheadline)
                                 }
