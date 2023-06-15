@@ -69,68 +69,66 @@ struct ReceiveView: View {
                     
                     if viewModel.invoice != "" {
                         QRCodeViewLightning(invoice: viewModel.invoice)
-                    } else {
-                        QRCodeViewLightning(invoice: viewModel.invoice)
-                            .blur(radius: 15)
-                    }
-                    
-                    VStack {
                         
-                        HStack(alignment: .center) {
+                        VStack {
                             
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 50.0, height: 50.0)
-                                    .foregroundColor(viewModel.networkColor)
-                                Image(systemName: "bolt.fill")
-                                    .font(.title)
-                                    .foregroundColor(Color(uiColor: .systemBackground))
-                                    .bold()
-                            }
-                            
-                            VStack(alignment: .leading, spacing: 5.0) {
-                                Text("Lightning Network")
-                                    .font(.caption)
-                                    .bold()
-                                Text(viewModel.invoice)
-                                    .font(.caption)
-                                    .truncationMode(.middle)
-                                    .lineLimit(1)
-                                    .foregroundColor(.secondary)
-                                    .redacted(reason: viewModel.invoice == "" ? .placeholder : [])
-                            }
-                            
-                            Spacer()
-                            
-                            Button {
-                                UIPasteboard.general.string = viewModel.invoice
-                                isCopied = true
-                                showCheckmark = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    isCopied = false
-                                    showCheckmark = false
+                            HStack(alignment: .center) {
+                                
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 50.0, height: 50.0)
+                                        .foregroundColor(viewModel.networkColor)
+                                    Image(systemName: "bolt.fill")
+                                        .font(.title)
+                                        .foregroundColor(Color(uiColor: .systemBackground))
+                                        .bold()
                                 }
-                            } label: {
-                                HStack {
-                                    withAnimation {
-                                        Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                            .font(.subheadline)
+                                
+                                VStack(alignment: .leading, spacing: 5.0) {
+                                    Text("Lightning Network")
+                                        .font(.caption)
+                                        .bold()
+                                    Text(viewModel.invoice)
+                                        .font(.caption)
+                                        .truncationMode(.middle)
+                                        .lineLimit(1)
+                                        .foregroundColor(.secondary)
+                                        .redacted(reason: viewModel.invoice == "" ? .placeholder : [])
+                                }
+                                
+                                Spacer()
+                                
+                                Button {
+                                    UIPasteboard.general.string = viewModel.invoice
+                                    isCopied = true
+                                    showCheckmark = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        isCopied = false
+                                        showCheckmark = false
                                     }
+                                } label: {
+                                    HStack {
+                                        withAnimation {
+                                            Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
+                                                .font(.subheadline)
+                                        }
+                                    }
+                                    .bold()
+                                    .foregroundColor(viewModel.networkColor)
                                 }
-                                .bold()
-                                .foregroundColor(viewModel.networkColor)
+                                
                             }
+                            .padding()
+                            
+                            Button("Clear Invoice") {
+                                viewModel.clearInvoice()
+                            }
+                            .buttonBorderShape(.capsule)
+                            .buttonStyle(.bordered)
+                            .tint(viewModel.networkColor)
+                            .padding()
                             
                         }
-                        .padding()
-                        
-                        Button("Clear Invoice") {
-                            viewModel.clearInvoice()
-                        }
-                        .buttonBorderShape(.capsule)
-                        .buttonStyle(.bordered)
-                        .tint(viewModel.networkColor)
-                        .padding()
                         
                     }
                     
