@@ -23,7 +23,7 @@ struct SendConfirmationView: View {
                 
                 VStack(spacing: 10) {
                     Image(systemName: "bolt.fill")
-                        .font(.system(size: 100))
+                        .font(.largeTitle)
                         .foregroundColor(viewModel.networkColor)
                     HStack(alignment: .center) {
                         Text(viewModel.invoice)
