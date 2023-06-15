@@ -34,26 +34,29 @@ struct BitcoinView: View {
                                     .textStyle(BitcoinTitle1())
                             } else {
                                 ProgressView()
+                                    .padding(.all, 5)
                             }
                             Text("Total Sats")
                                 .foregroundColor(.secondary)
                                 .textStyle(BitcoinTitle5())
                                 .baselineOffset(2)
                         }
-                        .animation(.default) // 'animation' was deprecated in iOS 15.0: Use withAnimation or animation(_:value:) instead.
+                        .animation(.default)
                         HStack(spacing: 4) {
                             if viewModel.isSpendableBalanceFinished {
                                 Text(viewModel.spendableBalance.formattedAmount())
                             } else {
                                 ProgressView()
+                                    .padding(.all, 5)
                             }
                             Text("Spendable Sats")
                         }
-                        .animation(.default) // 'animation' was deprecated in iOS 15.0: Use withAnimation or animation(_:value:) instead.
+                        .animation(.default)
                         .font(.caption)
                         .foregroundColor(.secondary)
                     }
-                    .padding(.top, 100)
+                    
+                    Spacer()
                     
                     List {
                         Section(header: Text("*Transaction List Placeholder*")) {
@@ -93,7 +96,7 @@ struct BitcoinView: View {
                         await viewModel.getTotalOnchainBalanceSats()
                         await viewModel.getSpendableOnchainBalanceSats()
                     }
-                    
+                                        
                     Spacer()
                     
                     HStack {
@@ -105,7 +108,7 @@ struct BitcoinView: View {
                                 Text("Send")
                             }
                         }
-                        .tint(viewModel.networkColor)
+                        .padding(.trailing, 28.5)
                         .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
                         Spacer()
                         Button {
@@ -116,12 +119,10 @@ struct BitcoinView: View {
                                 Text("Receive")
                             }
                         }
-                        .tint(viewModel.networkColor)
+                        .padding(.leading, 28.5)
                         .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
                     }
                     .padding()
-                    
-                    Spacer()
                     
                 }
                 .padding()
@@ -164,11 +165,10 @@ struct BitcoinView: View {
                     }
                 }) {
                     SendBitcoinView(viewModel: .init(spendableBalance: viewModel.spendableBalance))
-                        .presentationDetents([.medium])
+                        .presentationDetents([.height(300)])
                 }
                 
             }
-            .ignoresSafeArea()
             
         }
         

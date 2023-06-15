@@ -10,7 +10,7 @@ import LightningDevKitNode
 
 class ReceiveViewModel: ObservableObject {
     @Published var amountMsat: String = ""
-    @Published var invoice: PublicKey = ""
+    @Published var invoice: Invoice = ""
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
     
