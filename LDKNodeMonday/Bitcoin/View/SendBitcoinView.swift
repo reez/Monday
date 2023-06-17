@@ -45,6 +45,7 @@ struct SendBitcoinView: View {
                                 Text("Paste")
                             }
                         }
+                        .padding()
                         
                         Spacer()
                         
@@ -56,17 +57,20 @@ struct SendBitcoinView: View {
                                 Text("Scan")
                             }
                         }
+                        .padding()
                         
                     }
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.bordered)
                     .tint(viewModel.networkColor)
                     .padding(.bottom)
+                    .padding(.horizontal)
                     
                     VStack(alignment: .leading) {
                         
                         Text("Address")
                             .bold()
+                            .padding(.horizontal)
                         
                         ZStack {
                             
@@ -88,6 +92,7 @@ struct SendBitcoinView: View {
                             }
                             
                         }
+                        .padding(.horizontal)
                         
                     }
                     .padding()

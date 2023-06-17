@@ -43,6 +43,7 @@ struct SendView: View {
                                 Text("Paste")
                             }
                         }
+                        .padding()
                         
                         Spacer()
                         
@@ -54,18 +55,21 @@ struct SendView: View {
                                 Text("Scan")
                             }
                         }
+                        .padding()
                         
                     }
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.bordered)
                     .tint(viewModel.networkColor)
                     .padding(.bottom)
-                    
+                    .padding(.horizontal)
+
                     VStack(alignment: .leading) {
                         
                         Text("Invoice")
                             .bold()
-                        
+                            .padding(.horizontal)
+
                         ZStack {
                             
                             TextField(
@@ -94,6 +98,7 @@ struct SendView: View {
                             }
                             
                         }
+                        .padding(.horizontal)
                         
                     }
                     .padding()

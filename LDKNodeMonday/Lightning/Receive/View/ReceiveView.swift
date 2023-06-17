@@ -28,6 +28,7 @@ struct ReceiveView: View {
                         
                         Text("Sats")
                             .bold()
+                            .padding(.horizontal)
                         
                         ZStack {
                             TextField(
@@ -50,6 +51,7 @@ struct ReceiveView: View {
                                 }
                             }
                         }
+                        .padding(.horizontal)
                         
                     }
                     .padding()
