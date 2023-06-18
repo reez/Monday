@@ -105,6 +105,7 @@ struct SendBitcoinView: View {
                         } label: {
                             Text("Send All")
                                 .bold()
+                                .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .frame(maxWidth: .infinity)
                                 .padding(.all, 8)
                         }

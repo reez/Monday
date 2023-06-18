@@ -69,6 +69,7 @@ struct ReceiveView: View {
                     } label: {
                         Text("Create Invoice")
                             .bold()
+                            .foregroundColor(Color(uiColor: UIColor.systemBackground))
                             .frame(maxWidth: .infinity)
                             .padding(.all, 8)
                     }

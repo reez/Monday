@@ -113,15 +113,15 @@ struct SendView: View {
                     ) {
                         Text("Send")
                             .bold()
+                            .foregroundColor(Color(uiColor: UIColor.systemBackground))
                             .frame(maxWidth: .infinity)
                             .padding(.all, 8)
                     }
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.borderedProminent)
                     .tint(viewModel.networkColor)
-                    .padding(.horizontal)
-                    .padding(.horizontal)
-                    
+                    .padding(.horizontal, 30.0)
+
                 }
                 .padding()
                 .sheet(isPresented: $isShowingScanner) {
