@@ -27,7 +27,7 @@ struct BitcoinView: View {
                     
                     Spacer()
                     
-                    VStack {
+                    VStack(spacing: 10) {
                         HStack(alignment: .lastTextBaseline) {
                             if viewModel.isTotalBalanceFinished {
                                 Text(viewModel.totalBalance.formattedAmount())

@@ -21,7 +21,7 @@ struct DisconnectView: View {
             VStack {
                 
                 HStack {
-                    Text("Node ID:")
+                    Text("Node ID")
                     Text(viewModel.nodeId.description)
                         .truncationMode(.middle)
                         .lineLimit(1)

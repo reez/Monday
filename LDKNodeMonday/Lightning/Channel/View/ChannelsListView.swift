@@ -55,7 +55,7 @@ struct ChannelsListView: View {
                                     )
                                 } label: {
                                     VStack {
-                                        HStack(alignment: .center) {
+                                        HStack(alignment: .center, spacing: 15) {
                                             ZStack {
                                                 Circle()
                                                     .frame(width: 50.0, height: 50.0)
