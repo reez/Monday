@@ -28,6 +28,7 @@ struct ReceiveView: View {
                         
                         Text("Sats")
                             .bold()
+                            .padding(.horizontal)
                         
                         ZStack {
                             TextField(
@@ -50,11 +51,12 @@ struct ReceiveView: View {
                                 }
                             }
                         }
+                        .padding(.horizontal)
                         
                     }
                     .padding()
                     
-                    Button("Create Invoice") {
+                    Button {
                         Task {
                             let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
                             await viewModel.receivePayment(
@@ -64,8 +66,18 @@ struct ReceiveView: View {
                             )
                         }
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    } label: {
+                        Text("Create Invoice")
+                            .bold()
+                            .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                            .frame(maxWidth: .infinity)
+                            .padding(.all, 8)
                     }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.borderedProminent)
+                    .tint(viewModel.networkColor)
+                    .padding(.horizontal, 30.0)
+                    .padding(.bottom)
                     
                     if viewModel.invoice != "" {
                         QRCodeViewLightning(invoice: viewModel.invoice)
@@ -74,20 +86,12 @@ struct ReceiveView: View {
                             
                             HStack(alignment: .center) {
                                 
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 50.0, height: 50.0)
-                                        .foregroundColor(viewModel.networkColor)
-                                    Image(systemName: "bolt.fill")
-                                        .font(.title)
-                                        .foregroundColor(Color(uiColor: .systemBackground))
-                                        .bold()
-                                }
-                                
                                 VStack(alignment: .leading, spacing: 5.0) {
-                                    Text("Lightning Network")
-                                        .font(.caption)
-                                        .bold()
+                                    HStack {
+                                        Text("Lightning Network")
+                                            .font(.caption)
+                                            .bold()
+                                    }
                                     Text(viewModel.invoice)
                                         .font(.caption)
                                         .truncationMode(.middle)
@@ -110,7 +114,7 @@ struct ReceiveView: View {
                                     HStack {
                                         withAnimation {
                                             Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                                .font(.subheadline)
+                                                .font(.title2)
                                         }
                                     }
                                     .bold()

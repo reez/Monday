@@ -43,6 +43,7 @@ struct SendView: View {
                                 Text("Paste")
                             }
                         }
+                        .padding()
                         
                         Spacer()
                         
@@ -54,18 +55,23 @@ struct SendView: View {
                                 Text("Scan")
                             }
                         }
+                        .padding()
                         
                     }
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.bordered)
                     .tint(viewModel.networkColor)
                     .padding(.bottom)
+                    .padding(.horizontal)
                     
+                    Spacer()
+
                     VStack(alignment: .leading) {
                         
                         Text("Invoice")
                             .bold()
-                        
+                            .padding(.horizontal)
+
                         ZStack {
                             
                             TextField(
@@ -94,6 +100,7 @@ struct SendView: View {
                             }
                             
                         }
+                        .padding(.horizontal)
                         
                     }
                     .padding()
@@ -107,8 +114,16 @@ struct SendView: View {
                             )
                     ) {
                         Text("Send")
+                            .bold()
+                            .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                            .frame(maxWidth: .infinity)
+                            .padding(.all, 8)
                     }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.borderedProminent)
+                    .tint(viewModel.networkColor)
+                    .padding(.horizontal, 30.0)
+                    .padding(.bottom, 40.0)
                     
                 }
                 .padding()

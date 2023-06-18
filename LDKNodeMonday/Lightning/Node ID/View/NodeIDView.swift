@@ -24,7 +24,7 @@ struct NodeIDView: View {
                 VStack(spacing: 20.0) {
                     
                     Image(systemName: "person.circle.fill")
-                        .font(.largeTitle)
+                        .font(.system(size: 50))
                         .foregroundColor(viewModel.networkColor)
                     
                     HStack(alignment: .center) {
@@ -34,7 +34,6 @@ struct NodeIDView: View {
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                             .font(.subheadline)
-                            .animation(.easeInOut)
                         Button {
                             UIPasteboard.general.string = viewModel.nodeID
                             isCopied = true
@@ -60,9 +59,16 @@ struct NodeIDView: View {
                     NavigationLink {
                         LogView()
                     } label: {
-                        Text("See Log File")
+                        Text("View Log File")
+                            .bold()
+                            .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                            .frame(maxWidth: .infinity)
+                            .padding(.all, 8)
                     }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))                    
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.borderedProminent)
+                    .tint(viewModel.networkColor)
+                    .padding(.horizontal, 30.0)
                     
                 }
                 .padding()

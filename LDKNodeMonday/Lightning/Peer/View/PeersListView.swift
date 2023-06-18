@@ -24,10 +24,16 @@ struct PeersListView: View {
                     Button {
                         isAddPeerPresented = true
                     } label: {
-                        Text("Add Peer")
+                        HStack(spacing: 1) {
+                            Image(systemName: "plus")
+                            Text("Add Peer")
+                        }
+                        .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                        .bold()
                     }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                    .padding()
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.borderedProminent)
+                    .tint(viewModel.networkColor)
                     
                     if viewModel.peers.isEmpty {
                         Text("No Peers")

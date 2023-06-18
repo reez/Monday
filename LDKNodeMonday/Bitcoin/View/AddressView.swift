@@ -9,7 +9,7 @@ import SwiftUI
 import WalletUI
 
 struct AddressView: View {
-    @ObservedObject var viewModel: AddressViewModel
+    @StateObject var viewModel: AddressViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingAddressViewErrorAlert = false
@@ -25,24 +25,23 @@ struct AddressView: View {
                     
                     Spacer()
                     
-                    QRCodeViewBitcoin(address: viewModel.address)
+                    if viewModel.address != "" {
+                        QRCodeViewBitcoin(address: viewModel.address)
+                            .animation(.default, value: viewModel.address)
+                    } else {
+                        QRCodeViewBitcoin(address: viewModel.address)
+                            .blur(radius: 15)
+                    }
                     
                     HStack(alignment: .center) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 50.0, height: 50.0)
-                                .foregroundColor(viewModel.networkColor)
-                            Image(systemName: "bitcoinsign")
-                                .font(.title)
-                                .foregroundColor(Color(uiColor: .systemBackground))
-                                .bold()
-                        }
                         
                         VStack(alignment: .leading, spacing: 5.0) {
                             if viewModel.isAddressFinished {
-                                Text("Bitcoin Network")
-                                    .font(.caption)
-                                    .bold()
+                                HStack {
+                                    Text("Bitcoin Network")
+                                        .font(.caption)
+                                        .bold()
+                                }
                                 Text(viewModel.address)
                                     .font(.caption)
                                     .truncationMode(.middle)
@@ -71,15 +70,14 @@ struct AddressView: View {
                             HStack {
                                 withAnimation {
                                     Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                        .font(.subheadline)
+                                        .font(.title2)
                                 }
                             }
                             .bold()
                         }
                         
                     }
-                    
-                    Spacer()
+                    .padding(.bottom, 40.0)
                     
                 }
                 .padding(.all, 40.0)
