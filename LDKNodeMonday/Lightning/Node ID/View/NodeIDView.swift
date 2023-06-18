@@ -34,7 +34,6 @@ struct NodeIDView: View {
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                             .font(.subheadline)
-                            .animation(.default, value: viewModel.nodeID)
                         Button {
                             UIPasteboard.general.string = viewModel.nodeID
                             isCopied = true
