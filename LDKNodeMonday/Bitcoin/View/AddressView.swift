@@ -77,8 +77,9 @@ struct AddressView: View {
                         }
                         
                     }
-                    
-                    Spacer()
+                    .padding(.bottom, 40.0)
+
+//                    Spacer()
                     
                 }
                 .padding(.all, 40.0)

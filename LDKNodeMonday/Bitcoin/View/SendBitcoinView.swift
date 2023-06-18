@@ -99,57 +99,61 @@ struct SendBitcoinView: View {
                     }
                     .padding()
                     
-                    if viewModel.txId.isEmpty {
-                        Button {
-                            Task {
-                                await viewModel.sendAllToOnchain(address: viewModel.address)
-                            }
-                        } label: {
-                            Text("Send All")
-                                .bold()
-                                .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                                .frame(maxWidth: .infinity)
-                                .padding(.all, 8)
-                        }
-                        .buttonBorderShape(.capsule)
-                        .buttonStyle(.borderedProminent)
-                        .tint(viewModel.networkColor)
-                        .padding(.horizontal)
-                        .padding(.horizontal)
-                    } else {
-                        VStack {
-                            Text("Transaction ID")
-                            HStack(alignment: .center) {
-                                Text(viewModel.txId)
-                                    .truncationMode(.middle)
-                                    .lineLimit(1)
-                                    .foregroundColor(.secondary)
-                                    .font(.subheadline)
-                                Button {
-                                    UIPasteboard.general.string = viewModel.txId
-                                    isCopied = true
-                                    showCheckmark = true
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                        isCopied = false
-                                        showCheckmark = false
-                                    }
-                                } label: {
-                                    HStack {
-                                        withAnimation {
-                                            Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                                .font(.subheadline)
-                                        }
-                                    }
-                                    .bold()
-                                    .foregroundColor(viewModel.networkColor)
+                    VStack {
+                        if viewModel.txId.isEmpty {
+                            Button {
+                                Task {
+                                    await viewModel.sendAllToOnchain(address: viewModel.address)
                                 }
-                                
+                            } label: {
+                                Text("Send All")
+                                    .bold()
+                                    .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.all, 8)
                             }
+                            .buttonBorderShape(.capsule)
+                            .buttonStyle(.borderedProminent)
+                            .tint(viewModel.networkColor)
                             .padding(.horizontal)
+                            .padding(.horizontal)
+                        } else {
+                            VStack {
+                                Text("Transaction ID")
+                                HStack(alignment: .center) {
+                                    Text(viewModel.txId)
+                                        .truncationMode(.middle)
+                                        .lineLimit(1)
+                                        .foregroundColor(.secondary)
+                                        .font(.subheadline)
+                                    Button {
+                                        UIPasteboard.general.string = viewModel.txId
+                                        isCopied = true
+                                        showCheckmark = true
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                            isCopied = false
+                                            showCheckmark = false
+                                        }
+                                    } label: {
+                                        HStack {
+                                            withAnimation {
+                                                Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
+                                                    .font(.subheadline)
+                                            }
+                                        }
+                                        .bold()
+                                        .foregroundColor(viewModel.networkColor)
+                                    }
+                                    
+                                }
+                                .padding(.horizontal)
+                            }
                         }
                     }
+                    .padding(.bottom, 40.0)
+
                     
-                    Spacer()
+//                    Spacer()
                     
                 }
                 .padding()

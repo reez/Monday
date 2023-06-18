@@ -123,8 +123,9 @@ struct SendView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(viewModel.networkColor)
                     .padding(.horizontal, 30.0)
+                    .padding(.bottom, 40.0)
                     
-                    Spacer()
+//                    Spacer()
 
                 }
                 .padding()
