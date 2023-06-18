@@ -10,7 +10,7 @@ import WalletUI
 import CodeScanner
 
 struct SendBitcoinView: View {
-    @ObservedObject var viewModel: SendBitcoinViewModel
+    @StateObject var viewModel: SendBitcoinViewModel
     @State private var isShowingScanner = false
     @State private var isCopied = false
     @State private var showCheckmark = false
