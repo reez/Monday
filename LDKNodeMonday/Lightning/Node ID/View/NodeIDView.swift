@@ -59,9 +59,17 @@ struct NodeIDView: View {
                     NavigationLink {
                         LogView()
                     } label: {
-                        Text("See Log File")
+                        Text("View Log File")
+                            .bold()
+                            .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                            .frame(maxWidth: .infinity)
+                            .padding(.all, 8)
                     }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))                    
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.borderedProminent)
+                    .tint(viewModel.networkColor)
+                    .padding(.horizontal, 30.0)
+
                     
                 }
                 .padding()

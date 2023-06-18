@@ -43,7 +43,6 @@ struct ChannelsListView: View {
                             }
                             .foregroundColor(Color(uiColor: UIColor.systemBackground))
                             .bold()
-                            
                         }
                         .buttonBorderShape(.capsule)
                         .buttonStyle(.borderedProminent)

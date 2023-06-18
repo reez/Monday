@@ -31,21 +31,26 @@ struct DisconnectView: View {
                 .font(.system(.caption, design: .monospaced))
                 .padding()
                 
-                Button("Disconnect Peer") {
-                    
+                Button {
                     viewModel.disconnect()
-                    
                     if showingDisconnectViewErrorAlert == false {
                         self.presentationMode.wrappedValue.dismiss()
                     }
-                    
                     if showingDisconnectViewErrorAlert == true {
                         self.presentationMode.wrappedValue.dismiss()
                     }
-                    
+                } label: {
+                    Text("Disconnect Peer")
+                        .bold()
+                        .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                        .frame(maxWidth: .infinity)
+                        .padding(.all, 8)
                 }
-                .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                
+                .buttonBorderShape(.capsule)
+                .buttonStyle(.borderedProminent)
+                .tint(viewModel.networkColor)
+                .padding()
+
             }
             .padding()
             .alert(isPresented: $showingDisconnectViewErrorAlert) {

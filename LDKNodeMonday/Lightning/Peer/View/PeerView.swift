@@ -65,13 +65,20 @@ struct PeerView: View {
                     .tint(viewModel.networkColor)
                     .padding(.bottom)
                     
-                    if viewModel.isProgressViewShowing {
-                        HStack {
-                            Spacer()
-                            ProgressView()
-                            Spacer()
-                        }
+                }
+                .padding()
+                
+                if viewModel.isProgressViewShowing {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
                     }
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .leading) {
                     
                     Text("Node ID")
                         .bold()
@@ -82,7 +89,7 @@ struct PeerView: View {
                             text: $viewModel.nodeId
                         )
                         .truncationMode(.middle)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
                         
                         if !viewModel.nodeId.isEmpty {
                             HStack {
@@ -97,10 +104,6 @@ struct PeerView: View {
                             }
                         }
                     }
-                }
-                .padding()
-                
-                VStack(alignment: .leading) {
                     
                     Text("Address")
                         .bold()
@@ -112,7 +115,7 @@ struct PeerView: View {
                             text: $viewModel.address
                         )
                         .truncationMode(.middle)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
                         
                         if !viewModel.address.isEmpty {
                             HStack {
@@ -129,8 +132,9 @@ struct PeerView: View {
                     }
                     
                 }
-                .padding()
-                
+                .padding(.horizontal)
+                .padding(.bottom, 10)
+
                 Button {
                     self.viewModel.isProgressViewShowing = true
                     Task {
@@ -153,9 +157,15 @@ struct PeerView: View {
                     
                 } label: {
                     Text("Connect Peer")
+                        .bold()
+                        .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                        .frame(maxWidth: .infinity)
+                        .padding(.all, 8)
                 }
-                .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                .padding()
+                .buttonBorderShape(.capsule)
+                .buttonStyle(.borderedProminent)
+                .tint(viewModel.networkColor)
+                .padding(.horizontal)
                 
                 Spacer()
                 
