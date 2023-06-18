@@ -125,8 +125,6 @@ struct SendView: View {
                     .padding(.horizontal, 30.0)
                     .padding(.bottom, 40.0)
                     
-//                    Spacer()
-
                 }
                 .padding()
                 .sheet(isPresented: $isShowingScanner) {

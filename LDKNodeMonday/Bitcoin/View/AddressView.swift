@@ -30,7 +30,7 @@ struct AddressView: View {
                             .animation(.default, value: viewModel.address)
                     } else {
                         QRCodeViewBitcoin(address: viewModel.address)
-                        .blur(radius: 15)
+                            .blur(radius: 15)
                     }
                     
                     HStack(alignment: .center) {
@@ -78,8 +78,6 @@ struct AddressView: View {
                         
                     }
                     .padding(.bottom, 40.0)
-
-//                    Spacer()
                     
                 }
                 .padding(.all, 40.0)

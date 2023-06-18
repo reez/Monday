@@ -69,7 +69,6 @@ struct NodeIDView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(viewModel.networkColor)
                     .padding(.horizontal, 30.0)
-
                     
                 }
                 .padding()

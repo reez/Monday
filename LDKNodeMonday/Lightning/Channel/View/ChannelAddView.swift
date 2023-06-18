@@ -202,8 +202,6 @@ struct ChannelAddView: View {
                 .tint(viewModel.networkColor)
                 .padding(.horizontal)
                 .padding(.bottom, 40.0)
-
-//                Spacer()
                 
             }
             .padding()

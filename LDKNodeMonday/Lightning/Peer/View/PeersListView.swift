@@ -35,7 +35,6 @@ struct PeersListView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(viewModel.networkColor)
                     
-                    
                     if viewModel.peers.isEmpty {
                         Text("No Peers")
                             .font(.system(.caption, design: .monospaced))

@@ -151,9 +151,6 @@ struct SendBitcoinView: View {
                         }
                     }
                     .padding(.bottom, 40.0)
-
-                    
-//                    Spacer()
                     
                 }
                 .padding()
