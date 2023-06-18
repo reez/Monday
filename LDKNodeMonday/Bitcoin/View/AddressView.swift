@@ -9,7 +9,7 @@ import SwiftUI
 import WalletUI
 
 struct AddressView: View {
-    @ObservedObject var viewModel: AddressViewModel
+    @StateObject var viewModel: AddressViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingAddressViewErrorAlert = false
@@ -28,6 +28,9 @@ struct AddressView: View {
                     if viewModel.address != "" {
                         QRCodeViewBitcoin(address: viewModel.address)
                             .animation(.default, value: viewModel.address)
+                    } else {
+                        QRCodeViewBitcoin(address: viewModel.address)
+                        .blur(radius: 15)
                     }
                     
                     HStack(alignment: .center) {
