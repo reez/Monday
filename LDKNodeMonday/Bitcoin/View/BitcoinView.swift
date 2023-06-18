@@ -107,10 +107,13 @@ struct BitcoinView: View {
                                 Image(systemName: "arrow.up")
                                 Text("Send")
                             }
+                            .frame(width: 100)
+                            .padding(.all, 8)
                         }
-                        .padding(.trailing, 28.5)
-                        .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
-                        Spacer()
+                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.bordered)
+                        .tint(viewModel.networkColor)
+                        .padding(.horizontal)
                         Button {
                             isAddressSheetPresented = true
                         } label: {
@@ -118,9 +121,13 @@ struct BitcoinView: View {
                                 Image(systemName: "arrow.down")
                                 Text("Receive")
                             }
+                            .frame(width: 100)
+                            .padding(.all, 8)
                         }
-                        .padding(.leading, 28.5)
-                        .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
+                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.bordered)
+                        .tint(viewModel.networkColor)
+                        .padding(.horizontal)
                     }
                     .padding()
                     
@@ -165,7 +172,7 @@ struct BitcoinView: View {
                     }
                 }) {
                     SendBitcoinView(viewModel: .init(spendableBalance: viewModel.spendableBalance))
-                        .presentationDetents([.medium]) //.height(300)
+                        .presentationDetents([.medium])
                 }
                 
             }

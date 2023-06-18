@@ -25,21 +25,32 @@ struct ChannelsListView: View {
                 
                 VStack {
                     
-                    Button {
-                        isViewPeersPresented = true
-                    } label: {
-                        Text("View Peers")
+                    VStack {
+                        Button {
+                            isViewPeersPresented = true
+                        } label: {
+                            Text("View Peers")
+                        }
+                        .tint(viewModel.networkColor)
+                        .padding()
+                        
+                        Button {
+                            isAddChannelPresented = true
+                        } label: {
+                            HStack(spacing: 1) {
+                                Image(systemName: "plus")
+                                Text("Add Channel")
+                            }
+                            .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                            .bold()
+                            
+                        }
+                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.borderedProminent)
+                        .tint(viewModel.networkColor)
+                        
                     }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                    .padding()
-                    
-                    Button {
-                        isAddChannelPresented = true
-                    } label: {
-                        Text("Add Channel")
-                    }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
-                    .padding()
+                    .padding(.top)
                     
                     if viewModel.channels.isEmpty {
                         Text("No Channels")
@@ -99,8 +110,14 @@ struct ChannelsListView: View {
                                 Image(systemName: "arrow.up")
                                 Text("Send")
                             }
+                            .frame(width: 100)
+                            .padding(.all, 8)
                         }
-                        .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
+                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.bordered)
+                        .tint(viewModel.networkColor)
+                        .padding(.horizontal)
+                        
                         Spacer()
                         Button {
                             isReceivePresented = true
@@ -109,8 +126,13 @@ struct ChannelsListView: View {
                                 Image(systemName: "arrow.down")
                                 Text("Receive")
                             }
+                            .frame(width: 100)
+                            .padding(.all, 8)
                         }
-                        .buttonStyle(BitcoinOutlined(width: 125, tintColor: viewModel.networkColor))
+                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.bordered)
+                        .tint(viewModel.networkColor)
+                        .padding(.horizontal)
                     }
                     .padding()
                     
@@ -129,7 +151,7 @@ struct ChannelsListView: View {
                     viewModel.listChannels()
                 }) {
                     SendView(viewModel: .init())
-                        .presentationDetents([.medium])//height(300)
+                        .presentationDetents([.medium])
                 }
                 .sheet(isPresented: $isReceivePresented, onDismiss: {
                     viewModel.listChannels()
