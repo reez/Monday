@@ -22,6 +22,8 @@ struct ChannelDetailView: View {
             
             VStack {
                 
+                Text(viewModel.channel.isOutbound ? "Outbound" : "Inbound")
+                
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
                         Text("Channel ID:")
