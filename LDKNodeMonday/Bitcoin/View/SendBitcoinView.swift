@@ -104,8 +104,15 @@ struct SendBitcoinView: View {
                             }
                         } label: {
                             Text("Send All")
+                                .bold()
+                                .frame(maxWidth: .infinity)
+                                .padding(.all, 8)
                         }
-                        .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.borderedProminent)
+                        .tint(viewModel.networkColor)
+                        .padding(.horizontal)
+                        .padding(.horizontal)
                     } else {
                         VStack {
                             Text("Transaction ID")

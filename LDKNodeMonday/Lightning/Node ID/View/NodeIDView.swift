@@ -24,7 +24,7 @@ struct NodeIDView: View {
                 VStack(spacing: 20.0) {
                     
                     Image(systemName: "person.circle.fill")
-                        .font(.largeTitle)
+                        .font(.system(size: 50))
                         .foregroundColor(viewModel.networkColor)
                     
                     HStack(alignment: .center) {

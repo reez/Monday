@@ -112,8 +112,15 @@ struct SendView: View {
                             )
                     ) {
                         Text("Send")
+                            .bold()
+                            .frame(maxWidth: .infinity)
+                            .padding(.all, 8)
                     }
-                    .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.borderedProminent)
+                    .tint(viewModel.networkColor)
+                    .padding(.horizontal)
+                    .padding(.horizontal)
                     
                 }
                 .padding()
