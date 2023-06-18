@@ -41,7 +41,7 @@ struct BitcoinView: View {
                                 .textStyle(BitcoinTitle5())
                                 .baselineOffset(2)
                         }
-                        .animation(.default)
+                        .animation(.default, value: viewModel.totalBalance)
                         HStack(spacing: 4) {
                             if viewModel.isSpendableBalanceFinished {
                                 Text(viewModel.spendableBalance.formattedAmount())
@@ -51,7 +51,7 @@ struct BitcoinView: View {
                             }
                             Text("Spendable Sats")
                         }
-                        .animation(.default)
+                        .animation(.default, value: viewModel.spendableBalance)
                         .font(.caption)
                         .foregroundColor(.secondary)
                     }

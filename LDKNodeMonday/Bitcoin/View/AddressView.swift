@@ -27,7 +27,7 @@ struct AddressView: View {
                     
                     if viewModel.address != "" {
                         QRCodeViewBitcoin(address: viewModel.address)
-                            .animation(.default)
+                            .animation(.default, value: viewModel.address)
                     }
                     
                     HStack(alignment: .center) {
