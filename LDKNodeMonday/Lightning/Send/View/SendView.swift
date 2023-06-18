@@ -63,6 +63,8 @@ struct SendView: View {
                     .tint(viewModel.networkColor)
                     .padding(.bottom)
                     .padding(.horizontal)
+                    
+                    Spacer()
 
                     VStack(alignment: .leading) {
                         
@@ -121,6 +123,8 @@ struct SendView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(viewModel.networkColor)
                     .padding(.horizontal, 30.0)
+                    
+                    Spacer()
 
                 }
                 .padding()

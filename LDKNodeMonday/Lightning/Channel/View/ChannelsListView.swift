@@ -129,7 +129,7 @@ struct ChannelsListView: View {
                     viewModel.listChannels()
                 }) {
                     SendView(viewModel: .init())
-                        .presentationDetents([.height(300)])
+                        .presentationDetents([.medium])//height(300)
                 }
                 .sheet(isPresented: $isReceivePresented, onDismiss: {
                     viewModel.listChannels()

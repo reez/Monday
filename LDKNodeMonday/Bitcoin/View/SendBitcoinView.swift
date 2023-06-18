@@ -66,6 +66,8 @@ struct SendBitcoinView: View {
                     .padding(.bottom)
                     .padding(.horizontal)
                     
+                    Spacer()
+                    
                     VStack(alignment: .leading) {
                         
                         Text("Address")
@@ -146,6 +148,8 @@ struct SendBitcoinView: View {
                             .padding(.horizontal)
                         }
                     }
+                    
+                    Spacer()
                     
                 }
                 .padding()

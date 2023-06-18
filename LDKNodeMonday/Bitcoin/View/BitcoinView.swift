@@ -165,7 +165,7 @@ struct BitcoinView: View {
                     }
                 }) {
                     SendBitcoinView(viewModel: .init(spendableBalance: viewModel.spendableBalance))
-                        .presentationDetents([.height(300)])
+                        .presentationDetents([.medium]) //.height(300)
                 }
                 
             }
