@@ -67,6 +67,7 @@ struct ChannelAddView: View {
                 .buttonStyle(.bordered)
                 .tint(viewModel.networkColor)
                 .padding()
+                .padding(.top, 20.0)
                 
                 if viewModel.isProgressViewShowing {
                     HStack {
