@@ -75,9 +75,7 @@ struct ChannelAddView: View {
                         Spacer()
                     }
                 }
-                
-                Spacer()
-                
+                                
                 VStack(alignment: .leading) {
                     
                     Text("Node ID")
@@ -201,7 +199,9 @@ struct ChannelAddView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(viewModel.networkColor)
                 .padding(.horizontal)
-                .padding(.bottom, 40.0)
+                .padding(.bottom, 80.0)
+                
+                Spacer()
                 
             }
             .padding()

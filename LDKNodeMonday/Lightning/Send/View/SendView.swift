@@ -64,8 +64,6 @@ struct SendView: View {
                     .padding(.bottom)
                     .padding(.horizontal)
                     
-                    Spacer()
-
                     VStack(alignment: .leading) {
                         
                         Text("Invoice")

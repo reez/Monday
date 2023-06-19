@@ -75,9 +75,7 @@ struct PeerView: View {
                         Spacer()
                     }
                 }
-                
-                Spacer()
-                
+                                
                 VStack(alignment: .leading) {
                     
                     Text("Node ID")
