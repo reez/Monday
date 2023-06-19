@@ -93,10 +93,10 @@ struct ChannelDetailView: View {
                             .foregroundColor(.secondary)
                     }
                 }
-                .font(.system(.caption, design: .monospaced))
+                .font(.system(.caption2, design: .monospaced))
                 .padding()
                 
-                Button("Close Channel") {
+                Button {
                     viewModel.close()
                     refreshFlag = true
                     if showingChannelDetailViewErrorAlert == false {
@@ -104,8 +104,17 @@ struct ChannelDetailView: View {
                             self.presentationMode.wrappedValue.dismiss()
                         }
                     }
+                } label: {
+                    Text("Close Channel")
+                        .bold()
+                        .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                        .frame(maxWidth: .infinity)
+                        .padding(.all, 8)
                 }
-                .buttonStyle(BitcoinOutlined(tintColor: viewModel.networkColor))
+                .buttonBorderShape(.capsule)
+                .buttonStyle(.borderedProminent)
+                .tint(viewModel.networkColor)
+                .padding(.horizontal)
                 
             }
             .padding()
