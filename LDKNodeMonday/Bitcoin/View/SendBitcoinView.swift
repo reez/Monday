@@ -65,9 +65,7 @@ struct SendBitcoinView: View {
                     .tint(viewModel.networkColor)
                     .padding(.bottom)
                     .padding(.horizontal)
-                    
-                    Spacer()
-                    
+                                        
                     VStack(alignment: .leading) {
                         
                         Text("Address")
