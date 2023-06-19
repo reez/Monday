@@ -37,7 +37,7 @@ struct ChannelsListView: View {
                         Button {
                             isAddChannelPresented = true
                         } label: {
-                            HStack(spacing: 1) {
+                            HStack {
                                 Image(systemName: "plus")
                                 Text("Add Channel")
                             }
