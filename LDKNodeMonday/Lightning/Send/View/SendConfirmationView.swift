@@ -70,8 +70,7 @@ struct SendConfirmationView: View {
                 VStack(spacing: 10) {
                     
                     if let invoice = viewModel.invoice.bolt11amount(), let number = Int(invoice) {
-                        let msat = number / 1000
-                        Text("\(msat.description.formattedAmount()) sats")
+                        Text("\(number.description.formattedAmount()) sats")
                             .font(.largeTitle)
                             .bold()
                     } else {
