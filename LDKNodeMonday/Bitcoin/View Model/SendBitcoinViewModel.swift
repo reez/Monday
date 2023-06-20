@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class SendBitcoinViewModel: ObservableObject {
     let spendableBalance: String

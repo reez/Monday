@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class SendViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""

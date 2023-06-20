@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LightningDevKitNode
+import LDKNode
 import SwiftUI
 
 class LightningNodeService {
@@ -77,7 +77,7 @@ class LightningNodeService {
     }
     
     func newFundingAddress() async throws -> String {
-        let fundingAddress = try ldkNode.newFundingAddress()
+        let fundingAddress = try ldkNode.newOnchainAddress()
         return fundingAddress
     }
     
@@ -91,11 +91,11 @@ class LightningNodeService {
         return balance
     }
     
-    func connect(nodeId: PublicKey, address: String, permanently: Bool) async throws {
+    func connect(nodeId: PublicKey, address: String, persist: Bool) async throws {
         try ldkNode.connect(
             nodeId: nodeId,
             address: address,
-            permanently: permanently
+            persist: persist
         )
     }
     
@@ -115,6 +115,7 @@ class LightningNodeService {
             address: address,
             channelAmountSats: channelAmountSats,
             pushToCounterpartyMsat: pushToCounterpartyMsat,
+            channelConfig: nil,
             announceChannel: false
         )
     }

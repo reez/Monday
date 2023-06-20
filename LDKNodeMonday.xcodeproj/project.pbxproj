@@ -32,6 +32,7 @@
 		AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8672A2537FB002623E8 /* DisconnectViewModel.swift */; };
 		AE49E86C2A253A32002623E8 /* NodeIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */; };
 		AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C15B12A1316D100AA8917 /* BitcoinView.swift */; };
+		AE581D5A2A4214EA0000D979 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE581D592A4214EA0000D979 /* LDKNode */; };
 		AE5849302A2A2B6B00BEF038 /* QRCodeViewLightning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58492F2A2A2B6B00BEF038 /* QRCodeViewLightning.swift */; };
 		AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */; };
 		AE5C4FD529A5565700BE3285 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AE5C4FD429A5565700BE3285 /* README.md */; };
@@ -55,7 +56,6 @@
 		AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE5B7692A09C722001E5E59 /* Peer.swift */; };
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
 		AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */; };
-		AEEC3B192A2FB4F700AD784E /* LightningDevKitNode in Frameworks */ = {isa = PBXBuildFile; productRef = AEEC3B182A2FB4F700AD784E /* LightningDevKitNode */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +85,7 @@
 		AE49E8672A2537FB002623E8 /* DisconnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectViewModel.swift; sourceTree = "<group>"; };
 		AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDViewModel.swift; sourceTree = "<group>"; };
 		AE4C15B12A1316D100AA8917 /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
+		AE581D582A4214870000D979 /* swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = swift; path = "../ldk-node/bindings/swift"; sourceTree = "<group>"; };
 		AE58492F2A2A2B6B00BEF038 /* QRCodeViewLightning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewLightning.swift; sourceTree = "<group>"; };
 		AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningStorage.swift; sourceTree = "<group>"; };
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -107,7 +108,6 @@
 		AEE5B7692A09C722001E5E59 /* Peer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
 		AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
-		AEEC3B172A2FB4D900AD784E /* swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = swift; path = "../ldk-node/bindings/swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,7 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEEC3B192A2FB4F700AD784E /* LightningDevKitNode in Frameworks */,
+				AE581D5A2A4214EA0000D979 /* LDKNode in Frameworks */,
 				AE5C4FD829A5577F00BE3285 /* WalletUI in Frameworks */,
 				AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */,
 			);
@@ -127,7 +127,7 @@
 		AE17E8CD29A402E30058C9C9 = {
 			isa = PBXGroup;
 			children = (
-				AEEC3B162A2FB4D900AD784E /* Packages */,
+				AE581D572A4214870000D979 /* Packages */,
 				AE5C4FD429A5565700BE3285 /* README.md */,
 				AE17E8D829A402E30058C9C9 /* LDKNodeMonday */,
 				AE17E8D729A402E30058C9C9 /* Products */,
@@ -331,6 +331,14 @@
 			path = "View Model";
 			sourceTree = "<group>";
 		};
+		AE581D572A4214870000D979 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				AE581D582A4214870000D979 /* swift */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		AE5C4FD329A5550100BE3285 /* Lightning */ = {
 			isa = PBXGroup;
 			children = (
@@ -419,14 +427,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		AEEC3B162A2FB4D900AD784E /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				AEEC3B172A2FB4D900AD784E /* swift */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -446,7 +446,7 @@
 			packageProductDependencies = (
 				AE5C4FD729A5577F00BE3285 /* WalletUI */,
 				AEE5B7642A09B1FC001E5E59 /* CodeScanner */,
-				AEEC3B182A2FB4F700AD784E /* LightningDevKitNode */,
+				AE581D592A4214EA0000D979 /* LDKNode */,
 			);
 			productName = LDKNodeMonday;
 			productReference = AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */;
@@ -777,6 +777,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		AE581D592A4214EA0000D979 /* LDKNode */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LDKNode;
+		};
 		AE5C4FD729A5577F00BE3285 /* WalletUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */;
@@ -786,10 +790,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
-		};
-		AEEC3B182A2FB4F700AD784E /* LightningDevKitNode */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LightningDevKitNode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

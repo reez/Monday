@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class BitcoinViewModel: ObservableObject {
     @Published var balance: String = "0"

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class PeerViewModel: ObservableObject {
     @Published var address: String = ""
@@ -23,7 +23,7 @@ class PeerViewModel: ObservableObject {
             try await LightningNodeService.shared.connect(
                 nodeId: nodeId,
                 address: address,
-                permanently: true
+                persist: true
             )
         } catch let error as NodeError {
             let errorString = handleNodeError(error)

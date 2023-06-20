@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class ReceiveViewModel: ObservableObject {
     @Published var amountMsat: String = ""

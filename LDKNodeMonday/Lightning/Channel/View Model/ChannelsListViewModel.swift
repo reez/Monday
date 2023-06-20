@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class ChannelsListViewModel: ObservableObject {
     @Published var channels: [ChannelDetails] = []

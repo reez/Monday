@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class SendConfirmationViewModel: ObservableObject {
     @Published var sendConfirmationViewError: MondayError?

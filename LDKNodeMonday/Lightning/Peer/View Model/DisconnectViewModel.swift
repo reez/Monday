@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class DisconnectViewModel: ObservableObject {
     @Published var disconnectViewError: MondayError?

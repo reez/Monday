@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WalletUI
-import LightningDevKitNode
+import LDKNode
 
 struct ChannelDetailView: View {
     @ObservedObject var viewModel: ChannelDetailViewModel
@@ -45,7 +45,7 @@ struct ChannelDetailView: View {
                     HStack {
                         Text("Channel Value Satoshis")
                         Spacer()
-                        Text(viewModel.channel.channelValueSatoshis.description)
+                        Text(viewModel.channel.channelValueSats.description)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                     }
@@ -151,7 +151,7 @@ struct ChannelCloseView_Previews: PreviewProvider {
             channelId: ChannelId(stringLiteral: "channelID"),
             counterpartyNodeId: PublicKey(stringLiteral: "counterpartyNodeId"),
             fundingTxo: nil,
-            channelValueSatoshis: UInt64(1000),
+            channelValueSats: UInt64(1000),
             unspendablePunishmentReserve: nil,
             userChannelId: UserChannelId(stringLiteral: "userChannelId"),
             feerateSatPer1000Weight: UInt32(20),

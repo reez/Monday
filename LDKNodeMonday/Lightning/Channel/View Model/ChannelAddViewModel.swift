@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class ChannelAddViewModel: ObservableObject {
     @Published var address: String = ""
