@@ -206,4 +206,9 @@ extension LightningNodeService {
         return payment
     }
     
+    func listPayments() -> [PaymentDetails] {
+        let payments = ldkNode.listPayments()
+        return payments
+    }
+    
 }
