@@ -15,6 +15,7 @@ struct ChannelsListView: View {
     @State private var isViewPeersPresented = false
     @State private var isAddChannelPresented = false
     @State private var refreshFlag = false
+    @State private var isPaymentsPresented = false
     
     var body: some View {
         
@@ -99,6 +100,14 @@ struct ChannelsListView: View {
                         }
                     }
                     
+                    Button {
+                        isPaymentsPresented = true
+                    } label: {
+                        Text("View Payments")
+                    }
+                    .tint(viewModel.networkColor)
+                    .padding()
+                    
                     Spacer()
                     
                     HStack {
@@ -170,6 +179,12 @@ struct ChannelsListView: View {
                 }) {
                     ChannelAddView(viewModel: .init())
                         .presentationDetents([.medium])
+                }
+                .sheet(isPresented: $isPaymentsPresented, onDismiss: {
+                    viewModel.listChannels()
+                }) {
+                    PaymentsListView(viewModel: .init())
+                        .presentationDetents([.medium, .large])
                 }
                 
             }

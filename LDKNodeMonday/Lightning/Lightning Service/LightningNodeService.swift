@@ -16,15 +16,16 @@ class LightningNodeService {
     
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService(network: .bitcoin)
+            static let instance = LightningNodeService(network: .signet)
         }
         return Singleton.instance
     }
     
     init(network: Network) {
         
-        try? FileManager.deleteLDKNodeLogFile()
-        
+//        try? FileManager.deleteLDKNodeLogFile()
+//        try? FileManager.deleteLDKNodeLogLatestFile()
+
         let config = Config(
             storageDirPath: storageManager.getDocumentsDirectory(),
             network: network,
