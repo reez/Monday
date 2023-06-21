@@ -16,7 +16,7 @@ extension String {
             if let swiftRange = Range(range, in: self) {
                 let numberString = self[swiftRange]
                 if let number = Int(numberString) {
-                    let conversion = number * 100
+                    let conversion = number * 100_000//100
                     return String(conversion)
                 }
             }
