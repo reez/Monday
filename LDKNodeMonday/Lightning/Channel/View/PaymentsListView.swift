@@ -41,18 +41,20 @@ struct PaymentsListView: View {
                                             .bold()
                                     }
                                     VStack(alignment: .leading, spacing: 5.0) {
-                                        
-                                        let amountMsat = payment.amountMsat ?? 0//payment.amountMsat?.formattedAmount() ?? "0"
+                                        let amountMsat = payment.amountMsat ?? 0
                                         let amountSats = amountMsat / 100
                                         let amount = amountSats.formattedAmount()
                                         Text("\(amount) sats ")
                                             .font(.caption)
                                             .bold()
-//                                        Text("Payment Status: \(payment.status)")
-//                                            .font(.caption)
-//                                            .truncationMode(.middle)
-//                                            .lineLimit(1)
-//                                            .foregroundColor(.secondary)
+                                        HStack {
+                                            Text("Payment Hash")
+                                            Text(payment.hash)
+                                                .truncationMode(.middle)
+                                                .lineLimit(1)
+                                                .foregroundColor(.secondary)
+                                        }
+                                        .font(.caption)
                                     }
                                     Spacer()
                                 }

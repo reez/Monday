@@ -45,27 +45,30 @@ struct ChannelDetailView: View {
                     HStack {
                         Text("Channel Value Satoshis")
                         Spacer()
-                        Text(viewModel.channel.channelValueSats.description)
+                        Text(viewModel.channel.channelValueSats.formattedAmount())
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Balance (msat)")
+                        Text("Balance Satoshis")
                         Spacer()
-                        Text(viewModel.channel.balanceMsat.description)
+                        let amount = viewModel.channel.balanceMsat / 1000
+                        Text(amount.formattedAmount())
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Outbound Capacity (msat)")
+                        Text("Outbound Capacity Satoshis")
                         Spacer()
-                        Text(viewModel.channel.outboundCapacityMsat.description)
+                        let amount = viewModel.channel.outboundCapacityMsat / 1000
+                        Text(amount.formattedAmount())
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Inbound Capacity (msat)")
+                        Text("Inbound Capacity Satoshis")
                         Spacer()
-                        Text(viewModel.channel.inboundCapacityMsat.description)
+                        let amount = viewModel.channel.inboundCapacityMsat / 1000
+                        Text(amount.formattedAmount())
                             .foregroundColor(.secondary)
                     }
                     if let confirm = viewModel.channel.confirmations {
