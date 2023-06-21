@@ -19,7 +19,7 @@ struct PaymentsListView: View {
                 
                 Text("Payment History")
                     .bold()
-                    .padding(.top, 40.0)
+                    .padding(.top, 60.0)
                 
                 if viewModel.payments.isEmpty {
                     Text("No Payments")
@@ -35,18 +35,42 @@ struct PaymentsListView: View {
                                         Circle()
                                             .frame(width: 50.0, height: 50.0)
                                             .foregroundColor(viewModel.networkColor)
-                                        Image(systemName: "bolt.fill")
-                                            .font(.subheadline)
-                                            .foregroundColor(Color(uiColor: .systemBackground))
-                                            .bold()
+                                        switch payment.direction {
+                                        case .inbound:
+                                            Image(systemName: "arrow.down")//Text("Inbound")
+                                                .font(.subheadline)
+                                                .foregroundColor(Color(uiColor: .systemBackground))
+                                                .bold()
+                                        case .outbound:
+                                            Image(systemName: "arrow.up")//Text("Outbound")
+                                                .font(.subheadline)
+                                                .foregroundColor(Color(uiColor: .systemBackground))
+                                                .bold()
+                                        }
+//                                        Image(systemName: "bolt.fill")
+//                                            .font(.subheadline)
+//                                            .foregroundColor(Color(uiColor: .systemBackground))
+//                                            .bold()
                                     }
                                     VStack(alignment: .leading, spacing: 5.0) {
-                                        let amountMsat = payment.amountMsat ?? 0
-                                        let amountSats = amountMsat / 1000
-                                        let amount = amountSats.formattedAmount()
-                                        Text("\(amount) sats ")
-                                            .font(.caption)
-                                            .bold()
+                                        HStack {
+//                                            switch payment.direction {
+//                                            case .inbound:
+//                                                Image(systemName: "arrow.down")//Text("Inbound")
+//                                                    .font(.caption)
+////                                                    .foregroundColor(.blue)
+//                                            case .outbound:
+//                                                Image(systemName: "arrow.up")//Text("Outbound")
+//                                                    .font(.caption)
+////                                                    .foregroundColor(.purple)
+//                                            }
+                                            let amountMsat = payment.amountMsat ?? 0
+                                            let amountSats = amountMsat / 1000
+                                            let amount = amountSats.formattedAmount()
+                                            Text("\(amount) sats ")
+                                                .font(.caption)
+                                                .bold()
+                                        }
                                         HStack {
                                             Text("Payment Hash")
                                             Text(payment.hash)
@@ -55,6 +79,24 @@ struct PaymentsListView: View {
                                                 .foregroundColor(.secondary)
                                         }
                                         .font(.caption)
+                                        VStack {
+                                            let paymentStatus = payment.status
+                                            let paymentStatusWrapper = PaymentStatusWrapper(paymentStatus) // Wrap the original PaymentStatus enum in PaymentStatusWrapper
+                                            switch paymentStatusWrapper {
+                                            case .pending:
+                                                Text("Pending")
+                                                    .font(.caption)
+                                                    .foregroundColor(.gray)
+                                            case .succeeded:
+                                                Text("Succeeded")
+                                                    .font(.caption)
+                                                    .foregroundColor(.green)
+                                            case .failed:
+                                                Text("Failed")
+                                                    .font(.caption)
+                                                    .foregroundColor(.red)
+                                            }
+                                        }
                                     }
                                     Spacer()
                                 }

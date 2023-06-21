@@ -11,9 +11,14 @@ struct LogView: View {
     @State private var isLoading = false
     @State private var logFileContents = ""
     
-    var logFilePath: String {
+//    var logFilePath: String {
+//        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+//        return URL(fileURLWithPath: documentsPath).appendingPathComponent("ldk_node.log").path
+//    }
+    
+    var logLatestFilePath: String {
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        return URL(fileURLWithPath: documentsPath).appendingPathComponent("ldk_node.log").path
+        return URL(fileURLWithPath: documentsPath).appendingPathComponent("logs/ldk_node_latest.log").path
     }
     
     var body: some View {
@@ -24,7 +29,7 @@ struct LogView: View {
             VStack {
                 
                 VStack(spacing: 6) {
-                    Text("ldk_node.log")
+                    Text("ldk_node_latest.log")
                         .font(.system(.body, design: .monospaced))
                     Text("Note: Log file deleted before each app start atm (because log file can get big and take a while to load here.)")
                         .font(.system(.caption, design: .monospaced))
@@ -52,7 +57,7 @@ struct LogView: View {
             .onAppear {
                 isLoading = true
                 DispatchQueue.global(qos: .background).async {
-                    if let contents = try? String(contentsOfFile: self.logFilePath, encoding: .utf8) {
+                    if let contents = try? String(contentsOfFile: self.logLatestFilePath, encoding: .utf8) {
                         DispatchQueue.main.async {
                             logFileContents = contents
                             isLoading = false

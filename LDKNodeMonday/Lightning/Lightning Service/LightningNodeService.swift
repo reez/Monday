@@ -24,7 +24,7 @@ class LightningNodeService {
     init(network: Network) {
         
 //        try? FileManager.deleteLDKNodeLogFile()
-//        try? FileManager.deleteLDKNodeLogLatestFile()
+        try? FileManager.deleteLDKNodeLogLatestFile()
 
         let config = Config(
             storageDirPath: storageManager.getDocumentsDirectory(),
