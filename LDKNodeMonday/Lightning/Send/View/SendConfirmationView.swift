@@ -55,16 +55,6 @@ struct SendConfirmationView: View {
                 }
                 .padding(.horizontal, 50.0)
                 
-                if let hash = viewModel.paymentHash {
-                    Text("Payment Hash: \(hash)")
-                        .lineLimit(1)
-                        .truncationMode(.middle)
-                        .font(.caption)
-                } else {
-                    Text("No Payment Hash")
-                        .font(.caption)
-                }
-                
                 Spacer()
                 
                 VStack(spacing: 10) {
