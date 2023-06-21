@@ -15,6 +15,7 @@ struct ChannelsListView: View {
     @State private var isViewPeersPresented = false
     @State private var isAddChannelPresented = false
     @State private var refreshFlag = false
+    @State private var isPaymentsPresented = false
     
     var body: some View {
         
@@ -57,7 +58,7 @@ struct ChannelsListView: View {
                             .padding()
                     } else {
                         List {
-                            ForEach(viewModel.channels.sorted(by: { $0.channelValueSatoshis > $1.channelValueSatoshis }), id: \.self) { channel in
+                            ForEach(viewModel.channels.sorted(by: { $0.channelValueSats > $1.channelValueSats }), id: \.self) { channel in
                                 NavigationLink {
                                     ChannelDetailView(
                                         viewModel: .init(channel: channel),
@@ -76,7 +77,7 @@ struct ChannelsListView: View {
                                                     .bold()
                                             }
                                             VStack(alignment: .leading, spacing: 5.0) {
-                                                Text("\(channel.channelValueSatoshis) sats ")
+                                                Text("\(channel.channelValueSats) sats ")
                                                     .font(.caption)
                                                     .bold()
                                                 Text(channel.counterpartyNodeId)
@@ -98,6 +99,14 @@ struct ChannelsListView: View {
                             viewModel.listChannels()
                         }
                     }
+                    
+                    Button {
+                        isPaymentsPresented = true
+                    } label: {
+                        Text("View Payments")
+                    }
+                    .tint(viewModel.networkColor)
+                    .padding()
                     
                     Spacer()
                     
@@ -171,9 +180,14 @@ struct ChannelsListView: View {
                     ChannelAddView(viewModel: .init())
                         .presentationDetents([.medium])
                 }
+                .sheet(isPresented: $isPaymentsPresented, onDismiss: {
+                    viewModel.listChannels()
+                }) {
+                    PaymentsListView(viewModel: .init())
+                        .presentationDetents([.medium, .large])
+                }
                 
             }
-            
             
         }
         

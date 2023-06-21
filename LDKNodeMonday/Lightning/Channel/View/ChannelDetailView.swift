@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WalletUI
-import LightningDevKitNode
+import LDKNode
 
 struct ChannelDetailView: View {
     @ObservedObject var viewModel: ChannelDetailViewModel
@@ -45,27 +45,27 @@ struct ChannelDetailView: View {
                     HStack {
                         Text("Channel Value Satoshis")
                         Spacer()
-                        Text(viewModel.channel.channelValueSatoshis.description)
+                        Text(viewModel.channel.channelValueSats.formattedAmount())
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Balance (msat)")
+                        Text("Balance Satoshis")
                         Spacer()
-                        Text(viewModel.channel.balanceMsat.description)
+                        Text((viewModel.channel.balanceMsat / 1000).formattedAmount())
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Outbound Capacity (msat)")
+                        Text("Outbound Capacity Satoshis")
                         Spacer()
-                        Text(viewModel.channel.outboundCapacityMsat.description)
+                        Text((viewModel.channel.outboundCapacityMsat / 1000).formattedAmount())
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Inbound Capacity (msat)")
+                        Text("Inbound Capacity Satoshis")
                         Spacer()
-                        Text(viewModel.channel.inboundCapacityMsat.description)
+                        Text((viewModel.channel.inboundCapacityMsat / 1000).formattedAmount())
                             .foregroundColor(.secondary)
                     }
                     if let confirm = viewModel.channel.confirmations {
@@ -146,12 +146,11 @@ struct ChannelDetailView: View {
 struct ChannelCloseView_Previews: PreviewProvider {
     
     static var previews: some View {
-        
         let channel = ChannelDetails.init(
             channelId: ChannelId(stringLiteral: "channelID"),
             counterpartyNodeId: PublicKey(stringLiteral: "counterpartyNodeId"),
             fundingTxo: nil,
-            channelValueSatoshis: UInt64(1000),
+            channelValueSats: UInt64(1000),
             unspendablePunishmentReserve: nil,
             userChannelId: UserChannelId(stringLiteral: "userChannelId"),
             feerateSatPer1000Weight: UInt32(20),
@@ -169,7 +168,6 @@ struct ChannelCloseView_Previews: PreviewProvider {
         ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
         ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
                 .environment(\.colorScheme, .dark)
-        
     }
     
 }

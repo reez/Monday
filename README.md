@@ -47,6 +47,8 @@ It provides default implementations for:
 
 - [x] Send All Onchain
 
+- [x] List Payments `listPayments`
+
 ### Not Implemented
 
 - [ ] Event Handling 
@@ -55,7 +57,7 @@ It provides default implementations for:
 
 ## Swift Packages
 
-- ldk-node (version 0.1-alpha.1)
+- ldk-node (version 0.1) built from source via [ldk-node](https://github.com/lightningdevkit/ldk-node)
 
 - Bitcoin UI Kit via [WalletUI](https://github.com/reez/WalletUI)
 

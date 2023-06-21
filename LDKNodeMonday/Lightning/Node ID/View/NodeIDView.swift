@@ -56,20 +56,6 @@ struct NodeIDView: View {
                     }
                     .padding(.horizontal)
                     
-                    NavigationLink {
-                        LogView()
-                    } label: {
-                        Text("View Log File")
-                            .bold()
-                            .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                            .frame(maxWidth: .infinity)
-                            .padding(.all, 8)
-                    }
-                    .buttonBorderShape(.capsule)
-                    .buttonStyle(.borderedProminent)
-                    .tint(viewModel.networkColor)
-                    .padding(.horizontal, 30.0)
-                    
                 }
                 .padding()
                 .navigationTitle("Node ID")

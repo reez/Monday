@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class StartViewModel: ObservableObject {
     @Published var networkColor = Color.gray

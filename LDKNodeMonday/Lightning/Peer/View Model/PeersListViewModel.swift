@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class PeersListViewModel: ObservableObject {
     @Published var networkColor = Color.gray

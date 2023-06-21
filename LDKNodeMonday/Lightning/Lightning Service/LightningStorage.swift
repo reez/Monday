@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LightningDevKitNode
+import LDKNode
 
 struct LightningStorage {
     func getDocumentsDirectory() -> String {

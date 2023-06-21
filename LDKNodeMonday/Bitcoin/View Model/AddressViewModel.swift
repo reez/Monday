@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import LightningDevKitNode
+import LDKNode
 
 class AddressViewModel: ObservableObject {
     @Published var address: String = ""

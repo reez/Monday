@@ -55,20 +55,9 @@ struct SendConfirmationView: View {
                 }
                 .padding(.horizontal, 50.0)
                 
-                if let hash = viewModel.paymentHash {
-                    Text("Payment Hash: \(hash)")
-                        .lineLimit(1)
-                        .truncationMode(.middle)
-                        .font(.caption)
-                } else {
-                    Text("No Payment Hash")
-                        .font(.caption)
-                }
-                
                 Spacer()
                 
                 VStack(spacing: 10) {
-                    
                     if let invoice = viewModel.invoice.bolt11amount(), let number = Int(invoice) {
                         Text("\(number.description.formattedAmount()) sats")
                             .font(.largeTitle)
@@ -76,7 +65,6 @@ struct SendConfirmationView: View {
                     } else {
                         Text("Unable to Parse Formatted Amount")
                     }
-                    
                     Text(Date.now.formattedDate())
                         .foregroundColor(.secondary)
                 }

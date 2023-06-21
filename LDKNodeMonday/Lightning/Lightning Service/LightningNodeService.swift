@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LightningDevKitNode
+import LDKNode
 import SwiftUI
 
 class LightningNodeService {
@@ -16,15 +16,15 @@ class LightningNodeService {
     
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService(network: .bitcoin)
+            static let instance = LightningNodeService(network: .signet)
         }
         return Singleton.instance
     }
     
     init(network: Network) {
         
-        try? FileManager.deleteLDKNodeLogFile()
-        
+        try? FileManager.deleteLDKNodeLogLatestFile()
+
         let config = Config(
             storageDirPath: storageManager.getDocumentsDirectory(),
             network: network,
@@ -77,7 +77,7 @@ class LightningNodeService {
     }
     
     func newFundingAddress() async throws -> String {
-        let fundingAddress = try ldkNode.newFundingAddress()
+        let fundingAddress = try ldkNode.newOnchainAddress()
         return fundingAddress
     }
     
@@ -91,11 +91,11 @@ class LightningNodeService {
         return balance
     }
     
-    func connect(nodeId: PublicKey, address: String, permanently: Bool) async throws {
+    func connect(nodeId: PublicKey, address: String, persist: Bool) async throws {
         try ldkNode.connect(
             nodeId: nodeId,
             address: address,
-            permanently: permanently
+            persist: persist
         )
     }
     
@@ -115,6 +115,7 @@ class LightningNodeService {
             address: address,
             channelAmountSats: channelAmountSats,
             pushToCounterpartyMsat: pushToCounterpartyMsat,
+            channelConfig: nil,
             announceChannel: false
         )
     }
@@ -146,6 +147,11 @@ class LightningNodeService {
     func sendAllToOnchain(address: Address) async throws -> Txid {
         let txId = try ldkNode.sendAllToOnchainAddress(address: address)
         return txId
+    }
+    
+    func listPayments() -> [PaymentDetails] {
+        let payments = ldkNode.listPayments()
+        return payments
     }
     
 }

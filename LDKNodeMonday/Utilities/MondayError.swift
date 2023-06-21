@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LightningDevKitNode
+import LDKNode
 
 struct MondayError {
     let title: String
@@ -98,6 +98,9 @@ func handleNodeError(_ error: NodeError) -> MondayError {
 
     case .DuplicatePayment(message: let message):
         return .init(title: "DuplicatePayment", detail: message)
+
+    case .ChannelConfigUpdateFailed(message: let message):
+        return .init(title: "ChannelConfigUpdateFailed", detail: message)
 
     }
     

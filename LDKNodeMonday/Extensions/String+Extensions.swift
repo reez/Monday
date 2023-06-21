@@ -16,7 +16,7 @@ extension String {
             if let swiftRange = Range(range, in: self) {
                 let numberString = self[swiftRange]
                 if let number = Int(numberString) {
-                    let conversion = number * 100
+                    let conversion = number * 100_000
                     return String(conversion)
                 }
             }
@@ -24,7 +24,6 @@ extension String {
         
         return nil
     }
-    
     
     func formattedAmount() -> String {
         let formatter = NumberFormatter()
