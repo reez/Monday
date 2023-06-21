@@ -35,14 +35,14 @@ struct PaymentsListView: View {
                                         Circle()
                                             .frame(width: 50.0, height: 50.0)
                                             .foregroundColor(viewModel.networkColor)
-                                        Image(systemName: "person.line.dotted.person")
+                                        Image(systemName: "bolt.fill")
                                             .font(.subheadline)
                                             .foregroundColor(Color(uiColor: .systemBackground))
                                             .bold()
                                     }
                                     VStack(alignment: .leading, spacing: 5.0) {
                                         let amountMsat = payment.amountMsat ?? 0
-                                        let amountSats = amountMsat / 100
+                                        let amountSats = amountMsat / 1000
                                         let amount = amountSats.formattedAmount()
                                         Text("\(amount) sats ")
                                             .font(.caption)

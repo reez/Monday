@@ -47,6 +47,8 @@ It provides default implementations for:
 
 - [x] Send All Onchain
 
+- [x] List Payments `listPayments`
+
 ### Not Implemented
 
 - [ ] Event Handling 
