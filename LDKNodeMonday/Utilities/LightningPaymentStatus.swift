@@ -1,5 +1,5 @@
 //
-//  LightningNodeWrapper.swift
+//  LightningPaymentStatus.swift
 //  LDKNodeMonday
 //
 //  Created by Matthew Ramsden on 6/21/23.
