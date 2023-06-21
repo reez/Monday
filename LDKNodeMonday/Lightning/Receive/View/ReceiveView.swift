@@ -80,6 +80,7 @@ struct ReceiveView: View {
                     .padding(.bottom)
                     
                     if viewModel.invoice != "" {
+                        
                         QRCodeViewLightning(invoice: viewModel.invoice)
                         
                         VStack {

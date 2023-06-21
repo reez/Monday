@@ -27,8 +27,7 @@ struct PaymentsListView: View {
                         .padding()
                 } else {
                     List {
-                        ForEach(viewModel.payments, id: \.self) { payment in //ForEach(viewModel.payments.sorted(by: { $0.status > $1.status }), id: \.self) { payment in
-                            
+                        ForEach(viewModel.payments, id: \.self) { payment in
                             VStack {
                                 HStack(alignment: .center, spacing: 15) {
                                     ZStack {
@@ -37,33 +36,19 @@ struct PaymentsListView: View {
                                             .foregroundColor(viewModel.networkColor)
                                         switch payment.direction {
                                         case .inbound:
-                                            Image(systemName: "arrow.down")//Text("Inbound")
+                                            Image(systemName: "arrow.down")
                                                 .font(.subheadline)
                                                 .foregroundColor(Color(uiColor: .systemBackground))
                                                 .bold()
                                         case .outbound:
-                                            Image(systemName: "arrow.up")//Text("Outbound")
+                                            Image(systemName: "arrow.up")
                                                 .font(.subheadline)
                                                 .foregroundColor(Color(uiColor: .systemBackground))
                                                 .bold()
                                         }
-//                                        Image(systemName: "bolt.fill")
-//                                            .font(.subheadline)
-//                                            .foregroundColor(Color(uiColor: .systemBackground))
-//                                            .bold()
                                     }
                                     VStack(alignment: .leading, spacing: 5.0) {
                                         HStack {
-//                                            switch payment.direction {
-//                                            case .inbound:
-//                                                Image(systemName: "arrow.down")//Text("Inbound")
-//                                                    .font(.caption)
-////                                                    .foregroundColor(.blue)
-//                                            case .outbound:
-//                                                Image(systemName: "arrow.up")//Text("Outbound")
-//                                                    .font(.caption)
-////                                                    .foregroundColor(.purple)
-//                                            }
                                             let amountMsat = payment.amountMsat ?? 0
                                             let amountSats = amountMsat / 1000
                                             let amount = amountSats.formattedAmount()
@@ -80,9 +65,7 @@ struct PaymentsListView: View {
                                         }
                                         .font(.caption)
                                         VStack {
-                                            let paymentStatus = payment.status
-                                            let paymentStatusWrapper = PaymentStatusWrapper(paymentStatus) // Wrap the original PaymentStatus enum in PaymentStatusWrapper
-                                            switch paymentStatusWrapper {
+                                            switch LightningPaymentStatus(payment.status) {
                                             case .pending:
                                                 Text("Pending")
                                                     .font(.caption)
@@ -102,7 +85,6 @@ struct PaymentsListView: View {
                                 }
                                 .padding()
                             }
-                            
                         }
                         .listRowBackground(Color.clear)
                     }

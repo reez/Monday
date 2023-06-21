@@ -189,7 +189,6 @@ struct ChannelsListView: View {
                 
             }
             
-            
         }
         
     }

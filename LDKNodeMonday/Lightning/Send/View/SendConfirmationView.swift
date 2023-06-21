@@ -68,7 +68,6 @@ struct SendConfirmationView: View {
                 Spacer()
                 
                 VStack(spacing: 10) {
-                    
                     if let invoice = viewModel.invoice.bolt11amount(), let number = Int(invoice) {
                         Text("\(number.description.formattedAmount()) sats")
                             .font(.largeTitle)
@@ -76,7 +75,6 @@ struct SendConfirmationView: View {
                     } else {
                         Text("Unable to Parse Formatted Amount")
                     }
-                    
                     Text(Date.now.formattedDate())
                         .foregroundColor(.secondary)
                 }

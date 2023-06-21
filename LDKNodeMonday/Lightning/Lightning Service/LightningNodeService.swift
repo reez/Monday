@@ -23,7 +23,6 @@ class LightningNodeService {
     
     init(network: Network) {
         
-//        try? FileManager.deleteLDKNodeLogFile()
         try? FileManager.deleteLDKNodeLogLatestFile()
 
         let config = Config(
@@ -150,6 +149,11 @@ class LightningNodeService {
         return txId
     }
     
+    func listPayments() -> [PaymentDetails] {
+        let payments = ldkNode.listPayments()
+        return payments
+    }
+    
 }
 
 // Currently unused
@@ -205,11 +209,6 @@ extension LightningNodeService {
     func removePayment(paymentHash: PaymentHash) throws -> Bool {
         let payment = try ldkNode.removePayment(paymentHash: paymentHash)
         return payment
-    }
-    
-    func listPayments() -> [PaymentDetails] {
-        let payments = ldkNode.listPayments()
-        return payments
     }
     
 }

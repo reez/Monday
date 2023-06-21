@@ -11,11 +11,6 @@ struct LogView: View {
     @State private var isLoading = false
     @State private var logFileContents = ""
     
-//    var logFilePath: String {
-//        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-//        return URL(fileURLWithPath: documentsPath).appendingPathComponent("ldk_node.log").path
-//    }
-    
     var logLatestFilePath: String {
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         return URL(fileURLWithPath: documentsPath).appendingPathComponent("logs/ldk_node_latest.log").path

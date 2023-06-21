@@ -52,23 +52,20 @@ struct ChannelDetailView: View {
                     HStack {
                         Text("Balance Satoshis")
                         Spacer()
-                        let amount = viewModel.channel.balanceMsat / 1000
-                        Text(amount.formattedAmount())
+                        Text((viewModel.channel.balanceMsat / 1000).formattedAmount())
                             .lineLimit(1)
                             .foregroundColor(.secondary)
                     }
                     HStack {
                         Text("Outbound Capacity Satoshis")
                         Spacer()
-                        let amount = viewModel.channel.outboundCapacityMsat / 1000
-                        Text(amount.formattedAmount())
+                        Text((viewModel.channel.outboundCapacityMsat / 1000).formattedAmount())
                             .foregroundColor(.secondary)
                     }
                     HStack {
                         Text("Inbound Capacity Satoshis")
                         Spacer()
-                        let amount = viewModel.channel.inboundCapacityMsat / 1000
-                        Text(amount.formattedAmount())
+                        Text((viewModel.channel.inboundCapacityMsat / 1000).formattedAmount())
                             .foregroundColor(.secondary)
                     }
                     if let confirm = viewModel.channel.confirmations {
@@ -149,7 +146,6 @@ struct ChannelDetailView: View {
 struct ChannelCloseView_Previews: PreviewProvider {
     
     static var previews: some View {
-        
         let channel = ChannelDetails.init(
             channelId: ChannelId(stringLiteral: "channelID"),
             counterpartyNodeId: PublicKey(stringLiteral: "counterpartyNodeId"),
@@ -172,7 +168,6 @@ struct ChannelCloseView_Previews: PreviewProvider {
         ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
         ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
                 .environment(\.colorScheme, .dark)
-        
     }
     
 }

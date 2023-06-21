@@ -25,7 +25,6 @@ extension String {
         return nil
     }
     
-    
     func formattedAmount() -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal

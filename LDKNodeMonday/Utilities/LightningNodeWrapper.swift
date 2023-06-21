@@ -8,8 +8,7 @@
 import Foundation
 import LDKNode
 
-// Wrapper enum that maps to the Rust enum
-enum PaymentStatusWrapper {
+enum LightningPaymentStatus {
     case pending
     case succeeded
     case failed
