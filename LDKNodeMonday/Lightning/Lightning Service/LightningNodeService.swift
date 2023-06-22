@@ -63,7 +63,7 @@ class LightningNodeService {
         /// 06.22.23
         /// Breaking change in ldk-node 0.1 today
         /// `build` now `throws`
-        /// - Resolve use of by handling error, bad practice to use bang here
+        /// - Resolve use of by actually handling error
         let ldkNode = try! nodeBuilder.build()
         
         self.ldkNode = ldkNode
