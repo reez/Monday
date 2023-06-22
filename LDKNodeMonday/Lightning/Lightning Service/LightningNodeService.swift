@@ -36,9 +36,9 @@ class LightningNodeService {
             logLevel: .debug
         )
         let nodeBuilder = Builder.fromConfig(config: config)
-                
+
         switch network {
-            
+
         case .bitcoin:
             nodeBuilder.setGossipSourceRgs(rgsServerUrl: Constants.Config.RGSServerURLNetwork.bitcoin)
             nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.Bitcoin.bitcoin_mempoolspace)
@@ -59,7 +59,13 @@ class LightningNodeService {
 
         }
         
-        let ldkNode = nodeBuilder.build()
+        // TODO: -!
+        /// 06.22.23
+        /// Breaking change in ldk-node 0.1 today
+        /// `build` now `throws`
+        /// - Resolve use of by handling error, bad practice to use bang here
+        let ldkNode = try! nodeBuilder.build()
+        
         self.ldkNode = ldkNode
     }
     
