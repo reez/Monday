@@ -45,7 +45,7 @@ It provides default implementations for:
 
 - [x] List Channels `listChannels`
 
-- [x] Send All Onchain
+- [x] Send All Onchain `sendAllToOnchain`
 
 - [x] List Payments `listPayments`
 
@@ -57,7 +57,7 @@ It provides default implementations for:
 
 ## Swift Packages
 
-- ldk-node (version 0.1) built from source via [ldk-node](https://github.com/lightningdevkit/ldk-node)
+- ldk-node `pr/114` built from source via [ldk-node](https://github.com/lightningdevkit/ldk-node)
 
 - Bitcoin UI Kit via [WalletUI](https://github.com/reez/WalletUI)
 
