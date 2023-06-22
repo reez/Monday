@@ -57,7 +57,7 @@ It provides default implementations for:
 
 ## Swift Packages
 
-- ldk-node `pr/114` built from source via [ldk-node](https://github.com/lightningdevkit/ldk-node)
+- ldk-node via [ldk-node](https://github.com/lightningdevkit/ldk-node)
 
 - Bitcoin UI Kit via [WalletUI](https://github.com/reez/WalletUI)
 
