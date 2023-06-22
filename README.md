@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](https://github.com/reez/Monday/blob/master/LICENSE) 
 
-An example iOS app using [ldk-node](https://github.com/lightningdevkit/ldk-node)
+An example iOS app using [LDK Node](https://github.com/lightningdevkit/ldk-node)
 
 <img src="Docs/lightning-screen.png" alt="Screenshot" width="236" height="511">
 
@@ -57,7 +57,7 @@ It provides default implementations for:
 
 ## Swift Packages
 
-- ldk-node via [ldk-node](https://github.com/lightningdevkit/ldk-node)
+- LDK Node via [ldk-node](https://github.com/lightningdevkit/ldk-node)
 
 - Bitcoin UI Kit via [WalletUI](https://github.com/reez/WalletUI)
 
@@ -69,4 +69,4 @@ It provides default implementations for:
 
 [@tnull](https://github.com/tnull) most importantly. 
 
-The [Lightning Dev Kit](https://lightningdevkit.org) team/project and the [Bitcoin Dev Kit](https://bitcoindevkit.org/) team/project, `ldk-node` is built using both.
+The [Lightning Dev Kit](https://lightningdevkit.org) team/project and the [Bitcoin Dev Kit](https://bitcoindevkit.org/) team/project, LDK Node is built using both.
