@@ -10,21 +10,44 @@ import Foundation
 extension String {
     
     func bolt11amount() -> String? {
-        let regex = try! NSRegularExpression(pattern: "ln.*?(\\d+)", options: [])
+        let regex = try! NSRegularExpression(pattern: "ln.*?(\\d+)([munp]?)", options: [])
         if let match = regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count)) {
-            let range = match.range(at: 1)
-            if let swiftRange = Range(range, in: self) {
-                let numberString = self[swiftRange]
-                if let number = Int(numberString) {
-                    let conversion = number * 100_000
-                    return String(conversion)
+            let amountRange = match.range(at: 1)
+            let multiplierRange = match.range(at: 2)
+
+            if let amountSwiftRange = Range(amountRange, in: self),
+               let multiplierSwiftRange = Range(multiplierRange, in: self) {
+
+                let amountString = self[amountSwiftRange]
+                let multiplierString = self[multiplierSwiftRange]
+                let numberFormatter = NumberFormatter()
+
+                if let amount = numberFormatter.number(from: String(amountString))?.doubleValue {
+                    var conversion = amount
+
+                    switch multiplierString {
+                    case "m":
+                        conversion *= 0.001
+                    case "u":
+                        conversion *= 0.000001
+                    case "n":
+                        conversion *= 0.000000001
+                    case "p":
+                        conversion *= 0.000000000001
+                    default:
+                        break
+                    }
+
+                    let convertedAmount = conversion * 100_000_000//100_000
+                    let formattedAmount = String(format: "%.0f", convertedAmount)
+                    return formattedAmount
                 }
             }
         }
-        
+
         return nil
     }
-    
+
     func formattedAmount() -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
