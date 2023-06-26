@@ -17,6 +17,14 @@ class ChannelAddViewModel: ObservableObject {
     @Published var isOpenChannelFinished: Bool = false
     @Published var isProgressViewShowing: Bool = false
     
+    private let channelConfig = ChannelConfig(
+        forwardingFeeProportionalMillionths: UInt32(0),
+        forwardingFeeBaseMsat: UInt32(1000),
+        cltvExpiryDelta: UInt16(72),
+        maxDustHtlcExposureMsat: 50_000_000,
+        forceCloseAvoidanceMaxFeeSatoshis: UInt64(1000)
+    )
+    
     func openChannel(nodeId: PublicKey, address: String, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) async {
         DispatchQueue.main.async {
             self.isProgressViewShowing = true
@@ -26,7 +34,8 @@ class ChannelAddViewModel: ObservableObject {
                 nodeId: nodeId,
                 address: address,
                 channelAmountSats: channelAmountSats,
-                pushToCounterpartyMsat: pushToCounterpartyMsat
+                pushToCounterpartyMsat: pushToCounterpartyMsat,
+                channelConfig: channelConfig
             )
             DispatchQueue.main.async {
                 self.channelAddViewError = nil

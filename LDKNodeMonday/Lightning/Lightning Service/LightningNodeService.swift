@@ -114,6 +114,7 @@ class LightningNodeService {
         address: String,
         channelAmountSats: UInt64,
         pushToCounterpartyMsat: UInt64?,
+        channelConfig: ChannelConfig?,
         announceChannel: Bool = true
     ) async throws {
         try ldkNode.connectOpenChannel(
