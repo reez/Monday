@@ -38,7 +38,7 @@ extension String {
                         break
                     }
 
-                    let convertedAmount = conversion * 100_000_000//100_000
+                    let convertedAmount = conversion * 100_000_000
                     let formattedAmount = String(format: "%.0f", convertedAmount)
                     return formattedAmount
                 }
