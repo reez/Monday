@@ -64,6 +64,16 @@ struct PaymentsListView: View {
                                                 .foregroundColor(.secondary)
                                         }
                                         .font(.caption)
+                                        if let preimage = payment.preimage {
+                                            HStack {
+                                                Text("Preimage")
+                                                Text(preimage)
+                                                    .truncationMode(.middle)
+                                                    .lineLimit(1)
+                                                    .foregroundColor(.secondary)
+                                            }
+                                            .font(.caption)
+                                        }
                                         VStack {
                                             switch LightningPaymentStatus(payment.status) {
                                             case .pending:
