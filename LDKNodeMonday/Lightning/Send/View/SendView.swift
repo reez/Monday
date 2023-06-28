@@ -205,11 +205,8 @@ extension SendView {
         }
         return nil
     }
-
     
 }
-
-
 
 struct SendView_Previews: PreviewProvider {
     static var previews: some View {
