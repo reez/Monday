@@ -162,11 +162,48 @@ extension SendView {
         isShowingScanner = false
         switch result {
         case .success(let result):
-            let invoice = result.string.lowercased().replacingOccurrences(of: "lightning:", with: "")
-            viewModel.invoice = invoice
+            let scanString = result.string.lowercased()
+            if scanString.hasPrefix("lightning:") {
+                let invoice = scanString.replacingOccurrences(of: "lightning:", with: "")
+                viewModel.invoice = invoice
+            } else if scanString.hasPrefix("bitcoin:") {
+                if let invoice = extractInvoiceFromBIP21(scanString) {
+                    viewModel.invoice = invoice
+                } else {
+                    self.viewModel.parseError = .init(title: "Scan Error", detail: "Invalid BIP-21 format")
+                }
+            } else if let invoice = extractInvoiceFromScan(scanString) {
+                viewModel.invoice = invoice
+            } else {
+                self.viewModel.parseError = .init(title: "Scan Error", detail: "Unsupported scan format")
+            }
         case .failure(let error):
             self.viewModel.parseError = .init(title: "Scan Error", detail: error.localizedDescription)
         }
+    }
+    
+    private func extractInvoiceFromBIP21(_ scanString: String) -> String? {
+        if let url = URL(string: scanString),
+           let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+           let queryItems = components.queryItems {
+            for queryItem in queryItems {
+                if queryItem.name.lowercased() == "lightning" {
+                    return queryItem.value
+                }
+            }
+        }
+        return nil
+    }
+    
+    private func extractInvoiceFromScan(_ scanString: String) -> String? {
+        // testnet (lntb, lntbrt, lntbs), regtest (lnbcrt, lntbrt), and signet (lnbcs, lntbs)
+        let prefixOptions = ["lnbc", "lntb", "lnbcrt", "lntbrt", "lnbcs", "lntbs"]
+        for prefix in prefixOptions {
+            if scanString.hasPrefix(prefix) {
+                return scanString
+            }
+        }
+        return nil
     }
     
 }
