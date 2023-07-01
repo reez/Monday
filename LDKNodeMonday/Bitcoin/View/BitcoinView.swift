@@ -34,7 +34,7 @@ struct BitcoinView: View {
                                 if viewModel.isTotalBalanceFinished {
                                     Text(viewModel.totalBalance.formattedAmount())
                                         .bold()
-                                        .font(.title)
+                                        .font(.largeTitle)
                                 } else {
                                     ProgressView()
                                         .padding(.all, 5)
@@ -70,7 +70,7 @@ struct BitcoinView: View {
                         
                     }
                     .listStyle(.plain)
-                    .padding(.top, 40.0)
+                    .padding(.top, 120.0)
                     .refreshable {
                         await viewModel.getTotalOnchainBalanceSats()
                         await viewModel.getSpendableOnchainBalanceSats()
