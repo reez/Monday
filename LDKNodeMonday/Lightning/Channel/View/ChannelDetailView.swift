@@ -22,7 +22,7 @@ struct ChannelDetailView: View {
             
             VStack {
                 
-                Text(viewModel.channel.isOutbound ? "Outbound" : "Inbound")
+                Text(viewModel.channel.isOutbound ? "Outbound" : "Inbound").bold()
                 
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
