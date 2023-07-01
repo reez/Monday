@@ -40,7 +40,6 @@ struct PaymentsView: View {
             }
             .onAppear {
                 viewModel.listPayments()
-//                viewModel.getColor()
             }
             
         }
