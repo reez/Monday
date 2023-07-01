@@ -15,6 +15,7 @@ struct BitcoinView: View {
     @State private var showingBitcoinViewErrorAlert = false
     @State private var isAddressSheetPresented = false
     @State private var isSendSheetPresented = false
+    @Environment(\.refresh) private var refresh
     
     var body: some View {
         
@@ -25,81 +26,58 @@ struct BitcoinView: View {
                 
                 VStack {
                     
-                    Spacer()
-                    
-                    VStack(spacing: 10) {
-                        HStack(alignment: .lastTextBaseline) {
-                            if viewModel.isTotalBalanceFinished {
-                                Text(viewModel.totalBalance.formattedAmount())
-                                    .textStyle(BitcoinTitle1())
-                            } else {
-                                ProgressView()
-                                    .padding(.all, 5)
-                            }
-                            Text("Total Sats")
-                                .foregroundColor(.secondary)
-                                .textStyle(BitcoinTitle5())
-                                .baselineOffset(2)
-                        }
-                        .animation(.spring(), value: viewModel.totalBalance)
-                        HStack(spacing: 4) {
-                            if viewModel.isSpendableBalanceFinished {
-                                Text(viewModel.spendableBalance.formattedAmount())
-                            } else {
-                                ProgressView()
-                                    .padding(.all, 5)
-                            }
-                            Text("Spendable Sats")
-                        }
-                        .animation(.spring(), value: viewModel.spendableBalance)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    }
-                    
-                    Spacer()
-                    
                     List {
-                        Section(header: Text("*Transaction List Placeholder*")) {
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text("Item 11111111111111111")
-                                    Spacer()
-                                    Text("Item 1111")
+                        
+                        VStack(spacing: 10) {
+                            
+                            HStack {
+                                Spacer()
+                                if viewModel.isTotalBalanceFinished {
+                                    Text(viewModel.totalBalance.formattedAmount())
+                                        .textStyle(BitcoinTitle1())
+                                } else {
+                                    ProgressView()
+                                        .padding(.all, 5)
                                 }
-                                Text("Item 111111111")
+                                Text("Total Sats")
+                                    .foregroundColor(.secondary)
+                                    .textStyle(BitcoinTitle5())
+                                    .baselineOffset(2)
+                                Spacer()
                             }
-                            .redacted(reason: .placeholder)
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text("Item 11111111111111111")
-                                    Spacer()
-                                    Text("Item 1111111")
+                            .lineLimit(1)
+                            .animation(.spring(), value: viewModel.totalBalance)
+                            
+                            HStack(spacing: 4) {
+                                Spacer()
+                                if viewModel.isSpendableBalanceFinished {
+                                    Text(viewModel.spendableBalance.formattedAmount())
+                                } else {
+                                    ProgressView()
+                                        .padding(.all, 5)
                                 }
-                                Text("Item 1111111111111")
+                                Text("Spendable Sats")
+                                Spacer()
                             }
-                            .redacted(reason: .placeholder)
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text("Item 11111111111111111")
-                                    Spacer()
-                                    Text("Item 11")
-                                }
-                                Text("Item 1111")
-                            }
-                            .redacted(reason: .placeholder)
+                            .lineLimit(1)
+                            .animation(.spring(), value: viewModel.spendableBalance)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            
                         }
+                        .listRowSeparator(.hidden)
+                        
                     }
-                    .frame(maxWidth: .infinity, maxHeight: 300)
                     .listStyle(.plain)
-                    .padding()
                     .refreshable {
                         await viewModel.getTotalOnchainBalanceSats()
                         await viewModel.getSpendableOnchainBalanceSats()
                     }
-                                        
+                    
                     Spacer()
                     
                     HStack {
+                        
                         Button {
                             isSendSheetPresented = true
                         } label: {
@@ -114,6 +92,7 @@ struct BitcoinView: View {
                         .buttonStyle(.bordered)
                         .tint(viewModel.networkColor)
                         .padding(.horizontal)
+                        
                         Button {
                             isAddressSheetPresented = true
                         } label: {
@@ -128,6 +107,7 @@ struct BitcoinView: View {
                         .buttonStyle(.bordered)
                         .tint(viewModel.networkColor)
                         .padding(.horizontal)
+                        
                     }
                     .padding()
                     
