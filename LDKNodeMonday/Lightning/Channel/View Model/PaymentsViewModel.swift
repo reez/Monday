@@ -1,5 +1,5 @@
 //
-//  PaymentsListViewModel.swift
+//  PaymentsViewModel.swift
 //  LDKNodeMonday
 //
 //  Created by Matthew Ramsden on 6/20/23.
