@@ -37,32 +37,27 @@ struct PaymentsListView: View {
                         ForEach(payments, id: \.hash) { payment in
                             VStack {
                                 HStack(alignment: .center, spacing: 15) {
-                                    ZStack {
-                                        Circle()
-                                            .frame(width: 35.0, height: 35.0)
-                                            .foregroundColor(statusColors[status])
-                                        switch payment.direction {
-                                        case .inbound:
-                                            Image(systemName: "arrow.down")
-                                                .font(.subheadline)
-                                                .foregroundColor(Color(uiColor: .systemBackground))
-                                                .bold()
-                                        case .outbound:
-                                            Image(systemName: "arrow.up")
-                                                .font(.subheadline)
-                                                .foregroundColor(Color(uiColor: .systemBackground))
-                                                .bold()
-                                        }
-                                    }
                                     
                                     VStack(alignment: .leading, spacing: 5.0) {
                                         HStack {
-                                            let amountMsat = payment.amountMsat ?? 0
-                                            let amountSats = amountMsat / 1000
-                                            let amount = amountSats.formattedAmount()
-                                            Text("\(amount) sats ")
-                                                .font(.body)
-                                                .bold()
+                                            switch payment.direction {
+                                            case .inbound:
+                                                Image(systemName: "arrow.down")
+                                                    .font(.subheadline)
+                                                    .bold()
+                                            case .outbound:
+                                                Image(systemName: "arrow.up")
+                                                    .font(.subheadline)
+                                                    .bold()
+                                            }
+                                            HStack {
+                                                let amountMsat = payment.amountMsat ?? 0
+                                                let amountSats = amountMsat / 1000
+                                                let amount = amountSats.formattedAmount()
+                                                Text("\(amount) sats ")
+                                                    .font(.body)
+                                                    .bold()
+                                            }
                                         }
                                         HStack {
                                             Text("Payment Hash")
