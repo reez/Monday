@@ -15,7 +15,6 @@ struct BitcoinView: View {
     @State private var showingBitcoinViewErrorAlert = false
     @State private var isAddressSheetPresented = false
     @State private var isSendSheetPresented = false
-    @Environment(\.refresh) private var refresh
     
     var body: some View {
         
@@ -34,18 +33,20 @@ struct BitcoinView: View {
                                 Spacer()
                                 if viewModel.isTotalBalanceFinished {
                                     Text(viewModel.totalBalance.formattedAmount())
-                                        .textStyle(BitcoinTitle1())
+                                        .bold()
+                                        .font(.title)
                                 } else {
                                     ProgressView()
                                         .padding(.all, 5)
                                 }
                                 Text("Total Sats")
                                     .foregroundColor(.secondary)
-                                    .textStyle(BitcoinTitle5())
-                                    .baselineOffset(2)
+                                    .bold()
+                                    .font(.title3)
                                 Spacer()
                             }
                             .lineLimit(1)
+                            .minimumScaleFactor(0.5)
                             .animation(.spring(), value: viewModel.totalBalance)
                             
                             HStack(spacing: 4) {
@@ -69,6 +70,7 @@ struct BitcoinView: View {
                         
                     }
                     .listStyle(.plain)
+                    .padding(.top, 40.0)
                     .refreshable {
                         await viewModel.getTotalOnchainBalanceSats()
                         await viewModel.getSpendableOnchainBalanceSats()

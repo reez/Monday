@@ -146,7 +146,7 @@ struct ChannelsListView: View {
                     
                 }
                 .padding()
-                .navigationTitle("\(viewModel.channels.count) Channels")
+                .navigationTitle("\(viewModel.channels.count) \(viewModel.channels.count == 1 ? "Channel" : "Channels")")
                 .onAppear {
                     viewModel.listChannels()
                     viewModel.getColor()
