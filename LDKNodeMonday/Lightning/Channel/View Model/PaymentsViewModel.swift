@@ -9,7 +9,7 @@ import Foundation
 import LDKNode
 import SwiftUI
 
-class PaymentsListViewModel: ObservableObject {
+class PaymentsViewModel: ObservableObject {
     @Published var payments: [PaymentDetails] = []
     @Published var networkColor = Color.gray
     

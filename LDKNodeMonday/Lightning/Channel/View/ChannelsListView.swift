@@ -183,7 +183,7 @@ struct ChannelsListView: View {
                 .sheet(isPresented: $isPaymentsPresented, onDismiss: {
                     viewModel.listChannels()
                 }) {
-                    PaymentsListView(viewModel: .init())
+                    PaymentsView(viewModel: .init())
                         .presentationDetents([.medium, .large])
                 }
                 
