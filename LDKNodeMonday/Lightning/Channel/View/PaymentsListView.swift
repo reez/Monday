@@ -1,5 +1,5 @@
 //
-//  PaymentsListItemView.swift
+//  PaymentsListView.swift
 //  LDKNodeMonday
 //
 //  Created by Matthew Ramsden on 6/30/23.
@@ -8,9 +8,8 @@
 import SwiftUI
 import LDKNode
 
-struct PaymentsListItemView: View {
+struct PaymentsListView: View {
     let payments: [PaymentDetails]
-    let networkColor: Color
     var groupedPayments: [PaymentStatus: [PaymentDetails]] {
         Dictionary(grouping: payments, by: { $0.status })
     }
@@ -41,7 +40,6 @@ struct PaymentsListItemView: View {
                                     ZStack {
                                         Circle()
                                             .frame(width: 35.0, height: 35.0)
-//                                            .foregroundColor(networkColor)
                                             .foregroundColor(statusColors[status])
                                         switch payment.direction {
                                         case .inbound:
@@ -84,22 +82,6 @@ struct PaymentsListItemView: View {
                                             }
                                             .font(.caption)
                                         }
-//                                        VStack {
-//                                            switch LightningPaymentStatus(payment.status) {
-//                                            case .pending:
-//                                                Text("Pending")
-//                                                    .font(.caption)
-//                                                    .foregroundColor(.gray)
-//                                            case .succeeded:
-//                                                Text("Succeeded")
-//                                                    .font(.caption)
-//                                                    .foregroundColor(.green)
-//                                            case .failed:
-//                                                Text("Failed")
-//                                                    .font(.caption)
-//                                                    .foregroundColor(.red)
-//                                            }
-//                                        }
                                     }
                                     
                                     Spacer()
@@ -117,31 +99,19 @@ struct PaymentsListItemView: View {
 
 struct PaymentsListItemView_Previews: PreviewProvider {
     static var previews: some View {
-//        PaymentsListItemView(
-//            paymentDetails:
-//                [
-//                    .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .succeeded),
-//                    .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .pending),
-//                    .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .failed)
-//
-//                ]
-//        )
-//        PaymentsListItemView(viewModel: .init())
-        PaymentsListItemView(
+        PaymentsListView(
             payments: [
                 .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .succeeded),
                 .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .pending),
                 .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .failed)
-            ],
-            networkColor: .yellow
+            ]
         )
-        PaymentsListItemView(
+        PaymentsListView(
             payments: [
                 .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .succeeded),
                 .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .pending),
                 .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .failed)
-            ],
-            networkColor: .yellow
+            ]
         )
         .environment(\.colorScheme, .dark)
     }

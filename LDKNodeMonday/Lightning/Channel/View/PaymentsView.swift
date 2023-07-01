@@ -11,22 +11,27 @@ struct PaymentsView: View {
     @ObservedObject var viewModel: PaymentsViewModel
     
     var body: some View {
-        
+                
         ZStack {
             Color(uiColor: UIColor.systemBackground)
             
             VStack {
                 
-                Text("Payment History")
-                    .bold()
-                    .padding(.top, 60.0)
+                HStack {
+                    Text("Payment History")
+                        .font(.title)
+                        .bold()
+                    Spacer()
+                }
+                .padding()
+                .padding(.top, 40.0)
                 
                 if viewModel.payments.isEmpty {
                     Text("No Payments")
                         .font(.system(.caption, design: .monospaced))
                         .padding()
                 } else {
-                    PaymentsListItemView(payments: viewModel.payments, networkColor: viewModel.networkColor)
+                    PaymentsListView(payments: viewModel.payments)
                         .refreshable {
                             viewModel.listPayments()
                         }
@@ -35,7 +40,7 @@ struct PaymentsView: View {
             }
             .onAppear {
                 viewModel.listPayments()
-                viewModel.getColor()
+//                viewModel.getColor()
             }
             
         }

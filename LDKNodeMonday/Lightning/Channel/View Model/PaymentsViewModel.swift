@@ -11,17 +11,17 @@ import SwiftUI
 
 class PaymentsViewModel: ObservableObject {
     @Published var payments: [PaymentDetails] = []
-    @Published var networkColor = Color.gray
+//    @Published var networkColor = Color.gray
     
     func listPayments() {
         self.payments = LightningNodeService.shared.listPayments()
     }
     
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
-        }
-    }
+//    func getColor() {
+//        let color = LightningNodeService.shared.networkColor
+//        DispatchQueue.main.async {
+//            self.networkColor = color
+//        }
+//    }
     
 }

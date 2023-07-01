@@ -39,7 +39,7 @@
 		AE5C4FD829A5577F00BE3285 /* WalletUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE5C4FD729A5577F00BE3285 /* WalletUI */; };
 		AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */; };
 		AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5702A00947B009E16E3 /* ReceiveView.swift */; };
-		AE7594812A4FAE0200EAEDA2 /* PaymentsListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7594802A4FAE0200EAEDA2 /* PaymentsListItemView.swift */; };
+		AE7594812A4FAE0200EAEDA2 /* PaymentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7594802A4FAE0200EAEDA2 /* PaymentsListView.swift */; };
 		AE7BF29C2A44A24F0030FDE5 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE7BF29B2A44A24F0030FDE5 /* LDKNode */; };
 		AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */; };
 		AE7D3FAD2A4263C100EAE730 /* PaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */; };
@@ -95,7 +95,7 @@
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extensions.swift"; sourceTree = "<group>"; };
 		AE6BB5702A00947B009E16E3 /* ReceiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveView.swift; sourceTree = "<group>"; };
-		AE7594802A4FAE0200EAEDA2 /* PaymentsListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsListItemView.swift; sourceTree = "<group>"; };
+		AE7594802A4FAE0200EAEDA2 /* PaymentsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsListView.swift; sourceTree = "<group>"; };
 		AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsView.swift; sourceTree = "<group>"; };
 		AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsViewModel.swift; sourceTree = "<group>"; };
 		AE80116829A59918009B9967 /* TabHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeView.swift; sourceTree = "<group>"; };
@@ -215,7 +215,7 @@
 			children = (
 				AE9422692A007D6C007E4F12 /* ChannelsListView.swift */,
 				AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */,
-				AE7594802A4FAE0200EAEDA2 /* PaymentsListItemView.swift */,
+				AE7594802A4FAE0200EAEDA2 /* PaymentsListView.swift */,
 				AE80116C29A59AF4009B9967 /* ChannelAddView.swift */,
 				AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */,
 			);
@@ -538,7 +538,7 @@
 				AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */,
 				AE49E8582A2536B4002623E8 /* ChannelsListViewModel.swift in Sources */,
 				AEE4CD0129ABC0DB00BF1BF9 /* QRCodeViewBitcoin.swift in Sources */,
-				AE7594812A4FAE0200EAEDA2 /* PaymentsListItemView.swift in Sources */,
+				AE7594812A4FAE0200EAEDA2 /* PaymentsListView.swift in Sources */,
 				AE5849302A2A2B6B00BEF038 /* QRCodeViewLightning.swift in Sources */,
 				AE49E85E2A25372D002623E8 /* SendViewModel.swift in Sources */,
 				AE80116929A59918009B9967 /* TabHomeView.swift in Sources */,
