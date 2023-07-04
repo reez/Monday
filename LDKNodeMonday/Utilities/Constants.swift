@@ -19,7 +19,7 @@ struct Constants {
             }
             static let regtest = "http://ldk-node.tnull.de:3002"
             static let signet = "https://mutinynet.com/api"
-            static let testnet = "http://blockstream.info/testnet/api/"
+            static let testnet = "http://blockstream.info/testnet/api"
         }
         
         struct RGSServerURLNetwork {
