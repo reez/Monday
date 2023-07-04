@@ -16,7 +16,7 @@ class LightningNodeService {
     
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService(network: .bitcoin)
+            static let instance = LightningNodeService(network: .testnet)
         }
         return Singleton.instance
     }
@@ -54,7 +54,7 @@ class LightningNodeService {
 
         case .testnet:
             nodeBuilder.setGossipSourceRgs(rgsServerUrl: Constants.Config.RGSServerURLNetwork.testnet)
-            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.testnet)
+            nodeBuilder.setEsploraServer(esploraServerUrl: Constants.Config.EsploraServerURLNetwork.Testnet.testnet_mempoolspace)
             self.networkColor = Constants.BitcoinNetworkColor.testnet.color
 
         }
