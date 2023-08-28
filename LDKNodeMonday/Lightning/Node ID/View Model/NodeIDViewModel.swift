@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import WalletUI
+import BitcoinUI
 
 class NodeIDViewModel: ObservableObject {
     @Published var nodeIDError: MondayError?

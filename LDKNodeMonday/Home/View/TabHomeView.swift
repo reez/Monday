@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import WalletUI
+import BitcoinUI
 
 struct TabHomeView: View {
     @StateObject var viewModel: TabHomeViewModel

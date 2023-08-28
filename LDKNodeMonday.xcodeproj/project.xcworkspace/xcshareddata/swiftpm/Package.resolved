@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/reez/WalletUI.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "0e53ff7a1930051071c3c04acc03b07bc8bf580c"
+        "revision" : "df0d6757ec934a367b8e38f93d9228126d7a1c0b",
+        "version" : "1.0.0"
       }
     }
   ],

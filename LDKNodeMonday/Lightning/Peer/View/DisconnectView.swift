@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import WalletUI
+import BitcoinUI
 
 struct DisconnectView: View {
     @ObservedObject var viewModel: DisconnectViewModel
