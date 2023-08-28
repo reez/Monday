@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import WalletUI
+import BitcoinUI
 import CodeScanner
 
 struct ChannelAddView: View {

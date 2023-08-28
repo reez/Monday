@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import WalletUI
+import BitcoinUI
 
 struct ChannelsListView: View {
     @ObservedObject var viewModel: ChannelsListViewModel

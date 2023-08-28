@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import WalletUI
+import BitcoinUI
 
 struct BitcoinView: View {
     @StateObject var viewModel: BitcoinViewModel
