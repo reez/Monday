@@ -5,8 +5,8 @@
 //  Created by Matthew Ramsden on 5/1/23.
 //
 
-import SwiftUI
 import BitcoinUI
+import SwiftUI
 
 struct ChannelsListView: View {
     @ObservedObject var viewModel: ChannelsListViewModel
@@ -16,16 +16,16 @@ struct ChannelsListView: View {
     @State private var isAddChannelPresented = false
     @State private var refreshFlag = false
     @State private var isPaymentsPresented = false
-    
+
     var body: some View {
-        
+
         NavigationView {
-            
+
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
-                
+
                 VStack {
-                    
+
                     VStack {
                         Button {
                             isViewPeersPresented = true
@@ -34,7 +34,7 @@ struct ChannelsListView: View {
                         }
                         .tint(viewModel.networkColor)
                         .padding()
-                        
+
                         Button {
                             isAddChannelPresented = true
                         } label: {
@@ -48,17 +48,22 @@ struct ChannelsListView: View {
                         .buttonBorderShape(.capsule)
                         .buttonStyle(.borderedProminent)
                         .tint(viewModel.networkColor)
-                        
+
                     }
                     .padding(.top)
-                    
+
                     if viewModel.channels.isEmpty {
                         Text("No Channels")
                             .font(.system(.caption, design: .monospaced))
                             .padding()
                     } else {
                         List {
-                            ForEach(viewModel.channels.sorted(by: { $0.channelValueSats > $1.channelValueSats }), id: \.self) { channel in
+                            ForEach(
+                                viewModel.channels.sorted(by: {
+                                    $0.channelValueSats > $1.channelValueSats
+                                }),
+                                id: \.self
+                            ) { channel in
                                 NavigationLink {
                                     ChannelDetailView(
                                         viewModel: .init(channel: channel),
@@ -73,7 +78,9 @@ struct ChannelsListView: View {
                                                     .foregroundColor(viewModel.networkColor)
                                                 Image(systemName: "person.line.dotted.person")
                                                     .font(.subheadline)
-                                                    .foregroundColor(Color(uiColor: .systemBackground))
+                                                    .foregroundColor(
+                                                        Color(uiColor: .systemBackground)
+                                                    )
                                                     .bold()
                                             }
                                             VStack(alignment: .leading, spacing: 5.0) {
@@ -99,7 +106,7 @@ struct ChannelsListView: View {
                             viewModel.listChannels()
                         }
                     }
-                    
+
                     Button {
                         isPaymentsPresented = true
                     } label: {
@@ -107,9 +114,9 @@ struct ChannelsListView: View {
                     }
                     .tint(viewModel.networkColor)
                     .padding()
-                    
+
                     Spacer()
-                    
+
                     HStack {
                         Button {
                             isSendPresented = true
@@ -125,7 +132,7 @@ struct ChannelsListView: View {
                         .buttonStyle(.bordered)
                         .tint(viewModel.networkColor)
                         .padding(.horizontal)
-                        
+
                         Spacer()
                         Button {
                             isReceivePresented = true
@@ -143,10 +150,12 @@ struct ChannelsListView: View {
                         .padding(.horizontal)
                     }
                     .padding()
-                    
+
                 }
                 .padding()
-                .navigationTitle("\(viewModel.channels.count) \(viewModel.channels.count == 1 ? "Channel" : "Channels")")
+                .navigationTitle(
+                    "\(viewModel.channels.count) \(viewModel.channels.count == 1 ? "Channel" : "Channels")"
+                )
                 .onAppear {
                     viewModel.listChannels()
                     viewModel.getColor()
@@ -155,44 +164,59 @@ struct ChannelsListView: View {
                         refreshFlag = false
                     }
                 }
-                .sheet(isPresented: $isSendPresented, onDismiss: {
-                    viewModel.listChannels()
-                }) {
+                .sheet(
+                    isPresented: $isSendPresented,
+                    onDismiss: {
+                        viewModel.listChannels()
+                    }
+                ) {
                     SendView(viewModel: .init())
                         .presentationDetents([.medium])
                 }
-                .sheet(isPresented: $isReceivePresented, onDismiss: {
-                    viewModel.listChannels()
-                }) {
+                .sheet(
+                    isPresented: $isReceivePresented,
+                    onDismiss: {
+                        viewModel.listChannels()
+                    }
+                ) {
                     ReceiveView(viewModel: .init())
                         .presentationDetents([.medium, .large])
                         .presentationDragIndicator(.visible)
                 }
-                .sheet(isPresented: $isViewPeersPresented, onDismiss: {
-                    viewModel.listChannels()
-                }) {
+                .sheet(
+                    isPresented: $isViewPeersPresented,
+                    onDismiss: {
+                        viewModel.listChannels()
+                    }
+                ) {
                     PeersListView(viewModel: .init())
                         .presentationDetents([.medium])
                 }
-                .sheet(isPresented: $isAddChannelPresented, onDismiss: {
-                    viewModel.listChannels()
-                }) {
+                .sheet(
+                    isPresented: $isAddChannelPresented,
+                    onDismiss: {
+                        viewModel.listChannels()
+                    }
+                ) {
                     ChannelAddView(viewModel: .init())
                         .presentationDetents([.medium])
                 }
-                .sheet(isPresented: $isPaymentsPresented, onDismiss: {
-                    viewModel.listChannels()
-                }) {
+                .sheet(
+                    isPresented: $isPaymentsPresented,
+                    onDismiss: {
+                        viewModel.listChannels()
+                    }
+                ) {
                     PaymentsView(viewModel: .init())
                         .presentationDetents([.medium, .large])
                 }
-                
+
             }
-            
+
         }
-        
+
     }
-    
+
 }
 
 struct ChannelsListView_Previews: PreviewProvider {

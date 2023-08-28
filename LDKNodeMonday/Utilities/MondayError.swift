@@ -14,94 +14,94 @@ struct MondayError {
 }
 
 func handleNodeError(_ error: NodeError) -> MondayError {
-    
+
     switch error {
-        
-    case .AlreadyRunning(message: let message):
-        
+
+    case .AlreadyRunning(let message):
+
         return .init(title: "AlreadyRunning", detail: message)
-        
-    case .NotRunning(message: let message):
+
+    case .NotRunning(let message):
         return .init(title: "NotRunning", detail: message)
-        
-    case .ConnectionFailed(message: let message):
+
+    case .ConnectionFailed(let message):
         return .init(title: "ConnectionFailed", detail: message)
-        
-    case .InvoiceCreationFailed(message: let message):
+
+    case .InvoiceCreationFailed(let message):
         return .init(title: "InvoiceCreationFailed", detail: message)
-        
-    case .ChannelCreationFailed(message: let message):
+
+    case .ChannelCreationFailed(let message):
         return .init(title: "ChannelCreationFailed", detail: message)
-        
-    case .ChannelClosingFailed(message: let message):
+
+    case .ChannelClosingFailed(let message):
         return .init(title: "ChannelClosingFailed", detail: message)
-        
-    case .PersistenceFailed(message: let message):
+
+    case .PersistenceFailed(let message):
         return .init(title: "PersistenceFailed", detail: message)
-        
-    case .WalletOperationFailed(message: let message):
+
+    case .WalletOperationFailed(let message):
         return .init(title: "WalletOperationFailed", detail: message)
-   
-    case .TxSyncFailed(message: let message):
+
+    case .TxSyncFailed(let message):
         return .init(title: "TxSyncFailed", detail: message)
-        
-    case .InvalidAmount(message: let message):
+
+    case .InvalidAmount(let message):
         return .init(title: "InvalidAmount", detail: message)
-        
-    case .InvalidInvoice(message: let message):
+
+    case .InvalidInvoice(let message):
         return .init(title: "InvalidInvoice", detail: message)
-        
-    case .InsufficientFunds(message: let message):
+
+    case .InsufficientFunds(let message):
         return .init(title: "InsufficientFunds", detail: message)
-         
-    case .OnchainTxCreationFailed(message: let message):
+
+    case .OnchainTxCreationFailed(let message):
         return .init(title: "OnchainTxCreationFailed", detail: message)
-        
-    case .PaymentSendingFailed(message: let message):
+
+    case .PaymentSendingFailed(let message):
         return .init(title: "PaymentSendingFailed", detail: message)
 
-    case .OnchainTxSigningFailed(message: let message):
+    case .OnchainTxSigningFailed(let message):
         return .init(title: "OnchainTxSigningFailed", detail: message)
 
-    case .MessageSigningFailed(message: let message):
+    case .MessageSigningFailed(let message):
         return .init(title: "MessageSigningFailed", detail: message)
 
-    case .GossipUpdateFailed(message: let message):
+    case .GossipUpdateFailed(let message):
         return .init(title: "GossipUpdateFailed", detail: message)
 
-    case .InvalidAddress(message: let message):
+    case .InvalidAddress(let message):
         return .init(title: "InvalidAddress", detail: message)
 
-    case .InvalidNetAddress(message: let message):
+    case .InvalidNetAddress(let message):
         return .init(title: "InvalidNetAddress", detail: message)
 
-    case .InvalidPublicKey(message: let message):
+    case .InvalidPublicKey(let message):
         return .init(title: "InvalidPublicKey", detail: message)
 
-    case .InvalidSecretKey(message: let message):
+    case .InvalidSecretKey(let message):
         return .init(title: "InvalidSecretKey", detail: message)
 
-    case .InvalidPaymentHash(message: let message):
+    case .InvalidPaymentHash(let message):
         return .init(title: "InvalidPaymentHash", detail: message)
 
-    case .InvalidPaymentPreimage(message: let message):
+    case .InvalidPaymentPreimage(let message):
         return .init(title: "InvalidPaymentPreimage", detail: message)
 
-    case .InvalidPaymentSecret(message: let message):
+    case .InvalidPaymentSecret(let message):
         return .init(title: "InvalidPaymentSecret", detail: message)
 
-    case .InvalidChannelId(message: let message):
+    case .InvalidChannelId(let message):
         return .init(title: "InvalidChannelId", detail: message)
 
-    case .InvalidNetwork(message: let message):
+    case .InvalidNetwork(let message):
         return .init(title: "InvalidNetwork", detail: message)
 
-    case .DuplicatePayment(message: let message):
+    case .DuplicatePayment(let message):
         return .init(title: "DuplicatePayment", detail: message)
 
-    case .ChannelConfigUpdateFailed(message: let message):
+    case .ChannelConfigUpdateFailed(let message):
         return .init(title: "ChannelConfigUpdateFailed", detail: message)
 
     }
-    
+
 }

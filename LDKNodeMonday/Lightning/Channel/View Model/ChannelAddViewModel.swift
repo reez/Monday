@@ -5,8 +5,8 @@
 //  Created by Matthew Ramsden on 5/29/23.
 //
 
-import SwiftUI
 import LDKNode
+import SwiftUI
 
 class ChannelAddViewModel: ObservableObject {
     @Published var address: String = ""
@@ -16,7 +16,7 @@ class ChannelAddViewModel: ObservableObject {
     @Published var nodeId: PublicKey = ""
     @Published var isOpenChannelFinished: Bool = false
     @Published var isProgressViewShowing: Bool = false
-    
+
     private let channelConfig = ChannelConfig(
         forwardingFeeProportionalMillionths: UInt32(0),
         forwardingFeeBaseMsat: UInt32(1000),
@@ -24,8 +24,13 @@ class ChannelAddViewModel: ObservableObject {
         maxDustHtlcExposureMsat: 50_000_000,
         forceCloseAvoidanceMaxFeeSatoshis: UInt64(1000)
     )
-    
-    func openChannel(nodeId: PublicKey, address: String, channelAmountSats: UInt64, pushToCounterpartyMsat: UInt64?) async {
+
+    func openChannel(
+        nodeId: PublicKey,
+        address: String,
+        channelAmountSats: UInt64,
+        pushToCounterpartyMsat: UInt64?
+    ) async {
         DispatchQueue.main.async {
             self.isProgressViewShowing = true
         }
@@ -46,21 +51,27 @@ class ChannelAddViewModel: ObservableObject {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
                 self.isProgressViewShowing = false
-                self.channelAddViewError = .init(title: errorString.title, detail: errorString.detail)
+                self.channelAddViewError = .init(
+                    title: errorString.title,
+                    detail: errorString.detail
+                )
             }
         } catch {
             DispatchQueue.main.async {
                 self.isProgressViewShowing = false
-                self.channelAddViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.channelAddViewError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
             }
-        }        
+        }
     }
-    
+
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         DispatchQueue.main.async {
             self.networkColor = color
         }
     }
-    
+
 }

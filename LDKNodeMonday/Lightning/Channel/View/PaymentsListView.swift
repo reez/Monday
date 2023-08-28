@@ -5,8 +5,8 @@
 //  Created by Matthew Ramsden on 6/30/23.
 //
 
-import SwiftUI
 import LDKNode
+import SwiftUI
 
 struct PaymentsListView: View {
     let payments: [PaymentDetails]
@@ -15,19 +15,19 @@ struct PaymentsListView: View {
     }
     let orderedStatuses: [PaymentStatus] = [.succeeded, .failed, .pending]
     var statusDescriptions: [PaymentStatus: String] {
-         [
-             .succeeded: "Success",
-             .failed: "Failure",
-             .pending: "Pending"
-         ]
-     }
+        [
+            .succeeded: "Success",
+            .failed: "Failure",
+            .pending: "Pending",
+        ]
+    }
     var statusColors: [PaymentStatus: Color] {
-           [
+        [
             .succeeded: .green,
-               .failed: .red,
-               .pending: .yellow
-           ]
-       }
+            .failed: .red,
+            .pending: .yellow,
+        ]
+    }
 
     var body: some View {
         List {
@@ -37,7 +37,7 @@ struct PaymentsListView: View {
                         ForEach(payments, id: \.hash) { payment in
                             VStack {
                                 HStack(alignment: .center, spacing: 15) {
-                                    
+
                                     VStack(alignment: .leading, spacing: 5.0) {
                                         HStack {
                                             switch payment.direction {
@@ -78,9 +78,9 @@ struct PaymentsListView: View {
                                             .font(.caption)
                                         }
                                     }
-                                    
+
                                     Spacer()
-                                    
+
                                 }
                                 .padding(.all, 10.0)
                             }
@@ -96,16 +96,58 @@ struct PaymentsListItemView_Previews: PreviewProvider {
     static var previews: some View {
         PaymentsListView(
             payments: [
-                .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .succeeded),
-                .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .pending),
-                .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .failed)
+                .init(
+                    hash: .localizedName(of: .ascii),
+                    preimage: nil,
+                    secret: nil,
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .succeeded
+                ),
+                .init(
+                    hash: .localizedName(of: .ascii),
+                    preimage: nil,
+                    secret: nil,
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .pending
+                ),
+                .init(
+                    hash: .localizedName(of: .ascii),
+                    preimage: nil,
+                    secret: nil,
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .failed
+                ),
             ]
         )
         PaymentsListView(
             payments: [
-                .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .succeeded),
-                .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .pending),
-                .init(hash: .localizedName(of: .ascii), preimage: nil, secret: nil, amountMsat: nil, direction: .inbound, status: .failed)
+                .init(
+                    hash: .localizedName(of: .ascii),
+                    preimage: nil,
+                    secret: nil,
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .succeeded
+                ),
+                .init(
+                    hash: .localizedName(of: .ascii),
+                    preimage: nil,
+                    secret: nil,
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .pending
+                ),
+                .init(
+                    hash: .localizedName(of: .ascii),
+                    preimage: nil,
+                    secret: nil,
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .failed
+                ),
             ]
         )
         .environment(\.colorScheme, .dark)

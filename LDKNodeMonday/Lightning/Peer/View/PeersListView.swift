@@ -5,22 +5,22 @@
 //  Created by Matthew Ramsden on 5/2/23.
 //
 
-import SwiftUI
 import BitcoinUI
+import SwiftUI
 
 struct PeersListView: View {
     @ObservedObject var viewModel: PeersListViewModel
     @State private var isAddPeerPresented = false
-    
+
     var body: some View {
-        
+
         NavigationView {
-            
+
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
-                
+
                 VStack {
-                    
+
                     Button {
                         isAddPeerPresented = true
                     } label: {
@@ -34,7 +34,7 @@ struct PeersListView: View {
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.borderedProminent)
                     .tint(viewModel.networkColor)
-                    
+
                     if viewModel.peers.isEmpty {
                         Text("No Peers")
                             .font(.system(.caption, design: .monospaced))
@@ -53,24 +53,26 @@ struct PeersListView: View {
                                                     .foregroundColor(viewModel.networkColor)
                                                 Image(systemName: "person.line.dotted.person")
                                                     .font(.subheadline)
-                                                    .foregroundColor(Color(uiColor: .systemBackground))
+                                                    .foregroundColor(
+                                                        Color(uiColor: .systemBackground)
+                                                    )
                                                     .bold()
                                             }
                                             VStack(alignment: .leading, spacing: 5.0) {
                                                 HStack {
-                                                    peer.isConnected ?
-                                                    HStack(spacing: 2) {
-                                                        Image(systemName: "checkmark")
-                                                        Text("Connected")
-                                                    }
-                                                    .font(.caption)
-                                                    .bold() :
-                                                    HStack {
-                                                        Image(systemName: "xmark")
-                                                        Text("Not Connected")
-                                                    }
-                                                    .font(.caption)
-                                                    .bold()
+                                                    peer.isConnected
+                                                        ? HStack(spacing: 2) {
+                                                            Image(systemName: "checkmark")
+                                                            Text("Connected")
+                                                        }
+                                                        .font(.caption)
+                                                        .bold()
+                                                        : HStack {
+                                                            Image(systemName: "xmark")
+                                                            Text("Not Connected")
+                                                        }
+                                                        .font(.caption)
+                                                        .bold()
                                                 }
                                                 Text("\(peer.nodeId) ")
                                                     .font(.caption)
@@ -88,7 +90,7 @@ struct PeersListView: View {
                         }
                         .listStyle(.plain)
                     }
-                    
+
                 }
                 .padding()
                 .padding(.top)
@@ -98,21 +100,24 @@ struct PeersListView: View {
                         viewModel.getColor()
                     }
                 }
-                .sheet(isPresented: $isAddPeerPresented, onDismiss: {
-                    Task {
-                        viewModel.listPeers()
+                .sheet(
+                    isPresented: $isAddPeerPresented,
+                    onDismiss: {
+                        Task {
+                            viewModel.listPeers()
+                        }
                     }
-                }) {
+                ) {
                     PeerView(viewModel: .init())
                         .presentationDetents([.medium])
                 }
-                
+
             }
-            
+
         }
-        
+
     }
-    
+
 }
 
 struct PeersListView_Previews: PreviewProvider {

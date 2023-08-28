@@ -9,14 +9,14 @@ import SwiftUI
 
 struct PaymentsView: View {
     @ObservedObject var viewModel: PaymentsViewModel
-    
+
     var body: some View {
-                
+
         ZStack {
             Color(uiColor: UIColor.systemBackground)
-            
+
             VStack {
-                
+
                 HStack {
                     Text("Payment History")
                         .font(.title)
@@ -25,7 +25,7 @@ struct PaymentsView: View {
                 }
                 .padding()
                 .padding(.top, 40.0)
-                
+
                 if viewModel.payments.isEmpty {
                     Text("No Payments")
                         .font(.system(.caption, design: .monospaced))
@@ -36,16 +36,16 @@ struct PaymentsView: View {
                             viewModel.listPayments()
                         }
                 }
-                
+
             }
             .onAppear {
                 viewModel.listPayments()
             }
-            
+
         }
-        
+
     }
-    
+
 }
 
 struct PaymentsListView_Previews: PreviewProvider {

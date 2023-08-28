@@ -5,30 +5,32 @@
 //  Created by Matthew Ramsden on 5/17/23.
 //
 
-import SwiftUI
 import BitcoinUI
+import SwiftUI
 
 struct StartView: View {
     @ObservedObject var viewModel: StartViewModel
     @State private var showingStartViewErrorAlert = false
-    
+
     var body: some View {
-        
+
         ZStack {
             Color(uiColor: UIColor.systemBackground)
-            
+
             VStack {
                 if viewModel.isStarted {
                     TabHomeView(viewModel: .init())
                 } else {
-                        ProgressView {
-                            HStack {
-                                Image(systemName: "bolt.fill")
-                                    .foregroundColor(Color(red: 119/255, green: 243/255, blue: 205/255))
-                                Text("Starting Node")
-                            }
-                            .font(.caption)
+                    ProgressView {
+                        HStack {
+                            Image(systemName: "bolt.fill")
+                                .foregroundColor(
+                                    Color(red: 119 / 255, green: 243 / 255, blue: 205 / 255)
+                                )
+                            Text("Starting Node")
                         }
+                        .font(.caption)
+                    }
                 }
             }
             .padding()
@@ -48,12 +50,12 @@ struct StartView: View {
                     }
                 )
             }
-            
+
         }
         .ignoresSafeArea()
-        
+
     }
-    
+
 }
 
 struct StartView_Previews: PreviewProvider {

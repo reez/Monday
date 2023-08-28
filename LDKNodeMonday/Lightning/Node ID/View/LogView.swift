@@ -10,31 +10,39 @@ import SwiftUI
 struct LogView: View {
     @State private var isLoading = false
     @State private var logFileContents = ""
-    
+
     var logLatestFilePath: String {
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        return URL(fileURLWithPath: documentsPath).appendingPathComponent("logs/ldk_node_latest.log").path
+        let documentsPath = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory,
+            .userDomainMask,
+            true
+        )[0]
+        return URL(fileURLWithPath: documentsPath).appendingPathComponent(
+            "logs/ldk_node_latest.log"
+        ).path
     }
-    
+
     var body: some View {
-        
+
         ZStack {
             Color(uiColor: UIColor.systemBackground)
-            
+
             VStack {
-                
+
                 VStack(spacing: 6) {
                     Text("ldk_node_latest.log")
                         .font(.system(.body, design: .monospaced))
-                    Text("Note: Log file deleted before each app start atm (because log file can get big and take a while to load here.)")
-                        .font(.system(.caption, design: .monospaced))
+                    Text(
+                        "Note: Log file deleted before each app start atm (because log file can get big and take a while to load here.)"
+                    )
+                    .font(.system(.caption, design: .monospaced))
                 }
                 .foregroundColor(.gray)
-                
+
                 Rectangle()
                     .frame(height: 1)
                     .foregroundColor(.gray)
-                
+
                 if isLoading {
                     ProgressView()
                 } else {
@@ -46,13 +54,16 @@ struct LogView: View {
                     .frame(maxHeight: .infinity)
                     .padding(.top, 10)
                 }
-                
+
             }
             .padding()
             .onAppear {
                 isLoading = true
                 DispatchQueue.global(qos: .background).async {
-                    if let contents = try? String(contentsOfFile: self.logLatestFilePath, encoding: .utf8) {
+                    if let contents = try? String(
+                        contentsOfFile: self.logLatestFilePath,
+                        encoding: .utf8
+                    ) {
                         DispatchQueue.main.async {
                             logFileContents = contents
                             isLoading = false
@@ -60,11 +71,11 @@ struct LogView: View {
                     }
                 }
             }
-            
+
         }
-        
+
     }
-    
+
 }
 
 struct LogView_Previews: PreviewProvider {

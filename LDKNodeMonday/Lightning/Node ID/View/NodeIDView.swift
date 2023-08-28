@@ -5,28 +5,28 @@
 //  Created by Matthew Ramsden on 2/21/23.
 //
 
-import SwiftUI
 import BitcoinUI
+import SwiftUI
 
 struct NodeIDView: View {
     @ObservedObject var viewModel: NodeIDViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingNodeIDErrorAlert = false
-    
+
     var body: some View {
-        
+
         NavigationView {
-            
+
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
-                
+
                 VStack(spacing: 20.0) {
-                    
+
                     Image(systemName: "person.circle.fill")
                         .font(.system(size: 50))
                         .foregroundColor(viewModel.networkColor)
-                    
+
                     HStack(alignment: .center) {
                         Text(viewModel.nodeID)
                             .frame(width: 200, height: 50)
@@ -52,10 +52,10 @@ struct NodeIDView: View {
                             .bold()
                             .foregroundColor(viewModel.networkColor)
                         }
-                        
+
                     }
                     .padding(.horizontal)
-                    
+
                 }
                 .padding()
                 .navigationTitle("Node ID")
@@ -79,14 +79,14 @@ struct NodeIDView: View {
                         viewModel.getColor()
                     }
                 }
-                
+
             }
             .ignoresSafeArea()
-            
+
         }
-        
+
     }
-    
+
 }
 
 struct NodeIDView_Previews: PreviewProvider {

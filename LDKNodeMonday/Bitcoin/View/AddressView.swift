@@ -5,26 +5,26 @@
 //  Created by Matthew Ramsden on 2/20/23.
 //
 
-import SwiftUI
 import BitcoinUI
+import SwiftUI
 
 struct AddressView: View {
     @StateObject var viewModel: AddressViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingAddressViewErrorAlert = false
-    
+
     var body: some View {
-        
+
         NavigationView {
-            
+
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
-                
+
                 VStack {
-                    
+
                     Spacer()
-                    
+
                     if viewModel.address != "" {
                         QRCodeViewBitcoin(address: viewModel.address)
                             .animation(.default, value: viewModel.address)
@@ -32,9 +32,9 @@ struct AddressView: View {
                         QRCodeViewBitcoin(address: viewModel.address)
                             .blur(radius: 15)
                     }
-                    
+
                     HStack(alignment: .center) {
-                        
+
                         VStack(alignment: .leading, spacing: 5.0) {
                             if viewModel.isAddressFinished {
                                 HStack {
@@ -55,9 +55,9 @@ struct AddressView: View {
                                 }
                             }
                         }
-                        
+
                         Spacer()
-                        
+
                         Button {
                             UIPasteboard.general.string = viewModel.address
                             isCopied = true
@@ -75,10 +75,10 @@ struct AddressView: View {
                             }
                             .bold()
                         }
-                        
+
                     }
                     .padding(.bottom, 40.0)
-                    
+
                 }
                 .padding(.all, 40.0)
                 .tint(viewModel.networkColor)
@@ -102,14 +102,14 @@ struct AddressView: View {
                         viewModel.getColor()
                     }
                 }
-                
+
             }
             .ignoresSafeArea()
-            
+
         }
-        
+
     }
-    
+
 }
 
 struct ContentView_Previews: PreviewProvider {

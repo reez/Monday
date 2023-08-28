@@ -5,8 +5,8 @@
 //  Created by Matthew Ramsden on 5/15/23.
 //
 
-import SwiftUI
 import BitcoinUI
+import SwiftUI
 
 struct BitcoinView: View {
     @StateObject var viewModel: BitcoinViewModel
@@ -15,20 +15,20 @@ struct BitcoinView: View {
     @State private var showingBitcoinViewErrorAlert = false
     @State private var isAddressSheetPresented = false
     @State private var isSendSheetPresented = false
-    
+
     var body: some View {
-        
+
         NavigationView {
-            
+
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
-                
+
                 VStack {
-                    
+
                     List {
-                        
+
                         VStack(spacing: 10) {
-                            
+
                             HStack {
                                 Spacer()
                                 if viewModel.isTotalBalanceFinished {
@@ -48,7 +48,7 @@ struct BitcoinView: View {
                             .lineLimit(1)
                             .minimumScaleFactor(0.5)
                             .animation(.spring(), value: viewModel.totalBalance)
-                            
+
                             HStack(spacing: 4) {
                                 Spacer()
                                 if viewModel.isSpendableBalanceFinished {
@@ -64,10 +64,10 @@ struct BitcoinView: View {
                             .animation(.spring(), value: viewModel.spendableBalance)
                             .font(.caption)
                             .foregroundColor(.secondary)
-                            
+
                         }
                         .listRowSeparator(.hidden)
-                        
+
                     }
                     .listStyle(.plain)
                     .padding(.top, 120.0)
@@ -75,11 +75,11 @@ struct BitcoinView: View {
                         await viewModel.getTotalOnchainBalanceSats()
                         await viewModel.getSpendableOnchainBalanceSats()
                     }
-                    
+
                     Spacer()
-                    
+
                     HStack {
-                        
+
                         Button {
                             isSendSheetPresented = true
                         } label: {
@@ -94,7 +94,7 @@ struct BitcoinView: View {
                         .buttonStyle(.bordered)
                         .tint(viewModel.networkColor)
                         .padding(.horizontal)
-                        
+
                         Button {
                             isAddressSheetPresented = true
                         } label: {
@@ -109,10 +109,10 @@ struct BitcoinView: View {
                         .buttonStyle(.bordered)
                         .tint(viewModel.networkColor)
                         .padding(.horizontal)
-                        
+
                     }
                     .padding()
-                    
+
                 }
                 .padding()
                 .navigationTitle("Balance")
@@ -138,31 +138,37 @@ struct BitcoinView: View {
                         viewModel.getColor()
                     }
                 }
-                .sheet(isPresented: $isAddressSheetPresented, onDismiss: {
-                    Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getSpendableOnchainBalanceSats()
+                .sheet(
+                    isPresented: $isAddressSheetPresented,
+                    onDismiss: {
+                        Task {
+                            await viewModel.getTotalOnchainBalanceSats()
+                            await viewModel.getSpendableOnchainBalanceSats()
+                        }
                     }
-                }) {
+                ) {
                     AddressView(viewModel: .init())
                         .presentationDetents([.medium])
                 }
-                .sheet(isPresented: $isSendSheetPresented, onDismiss: {
-                    Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getSpendableOnchainBalanceSats()
+                .sheet(
+                    isPresented: $isSendSheetPresented,
+                    onDismiss: {
+                        Task {
+                            await viewModel.getTotalOnchainBalanceSats()
+                            await viewModel.getSpendableOnchainBalanceSats()
+                        }
                     }
-                }) {
+                ) {
                     SendBitcoinView(viewModel: .init(spendableBalance: viewModel.spendableBalance))
                         .presentationDetents([.medium])
                 }
-                
+
             }
-            
+
         }
-        
+
     }
-    
+
 }
 
 struct BalanceView_Previews: PreviewProvider {
