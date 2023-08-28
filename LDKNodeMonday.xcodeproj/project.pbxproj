@@ -774,8 +774,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/reez/WalletUI.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 1.0.0;
 			};
 		};
 		AE7BF29A2A44A24F0030FDE5 /* XCRemoteSwiftPackageReference "ldk-node" */ = {
