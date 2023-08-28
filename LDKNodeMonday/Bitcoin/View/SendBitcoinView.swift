@@ -5,9 +5,9 @@
 //  Created by Matthew Ramsden on 6/7/23.
 //
 
-import SwiftUI
 import BitcoinUI
 import CodeScanner
+import SwiftUI
 
 struct SendBitcoinView: View {
     @StateObject var viewModel: SendBitcoinViewModel
@@ -16,28 +16,34 @@ struct SendBitcoinView: View {
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
     let pasteboard = UIPasteboard.general
-    
+
     var body: some View {
-        
+
         NavigationView {
-            
+
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
-                
+
                 VStack {
-                    
+
                     HStack {
-                        
+
                         Button {
                             if pasteboard.hasStrings {
                                 if let string = pasteboard.string {
                                     let lowercaseAddress = string.lowercased()
                                     viewModel.address = lowercaseAddress
                                 } else {
-                                    self.viewModel.sendViewError = .init(title: "Paste Parsing Error", detail: "Failed to parse the Pasteboard.")
+                                    self.viewModel.sendViewError = .init(
+                                        title: "Paste Parsing Error",
+                                        detail: "Failed to parse the Pasteboard."
+                                    )
                                 }
                             } else {
-                                self.viewModel.sendViewError = .init(title: "Paste Parsing Error", detail: "Nothing found in the Pasteboard.")
+                                self.viewModel.sendViewError = .init(
+                                    title: "Paste Parsing Error",
+                                    detail: "Nothing found in the Pasteboard."
+                                )
                             }
                         } label: {
                             HStack {
@@ -46,9 +52,9 @@ struct SendBitcoinView: View {
                             }
                         }
                         .padding()
-                        
+
                         Spacer()
-                        
+
                         Button {
                             isShowingScanner = true
                         } label: {
@@ -58,26 +64,26 @@ struct SendBitcoinView: View {
                             }
                         }
                         .padding()
-                        
+
                     }
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.bordered)
                     .tint(viewModel.networkColor)
                     .padding(.bottom)
                     .padding(.horizontal)
-                                        
+
                     VStack(alignment: .leading) {
-                        
+
                         Text("Address")
                             .bold()
                             .padding(.horizontal)
-                        
+
                         ZStack {
-                            
+
                             TextField("1BvBMSEYstWet...m4GFg7xJaNVN2", text: $viewModel.address)
                                 .truncationMode(.middle)
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
-                            
+
                             if !viewModel.address.isEmpty {
                                 HStack {
                                     Spacer()
@@ -90,13 +96,13 @@ struct SendBitcoinView: View {
                                     .padding(.trailing, 8)
                                 }
                             }
-                            
+
                         }
                         .padding(.horizontal)
-                        
+
                     }
                     .padding()
-                    
+
                     VStack {
                         if viewModel.txId.isEmpty {
                             Button {
@@ -135,27 +141,34 @@ struct SendBitcoinView: View {
                                     } label: {
                                         HStack {
                                             withAnimation {
-                                                Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                                    .font(.subheadline)
+                                                Image(
+                                                    systemName: showCheckmark
+                                                        ? "checkmark" : "doc.on.doc"
+                                                )
+                                                .font(.subheadline)
                                             }
                                         }
                                         .bold()
                                         .foregroundColor(viewModel.networkColor)
                                     }
-                                    
+
                                 }
                                 .padding(.horizontal)
                             }
                         }
                     }
                     .padding(.bottom, 40.0)
-                    
+
                     Spacer()
-                    
+
                 }
                 .padding()
                 .sheet(isPresented: $isShowingScanner) {
-                    CodeScannerView(codeTypes: [.qr], simulatedData: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2", completion: handleScan)
+                    CodeScannerView(
+                        codeTypes: [.qr],
+                        simulatedData: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2",
+                        completion: handleScan
+                    )
                 }
                 .alert(isPresented: $showingBitcoinViewErrorAlert) {
                     Alert(
@@ -174,12 +187,12 @@ struct SendBitcoinView: View {
                 .onAppear {
                     viewModel.getColor()
                 }
-                
+
             }
             .ignoresSafeArea()
-            
+
         }
-        
+
     }
 }
 
@@ -193,10 +206,16 @@ extension SendBitcoinView {
             if let bitcoinAddress = components.first {
                 viewModel.address = bitcoinAddress
             } else {
-                self.viewModel.sendViewError = .init(title: "No Address", detail: "No Bitcoin Address found")
+                self.viewModel.sendViewError = .init(
+                    title: "No Address",
+                    detail: "No Bitcoin Address found"
+                )
             }
         case .failure(let error):
-            self.viewModel.sendViewError = .init(title: "Scan Error", detail: error.localizedDescription)
+            self.viewModel.sendViewError = .init(
+                title: "Scan Error",
+                detail: error.localizedDescription
+            )
         }
     }
 }

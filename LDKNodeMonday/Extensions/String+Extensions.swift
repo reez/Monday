@@ -8,15 +8,20 @@
 import Foundation
 
 extension String {
-    
+
     func bolt11amount() -> String? {
         let regex = try! NSRegularExpression(pattern: "ln.*?(\\d+)([munp]?)", options: [])
-        if let match = regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count)) {
+        if let match = regex.firstMatch(
+            in: self,
+            options: [],
+            range: NSRange(location: 0, length: self.utf16.count)
+        ) {
             let amountRange = match.range(at: 1)
             let multiplierRange = match.range(at: 2)
 
             if let amountSwiftRange = Range(amountRange, in: self),
-               let multiplierSwiftRange = Range(multiplierRange, in: self) {
+                let multiplierSwiftRange = Range(multiplierRange, in: self)
+            {
 
                 let amountString = self[amountSwiftRange]
                 let multiplierString = self[multiplierSwiftRange]
@@ -52,15 +57,16 @@ extension String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.groupingSize = 3
-        
+
         if let number = Int(self),
-           let formattedNumber = formatter.string(from: NSNumber(value: number)) {
+            let formattedNumber = formatter.string(from: NSNumber(value: number))
+        {
             return formattedNumber
         } else {
             return ""
         }
     }
-    
+
     func parseConnectionInfo() -> Peer? {
         if let atIndex = self.firstIndex(of: "@") {
             let nodeID = String(self[..<atIndex])
@@ -70,5 +76,5 @@ extension String {
             return nil
         }
     }
-    
+
 }

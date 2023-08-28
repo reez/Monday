@@ -5,8 +5,8 @@
 //  Created by Matthew Ramsden on 6/7/23.
 //
 
-import SwiftUI
 import LDKNode
+import SwiftUI
 
 class SendBitcoinViewModel: ObservableObject {
     let spendableBalance: String
@@ -15,11 +15,11 @@ class SendBitcoinViewModel: ObservableObject {
     @Published var sendViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var isSendFinished: Bool = false
-    
+
     init(spendableBalance: String) {
         self.spendableBalance = spendableBalance
     }
-    
+
     func sendAllToOnchain(address: String) async {
         do {
             let txId = try await LightningNodeService.shared.sendAllToOnchain(address: address)
@@ -34,16 +34,19 @@ class SendBitcoinViewModel: ObservableObject {
             }
         } catch {
             DispatchQueue.main.async {
-                self.sendViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.sendViewError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
             }
         }
     }
-    
+
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         DispatchQueue.main.async {
             self.networkColor = color
         }
     }
-    
+
 }

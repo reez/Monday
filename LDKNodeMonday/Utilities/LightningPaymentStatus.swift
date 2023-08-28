@@ -12,7 +12,7 @@ enum LightningPaymentStatus {
     case pending
     case succeeded
     case failed
-    
+
     init(_ paymentStatus: PaymentStatus) {
         switch paymentStatus {
         case .pending:

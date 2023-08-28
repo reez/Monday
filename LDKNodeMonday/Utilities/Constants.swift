@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct Constants {
-    
+
     struct Config {
 
         struct EsploraServerURLNetwork {
@@ -24,20 +24,20 @@ struct Constants {
                 static let testnet_mempoolspace = "https://mempool.space/testnet/api"
             }
         }
-        
+
         struct RGSServerURLNetwork {
             static let bitcoin = "https://rapidsync.lightningdevkit.org/snapshot/"
             static let testnet = "https://rapidsync.lightningdevkit.org/testnet/snapshot/"
         }
-        
+
     }
-    
+
     enum BitcoinNetworkColor {
         case bitcoin
         case regtest
         case signet
         case testnet
-        
+
         var color: Color {
             switch self {
             case .regtest:
@@ -55,5 +55,5 @@ struct Constants {
             }
         }
     }
-    
+
 }

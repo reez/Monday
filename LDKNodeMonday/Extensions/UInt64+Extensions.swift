@@ -12,7 +12,7 @@ extension UInt64 {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.groupingSize = 3
-        
+
         if let formattedNumber = formatter.string(from: NSNumber(value: self)) {
             return formattedNumber
         } else {

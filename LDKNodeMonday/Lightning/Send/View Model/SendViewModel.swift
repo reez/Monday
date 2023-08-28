@@ -5,19 +5,19 @@
 //  Created by Matthew Ramsden on 5/29/23.
 //
 
-import SwiftUI
 import LDKNode
+import SwiftUI
 
 class SendViewModel: ObservableObject {
     @Published var invoice: PublicKey = ""
     @Published var networkColor = Color.gray
     @Published var parseError: MondayError?
-    
+
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         DispatchQueue.main.async {
             self.networkColor = color
         }
     }
-    
+
 }

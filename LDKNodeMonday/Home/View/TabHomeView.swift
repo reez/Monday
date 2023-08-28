@@ -5,19 +5,19 @@
 //  Created by Matthew Ramsden on 2/21/23.
 //
 
-import SwiftUI
 import BitcoinUI
+import SwiftUI
 
 struct TabHomeView: View {
     @StateObject var viewModel: TabHomeViewModel
-    
+
     var body: some View {
-        
+
         ZStack {
             Color(uiColor: UIColor.systemBackground)
-            
+
             TabView {
-                
+
                 BitcoinView(viewModel: .init())
                     .tabItem {
                         Label(
@@ -25,7 +25,7 @@ struct TabHomeView: View {
                             systemImage: "bitcoinsign"
                         )
                     }
-                
+
                 ChannelsListView(viewModel: .init())
                     .tabItem {
                         Label(
@@ -33,7 +33,7 @@ struct TabHomeView: View {
                             systemImage: "bolt.fill"
                         )
                     }
-                
+
                 NodeIDView(viewModel: .init())
                     .tabItem {
                         Label(
@@ -41,7 +41,7 @@ struct TabHomeView: View {
                             systemImage: "person"
                         )
                     }
-                
+
             }
             .tint(viewModel.networkColor)
             .onAppear {
@@ -49,11 +49,11 @@ struct TabHomeView: View {
                     viewModel.getColor()
                 }
             }
-            
+
         }
-        
+
     }
-    
+
 }
 
 struct TabHomeView_Previews: PreviewProvider {

@@ -5,25 +5,25 @@
 //  Created by Matthew Ramsden on 5/2/23.
 //
 
-import SwiftUI
 import BitcoinUI
 import LDKNode
+import SwiftUI
 
 struct ChannelDetailView: View {
     @ObservedObject var viewModel: ChannelDetailViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var showingChannelDetailViewErrorAlert = false
     @Binding var refreshFlag: Bool
-    
+
     var body: some View {
-        
+
         ZStack {
             Color(uiColor: UIColor.systemBackground)
-            
+
             VStack {
-                
+
                 Text(viewModel.channel.isOutbound ? "Outbound" : "Inbound").bold()
-                
+
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
                         Text("Channel ID")
@@ -95,7 +95,7 @@ struct ChannelDetailView: View {
                 }
                 .font(.system(.caption2, design: .monospaced))
                 .padding()
-                
+
                 Button {
                     viewModel.close()
                     refreshFlag = true
@@ -115,7 +115,7 @@ struct ChannelDetailView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(viewModel.networkColor)
                 .padding(.horizontal)
-                
+
             }
             .padding()
             .alert(isPresented: $showingChannelDetailViewErrorAlert) {
@@ -135,16 +135,15 @@ struct ChannelDetailView: View {
             .onAppear {
                 viewModel.getColor()
             }
-            
+
         }
         .ignoresSafeArea()
-        
+
     }
 }
 
-
 struct ChannelCloseView_Previews: PreviewProvider {
-    
+
     static var previews: some View {
         let channel = ChannelDetails.init(
             channelId: ChannelId(stringLiteral: "channelID"),
@@ -167,7 +166,7 @@ struct ChannelCloseView_Previews: PreviewProvider {
         )
         ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
         ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
-                .environment(\.colorScheme, .dark)
+            .environment(\.colorScheme, .dark)
     }
-    
+
 }

@@ -5,15 +5,15 @@
 //  Created by Matthew Ramsden on 5/29/23.
 //
 
-import SwiftUI
 import LDKNode
+import SwiftUI
 
 class AddressViewModel: ObservableObject {
     @Published var address: String = ""
     @Published var addressViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var isAddressFinished: Bool = false
-    
+
     func newFundingAddress() async {
         do {
             let address = try await LightningNodeService.shared.newFundingAddress()
@@ -28,16 +28,19 @@ class AddressViewModel: ObservableObject {
             }
         } catch {
             DispatchQueue.main.async {
-                self.addressViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.addressViewError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
             }
         }
     }
-    
+
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         DispatchQueue.main.async {
             self.networkColor = color
         }
     }
-    
+
 }

@@ -5,8 +5,8 @@
 //  Created by Matthew Ramsden on 5/1/23.
 //
 
-import SwiftUI
 import BitcoinUI
+import SwiftUI
 
 struct ReceiveView: View {
     @ObservedObject var viewModel: ReceiveViewModel
@@ -14,22 +14,22 @@ struct ReceiveView: View {
     @State private var showCheckmark = false
     @State private var showingReceiveViewErrorAlert = false
     @State private var isKeyboardVisible = false
-    
+
     var body: some View {
-        
+
         NavigationView {
-            
+
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
-                
+
                 VStack {
-                    
+
                     VStack(alignment: .leading) {
-                        
+
                         Text("Sats")
                             .bold()
                             .padding(.horizontal)
-                        
+
                         ZStack {
                             TextField(
                                 "125000",
@@ -37,7 +37,7 @@ struct ReceiveView: View {
                             )
                             .keyboardType(.numberPad)
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
-                            
+
                             if !viewModel.amountMsat.isEmpty {
                                 HStack {
                                     Spacer()
@@ -52,10 +52,10 @@ struct ReceiveView: View {
                             }
                         }
                         .padding(.horizontal)
-                        
+
                     }
                     .padding()
-                    
+
                     Button {
                         Task {
                             let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
@@ -65,7 +65,12 @@ struct ReceiveView: View {
                                 expirySecs: UInt32(3600)
                             )
                         }
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        UIApplication.shared.sendAction(
+                            #selector(UIResponder.resignFirstResponder),
+                            to: nil,
+                            from: nil,
+                            for: nil
+                        )
                     } label: {
                         Text("Create Invoice")
                             .bold()
@@ -78,15 +83,15 @@ struct ReceiveView: View {
                     .tint(viewModel.networkColor)
                     .padding(.horizontal, 30.0)
                     .padding(.bottom)
-                    
+
                     if viewModel.invoice != "" {
-                        
+
                         QRCodeViewLightning(invoice: viewModel.invoice)
-                        
+
                         VStack {
-                            
+
                             HStack(alignment: .center) {
-                                
+
                                 VStack(alignment: .leading, spacing: 5.0) {
                                     HStack {
                                         Text("Lightning Network")
@@ -98,11 +103,13 @@ struct ReceiveView: View {
                                         .truncationMode(.middle)
                                         .lineLimit(1)
                                         .foregroundColor(.secondary)
-                                        .redacted(reason: viewModel.invoice == "" ? .placeholder : [])
+                                        .redacted(
+                                            reason: viewModel.invoice == "" ? .placeholder : []
+                                        )
                                 }
-                                
+
                                 Spacer()
-                                
+
                                 Button {
                                     UIPasteboard.general.string = viewModel.invoice
                                     isCopied = true
@@ -114,17 +121,20 @@ struct ReceiveView: View {
                                 } label: {
                                     HStack {
                                         withAnimation {
-                                            Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                                .font(.title2)
+                                            Image(
+                                                systemName: showCheckmark
+                                                    ? "checkmark" : "doc.on.doc"
+                                            )
+                                            .font(.title2)
                                         }
                                     }
                                     .bold()
                                     .foregroundColor(viewModel.networkColor)
                                 }
-                                
+
                             }
                             .padding()
-                            
+
                             Button("Clear Invoice") {
                                 viewModel.clearInvoice()
                             }
@@ -132,11 +142,11 @@ struct ReceiveView: View {
                             .buttonStyle(.bordered)
                             .tint(viewModel.networkColor)
                             .padding()
-                            
+
                         }
-                        
+
                     }
-                    
+
                 }
                 .padding()
                 .alert(isPresented: $showingReceiveViewErrorAlert) {
@@ -153,23 +163,31 @@ struct ReceiveView: View {
                         showingReceiveViewErrorAlert = true
                     }
                 }
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                .onReceive(
+                    NotificationCenter.default.publisher(
+                        for: UIResponder.keyboardWillShowNotification
+                    )
+                ) { _ in
                     isKeyboardVisible = true
                 }
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                .onReceive(
+                    NotificationCenter.default.publisher(
+                        for: UIResponder.keyboardWillHideNotification
+                    )
+                ) { _ in
                     isKeyboardVisible = false
                 }
                 .onAppear {
                     viewModel.getColor()
                 }
-                
+
             }
             .ignoresSafeArea()
-            
+
         }
-        
+
     }
-    
+
 }
 
 struct ReceiveView_Previews: PreviewProvider {

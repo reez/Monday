@@ -5,8 +5,8 @@
 //  Created by Matthew Ramsden on 5/29/23.
 //
 
-import SwiftUI
 import LDKNode
+import SwiftUI
 
 class PeerViewModel: ObservableObject {
     @Published var address: String = ""
@@ -14,7 +14,7 @@ class PeerViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey = ""
     @Published var isProgressViewShowing: Bool = false
-    
+
     func connect(
         nodeId: PublicKey,
         address: String
@@ -33,18 +33,21 @@ class PeerViewModel: ObservableObject {
             }
         } catch {
             DispatchQueue.main.async {
-                self.peerViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.peerViewError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
                 self.isProgressViewShowing = false
             }
         }
-        
+
     }
-    
+
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         DispatchQueue.main.async {
             self.networkColor = color
         }
     }
-    
+
 }

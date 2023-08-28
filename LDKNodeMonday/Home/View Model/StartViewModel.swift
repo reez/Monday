@@ -5,14 +5,14 @@
 //  Created by Matthew Ramsden on 5/29/23.
 //
 
-import SwiftUI
 import LDKNode
+import SwiftUI
 
 class StartViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var isStarted: Bool = false
     @Published var startViewError: MondayError?
-    
+
     func start() async throws {
         do {
             try await LightningNodeService.shared.start()
@@ -26,17 +26,20 @@ class StartViewModel: ObservableObject {
             }
         } catch {
             DispatchQueue.main.async {
-                self.startViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.startViewError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
             }
         }
-        
+
     }
-    
+
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         DispatchQueue.main.async {
             self.networkColor = color
         }
     }
-    
+
 }

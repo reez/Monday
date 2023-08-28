@@ -5,8 +5,8 @@
 //  Created by Matthew Ramsden on 5/29/23.
 //
 
-import SwiftUI
 import LDKNode
+import SwiftUI
 
 class BitcoinViewModel: ObservableObject {
     @Published var balance: String = "0"
@@ -16,8 +16,7 @@ class BitcoinViewModel: ObservableObject {
     @Published var totalBalance: String = "0"
     @Published var isSpendableBalanceFinished: Bool = false
     @Published var isTotalBalanceFinished: Bool = false
-    
-    
+
     func getTotalOnchainBalanceSats() async {
         do {
             let balance = try await LightningNodeService.shared.getTotalOnchainBalanceSats()
@@ -34,11 +33,14 @@ class BitcoinViewModel: ObservableObject {
             }
         } catch {
             DispatchQueue.main.async {
-                self.bitcoinViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.bitcoinViewError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
             }
         }
     }
-    
+
     func getSpendableOnchainBalanceSats() async {
         do {
             let balance = try await LightningNodeService.shared.getSpendableOnchainBalanceSats()
@@ -55,16 +57,19 @@ class BitcoinViewModel: ObservableObject {
             }
         } catch {
             DispatchQueue.main.async {
-                self.bitcoinViewError = .init(title: "Unexpected error", detail: error.localizedDescription)
+                self.bitcoinViewError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
             }
         }
     }
-    
+
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         DispatchQueue.main.async {
             self.networkColor = color
         }
     }
-    
+
 }
