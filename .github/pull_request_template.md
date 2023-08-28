@@ -19,7 +19,6 @@ of the PR were done in a specific way -->
 #### All Submissions:
 
 * [ ] I've signed all my commits
-* [ ] I followed the [contribution guidelines](https://github.com/bitcoindevkit/bdk/blob/master/CONTRIBUTING.md)
 * [ ] I have formatted my code with [swift-format](https://github.com/apple/swift-format) per `.swift-format` [file](https://github.com/reez/BDKSwiftExampleWallet/blob/main/.swift-format)
 
 #### New Features:
