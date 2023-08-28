@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "indentation" : {
+        "spaces" : 4
+    },
+    "indentWidth": 4,
+    "maximumBlankLines": 1,
+    "lineBreakBeforeEachArgument": true,
+    "trimWhitespace": true
+}
