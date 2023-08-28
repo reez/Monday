@@ -1,0 +1,28 @@
+name: iOS Build and Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build and Test default scheme using any available iPhone simulator
+    runs-on: macos-13
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Select Xcode Version
+        run: sudo xcode-select -switch /Applications/Xcode_15.0.app
+      - name: Set Default Scheme
+        run: |
+          scheme_list=$(xcodebuild -list -json | tr -d "\n")
+          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
+          echo $default | cat >default
+          echo Using default scheme: $default
+      - name: List Devices
+        run: xcrun xctrace list devices 2>&1
+      - name: Build
+        run: xcodebuild build-for-testing -scheme LDKNodeMonday -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 14,OS=17.0'
