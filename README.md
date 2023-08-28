@@ -59,7 +59,7 @@ It provides default implementations for:
 
 - LDK Node via [ldk-node](https://github.com/lightningdevkit/ldk-node)
 
-- Bitcoin UI Kit via [WalletUI](https://github.com/reez/WalletUI)
+- Bitcoin UI Kit via [BitcoinUI](https://github.com/reez/BitcoinUI)
 
 - QR Code Scanner via [Code Scanner](https://github.com/twostraws/CodeScanner)
 
