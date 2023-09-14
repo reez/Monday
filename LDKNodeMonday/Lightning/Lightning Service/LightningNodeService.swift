@@ -36,6 +36,10 @@ class LightningNodeService {
             logLevel: .debug
         )
         let nodeBuilder = Builder.fromConfig(config: config)
+        
+        // TODO: update this
+        let mnemonic = Mnemonic()
+        nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
 
         switch network {
 
