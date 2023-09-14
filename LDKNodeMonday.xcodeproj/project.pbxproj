@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		AE001CDD29F5EBEC006CA7D1 /* SendConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE001CDC29F5EBEC006CA7D1 /* SendConfirmationView.swift */; };
 		AE01C5AD2AB3BC4F00F28C7E /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5AC2AB3BC4F00F28C7E /* View+Extensions.swift */; };
+		AE01C5B02AB3BEED00F28C7E /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = AE01C5AF2AB3BEED00F28C7E /* KeychainAccess */; };
 		AE0A02242A0AD71900F2479E /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0A02232A0AD71900F2479E /* LogView.swift */; };
 		AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */; };
 		AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E8DB29A402E30058C9C9 /* AddressView.swift */; };
@@ -129,6 +130,7 @@
 				AE581D5A2A4214EA0000D979 /* LDKNode in Frameworks */,
 				AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */,
 				AE7C21492A9D02BF00E9B77B /* BitcoinUI in Frameworks */,
+				AE01C5B02AB3BEED00F28C7E /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +457,7 @@
 				AE581D592A4214EA0000D979 /* LDKNode */,
 				AE7BF29B2A44A24F0030FDE5 /* LDKNode */,
 				AE7C21482A9D02BF00E9B77B /* BitcoinUI */,
+				AE01C5AF2AB3BEED00F28C7E /* KeychainAccess */,
 			);
 			productName = LDKNodeMonday;
 			productReference = AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */;
@@ -488,6 +491,7 @@
 				AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */,
 				AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 				AE7BF29A2A44A24F0030FDE5 /* XCRemoteSwiftPackageReference "ldk-node" */,
+				AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = AE17E8D729A402E30058C9C9 /* Products */;
 			projectDirPath = "";
@@ -774,6 +778,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.2.2;
+			};
+		};
 		AE5C4FD629A5577F00BE3285 /* XCRemoteSwiftPackageReference "WalletUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/reez/WalletUI.git";
@@ -801,6 +813,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		AE01C5AF2AB3BEED00F28C7E /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
 		AE581D592A4214EA0000D979 /* LDKNode */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LDKNode;
