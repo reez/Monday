@@ -30,35 +30,56 @@ struct BitcoinView: View {
                         VStack(spacing: 10) {
 
                             HStack {
-                                Spacer()
                                 if viewModel.isTotalBalanceFinished {
-                                    Text(viewModel.totalBalance.formattedAmount())
-                                        .bold()
+                                    withAnimation {
+                                        HStack(spacing: 15) {
+                                            Image(systemName: "bitcoinsign")
+                                                .foregroundColor(.secondary)
+                                                .font(.title)
+                                                .fontWeight(.thin)
+                                            Text(viewModel.totalBalance)
+                                                .contentTransition(.numericText())
+                                                .fontWeight(.semibold)
+                                                .fontDesign(.rounded)
+                                            Text("sats")
+                                                .foregroundColor(.secondary)
+                                                .fontWeight(.thin)
+                                        }
                                         .font(.largeTitle)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.5)
+                                    }
                                 } else {
                                     ProgressView()
                                         .padding(.all, 5)
                                 }
-                                Text("Total Sats")
-                                    .foregroundColor(.secondary)
-                                    .bold()
-                                    .font(.title3)
-                                Spacer()
                             }
                             .lineLimit(1)
                             .minimumScaleFactor(0.5)
                             .animation(.spring(), value: viewModel.totalBalance)
 
                             HStack(spacing: 4) {
-                                Spacer()
                                 if viewModel.isSpendableBalanceFinished {
-                                    Text(viewModel.spendableBalance.formattedAmount())
+                                    withAnimation {
+                                        HStack(spacing: 5) {
+                                            Image(systemName: "bitcoinsign")
+                                                .foregroundColor(.secondary)
+                                                .fontWeight(.thin)
+                                            Text(viewModel.spendableBalance)
+                                                .contentTransition(.numericText())
+                                                .fontWeight(.semibold)
+                                                .fontDesign(.rounded)
+                                            Text("sats spendable")
+                                                .foregroundColor(.secondary)
+                                                .fontWeight(.thin)
+                                        }
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.5)
+                                    }
                                 } else {
                                     ProgressView()
                                         .padding(.all, 5)
                                 }
-                                Text("Spendable Sats")
-                                Spacer()
                             }
                             .lineLimit(1)
                             .animation(.spring(), value: viewModel.spendableBalance)

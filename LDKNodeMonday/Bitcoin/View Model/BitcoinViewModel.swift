@@ -20,8 +20,7 @@ class BitcoinViewModel: ObservableObject {
     func getTotalOnchainBalanceSats() async {
         do {
             let balance = try await LightningNodeService.shared.getTotalOnchainBalanceSats()
-            let intBalance = Int(balance)
-            let stringIntBalance = String(intBalance)
+            let stringIntBalance = balance.formattedSatoshis()
             DispatchQueue.main.async {
                 self.totalBalance = stringIntBalance
                 self.isTotalBalanceFinished = true
@@ -44,8 +43,7 @@ class BitcoinViewModel: ObservableObject {
     func getSpendableOnchainBalanceSats() async {
         do {
             let balance = try await LightningNodeService.shared.getSpendableOnchainBalanceSats()
-            let intBalance = Int(balance)
-            let stringIntBalance = String(intBalance)
+            let stringIntBalance = balance.formattedSatoshis()
             DispatchQueue.main.async {
                 self.spendableBalance = stringIntBalance
                 self.isSpendableBalanceFinished = true
