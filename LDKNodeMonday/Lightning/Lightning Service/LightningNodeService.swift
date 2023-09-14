@@ -37,8 +37,8 @@ class LightningNodeService {
         )
         let nodeBuilder = Builder.fromConfig(config: config)
         
-        // TODO: update this
-        let mnemonic = Mnemonic()
+        // TODO: update this, do i actually want to do this here?
+        let mnemonic = generateEntropyMnemonic()//Mnemonic()
         nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
 
         switch network {
