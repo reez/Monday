@@ -35,6 +35,37 @@ extension QRCodeViewLightning {
     }
 }
 
+struct FidgetQRCodeViewLightning: View {
+    @State private var viewState = CGSize.zero
+    let screenBounds = UIScreen.main.bounds
+    var invoice: String
+
+    var body: some View {
+        QRCodeViewLightning(invoice: invoice)
+            .applyFidgetEffect(viewState: $viewState)
+            .gesture(dragGesture())
+    }
+
+    private func dragGesture() -> some Gesture {
+        DragGesture()
+            .onChanged(handleDragChanged(_:))
+            .onEnded(handleDragEnded(_:))
+    }
+
+    private func handleDragChanged(_ value: DragGesture.Value) {
+        let translation = value.translation
+        let multiplier: CGFloat = 0.05
+        viewState.width = -translation.width * multiplier
+        viewState.height = -translation.height * multiplier
+    }
+
+    private func handleDragEnded(_ value: DragGesture.Value) {
+        withAnimation {
+            self.viewState = .zero
+        }
+    }
+}
+
 struct QRCodeViewLightning_Previews: PreviewProvider {
     static var previews: some View {
         QRCodeViewLightning(

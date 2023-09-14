@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AE001CDD29F5EBEC006CA7D1 /* SendConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE001CDC29F5EBEC006CA7D1 /* SendConfirmationView.swift */; };
+		AE01C5AD2AB3BC4F00F28C7E /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5AC2AB3BC4F00F28C7E /* View+Extensions.swift */; };
 		AE0A02242A0AD71900F2479E /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0A02232A0AD71900F2479E /* LogView.swift */; };
 		AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */; };
 		AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E8DB29A402E30058C9C9 /* AddressView.swift */; };
@@ -65,6 +66,7 @@
 
 /* Begin PBXFileReference section */
 		AE001CDC29F5EBEC006CA7D1 /* SendConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendConfirmationView.swift; sourceTree = "<group>"; };
+		AE01C5AC2AB3BC4F00F28C7E /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		AE0A02232A0AD71900F2479E /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
 		AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LDKNodeMonday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKNodeMondayApp.swift; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 			isa = PBXGroup;
 			children = (
 				AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */,
+				AE01C5AC2AB3BC4F00F28C7E /* View+Extensions.swift */,
 				AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */,
 				AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */,
 				AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */,
@@ -535,6 +538,7 @@
 				AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */,
 				AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */,
 				AE49E8622A25378C002623E8 /* ReceiveViewModel.swift in Sources */,
+				AE01C5AD2AB3BC4F00F28C7E /* View+Extensions.swift in Sources */,
 				AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */,
 				AE49E8582A2536B4002623E8 /* ChannelsListViewModel.swift in Sources */,
 				AEE4CD0129ABC0DB00BF1BF9 /* QRCodeViewBitcoin.swift in Sources */,
