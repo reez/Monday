@@ -13,6 +13,7 @@ class LightningNodeService {
     private let ldkNode: LdkNode
     private let storageManager = LightningStorage()
     var networkColor = Color.black
+    private let keyService: KeyClient
 
     class var shared: LightningNodeService {
         struct Singleton {
@@ -21,7 +22,8 @@ class LightningNodeService {
         return Singleton.instance
     }
 
-    init(network: Network) {
+    init(network: Network, keyService: KeyClient = .live) {
+        
 
         try? FileManager.deleteLDKNodeLogLatestFile()
 
@@ -37,10 +39,18 @@ class LightningNodeService {
         )
         let nodeBuilder = Builder.fromConfig(config: config)
         
-        // TODO: update this, do i actually want to do this here?
+        // TODO: update this, do i actually want to do this all here?
+        self.keyService = keyService
+        // Check keyservice...
+        // - if it has something use that to pass in to nodebuilder
+        let existing = try! keyService.getBackupInfo()
+        let existingM = existing.mnemonic
+        nodeBuilder.setEntropyBip39Mnemonic(mnemonic: existingM, passphrase: nil)
+        // - if it has nothing, generate entropy and pass that into the nodebuilder
         let mnemonic = generateEntropyMnemonic()
         nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
 
+        
         switch network {
 
         case .bitcoin:
