@@ -14,7 +14,6 @@
 		AE01C5B42AB3BF8100F28C7E /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B32AB3BF8100F28C7E /* Bundle+Extensions.swift */; };
 		AE01C5B62AB3C0A200F28C7E /* BackupInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */; };
 		AE01C5B82AB3C0C400F28C7E /* KeyServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B72AB3C0C400F28C7E /* KeyServiceError.swift */; };
-		AE01C5BA2AB3DAB500F28C7E /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B92AB3DAB500F28C7E /* OnboardingView.swift */; };
 		AE01C5BC2AB3DB2800F28C7E /* WalletError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5BB2AB3DB2800F28C7E /* WalletError.swift */; };
 		AE0A02242A0AD71900F2479E /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0A02232A0AD71900F2479E /* LogView.swift */; };
 		AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */; };
@@ -78,7 +77,6 @@
 		AE01C5B32AB3BF8100F28C7E /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupInfo.swift; sourceTree = "<group>"; };
 		AE01C5B72AB3C0C400F28C7E /* KeyServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyServiceError.swift; sourceTree = "<group>"; };
-		AE01C5B92AB3DAB500F28C7E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AE01C5BB2AB3DB2800F28C7E /* WalletError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletError.swift; sourceTree = "<group>"; };
 		AE0A02232A0AD71900F2479E /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
 		AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LDKNodeMonday.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,7 +173,6 @@
 				AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */,
 				AE01C5B12AB3BF3C00F28C7E /* KeyService.swift */,
 				AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */,
-				AE01C5B92AB3DAB500F28C7E /* OnboardingView.swift */,
 				AE01C5BB2AB3DB2800F28C7E /* WalletError.swift */,
 				AE80116E29A5A64F009B9967 /* Home */,
 				AE5C4FD329A5550100BE3285 /* Lightning */,
@@ -577,7 +574,6 @@
 				AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */,
 				AE01C5B62AB3C0A200F28C7E /* BackupInfo.swift in Sources */,
 				AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */,
-				AE01C5BA2AB3DAB500F28C7E /* OnboardingView.swift in Sources */,
 				AE49E85C2A2536FB002623E8 /* ChannelDetailViewModel.swift in Sources */,
 				AE7D3FAD2A4263C100EAE730 /* PaymentsViewModel.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,

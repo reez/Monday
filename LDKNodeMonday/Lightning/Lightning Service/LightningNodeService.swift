@@ -17,7 +17,7 @@ class LightningNodeService {
 
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService(network: .bitcoin)
+            static let instance = LightningNodeService(network: .signet)
         }
         return Singleton.instance
     }
@@ -39,16 +39,19 @@ class LightningNodeService {
         let nodeBuilder = Builder.fromConfig(config: config)
         
         // TODO: update this, do i actually want to do this all here?
-        self.keyService = keyService
-        // Check keyservice...
-        let existing = try? keyService.getBackupInfo()
-        if let mnem = existing?.mnemonic {
-            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnem, passphrase: nil)
-        } else {
-            let mnemonic = generateEntropyMnemonic()
-            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
-        }
+//        self.keyService = keyService
+//        // Check keyservice...
+//        let existing = try? keyService.getBackupInfo()
+//        if let mnem = existing?.mnemonic {
+//            //nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnem, passphrase: nil)
+//        } else {
+////            let mnemonic = generateEntropyMnemonic()
+////            let backupInfo = BackupInfo(mnemonic: mnemonic)
+////            try? keyService.saveBackupInfo(backupInfo)
+////            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
+//        }
         
+ 
         switch network {
 
         case .bitcoin:
@@ -84,6 +87,23 @@ class LightningNodeService {
             self.networkColor = Constants.BitcoinNetworkColor.testnet.color
 
         }
+        
+        let mnemonic = "measure wash spoil all brief since vast unit still bag enhance educate evidence egg trophy near end thumb dash file imitate victory denial night"
+        
+        let ayo = try? keyService.getBackupInfo()
+        if ayo?.mnemonic == mnemonic {
+            print("i have a key")
+            print("existing key: \(String(describing: ayo?.mnemonic))")
+        } else {
+            print("i do not have a key")
+            let mnemonic = mnemonic//generateEntropyMnemonic()
+            print("new key: \(mnemonic)")
+            let backupInfo = BackupInfo(mnemonic: mnemonic)
+            try? keyService.saveBackupInfo(backupInfo)
+        }
+        
+        nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
+
 
         // TODO: -!
         /// 06.22.23
@@ -93,6 +113,8 @@ class LightningNodeService {
         let ldkNode = try! nodeBuilder.build()
 
         self.ldkNode = ldkNode
+        
+        self.keyService = keyService
     }
 
     func start() async throws {
@@ -259,11 +281,7 @@ extension LightningNodeService {
 }
 
 extension LightningNodeService {
-    func createWallet() throws {
-        
-    }
-    
-    func loadWallet() throws {
-        
+    func deleteWallet() throws {
+        try keyService.deleteBackupInfo()
     }
 }
