@@ -74,22 +74,22 @@ class LightningNodeService {
 
         }
         
-        let mnemonic = "measure wash spoil all brief since vast unit still bag enhance educate evidence egg trophy near end thumb dash file imitate victory denial night"
+//        let mnemonic = "measure wash spoil all brief since vast unit still bag enhance educate evidence egg trophy near end thumb dash file imitate victory denial night" // 100k sats
+//        let mnemonic = "idea resist notice curve section obscure chest advance ladder scout tape two school jump film crumble pause lottery target file lumber burst sand update" // 1m sats
         
-        let ayo = try? keyService.getBackupInfo()
-        if ayo?.mnemonic == mnemonic {
+        let backupInfo = try? keyService.getBackupInfo()
+        if backupInfo?.mnemonic != nil {
             print("i have a key")
-            print("existing key: \(String(describing: ayo?.mnemonic))")
+            print("existing key: \(String(describing: backupInfo?.mnemonic))")
+            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: backupInfo!.mnemonic, passphrase: nil)
         } else {
             print("i do not have a key")
-            let mnemonic = mnemonic//generateEntropyMnemonic()
+            let mnemonic = generateEntropyMnemonic()
             print("new key: \(mnemonic)")
             let backupInfo = BackupInfo(mnemonic: mnemonic)
             try? keyService.saveBackupInfo(backupInfo)
+            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
         }
-        
-        nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
-
 
         // TODO: -!
         /// 06.22.23
