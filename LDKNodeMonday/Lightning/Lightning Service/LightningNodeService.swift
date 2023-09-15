@@ -37,20 +37,6 @@ class LightningNodeService {
             logLevel: .debug
         )
         let nodeBuilder = Builder.fromConfig(config: config)
-        
-        // TODO: update this, do i actually want to do this all here?
-//        self.keyService = keyService
-//        // Check keyservice...
-//        let existing = try? keyService.getBackupInfo()
-//        if let mnem = existing?.mnemonic {
-//            //nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnem, passphrase: nil)
-//        } else {
-////            let mnemonic = generateEntropyMnemonic()
-////            let backupInfo = BackupInfo(mnemonic: mnemonic)
-////            try? keyService.saveBackupInfo(backupInfo)
-////            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
-//        }
-        
  
         switch network {
 
