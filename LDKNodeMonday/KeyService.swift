@@ -16,7 +16,7 @@ private struct KeyService {
         let keychain = Keychain(service: "com.matthewramsden.LDKNodeMonday.testservice")  // TODO: use `Bundle.main.displayName` or something like com.bdk.swiftwalletexample
             .label(Bundle.main.displayName)
             .synchronizable(true)
-            .accessibility(.whenUnlocked)
+            .accessibility(.afterFirstUnlock)
         self.keychain = keychain
     }
 
