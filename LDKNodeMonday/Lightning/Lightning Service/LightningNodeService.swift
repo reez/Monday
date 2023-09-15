@@ -74,8 +74,9 @@ class LightningNodeService {
 
         }
         
-//        let mnemonic = "measure wash spoil all brief since vast unit still bag enhance educate evidence egg trophy near end thumb dash file imitate victory denial night" // 100k sats
-//        let mnemonic = "idea resist notice curve section obscure chest advance ladder scout tape two school jump film crumble pause lottery target file lumber burst sand update" // 1m sats
+//        let mnemonic = "measure wash spoil all brief since vast unit still bag enhance educate evidence egg trophy near end thumb dash file imitate victory denial night" // 100k sats // // iPHone 15 Pro i think
+//        let mnemonic = "idea resist notice curve section obscure chest advance ladder scout tape two school jump film crumble pause lottery target file lumber burst sand update" // 1m sats // iPHone 15 Pro
+//        let mnemonic = "spice make bread session seminar where tomorrow assault wool season shoot polar miss better guide method layer main impact choice eternal vicious ahead dynamic" // 10m sats // iPhone 15 // tb1qxsv0lx0kyzwsz33t2rmfn4u7lvxt0gn9tj6t0k ... funds sent from iphone 15 pro which had 1m sats, so should have 11m sats total now
         
         let backupInfo = try? keyService.getBackupInfo()
         if backupInfo?.mnemonic != nil {
