@@ -24,7 +24,6 @@ class LightningNodeService {
 
     init(network: Network, keyService: KeyClient = .live) {
         
-
         try? FileManager.deleteLDKNodeLogLatestFile()
 
         let config = Config(
@@ -42,14 +41,13 @@ class LightningNodeService {
         // TODO: update this, do i actually want to do this all here?
         self.keyService = keyService
         // Check keyservice...
-        // - if it has something use that to pass in to nodebuilder
-        let existing = try! keyService.getBackupInfo()
-        let existingM = existing.mnemonic
-        nodeBuilder.setEntropyBip39Mnemonic(mnemonic: existingM, passphrase: nil)
-        // - if it has nothing, generate entropy and pass that into the nodebuilder
-        let mnemonic = generateEntropyMnemonic()
-        nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
-
+        let existing = try? keyService.getBackupInfo()
+        if let mnem = existing?.mnemonic {
+            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnem, passphrase: nil)
+        } else {
+            let mnemonic = generateEntropyMnemonic()
+            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
+        }
         
         switch network {
 
