@@ -259,3 +259,13 @@ extension LightningNodeService {
     }
 
 }
+
+extension LightningNodeService {
+    func createWallet() throws {
+        
+    }
+    
+    func loadWallet() throws {
+        
+    }
+}
