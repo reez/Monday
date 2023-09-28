@@ -13,15 +13,16 @@ class LightningNodeService {
     private let ldkNode: LdkNode
     private let storageManager = LightningStorage()
     var networkColor = Color.black
+    private let keyService: KeyClient
 
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService(network: .bitcoin)
+            static let instance = LightningNodeService(network: .signet)
         }
         return Singleton.instance
     }
 
-    init(network: Network) {
+    init(network: Network, keyService: KeyClient = .live) {
 
         try? FileManager.deleteLDKNodeLogLatestFile()
 
@@ -73,6 +74,16 @@ class LightningNodeService {
 
         }
 
+        let backupInfo = try? keyService.getBackupInfo()
+        if backupInfo?.mnemonic != nil {
+            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: backupInfo!.mnemonic, passphrase: nil)
+        } else {
+            let mnemonic = generateEntropyMnemonic()
+            let backupInfo = BackupInfo(mnemonic: mnemonic)
+            try? keyService.saveBackupInfo(backupInfo)
+            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
+        }
+
         // TODO: -!
         /// 06.22.23
         /// Breaking change in ldk-node 0.1 today
@@ -81,6 +92,8 @@ class LightningNodeService {
         let ldkNode = try! nodeBuilder.build()
 
         self.ldkNode = ldkNode
+
+        self.keyService = keyService
     }
 
     func start() async throws {
@@ -244,4 +257,10 @@ extension LightningNodeService {
         return payment
     }
 
+}
+
+extension LightningNodeService {
+    func deleteWallet() throws {
+        try keyService.deleteBackupInfo()
+    }
 }

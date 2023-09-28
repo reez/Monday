@@ -63,6 +63,8 @@ It provides default implementations for:
 
 - QR Code Scanner via [Code Scanner](https://github.com/twostraws/CodeScanner)
 
+- Keychain via [Keychain Access](https://github.com/kishikawakatsumi/KeychainAccess)
+
 ## Thanks
 
 [@notmandatory](https://github.com/notmandatory) for getting this up and running with me on a Monday.
