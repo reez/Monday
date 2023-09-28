@@ -65,7 +65,6 @@ It provides default implementations for:
 
 - Keychain via [Keychain Access](https://github.com/kishikawakatsumi/KeychainAccess)
 
-
 ## Thanks
 
 [@notmandatory](https://github.com/notmandatory) for getting this up and running with me on a Monday.

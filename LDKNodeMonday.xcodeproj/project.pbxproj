@@ -150,7 +150,6 @@
 		AE17E8CD29A402E30058C9C9 = {
 			isa = PBXGroup;
 			children = (
-				AE01C5B72AB3C0C400F28C7E /* KeyServiceError.swift */,
 				AE5C4FD429A5565700BE3285 /* README.md */,
 				AE17E8D829A402E30058C9C9 /* LDKNodeMonday */,
 				AE17E8D729A402E30058C9C9 /* Products */,
@@ -171,8 +170,7 @@
 			children = (
 				AE8D877429B145F100F2B918 /* Info.plist */,
 				AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */,
-				AE01C5B12AB3BF3C00F28C7E /* KeyService.swift */,
-				AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */,
+				AE89C7652AC5D49800EF8217 /* KeyService */,
 				AE01C5BB2AB3DB2800F28C7E /* WalletError.swift */,
 				AE80116E29A5A64F009B9967 /* Home */,
 				AE5C4FD329A5550100BE3285 /* Lightning */,
@@ -380,6 +378,16 @@
 				AE49E8782A253CC5002623E8 /* View Model */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		AE89C7652AC5D49800EF8217 /* KeyService */ = {
+			isa = PBXGroup;
+			children = (
+				AE01C5B12AB3BF3C00F28C7E /* KeyService.swift */,
+				AE01C5B72AB3C0C400F28C7E /* KeyServiceError.swift */,
+				AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */,
+			);
+			path = KeyService;
 			sourceTree = "<group>";
 		};
 		AE931D8929AA79E800F7F2F7 /* Utilities */ = {
