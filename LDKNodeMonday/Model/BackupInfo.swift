@@ -19,5 +19,5 @@ struct BackupInfo: Codable, Equatable {
 }
 
 #if DEBUG
-let mockBackupInfo = BackupInfo(mnemonic: "")
+    let mockBackupInfo = BackupInfo(mnemonic: "")
 #endif

@@ -65,11 +65,11 @@ extension KeyClient {
 }
 
 #if DEBUG
-extension KeyClient {
-    static let mock = Self(
-        saveBackupInfo: { _ in },
-        getBackupInfo: { mockBackupInfo },
-        deleteBackupInfo: { }
-    )
-}
+    extension KeyClient {
+        static let mock = Self(
+            saveBackupInfo: { _ in },
+            getBackupInfo: { mockBackupInfo },
+            deleteBackupInfo: {}
+        )
+    }
 #endif
