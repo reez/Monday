@@ -86,7 +86,7 @@ struct ReceiveView: View {
 
                     if viewModel.invoice != "" {
 
-                        FidgetQRCodeViewLightning(invoice: viewModel.invoice)
+                        QRCodeView(qrCodeType: .lightning(viewModel.invoice))
 
                         VStack {
 

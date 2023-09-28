@@ -26,10 +26,10 @@ struct AddressView: View {
                     Spacer()
 
                     if viewModel.address != "" {
-                        FidgetQRCodeViewBitcoin(address: viewModel.address)
+                        QRCodeView(qrCodeType: .bitcoin(viewModel.address))
                             .animation(.default, value: viewModel.address)
                     } else {
-                        FidgetQRCodeViewBitcoin(address: viewModel.address)
+                        QRCodeView(qrCodeType: .lightning(viewModel.address))
                             .blur(radius: 15)
                     }
 
