@@ -161,13 +161,13 @@
 			isa = PBXGroup;
 			children = (
 				AE8D877429B145F100F2B918 /* Info.plist */,
-				AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */,
-				AE89C7652AC5D49800EF8217 /* KeyService */,
-				AE80116E29A5A64F009B9967 /* Home */,
-				AE5C4FD329A5550100BE3285 /* Lightning */,
-				AE49E8482A24F81C002623E8 /* Bitcoin */,
+				AE8549FF2AC601CD00F056E6 /* App */,
 				AEE8FDE029F8581400406DD9 /* Extensions */,
+				AE8549F82AC5FFBF00F056E6 /* Model */,
+				AE8549F72AC5FF9A00F056E6 /* Service */,
 				AE931D8929AA79E800F7F2F7 /* Utilities */,
+				AE8549FC2AC6010C00F056E6 /* View */,
+				AE8549F92AC6003D00F056E6 /* View Model */,
 				AE17E8DD29A402E40058C9C9 /* Assets.xcassets */,
 				AE17E8DF29A402E40058C9C9 /* Preview Content */,
 			);
@@ -189,24 +189,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		AE49E8482A24F81C002623E8 /* Bitcoin */ = {
-			isa = PBXGroup;
-			children = (
-				AE49E8752A253B06002623E8 /* View */,
-				AE49E8762A253B0D002623E8 /* View Model */,
-			);
-			path = Bitcoin;
-			sourceTree = "<group>";
-		};
-		AE49E86A2A253A00002623E8 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				AEE5B7692A09C722001E5E59 /* Peer.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		AE49E86D2A253A9A002623E8 /* View Model */ = {
+		AE49E86D2A253A9A002623E8 /* Channel */ = {
 			isa = PBXGroup;
 			children = (
 				AE49E8572A2536B4002623E8 /* ChannelsListViewModel.swift */,
@@ -214,10 +197,10 @@
 				AE49E8592A2536D4002623E8 /* ChannelAddViewModel.swift */,
 				AE49E85B2A2536FB002623E8 /* ChannelDetailViewModel.swift */,
 			);
-			path = "View Model";
+			path = Channel;
 			sourceTree = "<group>";
 		};
-		AE49E86E2A253AAE002623E8 /* View */ = {
+		AE49E86E2A253AAE002623E8 /* Channel */ = {
 			isa = PBXGroup;
 			children = (
 				AE9422692A007D6C007E4F12 /* ChannelsListView.swift */,
@@ -226,99 +209,79 @@
 				AE80116C29A59AF4009B9967 /* ChannelAddView.swift */,
 				AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */,
 			);
-			path = View;
+			path = Channel;
 			sourceTree = "<group>";
 		};
-		AE49E86F2A253AB9002623E8 /* View */ = {
+		AE49E86F2A253AB9002623E8 /* Send */ = {
 			isa = PBXGroup;
 			children = (
 				AE83142729AEDDAD00088A70 /* SendView.swift */,
 				AE001CDC29F5EBEC006CA7D1 /* SendConfirmationView.swift */,
 			);
-			path = View;
+			path = Send;
 			sourceTree = "<group>";
 		};
-		AE49E8702A253ABE002623E8 /* View Model */ = {
+		AE49E8702A253ABE002623E8 /* Send */ = {
 			isa = PBXGroup;
 			children = (
 				AE49E85D2A25372D002623E8 /* SendViewModel.swift */,
 				AE49E85F2A253761002623E8 /* SendConfirmationViewModel.swift */,
 			);
-			path = "View Model";
+			path = Send;
 			sourceTree = "<group>";
 		};
-		AE49E8712A253ACB002623E8 /* View */ = {
+		AE49E8712A253ACB002623E8 /* Receive */ = {
 			isa = PBXGroup;
 			children = (
 				AE6BB5702A00947B009E16E3 /* ReceiveView.swift */,
 			);
-			path = View;
+			path = Receive;
 			sourceTree = "<group>";
 		};
-		AE49E8722A253AD5002623E8 /* View Model */ = {
+		AE49E8722A253AD5002623E8 /* Receive */ = {
 			isa = PBXGroup;
 			children = (
 				AE49E8612A25378C002623E8 /* ReceiveViewModel.swift */,
 			);
-			path = "View Model";
+			path = Receive;
 			sourceTree = "<group>";
 		};
-		AE49E8732A253AE8002623E8 /* View */ = {
+		AE49E8732A253AE8002623E8 /* Peer */ = {
 			isa = PBXGroup;
 			children = (
 				AEBAA4822A01A80A0042EA82 /* PeersListView.swift */,
 				AEBAA48C2A01A93B0042EA82 /* PeerView.swift */,
 				AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */,
 			);
-			path = View;
+			path = Peer;
 			sourceTree = "<group>";
 		};
-		AE49E8742A253AF0002623E8 /* View Model */ = {
+		AE49E8742A253AF0002623E8 /* Peer */ = {
 			isa = PBXGroup;
 			children = (
 				AE49E8632A2537B3002623E8 /* PeersListViewModel.swift */,
 				AE49E8652A2537D5002623E8 /* PeerViewModel.swift */,
 				AE49E8672A2537FB002623E8 /* DisconnectViewModel.swift */,
 			);
-			path = "View Model";
+			path = Peer;
 			sourceTree = "<group>";
 		};
-		AE49E8752A253B06002623E8 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
-				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
-				AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		AE49E8762A253B0D002623E8 /* View Model */ = {
-			isa = PBXGroup;
-			children = (
-				AE49E8532A253647002623E8 /* BitcoinViewModel.swift */,
-				AE49E8552A253674002623E8 /* AddressViewModel.swift */,
-				AED09EF32A312ACE00BBCFB1 /* SendBitcoinViewModel.swift */,
-			);
-			path = "View Model";
-			sourceTree = "<group>";
-		};
-		AE49E8772A253CBE002623E8 /* View */ = {
+		AE49E8772A253CBE002623E8 /* Home */ = {
 			isa = PBXGroup;
 			children = (
 				AE80116829A59918009B9967 /* TabHomeView.swift */,
 				AE186B8D2A1540B700338463 /* StartView.swift */,
 			);
-			path = View;
+			path = Home;
 			sourceTree = "<group>";
 		};
-		AE49E8782A253CC5002623E8 /* View Model */ = {
+		AE49E8782A253CC5002623E8 /* Home */ = {
 			isa = PBXGroup;
 			children = (
 				AE49E84F2A2535E3002623E8 /* TabHomeViewModel.swift */,
 				AE49E8512A253618002623E8 /* StartViewModel.swift */,
 			);
-			path = "View Model";
+			path = Home;
 			sourceTree = "<group>";
 		};
 		AE49E8792A253D43002623E8 /* Lightning Service */ = {
@@ -330,43 +293,112 @@
 			path = "Lightning Service";
 			sourceTree = "<group>";
 		};
-		AE49E87A2A2544DC002623E8 /* View */ = {
+		AE49E87A2A2544DC002623E8 /* NodeID */ = {
 			isa = PBXGroup;
 			children = (
 				AE80116A29A59976009B9967 /* NodeIDView.swift */,
 				AE0A02232A0AD71900F2479E /* LogView.swift */,
 			);
-			path = View;
+			path = NodeID;
 			sourceTree = "<group>";
 		};
-		AE49E87B2A2544E1002623E8 /* View Model */ = {
+		AE49E87B2A2544E1002623E8 /* NodeID */ = {
 			isa = PBXGroup;
 			children = (
 				AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */,
 			);
+			path = NodeID;
+			sourceTree = "<group>";
+		};
+		AE8549F72AC5FF9A00F056E6 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				AE89C7652AC5D49800EF8217 /* KeyService */,
+				AE49E8792A253D43002623E8 /* Lightning Service */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		AE8549F82AC5FFBF00F056E6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */,
+				AEFAF2912A433F6F001128DF /* LightningPaymentStatus.swift */,
+				AEE5B7692A09C722001E5E59 /* Peer.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		AE8549F92AC6003D00F056E6 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				AE8549FB2AC6005300F056E6 /* Bitcoin */,
+				AE8549FA2AC6004D00F056E6 /* Lightning */,
+				AE49E8782A253CC5002623E8 /* Home */,
+			);
 			path = "View Model";
 			sourceTree = "<group>";
 		};
-		AE5C4FD329A5550100BE3285 /* Lightning */ = {
+		AE8549FA2AC6004D00F056E6 /* Lightning */ = {
 			isa = PBXGroup;
 			children = (
-				AE49E8792A253D43002623E8 /* Lightning Service */,
-				AEBAA4862A01A8FB0042EA82 /* Channel */,
-				AEBAA48A2A01A91C0042EA82 /* Node ID */,
-				AEBAA48B2A01A9300042EA82 /* Peer */,
-				AEBAA4882A01A90D0042EA82 /* Send */,
-				AEBAA4892A01A9130042EA82 /* Receive */,
+				AE49E87B2A2544E1002623E8 /* NodeID */,
+				AE49E86D2A253A9A002623E8 /* Channel */,
+				AE49E8742A253AF0002623E8 /* Peer */,
+				AE49E8702A253ABE002623E8 /* Send */,
+				AE49E8722A253AD5002623E8 /* Receive */,
 			);
 			path = Lightning;
 			sourceTree = "<group>";
 		};
-		AE80116E29A5A64F009B9967 /* Home */ = {
+		AE8549FB2AC6005300F056E6 /* Bitcoin */ = {
 			isa = PBXGroup;
 			children = (
-				AE49E8772A253CBE002623E8 /* View */,
-				AE49E8782A253CC5002623E8 /* View Model */,
+				AE49E8532A253647002623E8 /* BitcoinViewModel.swift */,
+				AE49E8552A253674002623E8 /* AddressViewModel.swift */,
+				AED09EF32A312ACE00BBCFB1 /* SendBitcoinViewModel.swift */,
 			);
-			path = Home;
+			path = Bitcoin;
+			sourceTree = "<group>";
+		};
+		AE8549FC2AC6010C00F056E6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				AE8549FD2AC6013A00F056E6 /* Bitcoin */,
+				AE8549FE2AC6014F00F056E6 /* Lightning */,
+				AE49E8772A253CBE002623E8 /* Home */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AE8549FD2AC6013A00F056E6 /* Bitcoin */ = {
+			isa = PBXGroup;
+			children = (
+				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
+				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
+				AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */,
+			);
+			path = Bitcoin;
+			sourceTree = "<group>";
+		};
+		AE8549FE2AC6014F00F056E6 /* Lightning */ = {
+			isa = PBXGroup;
+			children = (
+				AE49E8712A253ACB002623E8 /* Receive */,
+				AE49E86F2A253AB9002623E8 /* Send */,
+				AE49E8732A253AE8002623E8 /* Peer */,
+				AE49E87A2A2544DC002623E8 /* NodeID */,
+				AE49E86E2A253AAE002623E8 /* Channel */,
+			);
+			path = Lightning;
+			sourceTree = "<group>";
+		};
+		AE8549FF2AC601CD00F056E6 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 		AE89C7652AC5D49800EF8217 /* KeyService */ = {
@@ -374,7 +406,6 @@
 			children = (
 				AE01C5B12AB3BF3C00F28C7E /* KeyService.swift */,
 				AE01C5B72AB3C0C400F28C7E /* KeyServiceError.swift */,
-				AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */,
 			);
 			path = KeyService;
 			sourceTree = "<group>";
@@ -383,56 +414,9 @@
 			isa = PBXGroup;
 			children = (
 				AE83142529AED67B00088A70 /* MondayError.swift */,
-				AEFAF2912A433F6F001128DF /* LightningPaymentStatus.swift */,
 				AE49E84B2A24F96F002623E8 /* Constants.swift */,
 			);
 			path = Utilities;
-			sourceTree = "<group>";
-		};
-		AEBAA4862A01A8FB0042EA82 /* Channel */ = {
-			isa = PBXGroup;
-			children = (
-				AE49E86E2A253AAE002623E8 /* View */,
-				AE49E86D2A253A9A002623E8 /* View Model */,
-			);
-			path = Channel;
-			sourceTree = "<group>";
-		};
-		AEBAA4882A01A90D0042EA82 /* Send */ = {
-			isa = PBXGroup;
-			children = (
-				AE49E86F2A253AB9002623E8 /* View */,
-				AE49E8702A253ABE002623E8 /* View Model */,
-			);
-			path = Send;
-			sourceTree = "<group>";
-		};
-		AEBAA4892A01A9130042EA82 /* Receive */ = {
-			isa = PBXGroup;
-			children = (
-				AE49E8712A253ACB002623E8 /* View */,
-				AE49E8722A253AD5002623E8 /* View Model */,
-			);
-			path = Receive;
-			sourceTree = "<group>";
-		};
-		AEBAA48A2A01A91C0042EA82 /* Node ID */ = {
-			isa = PBXGroup;
-			children = (
-				AE49E87A2A2544DC002623E8 /* View */,
-				AE49E87B2A2544E1002623E8 /* View Model */,
-			);
-			path = "Node ID";
-			sourceTree = "<group>";
-		};
-		AEBAA48B2A01A9300042EA82 /* Peer */ = {
-			isa = PBXGroup;
-			children = (
-				AE49E86A2A253A00002623E8 /* Model */,
-				AE49E8732A253AE8002623E8 /* View */,
-				AE49E8742A253AF0002623E8 /* View Model */,
-			);
-			path = Peer;
 			sourceTree = "<group>";
 		};
 		AEE8FDE029F8581400406DD9 /* Extensions */ = {

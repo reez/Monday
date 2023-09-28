@@ -17,3 +17,7 @@ struct BackupInfo: Codable, Equatable {
         return lhs.mnemonic == rhs.mnemonic
     }
 }
+
+#if DEBUG
+    let mockBackupInfo = BackupInfo(mnemonic: "")
+#endif
