@@ -63,3 +63,13 @@ extension KeyClient {
         deleteBackupInfo: { try KeyService().deleteBackupInfo() }
     )
 }
+
+#if DEBUG
+extension KeyClient {
+    static let mock = Self(
+        saveBackupInfo: { _ in },
+        getBackupInfo: { mockBackupInfo },
+        deleteBackupInfo: { }
+    )
+}
+#endif
