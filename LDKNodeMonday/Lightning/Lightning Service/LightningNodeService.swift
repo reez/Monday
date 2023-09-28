@@ -80,13 +80,9 @@ class LightningNodeService {
         
         let backupInfo = try? keyService.getBackupInfo()
         if backupInfo?.mnemonic != nil {
-            print("i have a key")
-            print("existing key: \(String(describing: backupInfo?.mnemonic))")
             nodeBuilder.setEntropyBip39Mnemonic(mnemonic: backupInfo!.mnemonic, passphrase: nil)
         } else {
-            print("i do not have a key")
             let mnemonic = generateEntropyMnemonic()
-            print("new key: \(mnemonic)")
             let backupInfo = BackupInfo(mnemonic: mnemonic)
             try? keyService.saveBackupInfo(backupInfo)
             nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
