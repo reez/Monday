@@ -23,7 +23,7 @@ class LightningNodeService {
     }
 
     init(network: Network, keyService: KeyClient = .live) {
-        
+
         try? FileManager.deleteLDKNodeLogLatestFile()
 
         let config = Config(
@@ -37,7 +37,7 @@ class LightningNodeService {
             logLevel: .debug
         )
         let nodeBuilder = Builder.fromConfig(config: config)
- 
+
         switch network {
 
         case .bitcoin:
@@ -73,7 +73,7 @@ class LightningNodeService {
             self.networkColor = Constants.BitcoinNetworkColor.testnet.color
 
         }
-        
+
         let backupInfo = try? keyService.getBackupInfo()
         if backupInfo?.mnemonic != nil {
             nodeBuilder.setEntropyBip39Mnemonic(mnemonic: backupInfo!.mnemonic, passphrase: nil)
@@ -92,7 +92,7 @@ class LightningNodeService {
         let ldkNode = try! nodeBuilder.build()
 
         self.ldkNode = ldkNode
-        
+
         self.keyService = keyService
     }
 
