@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		AE001CDD29F5EBEC006CA7D1 /* SendConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE001CDC29F5EBEC006CA7D1 /* SendConfirmationView.swift */; };
-		AE01C5AD2AB3BC4F00F28C7E /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5AC2AB3BC4F00F28C7E /* View+Extensions.swift */; };
 		AE01C5B02AB3BEED00F28C7E /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = AE01C5AF2AB3BEED00F28C7E /* KeychainAccess */; };
 		AE01C5B22AB3BF3C00F28C7E /* KeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B12AB3BF3C00F28C7E /* KeyService.swift */; };
 		AE01C5B42AB3BF8100F28C7E /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B32AB3BF8100F28C7E /* Bundle+Extensions.swift */; };
@@ -39,7 +38,6 @@
 		AE49E86C2A253A32002623E8 /* NodeIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */; };
 		AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C15B12A1316D100AA8917 /* BitcoinView.swift */; };
 		AE581D5A2A4214EA0000D979 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE581D592A4214EA0000D979 /* LDKNode */; };
-		AE5849302A2A2B6B00BEF038 /* QRCodeViewLightning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58492F2A2A2B6B00BEF038 /* QRCodeViewLightning.swift */; };
 		AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */; };
 		AE5C4FD529A5565700BE3285 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AE5C4FD429A5565700BE3285 /* README.md */; };
 		AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */; };
@@ -61,7 +59,6 @@
 		AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */; };
 		AED09EF22A312AC200BBCFB1 /* SendBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */; };
 		AED09EF42A312ACE00BBCFB1 /* SendBitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED09EF32A312ACE00BBCFB1 /* SendBitcoinViewModel.swift */; };
-		AEE4CD0129ABC0DB00BF1BF9 /* QRCodeViewBitcoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE4CD0029ABC0DB00BF1BF9 /* QRCodeViewBitcoin.swift */; };
 		AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = AEE5B7642A09B1FC001E5E59 /* CodeScanner */; };
 		AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE5B7692A09C722001E5E59 /* Peer.swift */; };
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
@@ -71,7 +68,6 @@
 
 /* Begin PBXFileReference section */
 		AE001CDC29F5EBEC006CA7D1 /* SendConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendConfirmationView.swift; sourceTree = "<group>"; };
-		AE01C5AC2AB3BC4F00F28C7E /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		AE01C5B12AB3BF3C00F28C7E /* KeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyService.swift; sourceTree = "<group>"; };
 		AE01C5B32AB3BF8100F28C7E /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupInfo.swift; sourceTree = "<group>"; };
@@ -101,7 +97,6 @@
 		AE49E8672A2537FB002623E8 /* DisconnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectViewModel.swift; sourceTree = "<group>"; };
 		AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDViewModel.swift; sourceTree = "<group>"; };
 		AE4C15B12A1316D100AA8917 /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
-		AE58492F2A2A2B6B00BEF038 /* QRCodeViewLightning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewLightning.swift; sourceTree = "<group>"; };
 		AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningStorage.swift; sourceTree = "<group>"; };
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extensions.swift"; sourceTree = "<group>"; };
@@ -122,7 +117,6 @@
 		AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectView.swift; sourceTree = "<group>"; };
 		AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendBitcoinView.swift; sourceTree = "<group>"; };
 		AED09EF32A312ACE00BBCFB1 /* SendBitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendBitcoinViewModel.swift; sourceTree = "<group>"; };
-		AEE4CD0029ABC0DB00BF1BF9 /* QRCodeViewBitcoin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewBitcoin.swift; sourceTree = "<group>"; };
 		AEE5B7692A09C722001E5E59 /* Peer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
 		AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -257,7 +251,6 @@
 			isa = PBXGroup;
 			children = (
 				AE6BB5702A00947B009E16E3 /* ReceiveView.swift */,
-				AE58492F2A2A2B6B00BEF038 /* QRCodeViewLightning.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -295,7 +288,6 @@
 			children = (
 				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
 				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
-				AEE4CD0029ABC0DB00BF1BF9 /* QRCodeViewBitcoin.swift */,
 				AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */,
 			);
 			path = View;
@@ -448,7 +440,6 @@
 			children = (
 				AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */,
 				AE01C5B32AB3BF8100F28C7E /* Bundle+Extensions.swift */,
-				AE01C5AC2AB3BC4F00F28C7E /* View+Extensions.swift */,
 				AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */,
 				AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */,
 				AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */,
@@ -563,13 +554,10 @@
 				AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */,
 				AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */,
 				AE49E8622A25378C002623E8 /* ReceiveViewModel.swift in Sources */,
-				AE01C5AD2AB3BC4F00F28C7E /* View+Extensions.swift in Sources */,
 				AE01C5B82AB3C0C400F28C7E /* KeyServiceError.swift in Sources */,
 				AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */,
 				AE49E8582A2536B4002623E8 /* ChannelsListViewModel.swift in Sources */,
-				AEE4CD0129ABC0DB00BF1BF9 /* QRCodeViewBitcoin.swift in Sources */,
 				AE7594812A4FAE0200EAEDA2 /* PaymentsListView.swift in Sources */,
-				AE5849302A2A2B6B00BEF038 /* QRCodeViewLightning.swift in Sources */,
 				AE49E85E2A25372D002623E8 /* SendViewModel.swift in Sources */,
 				AE80116929A59918009B9967 /* TabHomeView.swift in Sources */,
 				AE01C5B42AB3BF8100F28C7E /* Bundle+Extensions.swift in Sources */,
@@ -814,8 +802,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/reez/WalletUI.git";
 			requirement = {
-				kind = exactVersion;
-				version = 1.0.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 		AE7BF29A2A44A24F0030FDE5 /* XCRemoteSwiftPackageReference "ldk-node" */ = {
