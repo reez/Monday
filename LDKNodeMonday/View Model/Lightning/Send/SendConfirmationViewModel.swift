@@ -18,7 +18,7 @@ class SendConfirmationViewModel: ObservableObject {
         self.invoice = invoice
     }
 
-    func sendPayment(invoice: Invoice) async {
+    func sendPayment(invoice: Bolt11Invoice) async {
         do {
             let paymentHash = try await LightningNodeService.shared.sendPayment(invoice: invoice)
             DispatchQueue.main.async {

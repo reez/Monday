@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "bitcoinui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/reez/BitcoinUI.git",
+      "state" : {
+        "revision" : "89c0f7bf2581a16a50cd4a36c71a873bd0dd9fae",
+        "version" : "1.0.2"
+      }
+    },
+    {
       "identity" : "codescanner",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/twostraws/CodeScanner",
@@ -23,17 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lightningdevkit/ldk-node.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "92ff8e93386c9d9ff6b72200f2153f9474abce00"
-      }
-    },
-    {
-      "identity" : "walletui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/reez/WalletUI.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "89c0f7bf2581a16a50cd4a36c71a873bd0dd9fae"
+        "revision" : "ae168bb9f75ce8522efbd5e888532ab7ab0f494e",
+        "version" : "0.2.0"
       }
     }
   ],
