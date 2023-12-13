@@ -18,7 +18,7 @@ class ChannelAddViewModel: ObservableObject {
     @Published var isProgressViewShowing: Bool = false
 
     private let channelConfig = ChannelConfig()
-    
+
     init() {
         self.channelConfig.setForwardingFeeProportionalMillionths(value: UInt32(0))
         self.channelConfig.setForwardingFeeBaseMsat(feeMsat: UInt32(1000))
