@@ -29,7 +29,7 @@ class LightningNodeService {
         let config = Config(
             storageDirPath: storageManager.getDocumentsDirectory(),
             network: network,
-            listeningAddress: "0.0.0.0:9735",
+            listeningAddresses: ["0.0.0.0:9735"],
             defaultCltvExpiryDelta: UInt32(144),
             onchainWalletSyncIntervalSecs: UInt64(60),
             walletSyncIntervalSecs: UInt64(20),
@@ -158,13 +158,13 @@ class LightningNodeService {
         try ldkNode.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
     }
 
-    func sendPayment(invoice: Invoice) async throws -> PaymentHash {
+    func sendPayment(invoice: Bolt11Invoice) async throws -> PaymentHash {
         let paymentHash = try ldkNode.sendPayment(invoice: invoice)
         return paymentHash
     }
 
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async throws
-        -> Invoice
+        -> Bolt11Invoice
     {
         let invoice = try ldkNode.receivePayment(
             amountMsat: amountMsat,
@@ -207,9 +207,9 @@ extension LightningNodeService {
         ldkNode.eventHandled()
     }
 
-    func listeningAddress() -> String? {
-        guard let address = ldkNode.listeningAddress() else { return nil }
-        return address
+    func listeningAddresses() -> [String] {
+        guard let addresses = ldkNode.listeningAddresses() else { return [] }
+        return addresses
     }
 
     func sendToOnchainAddress(address: Address, amountMsat: UInt64) throws -> Txid {
@@ -226,7 +226,7 @@ extension LightningNodeService {
         try ldkNode.syncWallets()
     }
 
-    func sendPaymentUsingAmount(invoice: Invoice, amountMsat: UInt64) throws -> PaymentHash {
+    func sendPaymentUsingAmount(invoice: Bolt11Invoice, amountMsat: UInt64) throws -> PaymentHash {
         let paymentHash = try ldkNode.sendPaymentUsingAmount(
             invoice: invoice,
             amountMsat: amountMsat
@@ -239,7 +239,7 @@ extension LightningNodeService {
         return paymentHash
     }
 
-    func receiveVariableAmountPayment(description: String, expirySecs: UInt32) throws -> Invoice {
+    func receiveVariableAmountPayment(description: String, expirySecs: UInt32) throws -> Bolt11Invoice {
         let invoice = try ldkNode.receiveVariableAmountPayment(
             description: description,
             expirySecs: expirySecs
@@ -252,9 +252,8 @@ extension LightningNodeService {
         return paymentDetails
     }
 
-    func removePayment(paymentHash: PaymentHash) throws -> Bool {
-        let payment = try ldkNode.removePayment(paymentHash: paymentHash)
-        return payment
+    func removePayment(paymentHash: PaymentHash) throws {
+        try ldkNode.removePayment(paymentHash: paymentHash)
     }
 
 }

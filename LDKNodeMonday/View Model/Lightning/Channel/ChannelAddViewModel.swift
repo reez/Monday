@@ -17,13 +17,7 @@ class ChannelAddViewModel: ObservableObject {
     @Published var isOpenChannelFinished: Bool = false
     @Published var isProgressViewShowing: Bool = false
 
-    private let channelConfig = ChannelConfig(
-        forwardingFeeProportionalMillionths: UInt32(0),
-        forwardingFeeBaseMsat: UInt32(1000),
-        cltvExpiryDelta: UInt16(72),
-        maxDustHtlcExposureMsat: 50_000_000,
-        forceCloseAvoidanceMaxFeeSatoshis: UInt64(1000)
-    )
+    private let channelConfig = ChannelConfig()
 
     func openChannel(
         nodeId: PublicKey,

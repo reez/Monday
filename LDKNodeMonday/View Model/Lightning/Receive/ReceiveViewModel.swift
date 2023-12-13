@@ -10,7 +10,7 @@ import SwiftUI
 
 class ReceiveViewModel: ObservableObject {
     @Published var amountMsat: String = ""
-    @Published var invoice: Invoice = ""
+    @Published var invoice: Bolt11Invoice = ""
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
 

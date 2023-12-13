@@ -21,6 +21,7 @@
 		AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */; };
 		AE186B8E2A1540B700338463 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE186B8D2A1540B700338463 /* StartView.swift */; };
 		AE1D9BEC2B2A1FFD00620748 /* BitcoinUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE1D9BEB2B2A1FFD00620748 /* BitcoinUI */; };
+		AE1D9C0B2B2A251500620748 /* ChannelDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */; };
 		AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84B2A24F96F002623E8 /* Constants.swift */; };
 		AE49E84E2A24FDD7002623E8 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */; };
 		AE49E8502A2535E3002623E8 /* TabHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84F2A2535E3002623E8 /* TabHomeViewModel.swift */; };
@@ -80,6 +81,7 @@
 		AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeService.swift; sourceTree = "<group>"; };
 		AE186B8D2A1540B700338463 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
+		AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChannelDetails+Extensions.swift"; sourceTree = "<group>"; };
 		AE49E84B2A24F96F002623E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		AE49E84F2A2535E3002623E8 /* TabHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeViewModel.swift; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 			isa = PBXGroup;
 			children = (
 				AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */,
+				AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */,
 				AE01C5B32AB3BF8100F28C7E /* Bundle+Extensions.swift */,
 				AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */,
 				AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */,
@@ -533,6 +536,7 @@
 				AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */,
 				AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
+				AE1D9C0B2B2A251500620748 /* ChannelDetails+Extensions.swift in Sources */,
 				AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */,
 				AE49E86C2A253A32002623E8 /* NodeIDViewModel.swift in Sources */,
 				AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */,
@@ -796,8 +800,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lightningdevkit/ldk-node.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 0.2.0;
 			};
 		};
 		AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {

@@ -145,7 +145,7 @@ struct ChannelDetailView: View {
 struct ChannelCloseView_Previews: PreviewProvider {
 
     static var previews: some View {
-        let channel = ChannelDetails.init(
+        let channel = ChannelDetails(
             channelId: ChannelId(stringLiteral: "channelID"),
             counterpartyNodeId: PublicKey(stringLiteral: "counterpartyNodeId"),
             fundingTxo: nil,
@@ -162,7 +162,19 @@ struct ChannelCloseView_Previews: PreviewProvider {
             isChannelReady: true,
             isUsable: true,
             isPublic: true,
-            cltvExpiryDelta: nil
+            cltvExpiryDelta: nil,
+            counterpartyUnspendablePunishmentReserve: UInt64(1),
+            counterpartyOutboundHtlcMinimumMsat: nil,
+            counterpartyOutboundHtlcMaximumMsat: nil,
+            counterpartyForwardingInfoFeeBaseMsat: nil,
+            counterpartyForwardingInfoFeeProportionalMillionths: nil,
+            counterpartyForwardingInfoCltvExpiryDelta: nil,
+            nextOutboundHtlcLimitMsat: UInt64(1),
+            nextOutboundHtlcMinimumMsat: UInt64(1),
+            forceCloseSpendDelay: nil,
+            inboundHtlcMinimumMsat: UInt64(1),
+            inboundHtlcMaximumMsat: nil,
+            config: .init()
         )
         ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
         ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
