@@ -99,13 +99,13 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .ChannelConfigUpdateFailed(let message):
         return .init(title: "ChannelConfigUpdateFailed", detail: message)
 
-    case .ProbeSendingFailed(message: let message):
+    case .ProbeSendingFailed(let message):
         return .init(title: "ProbeSendingFailed", detail: message)
 
-    case .FeerateEstimationUpdateFailed(message: let message):
+    case .FeerateEstimationUpdateFailed(let message):
         return .init(title: "FeerateEstimationUpdateFailed", detail: message)
 
-    case .InvalidSocketAddress(message: let message):
+    case .InvalidSocketAddress(let message):
         return .init(title: "InvalidSocketAddress", detail: message)
 
     }

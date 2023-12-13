@@ -239,7 +239,9 @@ extension LightningNodeService {
         return paymentHash
     }
 
-    func receiveVariableAmountPayment(description: String, expirySecs: UInt32) throws -> Bolt11Invoice {
+    func receiveVariableAmountPayment(description: String, expirySecs: UInt32) throws
+        -> Bolt11Invoice
+    {
         let invoice = try ldkNode.receiveVariableAmountPayment(
             description: description,
             expirySecs: expirySecs

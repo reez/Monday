@@ -17,4 +17,3 @@ extension ChannelDetails: Hashable {
         hasher.combine(channelId)
     }
 }
-
