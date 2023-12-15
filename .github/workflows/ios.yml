@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Select Xcode Version
-        run: sudo xcode-select -switch /Applications/Xcode_15.0.app
+        run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
@@ -25,4 +25,4 @@ jobs:
       - name: List Devices
         run: xcrun xctrace list devices 2>&1
       - name: Build
-        run: xcodebuild build-for-testing -scheme LDKNodeMonday -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 14,OS=17.0'
+        run: xcodebuild build-for-testing -scheme LDKNodeMonday -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.0.1'
