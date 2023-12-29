@@ -16,9 +16,11 @@ extension FileManager {
             .userDomainMask,
             true
         )[0]
+
         let logFilePath = URL(fileURLWithPath: documentsPath).appendingPathComponent(
             "logs/ldk_node_latest.log"
         ).path
+
         try FileManager.default.removeItem(atPath: logFilePath)
     }
 

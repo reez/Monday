@@ -19,9 +19,7 @@ extension UInt64 {
             return ""
         }
     }
-}
 
-extension UInt64 {
     func formattedSatoshis() -> String {
         if self == 0 {
             return "0.00 000 000"

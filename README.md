@@ -49,9 +49,9 @@ It provides default implementations for:
 
 - [x] List Payments `listPayments`
 
-### Not Implemented
+- [x] Event Handling 
 
-- [ ] Event Handling 
+### Not Implemented
 
 - [ ] All Payment variations
 

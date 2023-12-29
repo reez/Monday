@@ -17,7 +17,7 @@ class LightningNodeService {
 
     class var shared: LightningNodeService {
         struct Singleton {
-            static let instance = LightningNodeService(network: .signet)
+            static let instance = LightningNodeService(network: .regtest)
         }
         return Singleton.instance
     }
@@ -260,8 +260,34 @@ extension LightningNodeService {
 
 }
 
+// Use with caution
 extension LightningNodeService {
+    func stopNode() throws {
+        try ldkNode.stop()
+    }
     func deleteWallet() throws {
         try keyService.deleteBackupInfo()
+    }
+    func getBackupInfo() throws -> BackupInfo {
+        let backupInfo = try keyService.getBackupInfo()
+        return backupInfo
+    }
+}
+
+// Event Handling
+extension LightningNodeService {
+    func listenForEvents() {
+        Task {
+            while true {
+                if let event = ldkNode.nextEvent() {
+                    NotificationCenter.default.post(
+                        name: .ldkEventReceived,
+                        object: event.description
+                    )
+                    ldkNode.eventHandled()
+                }
+                try? await Task.sleep(nanoseconds: 5_000_000_000)
+            }
+        }
     }
 }

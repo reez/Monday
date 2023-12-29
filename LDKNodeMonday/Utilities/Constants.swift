@@ -17,7 +17,7 @@ struct Constants {
                 static let bitcoin_blockstream = "https://blockstream.info/api"
                 static let bitcoin_mempoolspace = "https://mempool.space/api"
             }
-            static let regtest = "http://ldk-node.tnull.de:3002"
+            static let regtest = "http://127.0.0.1:3002"  // "http://ldk-node.tnull.de:3002"
             static let signet = "https://mutinynet.com/api"
             struct Testnet {
                 static let testnet_blockstream = "http://blockstream.info/testnet/api"

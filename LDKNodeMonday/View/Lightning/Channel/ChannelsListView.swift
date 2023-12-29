@@ -6,6 +6,7 @@
 //
 
 import BitcoinUI
+import SimpleToast
 import SwiftUI
 
 struct ChannelsListView: View {
@@ -16,6 +17,9 @@ struct ChannelsListView: View {
     @State private var isAddChannelPresented = false
     @State private var refreshFlag = false
     @State private var isPaymentsPresented = false
+
+    @StateObject private var eventService = EventService()
+    @State private var showToast = false
 
     var body: some View {
 
@@ -164,6 +168,25 @@ struct ChannelsListView: View {
                         refreshFlag = false
                     }
                 }
+                .simpleToast(
+                    isPresented: $showToast,
+                    options: .init(
+                        hideAfter: 2.5,
+                        animation: .spring,
+                        modifierType: .slide
+                    )
+                ) {
+                    Text(eventService.lastMessage ?? "")
+                        .padding()
+                        .background(
+                            Capsule()
+                                .foregroundColor(Color.orange)
+                        )
+                        .foregroundColor(Color.white)
+                }
+                .onChange(of: eventService.lastMessage, { oldValue, newValue in
+                    showToast = eventService.lastMessage != nil
+                })
                 .sheet(
                     isPresented: $isSendPresented,
                     onDismiss: {

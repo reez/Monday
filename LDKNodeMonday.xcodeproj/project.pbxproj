@@ -39,6 +39,8 @@
 		AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8672A2537FB002623E8 /* DisconnectViewModel.swift */; };
 		AE49E86C2A253A32002623E8 /* NodeIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */; };
 		AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C15B12A1316D100AA8917 /* BitcoinView.swift */; };
+		AE51BEFA2B37A2A500BAE452 /* Event+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE51BEF92B37A2A500BAE452 /* Event+Extensions.swift */; };
+		AE51BEFD2B37A5DC00BAE452 /* SimpleToast in Frameworks */ = {isa = PBXBuildFile; productRef = AE51BEFC2B37A5DC00BAE452 /* SimpleToast */; };
 		AE581D5A2A4214EA0000D979 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE581D592A4214EA0000D979 /* LDKNode */; };
 		AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */; };
 		AE5C4FD529A5565700BE3285 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AE5C4FD429A5565700BE3285 /* README.md */; };
@@ -46,6 +48,8 @@
 		AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB5702A00947B009E16E3 /* ReceiveView.swift */; };
 		AE7594812A4FAE0200EAEDA2 /* PaymentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7594802A4FAE0200EAEDA2 /* PaymentsListView.swift */; };
 		AE7BF29C2A44A24F0030FDE5 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE7BF29B2A44A24F0030FDE5 /* LDKNode */; };
+		AE7C4A082B406D590061189D /* SimpleToast in Frameworks */ = {isa = PBXBuildFile; productRef = AE7C4A072B406D590061189D /* SimpleToast */; };
+		AE7C4A0C2B40785F0061189D /* SeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7C4A0B2B40785F0061189D /* SeedView.swift */; };
 		AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */; };
 		AE7D3FAD2A4263C100EAE730 /* PaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */; };
 		AE80116929A59918009B9967 /* TabHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116829A59918009B9967 /* TabHomeView.swift */; };
@@ -60,6 +64,8 @@
 		AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */; };
 		AED09EF22A312AC200BBCFB1 /* SendBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */; };
 		AED09EF42A312ACE00BBCFB1 /* SendBitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED09EF32A312ACE00BBCFB1 /* SendBitcoinViewModel.swift */; };
+		AEDF47F12B3FADF900145D64 /* EventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDF47F02B3FADF900145D64 /* EventService.swift */; };
+		AEDF47F32B3FBAB900145D64 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDF47F22B3FBAB900145D64 /* Notification+Extensions.swift */; };
 		AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = AEE5B7642A09B1FC001E5E59 /* CodeScanner */; };
 		AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE5B7692A09C722001E5E59 /* Peer.swift */; };
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
@@ -99,11 +105,13 @@
 		AE49E8672A2537FB002623E8 /* DisconnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectViewModel.swift; sourceTree = "<group>"; };
 		AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDViewModel.swift; sourceTree = "<group>"; };
 		AE4C15B12A1316D100AA8917 /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
+		AE51BEF92B37A2A500BAE452 /* Event+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+Extensions.swift"; sourceTree = "<group>"; };
 		AE5C4FD129A5543C00BE3285 /* LightningStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningStorage.swift; sourceTree = "<group>"; };
 		AE5C4FD429A5565700BE3285 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extensions.swift"; sourceTree = "<group>"; };
 		AE6BB5702A00947B009E16E3 /* ReceiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveView.swift; sourceTree = "<group>"; };
 		AE7594802A4FAE0200EAEDA2 /* PaymentsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsListView.swift; sourceTree = "<group>"; };
+		AE7C4A0B2B40785F0061189D /* SeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedView.swift; sourceTree = "<group>"; };
 		AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsView.swift; sourceTree = "<group>"; };
 		AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsViewModel.swift; sourceTree = "<group>"; };
 		AE80116829A59918009B9967 /* TabHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeView.swift; sourceTree = "<group>"; };
@@ -119,6 +127,8 @@
 		AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectView.swift; sourceTree = "<group>"; };
 		AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendBitcoinView.swift; sourceTree = "<group>"; };
 		AED09EF32A312ACE00BBCFB1 /* SendBitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendBitcoinViewModel.swift; sourceTree = "<group>"; };
+		AEDF47F02B3FADF900145D64 /* EventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventService.swift; sourceTree = "<group>"; };
+		AEDF47F22B3FBAB900145D64 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		AEE5B7692A09C722001E5E59 /* Peer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
 		AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -134,6 +144,8 @@
 				AE1D9BEC2B2A1FFD00620748 /* BitcoinUI in Frameworks */,
 				AE581D5A2A4214EA0000D979 /* LDKNode in Frameworks */,
 				AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */,
+				AE51BEFD2B37A5DC00BAE452 /* SimpleToast in Frameworks */,
+				AE7C4A082B406D590061189D /* SimpleToast in Frameworks */,
 				AE01C5B02AB3BEED00F28C7E /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -299,6 +311,7 @@
 			isa = PBXGroup;
 			children = (
 				AE80116A29A59976009B9967 /* NodeIDView.swift */,
+				AE7C4A0B2B40785F0061189D /* SeedView.swift */,
 				AE0A02232A0AD71900F2479E /* LogView.swift */,
 			);
 			path = NodeID;
@@ -417,6 +430,7 @@
 			children = (
 				AE83142529AED67B00088A70 /* MondayError.swift */,
 				AE49E84B2A24F96F002623E8 /* Constants.swift */,
+				AEDF47F02B3FADF900145D64 /* EventService.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -430,6 +444,8 @@
 				AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */,
 				AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */,
 				AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */,
+				AE51BEF92B37A2A500BAE452 /* Event+Extensions.swift */,
+				AEDF47F22B3FBAB900145D64 /* Notification+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -456,6 +472,8 @@
 				AE7BF29B2A44A24F0030FDE5 /* LDKNode */,
 				AE01C5AF2AB3BEED00F28C7E /* KeychainAccess */,
 				AE1D9BEB2B2A1FFD00620748 /* BitcoinUI */,
+				AE51BEFC2B37A5DC00BAE452 /* SimpleToast */,
+				AE7C4A072B406D590061189D /* SimpleToast */,
 			);
 			productName = LDKNodeMonday;
 			productReference = AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */;
@@ -490,6 +508,7 @@
 				AE7BF29A2A44A24F0030FDE5 /* XCRemoteSwiftPackageReference "ldk-node" */,
 				AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				AE1D9BEA2B2A1FFD00620748 /* XCRemoteSwiftPackageReference "BitcoinUI" */,
+				AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */,
 			);
 			productRefGroup = AE17E8D729A402E30058C9C9 /* Products */;
 			projectDirPath = "";
@@ -524,6 +543,7 @@
 				AE186B8E2A1540B700338463 /* StartView.swift in Sources */,
 				AE49E8602A253761002623E8 /* SendConfirmationViewModel.swift in Sources */,
 				AE001CDD29F5EBEC006CA7D1 /* SendConfirmationView.swift in Sources */,
+				AEDF47F32B3FBAB900145D64 /* Notification+Extensions.swift in Sources */,
 				AE01C5B22AB3BF3C00F28C7E /* KeyService.swift in Sources */,
 				AE49E8642A2537B3002623E8 /* PeersListViewModel.swift in Sources */,
 				AE49E8542A253647002623E8 /* BitcoinViewModel.swift in Sources */,
@@ -552,10 +572,12 @@
 				AEFAF2922A433F6F001128DF /* LightningPaymentStatus.swift in Sources */,
 				AE5C4FD229A5543C00BE3285 /* LightningStorage.swift in Sources */,
 				AED09EF42A312ACE00BBCFB1 /* SendBitcoinViewModel.swift in Sources */,
+				AE7C4A0C2B40785F0061189D /* SeedView.swift in Sources */,
 				AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */,
 				AE01C5B62AB3C0A200F28C7E /* BackupInfo.swift in Sources */,
 				AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */,
 				AE49E85C2A2536FB002623E8 /* ChannelDetailViewModel.swift in Sources */,
+				AEDF47F12B3FADF900145D64 /* EventService.swift in Sources */,
 				AE7D3FAD2A4263C100EAE730 /* PaymentsViewModel.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
 				AED09EF22A312AC200BBCFB1 /* SendBitcoinView.swift in Sources */,
@@ -563,6 +585,7 @@
 				AE49E85A2A2536D4002623E8 /* ChannelAddViewModel.swift in Sources */,
 				AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */,
+				AE51BEFA2B37A2A500BAE452 /* Event+Extensions.swift in Sources */,
 				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
 				AE49E8522A253618002623E8 /* StartViewModel.swift in Sources */,
 				AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */,
@@ -804,6 +827,14 @@
 				version = 0.2.0;
 			};
 		};
+		AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sanzaru/SimpleToast.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.8.1;
+			};
+		};
 		AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/twostraws/CodeScanner";
@@ -825,6 +856,10 @@
 			package = AE1D9BEA2B2A1FFD00620748 /* XCRemoteSwiftPackageReference "BitcoinUI" */;
 			productName = BitcoinUI;
 		};
+		AE51BEFC2B37A5DC00BAE452 /* SimpleToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SimpleToast;
+		};
 		AE581D592A4214EA0000D979 /* LDKNode */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LDKNode;
@@ -833,6 +868,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AE7BF29A2A44A24F0030FDE5 /* XCRemoteSwiftPackageReference "ldk-node" */;
 			productName = LDKNode;
+		};
+		AE7C4A072B406D590061189D /* SimpleToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */;
+			productName = SimpleToast;
 		};
 		AEE5B7642A09B1FC001E5E59 /* CodeScanner */ = {
 			isa = XCSwiftPackageProductDependency;

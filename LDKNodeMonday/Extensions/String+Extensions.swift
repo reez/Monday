@@ -8,7 +8,6 @@
 import Foundation
 
 extension String {
-
     func bolt11amount() -> String? {
         let regex = try! NSRegularExpression(pattern: "ln.*?(\\d+)([munp]?)", options: [])
         if let match = regex.firstMatch(
@@ -77,4 +76,12 @@ extension String {
         }
     }
 
+    func truncated(toLength maxLength: Int, trailing: String = "...") -> String {
+        if self.count > maxLength {
+            let indexStart = self.index(self.startIndex, offsetBy: maxLength / 2)
+            let indexEnd = self.index(self.endIndex, offsetBy: -(maxLength / 2))
+            return String(self[..<indexStart]) + trailing + String(self[indexEnd...])
+        }
+        return self
+    }
 }

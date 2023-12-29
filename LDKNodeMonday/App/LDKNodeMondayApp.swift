@@ -16,10 +16,16 @@ struct LDKNodeMondayApp: App {
             StartView(viewModel: .init())
         }
     }
-
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+        LightningNodeService.shared.listenForEvents()
+        return true
+    }
     func applicationWillTerminate(_ application: UIApplication) {
         try? LightningNodeService.shared.stop()
     }

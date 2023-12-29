@@ -6,6 +6,7 @@
 //
 
 import BitcoinUI
+import SimpleToast
 import SwiftUI
 
 struct StartView: View {
@@ -37,8 +38,12 @@ struct StartView: View {
             .tint(viewModel.networkColor)
             .onAppear {
                 Task {
-                    try await viewModel.start()
-                    viewModel.getColor()
+                    do {
+                        try await viewModel.start()
+                        viewModel.getColor()
+                    } catch {
+                        // TODO: handle error
+                    }
                 }
             }
             .alert(isPresented: $showingStartViewErrorAlert) {
