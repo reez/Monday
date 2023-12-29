@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/reez/BitcoinUI.git",
       "state" : {
-        "revision" : "89c0f7bf2581a16a50cd4a36c71a873bd0dd9fae",
-        "version" : "1.0.2"
+        "revision" : "65690af03588a9efc91bf12160f3cc255088a35b",
+        "version" : "1.0.3"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/twostraws/CodeScanner",
       "state" : {
-        "revision" : "4b2f9c57d03bfe94e6b45572e0c908c1433c32b2",
-        "version" : "2.3.2"
+        "revision" : "d954f02dc06efe7adf24b8f62e39819235f9898c",
+        "version" : "2.0.0"
       }
     },
     {
