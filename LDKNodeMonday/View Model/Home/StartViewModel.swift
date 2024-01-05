@@ -16,6 +16,7 @@ class StartViewModel: ObservableObject {
     func start() async throws {
         do {
             try await LightningNodeService.shared.start()
+            LightningNodeService.shared.listenForEvents()
             await MainActor.run {
                 self.isStarted = true
             }

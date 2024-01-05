@@ -180,13 +180,17 @@ struct ChannelsListView: View {
                         .padding()
                         .background(
                             Capsule()
-                                .foregroundColor(Color.orange)
+                                .foregroundColor(viewModel.networkColor)
                         )
                         .foregroundColor(Color.white)
+                        .font(.caption2)
                 }
-                .onChange(of: eventService.lastMessage, { oldValue, newValue in
-                    showToast = eventService.lastMessage != nil
-                })
+                .onChange(
+                    of: eventService.lastMessage,
+                    { oldValue, newValue in
+                        showToast = eventService.lastMessage != nil
+                    }
+                )
                 .sheet(
                     isPresented: $isSendPresented,
                     onDismiss: {

@@ -84,4 +84,23 @@ extension String {
         }
         return self
     }
+
+    func formattedPropertyName() -> String {
+        let updatedName = self.replacingOccurrences(
+            of: "msat",
+            with: " Sats",
+            options: .caseInsensitive
+        )
+
+        let words = updatedName.reduce("") { partialResult, char in
+            if char.isUppercase {
+                return "\(partialResult) \(char)"
+            } else {
+                return partialResult + String(char)
+            }
+        }.split(separator: " ")
+
+        return words.map { $0.capitalized }.joined(separator: " ")
+    }
+
 }

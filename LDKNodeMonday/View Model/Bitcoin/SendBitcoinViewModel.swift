@@ -22,7 +22,9 @@ class SendBitcoinViewModel: ObservableObject {
 
     func sendAllToOnchain(address: String) async {
         do {
-            let txId = try await LightningNodeService.shared.sendAllToOnchain(address: address)
+            let txId = try await LightningNodeService.shared.sendAllToOnchainAddress(
+                address: address
+            )
             DispatchQueue.main.async {
                 self.txId = txId
                 self.isSendFinished = true

@@ -18,7 +18,7 @@ struct TabHomeView: View {
 
             TabView {
 
-                BitcoinView(viewModel: .init())
+                BitcoinView(viewModel: .init(priceClient: .live))
                     .tabItem {
                         Label(
                             "",

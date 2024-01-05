@@ -94,7 +94,7 @@ struct ChannelAddView: View {
                             "03a5b467d7f...4c2b099b8250c",
                             text: $viewModel.nodeId
                         )
-                        .onChange(of: viewModel.nodeId) { newValue in
+                        .onChange(of: viewModel.nodeId) { oldValue, newValue in
                             viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
                         }
                         .keyboardType(.numbersAndPunctuation)
@@ -123,7 +123,7 @@ struct ChannelAddView: View {
                             "172.18.0.2:9735",
                             text: $viewModel.address
                         )
-                        .onChange(of: viewModel.nodeId) { newValue in
+                        .onChange(of: viewModel.nodeId) { oldValue, newValue in
                             viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
                         }
                         .keyboardType(.numbersAndPunctuation)
