@@ -64,7 +64,7 @@ struct BitcoinView: View {
                                         reason: viewModel.isSpendableBalanceFinished
                                             ? [] : .placeholder
                                     )
-                                Text("sats spendable")
+                                Text("spendable")
                                     .foregroundColor(.secondary)
                                     .fontWeight(.thin)
                                 Spacer()
