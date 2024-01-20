@@ -25,6 +25,8 @@ class SendConfirmationViewModel: ObservableObject {
                 self.paymentHash = paymentHash
             }
         } catch let error as NodeError {
+            NotificationCenter.default.post(name: .ldkErrorReceived, object: error)
+
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
                 self.sendConfirmationViewError = .init(

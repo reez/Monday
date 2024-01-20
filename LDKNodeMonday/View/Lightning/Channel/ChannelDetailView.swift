@@ -14,6 +14,9 @@ struct ChannelDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var showingChannelDetailViewErrorAlert = false
     @Binding var refreshFlag: Bool
+    @State private var isCopied = false
+    @State private var showCheckmark = false
+    @State private var lastCopiedItemId: String? = nil
 
     var body: some View {
 
@@ -22,79 +25,119 @@ struct ChannelDetailView: View {
 
             VStack {
 
-                Text(viewModel.channel.isOutbound ? "Outbound" : "Inbound").bold()
+                Spacer()
 
-                VStack(alignment: .leading, spacing: 10) {
+                Text(viewModel.channel.isOutbound ? "Outbound" : "Inbound").bold()
+                    .padding()
+                    .padding(.top, 120.0)
+
+                List(viewModel.channel.formatted(), id: \.name) { property in
                     HStack {
-                        Text("Channel ID")
+                        Text(property.name)
                         Spacer()
-                        Text(viewModel.channel.channelId.description)
+                        Text(property.value)
+                            .foregroundColor(.secondary)
                             .truncationMode(.middle)
                             .lineLimit(1)
-                            .foregroundColor(.secondary)
-                    }
-                    HStack {
-                        Text("Counterparty Node ID")
-                            .lineLimit(1)
-                        Spacer()
-                        Text(viewModel.channel.counterpartyNodeId.description)
-                            .truncationMode(.middle)
-                            .lineLimit(1)
-                            .foregroundColor(.secondary)
-                    }
-                    HStack {
-                        Text("Channel Value Satoshis")
-                        Spacer()
-                        Text(viewModel.channel.channelValueSats.formattedAmount())
-                            .lineLimit(1)
-                            .foregroundColor(.secondary)
-                    }
-                    HStack {
-                        Text("Balance Satoshis")
-                        Spacer()
-                        Text((viewModel.channel.balanceMsat / 1000).formattedAmount())
-                            .lineLimit(1)
-                            .foregroundColor(.secondary)
-                    }
-                    HStack {
-                        Text("Outbound Capacity Satoshis")
-                        Spacer()
-                        Text((viewModel.channel.outboundCapacityMsat / 1000).formattedAmount())
-                            .foregroundColor(.secondary)
-                    }
-                    HStack {
-                        Text("Inbound Capacity Satoshis")
-                        Spacer()
-                        Text((viewModel.channel.inboundCapacityMsat / 1000).formattedAmount())
-                            .foregroundColor(.secondary)
-                    }
-                    if let confirm = viewModel.channel.confirmations {
-                        HStack {
-                            Text("Confirmations")
-                            Spacer()
-                            Text(confirm.description)
-                                .foregroundColor(.secondary)
+                        if property.isCopyable {
+                            Button {
+                                UIPasteboard.general.string = property.value
+                                lastCopiedItemId = property.name
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    lastCopiedItemId = nil
+                                }
+                            } label: {
+                                HStack {
+                                    withAnimation {
+                                        Image(
+                                            systemName: lastCopiedItemId == property.name
+                                                ? "checkmark" : "doc.on.doc"
+                                        )
+                                    }
+                                }
+                                .foregroundColor(viewModel.networkColor)
+                                .padding(.leading, 8)
+                            }
                         }
                     }
-                    HStack {
-                        Text("Is Channel Ready")
-                        Spacer()
-                        Text(viewModel.channel.isChannelReady.description)
-                            .truncationMode(.middle)
-                            .lineLimit(1)
-                            .foregroundColor(.secondary)
-                    }
-                    HStack {
-                        Text("Is Usable")
-                        Spacer()
-                        Text(viewModel.channel.isUsable.description)
-                            .truncationMode(.middle)
-                            .lineLimit(1)
-                            .foregroundColor(.secondary)
-                    }
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
                 }
                 .font(.system(.caption2, design: .monospaced))
+                .listStyle(.plain)
                 .padding()
+
+                //                VStack(alignment: .leading, spacing: 10) {
+                //                    HStack {
+                //                        Text("Channel ID")
+                //                        Spacer()
+                //                        Text(viewModel.channel.channelId.description)
+                //                            .truncationMode(.middle)
+                //                            .lineLimit(1)
+                //                            .foregroundColor(.secondary)
+                //                    }
+                //                    HStack {
+                //                        Text("Counterparty Node ID")
+                //                            .lineLimit(1)
+                //                        Spacer()
+                //                        Text(viewModel.channel.counterpartyNodeId.description)
+                //                            .truncationMode(.middle)
+                //                            .lineLimit(1)
+                //                            .foregroundColor(.secondary)
+                //                    }
+                //                    HStack {
+                //                        Text("Channel Value Satoshis")
+                //                        Spacer()
+                //                        Text(viewModel.channel.channelValueSats.formattedAmount())
+                //                            .lineLimit(1)
+                //                            .foregroundColor(.secondary)
+                //                    }
+                //                    HStack {
+                //                        Text("Balance Satoshis")
+                //                        Spacer()
+                //                        Text((viewModel.channel.balanceMsat / 1000).formattedAmount())
+                //                            .lineLimit(1)
+                //                            .foregroundColor(.secondary)
+                //                    }
+                //                    HStack {
+                //                        Text("Outbound Capacity Satoshis")
+                //                        Spacer()
+                //                        Text((viewModel.channel.outboundCapacityMsat / 1000).formattedAmount())
+                //                            .foregroundColor(.secondary)
+                //                    }
+                //                    HStack {
+                //                        Text("Inbound Capacity Satoshis")
+                //                        Spacer()
+                //                        Text((viewModel.channel.inboundCapacityMsat / 1000).formattedAmount())
+                //                            .foregroundColor(.secondary)
+                //                    }
+                //                    if let confirm = viewModel.channel.confirmations {
+                //                        HStack {
+                //                            Text("Confirmations")
+                //                            Spacer()
+                //                            Text(confirm.description)
+                //                                .foregroundColor(.secondary)
+                //                        }
+                //                    }
+                //                    HStack {
+                //                        Text("Is Channel Ready")
+                //                        Spacer()
+                //                        Text(viewModel.channel.isChannelReady.description)
+                //                            .truncationMode(.middle)
+                //                            .lineLimit(1)
+                //                            .foregroundColor(.secondary)
+                //                    }
+                //                    HStack {
+                //                        Text("Is Usable")
+                //                        Spacer()
+                //                        Text(viewModel.channel.isUsable.description)
+                //                            .truncationMode(.middle)
+                //                            .lineLimit(1)
+                //                            .foregroundColor(.secondary)
+                //                    }
+                //                }
+                //                .font(.system(.caption2, design: .monospaced))
+                //                .padding()
 
                 Button {
                     viewModel.close()
@@ -115,9 +158,13 @@ struct ChannelDetailView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(viewModel.networkColor)
                 .padding(.horizontal)
+                .padding(.bottom, 120.0)
+
+                Spacer()
 
             }
             .padding()
+            .padding(.vertical, 20.0)
             .alert(isPresented: $showingChannelDetailViewErrorAlert) {
                 Alert(
                     title: Text(viewModel.channelDetailViewError?.title ?? "Unknown"),
@@ -149,13 +196,13 @@ struct ChannelCloseView_Previews: PreviewProvider {
             channelId: ChannelId(stringLiteral: "channelID"),
             counterpartyNodeId: PublicKey(stringLiteral: "counterpartyNodeId"),
             fundingTxo: nil,
-            channelValueSats: UInt64(1000),
+            channelValueSats: UInt64(1_000_000),
             unspendablePunishmentReserve: nil,
             userChannelId: UserChannelId(stringLiteral: "userChannelId"),
-            feerateSatPer1000Weight: UInt32(20),
-            balanceMsat: UInt64(2000),
-            outboundCapacityMsat: UInt64(500),
-            inboundCapacityMsat: UInt64(400),
+            feerateSatPer1000Weight: UInt32(20000),
+            balanceMsat: UInt64(2_000_000),
+            outboundCapacityMsat: UInt64(500000),
+            inboundCapacityMsat: UInt64(400000),
             confirmationsRequired: nil,
             confirmations: nil,
             isOutbound: false,
@@ -163,16 +210,16 @@ struct ChannelCloseView_Previews: PreviewProvider {
             isUsable: true,
             isPublic: true,
             cltvExpiryDelta: nil,
-            counterpartyUnspendablePunishmentReserve: UInt64(1),
+            counterpartyUnspendablePunishmentReserve: UInt64(1000),
             counterpartyOutboundHtlcMinimumMsat: nil,
             counterpartyOutboundHtlcMaximumMsat: nil,
             counterpartyForwardingInfoFeeBaseMsat: nil,
             counterpartyForwardingInfoFeeProportionalMillionths: nil,
             counterpartyForwardingInfoCltvExpiryDelta: nil,
-            nextOutboundHtlcLimitMsat: UInt64(1),
-            nextOutboundHtlcMinimumMsat: UInt64(1),
+            nextOutboundHtlcLimitMsat: UInt64(1000),
+            nextOutboundHtlcMinimumMsat: UInt64(1000),
             forceCloseSpendDelay: nil,
-            inboundHtlcMinimumMsat: UInt64(1),
+            inboundHtlcMinimumMsat: UInt64(1000),
             inboundHtlcMaximumMsat: nil,
             config: .init()
         )

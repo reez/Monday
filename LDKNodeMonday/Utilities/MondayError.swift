@@ -18,7 +18,6 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     switch error {
 
     case .AlreadyRunning(let message):
-
         return .init(title: "AlreadyRunning", detail: message)
 
     case .NotRunning(let message):

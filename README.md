@@ -10,50 +10,43 @@ An example iOS app using [LDK Node](https://github.com/lightningdevkit/ldk-node)
 
 This app is an experimental work in progress. 
 
-It provides default implementations for: 
-- testnet
-- regtest *via [tnull](https://github.com/tnull/ldk-node-workshop)*
-- signet *via [mutiny-net](https://github.com/MutinyWallet/mutiny-net)*
-
 ### Implemented
 
-- [x] Start Node `start`
+- [x] `start`
 
-- [x] Stop Node `stop`
+- [x] `stop`
 
-- [x] Node ID `nodeId`
+- [x] `nodeId`
 
-- [x] Wallet Address `newFundingAddress`
+- [x] `newOnchainAddress`
 
-- [x] Spendable Balance `getSpendableOnchainBalanceSats`
+- [x] `spendableOnchainBalanceSats`
 
-- [x] Total Balance `getTotalOnchainBalanceSats`
+- [x] `totalOnchainBalanceSats`
 
-- [x] Connect Peer `connect`
+- [x] `connect`
 
-- [x] Disconnect Peer `disconnect`
+- [x] `disconnect`
 
-- [x] Open Channel `connectOpenChannel`
+- [x] `connectOpenChannel`
 
-- [x] Close Channel `closeChannel`
+- [x] `closeChannel`
 
-- [x] Send `sendPayment`
+- [x] `sendPayment`
 
-- [x] Receive `receivePayment`
+- [x] `receivePayment`
 
-- [x] List Peers `listPeers`
+- [x] `listPeers`
 
-- [x] List Channels `listChannels`
+- [x] `listChannels`
 
-- [x] Send All Onchain `sendAllToOnchain`
+- [x] `sendAllToOnchainAddress`
 
-- [x] List Payments `listPayments`
+- [x] `listPayments`
 
-### Not Implemented
+- [x] `nextEvent` 
 
-- [ ] Event Handling 
-
-- [ ] All Payment variations
+- [x] `eventHandled` 
 
 ## Swift Packages
 

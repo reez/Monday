@@ -8,23 +8,27 @@
 import Foundation
 import LDKNode
 import SwiftUI
+import os
 
 class LightningNodeService {
+    static var shared: LightningNodeService = LightningNodeService()
     private let ldkNode: LdkNode
     private let storageManager = LightningStorage()
-    var networkColor = Color.black
     private let keyService: KeyClient
+    var networkColor = Color.black
+    var network: Network
 
-    class var shared: LightningNodeService {
-        struct Singleton {
-            static let instance = LightningNodeService(network: .signet)
-        }
-        return Singleton.instance
-    }
+    init(
+        keyService: KeyClient = .live
+    ) {
 
-    init(network: Network, keyService: KeyClient = .live) {
+        let storedNetworkString = try! keyService.getNetwork() ?? Network.testnet.description
+        let storedEsploraURL =
+            try! keyService.getEsploraURL()
+            ?? Constants.Config.EsploraServerURLNetwork.Testnet.testnet_mempoolspace
 
-        try? FileManager.deleteLDKNodeLogLatestFile()
+        self.network = Network(stringValue: storedNetworkString) ?? .testnet
+        self.keyService = keyService
 
         let config = Config(
             storageDirPath: storageManager.getDocumentsDirectory(),
@@ -34,55 +38,47 @@ class LightningNodeService {
             onchainWalletSyncIntervalSecs: UInt64(60),
             walletSyncIntervalSecs: UInt64(20),
             feeRateCacheUpdateIntervalSecs: UInt64(600),
-            logLevel: .debug
+            logLevel: .trace
         )
+
         let nodeBuilder = Builder.fromConfig(config: config)
+        nodeBuilder.setEsploraServer(esploraServerUrl: storedEsploraURL)
 
-        switch network {
-
+        switch self.network {
         case .bitcoin:
             nodeBuilder.setGossipSourceRgs(
                 rgsServerUrl: Constants.Config.RGSServerURLNetwork.bitcoin
             )
-            nodeBuilder.setEsploraServer(
-                esploraServerUrl: Constants.Config.EsploraServerURLNetwork.Bitcoin
-                    .bitcoin_mempoolspace
-            )
             self.networkColor = Constants.BitcoinNetworkColor.bitcoin.color
-
-        case .regtest:
-            nodeBuilder.setEsploraServer(
-                esploraServerUrl: Constants.Config.EsploraServerURLNetwork.regtest
-            )
-            self.networkColor = Constants.BitcoinNetworkColor.regtest.color
-
-        case .signet:
-            nodeBuilder.setEsploraServer(
-                esploraServerUrl: Constants.Config.EsploraServerURLNetwork.signet
-            )
-            self.networkColor = Constants.BitcoinNetworkColor.signet.color
-
         case .testnet:
             nodeBuilder.setGossipSourceRgs(
                 rgsServerUrl: Constants.Config.RGSServerURLNetwork.testnet
             )
-            nodeBuilder.setEsploraServer(
-                esploraServerUrl: Constants.Config.EsploraServerURLNetwork.Testnet
-                    .testnet_mempoolspace
-            )
             self.networkColor = Constants.BitcoinNetworkColor.testnet.color
-
+        case .signet:
+            self.networkColor = Constants.BitcoinNetworkColor.signet.color
+        case .regtest:
+            self.networkColor = Constants.BitcoinNetworkColor.regtest.color
         }
 
-        let backupInfo = try? keyService.getBackupInfo()
-        if backupInfo?.mnemonic != nil {
-            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: backupInfo!.mnemonic, passphrase: nil)
-        } else {
-            let mnemonic = generateEntropyMnemonic()
-            let backupInfo = BackupInfo(mnemonic: mnemonic)
+        let mnemonic: String
+        do {
+            let backupInfo = try keyService.getBackupInfo()
+            if backupInfo.mnemonic == "" {
+                let newMnemonic = generateEntropyMnemonic()
+                let backupInfo = BackupInfo(mnemonic: newMnemonic)
+                try? keyService.saveBackupInfo(backupInfo)
+                mnemonic = newMnemonic
+            } else {
+                mnemonic = backupInfo.mnemonic
+            }
+        } catch {
+            let newMnemonic = generateEntropyMnemonic()
+            let backupInfo = BackupInfo(mnemonic: newMnemonic)
             try? keyService.saveBackupInfo(backupInfo)
-            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
+            mnemonic = newMnemonic
         }
+        nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
 
         // TODO: -!
         /// 06.22.23
@@ -90,10 +86,7 @@ class LightningNodeService {
         /// `build` now `throws`
         /// - Resolve by actually handling error
         let ldkNode = try! nodeBuilder.build()
-
         self.ldkNode = ldkNode
-
-        self.keyService = keyService
     }
 
     func start() async throws {
@@ -109,18 +102,32 @@ class LightningNodeService {
         return nodeID
     }
 
-    func newFundingAddress() async throws -> String {
+    func newOnchainAddress() async throws -> String {
         let fundingAddress = try ldkNode.newOnchainAddress()
         return fundingAddress
     }
 
-    func getSpendableOnchainBalanceSats() async throws -> UInt64 {
+    func spendableOnchainBalanceSats() async throws -> UInt64 {
+        let startTime = Date()
+        Logger.log("spendableOnchainBalanceSats started at: \(startTime)")
         let balance = try ldkNode.spendableOnchainBalanceSats()
+        let endTime = Date()
+        Logger.log("spendableOnchainBalanceSats ended at: \(startTime)")
+        Logger.log(
+            "Time taken for spendableOnchainBalanceSats: \(endTime.timeIntervalSince(startTime)) seconds"
+        )
         return balance
     }
 
-    func getTotalOnchainBalanceSats() async throws -> UInt64 {
+    func totalOnchainBalanceSats() async throws -> UInt64 {
+        let startTime = Date()
+        Logger.log("totalOnchainBalanceSats started at: \(startTime)")
         let balance = try ldkNode.totalOnchainBalanceSats()
+        let endTime = Date()
+        Logger.log("totalOnchainBalanceSats ended at: \(startTime)")
+        Logger.log(
+            "Time taken for totalOnchainBalanceSats: \(endTime.timeIntervalSince(startTime)) seconds"
+        )
         return balance
     }
 
@@ -184,7 +191,7 @@ class LightningNodeService {
         return channels
     }
 
-    func sendAllToOnchain(address: Address) async throws -> Txid {
+    func sendAllToOnchainAddress(address: Address) async throws -> Txid {
         let txId = try ldkNode.sendAllToOnchainAddress(address: address)
         return txId
     }
@@ -196,72 +203,39 @@ class LightningNodeService {
 
 }
 
-// Currently unused
-extension LightningNodeService {
-
-    func nextEvent() {
-        let _ = ldkNode.nextEvent()
-    }
-
-    func eventHandled() {
-        ldkNode.eventHandled()
-    }
-
-    func listeningAddresses() -> [String] {
-        guard let addresses = ldkNode.listeningAddresses() else { return [] }
-        return addresses
-    }
-
-    func sendToOnchainAddress(address: Address, amountMsat: UInt64) throws -> Txid {
-        let txId = try ldkNode.sendToOnchainAddress(address: address, amountMsat: amountMsat)
-        return txId
-    }
-
-    func sendAllToOnchainAddress(address: Address) throws -> Txid {
-        let txId = try ldkNode.sendAllToOnchainAddress(address: address)
-        return txId
-    }
-
-    func syncWallets() throws {
-        try ldkNode.syncWallets()
-    }
-
-    func sendPaymentUsingAmount(invoice: Bolt11Invoice, amountMsat: UInt64) throws -> PaymentHash {
-        let paymentHash = try ldkNode.sendPaymentUsingAmount(
-            invoice: invoice,
-            amountMsat: amountMsat
-        )
-        return paymentHash
-    }
-
-    func sendSpontaneousPayment(amountMsat: UInt64, nodeId: String) throws -> PaymentHash {
-        let paymentHash = try ldkNode.sendSpontaneousPayment(amountMsat: amountMsat, nodeId: nodeId)
-        return paymentHash
-    }
-
-    func receiveVariableAmountPayment(description: String, expirySecs: UInt32) throws
-        -> Bolt11Invoice
-    {
-        let invoice = try ldkNode.receiveVariableAmountPayment(
-            description: description,
-            expirySecs: expirySecs
-        )
-        return invoice
-    }
-
-    func paymentInfo(paymentHash: PaymentHash) -> PaymentDetails? {
-        guard let paymentDetails = ldkNode.payment(paymentHash: paymentHash) else { return nil }
-        return paymentDetails
-    }
-
-    func removePayment(paymentHash: PaymentHash) throws {
-        try ldkNode.removePayment(paymentHash: paymentHash)
-    }
-
-}
-
+// Danger Zone
 extension LightningNodeService {
     func deleteWallet() throws {
         try keyService.deleteBackupInfo()
+    }
+    func getBackupInfo() throws -> BackupInfo {
+        let backupInfo = try keyService.getBackupInfo()
+        return backupInfo
+    }
+}
+
+// Event Handling
+extension LightningNodeService {
+    func listenForEvents() {
+        Task {
+            while true {
+                if let event = ldkNode.nextEvent() {
+                    NotificationCenter.default.post(
+                        name: .ldkEventReceived,
+                        object: event.description
+                    )
+                    ldkNode.eventHandled()
+                }
+                try? await Task.sleep(nanoseconds: 5_000_000_000)
+            }
+        }
+    }
+}
+
+// Save Seed
+extension LightningNodeService {
+    func save(mnemonic: Mnemonic) throws {
+        let backupInfo = BackupInfo(mnemonic: mnemonic)
+        try keyService.saveBackupInfo(backupInfo)
     }
 }

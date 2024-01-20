@@ -16,23 +16,19 @@ class StartViewModel: ObservableObject {
     func start() async throws {
         do {
             try await LightningNodeService.shared.start()
-            DispatchQueue.main.async {
+            LightningNodeService.shared.listenForEvents()
+            await MainActor.run {
                 self.isStarted = true
             }
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.startViewError = .init(title: errorString.title, detail: errorString.detail)
-            }
         } catch {
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.startViewError = .init(
-                    title: "Unexpected error",
+                    title: "Node Start Error",
                     detail: error.localizedDescription
                 )
             }
+            throw error
         }
-
     }
 
     func getColor() {

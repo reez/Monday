@@ -6,11 +6,14 @@
 //
 
 import BitcoinUI
+import LDKNode
+import SimpleToast
 import SwiftUI
 
 struct StartView: View {
     @ObservedObject var viewModel: StartViewModel
     @State private var showingStartViewErrorAlert = false
+    @State var startViewError: MondayError?
 
     var body: some View {
 
@@ -21,15 +24,24 @@ struct StartView: View {
                 if viewModel.isStarted {
                     TabHomeView(viewModel: .init())
                 } else {
-                    ProgressView {
-                        HStack {
-                            Image(systemName: "bolt.fill")
-                                .foregroundColor(
-                                    Color(red: 119 / 255, green: 243 / 255, blue: 205 / 255)
-                                )
-                            Text("Starting Node")
-                        }
-                        .font(.caption)
+                    //                    ProgressView {
+                    //                        HStack {
+                    //                            Image(systemName: "bolt.fill")
+                    //                                .foregroundColor(
+                    //                                    Color(red: 119 / 255, green: 243 / 255, blue: 205 / 255)
+                    //                                )
+                    //                            Text("Starting Node")
+                    //                        }
+                    //                        .font(.caption)
+                    //                    }
+                    withAnimation {
+                        Image(systemName: "bolt.horizontal")
+                            .symbolEffect(
+                                .pulse.wholeSymbol
+                            )
+                            .foregroundColor(
+                                Color(red: 119 / 255, green: 243 / 255, blue: 205 / 255)
+                            )
                     }
                 }
             }
@@ -37,8 +49,25 @@ struct StartView: View {
             .tint(viewModel.networkColor)
             .onAppear {
                 Task {
-                    try await viewModel.start()
-                    viewModel.getColor()
+                    do {
+                        try await viewModel.start()
+                        viewModel.getColor()
+                    } catch let error as NodeError {
+                        let errorString = handleNodeError(error)
+                        DispatchQueue.main.async {
+                            self.startViewError = .init(
+                                title: errorString.title,
+                                detail: errorString.detail
+                            )
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            self.startViewError = .init(
+                                title: "Unexpected error",
+                                detail: error.localizedDescription
+                            )
+                        }
+                    }
                 }
             }
             .alert(isPresented: $showingStartViewErrorAlert) {

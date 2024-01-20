@@ -63,7 +63,9 @@ struct SendConfirmationView: View {
                             .font(.largeTitle)
                             .bold()
                     } else {
-                        Text("Unable to Parse Formatted Amount")
+                        Image(systemName: "checkmark")
+                            .foregroundColor(viewModel.networkColor)
+                            .font(.subheadline)
                     }
                     Text(Date.now.formattedDate())
                         .foregroundColor(.secondary)

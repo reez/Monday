@@ -27,64 +27,79 @@ struct BitcoinView: View {
 
                     List {
 
-                        VStack(spacing: 10) {
+                        VStack(spacing: 20) {
 
-                            HStack {
-                                if viewModel.isTotalBalanceFinished {
-                                    withAnimation {
-                                        HStack(spacing: 15) {
-                                            Image(systemName: "bitcoinsign")
-                                                .foregroundColor(.secondary)
-                                                .font(.title)
-                                                .fontWeight(.thin)
-                                            Text(viewModel.totalBalance)
-                                                .contentTransition(.numericText())
-                                                .fontWeight(.semibold)
-                                                .fontDesign(.rounded)
-                                            Text("sats")
-                                                .foregroundColor(.secondary)
-                                                .fontWeight(.thin)
-                                        }
-                                        .font(.largeTitle)
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(0.5)
-                                    }
-                                } else {
-                                    ProgressView()
-                                        .padding(.all, 5)
-                                }
+                            HStack(spacing: 15) {
+                                Spacer()
+                                Image(systemName: "bitcoinsign")
+                                    .foregroundColor(.secondary)
+                                    .font(.title)
+                                    .fontWeight(.thin)
+                                Text(viewModel.totalBalance.formattedSatoshis())
+                                    .contentTransition(.numericText())
+                                    .font(.largeTitle)
+                                    .fontWeight(.semibold)
+                                    .fontDesign(.rounded)
+                                    .redacted(
+                                        reason: viewModel.isTotalBalanceFinished ? [] : .placeholder
+                                    )
+                                Text("sats")
+                                    .foregroundColor(.secondary)
+                                    .font(.title)
+                                    .fontWeight(.thin)
+                                Spacer()
                             }
-                            .lineLimit(1)
                             .minimumScaleFactor(0.5)
+                            .lineLimit(1)
                             .animation(.spring(), value: viewModel.totalBalance)
+                            .foregroundColor(.primary)
 
-                            HStack(spacing: 4) {
-                                if viewModel.isSpendableBalanceFinished {
-                                    withAnimation {
-                                        HStack(spacing: 5) {
-                                            Image(systemName: "bitcoinsign")
-                                                .foregroundColor(.secondary)
-                                                .fontWeight(.thin)
-                                            Text(viewModel.spendableBalance)
-                                                .contentTransition(.numericText())
-                                                .fontWeight(.semibold)
-                                                .fontDesign(.rounded)
-                                            Text("sats spendable")
-                                                .foregroundColor(.secondary)
-                                                .fontWeight(.thin)
-                                        }
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(0.5)
-                                    }
-                                } else {
-                                    ProgressView()
-                                        .padding(.all, 5)
-                                }
+                            HStack(spacing: 5) {
+                                Spacer()
+                                Text(viewModel.spendableBalance)
+                                    .contentTransition(.numericText())
+                                    .fontWeight(.semibold)
+                                    .fontDesign(.rounded)
+                                    .redacted(
+                                        reason: viewModel.isSpendableBalanceFinished
+                                            ? [] : .placeholder
+                                    )
+                                Text("sats spendable")
+                                    .foregroundColor(.secondary)
+                                    .fontWeight(.thin)
+                                Spacer()
                             }
                             .lineLimit(1)
                             .animation(.spring(), value: viewModel.spendableBalance)
-                            .font(.caption)
+                            .font(.subheadline)
                             .foregroundColor(.secondary)
+
+                            HStack {
+                                Spacer()
+                                Text(viewModel.satsPrice)
+                                    .contentTransition(.numericText())
+                                    .fontWeight(.semibold)
+                                    .fontDesign(.rounded)
+                                    .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+                                Spacer()
+                            }
+                            .lineLimit(1)
+                            .animation(.spring(), value: viewModel.satsPrice)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
+                            if !viewModel.isTotalBalanceFinished,
+                                !viewModel.isSpendableBalanceFinished
+                            {
+                                Image(systemName: "slowmo")
+                                    .symbolEffect(
+                                        .variableColor.cumulative
+                                    )
+                                    .contentTransition(.symbolEffect(.replace.offUp))
+                            } else {
+                                Image(systemName: "checkmark.circle")
+                                    .foregroundColor(.green)
+                            }
 
                         }
                         .listRowSeparator(.hidden)
@@ -93,8 +108,9 @@ struct BitcoinView: View {
                     .listStyle(.plain)
                     .padding(.top, 120.0)
                     .refreshable {
-                        await viewModel.getTotalOnchainBalanceSats()
                         await viewModel.getSpendableOnchainBalanceSats()
+                        await viewModel.getTotalOnchainBalanceSats()
+                        await viewModel.getPrices()
                     }
 
                     Spacer()
@@ -154,8 +170,9 @@ struct BitcoinView: View {
                 }
                 .onAppear {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
                         await viewModel.getSpendableOnchainBalanceSats()
+                        await viewModel.getTotalOnchainBalanceSats()
+                        await viewModel.getPrices()
                         viewModel.getColor()
                     }
                 }
@@ -163,8 +180,9 @@ struct BitcoinView: View {
                     isPresented: $isAddressSheetPresented,
                     onDismiss: {
                         Task {
-                            await viewModel.getTotalOnchainBalanceSats()
                             await viewModel.getSpendableOnchainBalanceSats()
+                            await viewModel.getTotalOnchainBalanceSats()
+                            await viewModel.getPrices()
                         }
                     }
                 ) {
@@ -175,8 +193,9 @@ struct BitcoinView: View {
                     isPresented: $isSendSheetPresented,
                     onDismiss: {
                         Task {
-                            await viewModel.getTotalOnchainBalanceSats()
                             await viewModel.getSpendableOnchainBalanceSats()
+                            await viewModel.getTotalOnchainBalanceSats()
+                            await viewModel.getPrices()
                         }
                     }
                 ) {
@@ -194,8 +213,8 @@ struct BitcoinView: View {
 
 struct BalanceView_Previews: PreviewProvider {
     static var previews: some View {
-        BitcoinView(viewModel: .init())
-        BitcoinView(viewModel: .init())
+        BitcoinView(viewModel: .init(priceClient: .mock))
+        BitcoinView(viewModel: .init(priceClient: .mock))
             .environment(\.colorScheme, .dark)
     }
 }

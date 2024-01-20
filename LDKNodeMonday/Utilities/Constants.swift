@@ -15,13 +15,17 @@ struct Constants {
         struct EsploraServerURLNetwork {
             struct Bitcoin {
                 static let bitcoin_blockstream = "https://blockstream.info/api"
+                static let bitcoin_kuutamo = "https://esplora.kuutamo.cloud"
                 static let bitcoin_mempoolspace = "https://mempool.space/api"
+                static let allValues = [bitcoin_blockstream, bitcoin_kuutamo, bitcoin_mempoolspace]
             }
-            static let regtest = "http://ldk-node.tnull.de:3002"
+            static let regtest = "http://127.0.0.1:3002"
             static let signet = "https://mutinynet.com/api"
             struct Testnet {
                 static let testnet_blockstream = "http://blockstream.info/testnet/api"
+                static let testnet_kuutamo = "https://esplora.testnet.kuutamo.cloud"
                 static let testnet_mempoolspace = "https://mempool.space/testnet/api"
+                static let allValues = [testnet_blockstream, testnet_kuutamo, testnet_mempoolspace]
             }
         }
 

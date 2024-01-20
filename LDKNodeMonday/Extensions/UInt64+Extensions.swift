@@ -8,20 +8,20 @@
 import Foundation
 
 extension UInt64 {
+
     func formattedAmount() -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.groupingSize = 3
 
-        if let formattedNumber = formatter.string(from: NSNumber(value: self)) {
+        let satValue = self / 1000
+        if let formattedNumber = formatter.string(from: NSNumber(value: satValue)) {
             return formattedNumber
         } else {
             return ""
         }
     }
-}
 
-extension UInt64 {
     func formattedSatoshis() -> String {
         if self == 0 {
             return "0.00 000 000"
@@ -46,4 +46,5 @@ extension UInt64 {
             return formattedBalance
         }
     }
+
 }
