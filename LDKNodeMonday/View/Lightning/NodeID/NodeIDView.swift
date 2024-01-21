@@ -14,6 +14,9 @@ struct NodeIDView: View {
     @State private var showCheckmark = false
     @State private var showingNodeIDErrorAlert = false
     @State private var isSeedPresented = false
+    @State private var showingStopNodeConfirmation = false
+    @State private var showingDeleteSeedConfirmation = false
+    @State private var showingShowSeedConfirmation = false
 
     var body: some View {
 
@@ -77,8 +80,9 @@ struct NodeIDView: View {
                         .padding()
 
                         VStack(spacing: 20) {
+
                             Button {
-                                viewModel.stop()
+                                showingStopNodeConfirmation = true
                             } label: {
                                 HStack {
                                     Image(systemName: "xmark")
@@ -90,8 +94,18 @@ struct NodeIDView: View {
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
                             .tint(.red)
+                            .alert(
+                                "Are you sure you want to stop the node?",
+                                isPresented: $showingStopNodeConfirmation
+                            ) {
+                                Button("Yes", role: .destructive) {
+                                    viewModel.stop()
+                                }
+                                Button("No", role: .cancel) {}
+                            }
+
                             Button {
-                                isSeedPresented = true
+                                showingShowSeedConfirmation = true
                             } label: {
                                 HStack {
                                     Image(systemName: "list.number")
@@ -103,8 +117,18 @@ struct NodeIDView: View {
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
                             .tint(.red)
+                            .alert(
+                                "Are you sure you want to view the seed?",
+                                isPresented: $showingShowSeedConfirmation
+                            ) {
+                                Button("Yes", role: .destructive) {
+                                    isSeedPresented = true
+                                }
+                                Button("No", role: .cancel) {}
+                            }
+
                             Button {
-                                viewModel.delete()
+                                showingDeleteSeedConfirmation = true
                             } label: {
                                 HStack {
                                     Image(systemName: "minus")
@@ -116,9 +140,19 @@ struct NodeIDView: View {
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
                             .tint(.red)
+                            .alert(
+                                "Are you sure you want to delete the seed?",
+                                isPresented: $showingDeleteSeedConfirmation
+                            ) {
+                                Button("Yes", role: .destructive) {
+                                    viewModel.delete()
+                                }
+                                Button("No", role: .cancel) {}
+                            }
+
                         }
                         .padding()
-                        .padding(.bottom, 80.0)
+                        .padding(.bottom, 120.0)
                     }
                     .padding()
 
