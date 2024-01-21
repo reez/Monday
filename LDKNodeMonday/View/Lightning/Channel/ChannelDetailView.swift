@@ -17,6 +17,7 @@ struct ChannelDetailView: View {
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var lastCopiedItemId: String? = nil
+    @State private var showingConfirmationAlert = false
 
     var body: some View {
 
@@ -67,86 +68,8 @@ struct ChannelDetailView: View {
                 .listStyle(.plain)
                 .padding()
 
-                //                VStack(alignment: .leading, spacing: 10) {
-                //                    HStack {
-                //                        Text("Channel ID")
-                //                        Spacer()
-                //                        Text(viewModel.channel.channelId.description)
-                //                            .truncationMode(.middle)
-                //                            .lineLimit(1)
-                //                            .foregroundColor(.secondary)
-                //                    }
-                //                    HStack {
-                //                        Text("Counterparty Node ID")
-                //                            .lineLimit(1)
-                //                        Spacer()
-                //                        Text(viewModel.channel.counterpartyNodeId.description)
-                //                            .truncationMode(.middle)
-                //                            .lineLimit(1)
-                //                            .foregroundColor(.secondary)
-                //                    }
-                //                    HStack {
-                //                        Text("Channel Value Satoshis")
-                //                        Spacer()
-                //                        Text(viewModel.channel.channelValueSats.formattedAmount())
-                //                            .lineLimit(1)
-                //                            .foregroundColor(.secondary)
-                //                    }
-                //                    HStack {
-                //                        Text("Balance Satoshis")
-                //                        Spacer()
-                //                        Text((viewModel.channel.balanceMsat / 1000).formattedAmount())
-                //                            .lineLimit(1)
-                //                            .foregroundColor(.secondary)
-                //                    }
-                //                    HStack {
-                //                        Text("Outbound Capacity Satoshis")
-                //                        Spacer()
-                //                        Text((viewModel.channel.outboundCapacityMsat / 1000).formattedAmount())
-                //                            .foregroundColor(.secondary)
-                //                    }
-                //                    HStack {
-                //                        Text("Inbound Capacity Satoshis")
-                //                        Spacer()
-                //                        Text((viewModel.channel.inboundCapacityMsat / 1000).formattedAmount())
-                //                            .foregroundColor(.secondary)
-                //                    }
-                //                    if let confirm = viewModel.channel.confirmations {
-                //                        HStack {
-                //                            Text("Confirmations")
-                //                            Spacer()
-                //                            Text(confirm.description)
-                //                                .foregroundColor(.secondary)
-                //                        }
-                //                    }
-                //                    HStack {
-                //                        Text("Is Channel Ready")
-                //                        Spacer()
-                //                        Text(viewModel.channel.isChannelReady.description)
-                //                            .truncationMode(.middle)
-                //                            .lineLimit(1)
-                //                            .foregroundColor(.secondary)
-                //                    }
-                //                    HStack {
-                //                        Text("Is Usable")
-                //                        Spacer()
-                //                        Text(viewModel.channel.isUsable.description)
-                //                            .truncationMode(.middle)
-                //                            .lineLimit(1)
-                //                            .foregroundColor(.secondary)
-                //                    }
-                //                }
-                //                .font(.system(.caption2, design: .monospaced))
-                //                .padding()
-
                 Button {
-                    viewModel.close()
-                    refreshFlag = true
-                    if showingChannelDetailViewErrorAlert == false {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                            self.presentationMode.wrappedValue.dismiss()
-                        }
-                    }
+                    showingConfirmationAlert = true
                 } label: {
                     Text("Close Channel")
                         .bold()
@@ -173,6 +96,21 @@ struct ChannelDetailView: View {
                         viewModel.channelDetailViewError = nil
                     }
                 )
+            }
+            .alert(
+                "Are you sure you want to close this channel?",
+                isPresented: $showingConfirmationAlert
+            ) {
+                Button("Yes", role: .destructive) {
+                    viewModel.close()
+                    refreshFlag = true
+                    if !showingChannelDetailViewErrorAlert {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                }
+                Button("No", role: .cancel) {}
             }
             .onReceive(viewModel.$channelDetailViewError) { errorMessage in
                 if errorMessage != nil {
