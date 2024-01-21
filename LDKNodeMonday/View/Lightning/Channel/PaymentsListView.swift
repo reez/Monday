@@ -51,9 +51,8 @@ struct PaymentsListView: View {
                                                     .bold()
                                             }
                                             HStack {
-                                                let amountMsat = payment.amountMsat ?? 0
-                                                let amountSats = amountMsat / 1000
-                                                let amount = amountSats.formattedAmount()
+                                                let paymentAmount = payment.amountMsat ?? 0
+                                                let amount = paymentAmount.formattedAmount()
                                                 Text("\(amount) sats ")
                                                     .font(.body)
                                                     .bold()
