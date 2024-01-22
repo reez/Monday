@@ -11,68 +11,67 @@ struct SendConfirmationView: View {
     @ObservedObject var viewModel: SendConfirmationViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
-
+    
     var body: some View {
-
+        
         ZStack {
             Color(uiColor: UIColor.systemBackground)
-
+            
             VStack {
-
+                
                 Spacer()
-
+                
                 VStack(spacing: 10) {
                     Image(systemName: "bolt.fill")
                         .font(.largeTitle)
                         .foregroundColor(viewModel.networkColor)
-                    HStack(alignment: .center) {
-                        Text(viewModel.invoice)
-                            .truncationMode(.middle)
-                            .lineLimit(1)
-                            .foregroundColor(.secondary)
-                            .font(.subheadline)
-                        Button {
-                            UIPasteboard.general.string = viewModel.invoice
-                            isCopied = true
-                            showCheckmark = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                isCopied = false
-                                showCheckmark = false
-                            }
-                        } label: {
-                            HStack {
-                                withAnimation {
-                                    Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                        .font(.subheadline)
+                    
+                    if let invoice = viewModel.invoice.bolt11amount(), let number = Int(invoice) {
+                        HStack(alignment: .center) {
+                            Text(viewModel.invoice)
+                                .truncationMode(.middle)
+                                .lineLimit(1)
+                                .foregroundColor(.secondary)
+                                .font(.subheadline)
+                            Button {
+                                UIPasteboard.general.string = viewModel.invoice
+                                isCopied = true
+                                showCheckmark = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    isCopied = false
+                                    showCheckmark = false
                                 }
+                            } label: {
+                                HStack {
+                                    withAnimation {
+                                        Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
+                                            .font(.subheadline)
+                                    }
+                                }
+                                .bold()
+                                .foregroundColor(viewModel.networkColor)
                             }
-                            .bold()
-                            .foregroundColor(viewModel.networkColor)
+                            
                         }
-
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
                 }
                 .padding(.horizontal, 50.0)
-
+                
                 Spacer()
-
+                
                 VStack(spacing: 10) {
                     if let invoice = viewModel.invoice.bolt11amount(), let number = Int(invoice) {
                         Text("\(number.description.formattedAmount()) sats")
                             .font(.largeTitle)
                             .bold()
-                    } else {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(viewModel.networkColor)
-                            .font(.subheadline)
                     }
                     Text(Date.now.formattedDate())
                         .foregroundColor(.secondary)
                 }
-
+                
                 Spacer()
-
+                
             }
             .padding()
             .onAppear {
@@ -81,10 +80,10 @@ struct SendConfirmationView: View {
                     viewModel.getColor()
                 }
             }
-
+            
         }
         .ignoresSafeArea()
-
+        
     }
 }
 
