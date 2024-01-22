@@ -11,21 +11,21 @@ struct SendConfirmationView: View {
     @ObservedObject var viewModel: SendConfirmationViewModel
     @State private var isCopied = false
     @State private var showCheckmark = false
-    
+
     var body: some View {
-        
+
         ZStack {
             Color(uiColor: UIColor.systemBackground)
-            
+
             VStack {
-                
+
                 Spacer()
-                
+
                 VStack(spacing: 10) {
                     Image(systemName: "bolt.fill")
                         .font(.largeTitle)
                         .foregroundColor(viewModel.networkColor)
-                    
+
                     if let invoice = viewModel.invoice.bolt11amount(), let number = Int(invoice) {
                         HStack(alignment: .center) {
                             Text(viewModel.invoice)
@@ -44,22 +44,24 @@ struct SendConfirmationView: View {
                             } label: {
                                 HStack {
                                     withAnimation {
-                                        Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                            .font(.subheadline)
+                                        Image(
+                                            systemName: showCheckmark ? "checkmark" : "doc.on.doc"
+                                        )
+                                        .font(.subheadline)
                                     }
                                 }
                                 .bold()
                                 .foregroundColor(viewModel.networkColor)
                             }
-                            
+
                         }
                         .padding(.horizontal)
                     }
                 }
                 .padding(.horizontal, 50.0)
-                
+
                 Spacer()
-                
+
                 VStack(spacing: 10) {
                     if let invoice = viewModel.invoice.bolt11amount(), let number = Int(invoice) {
                         Text("\(number.description.formattedAmount()) sats")
@@ -69,9 +71,9 @@ struct SendConfirmationView: View {
                     Text(Date.now.formattedDate())
                         .foregroundColor(.secondary)
                 }
-                
+
                 Spacer()
-                
+
             }
             .padding()
             .onAppear {
@@ -80,10 +82,10 @@ struct SendConfirmationView: View {
                     viewModel.getColor()
                 }
             }
-            
+
         }
         .ignoresSafeArea()
-        
+
     }
 }
 
