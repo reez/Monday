@@ -26,37 +26,35 @@ struct SendConfirmationView: View {
                         .font(.largeTitle)
                         .foregroundColor(viewModel.networkColor)
 
-                    if let invoice = viewModel.invoice.bolt11amount(), let number = Int(invoice) {
-                        HStack(alignment: .center) {
-                            Text(viewModel.invoice)
-                                .truncationMode(.middle)
-                                .lineLimit(1)
-                                .foregroundColor(.secondary)
-                                .font(.subheadline)
-                            Button {
-                                UIPasteboard.general.string = viewModel.invoice
-                                isCopied = true
-                                showCheckmark = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    isCopied = false
-                                    showCheckmark = false
-                                }
-                            } label: {
-                                HStack {
-                                    withAnimation {
-                                        Image(
-                                            systemName: showCheckmark ? "checkmark" : "doc.on.doc"
-                                        )
-                                        .font(.subheadline)
-                                    }
-                                }
-                                .bold()
-                                .foregroundColor(viewModel.networkColor)
+                    HStack(alignment: .center) {
+                        Text(viewModel.invoice)
+                            .truncationMode(.middle)
+                            .lineLimit(1)
+                            .foregroundColor(.secondary)
+                            .font(.subheadline)
+                        Button {
+                            UIPasteboard.general.string = viewModel.invoice
+                            isCopied = true
+                            showCheckmark = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                isCopied = false
+                                showCheckmark = false
                             }
-
+                        } label: {
+                            HStack {
+                                withAnimation {
+                                    Image(
+                                        systemName: showCheckmark ? "checkmark" : "doc.on.doc"
+                                    )
+                                    .font(.subheadline)
+                                }
+                            }
+                            .bold()
+                            .foregroundColor(viewModel.networkColor)
                         }
-                        .padding(.horizontal)
+
                     }
+                    .padding(.horizontal)
                 }
                 .padding(.horizontal, 50.0)
 

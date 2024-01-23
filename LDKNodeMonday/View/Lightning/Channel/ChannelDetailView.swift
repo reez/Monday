@@ -66,7 +66,6 @@ struct ChannelDetailView: View {
                 }
                 .font(.system(.caption2, design: .monospaced))
                 .listStyle(.plain)
-                .padding()
 
                 Button {
                     showingConfirmationAlert = true
