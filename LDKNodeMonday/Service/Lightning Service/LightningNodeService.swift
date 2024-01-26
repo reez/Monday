@@ -25,7 +25,7 @@ class LightningNodeService {
         let storedNetworkString = try! keyService.getNetwork() ?? Network.testnet.description
         let storedEsploraURL =
             try! keyService.getEsploraURL()
-            ?? Constants.Config.EsploraServerURLNetwork.Testnet.testnet_mempoolspace
+            ?? Constants.Config.EsploraServerURLNetwork.Testnet.mempoolspace
 
         self.network = Network(stringValue: storedNetworkString) ?? .testnet
         self.keyService = keyService
@@ -38,7 +38,7 @@ class LightningNodeService {
             onchainWalletSyncIntervalSecs: UInt64(60),
             walletSyncIntervalSecs: UInt64(20),
             feeRateCacheUpdateIntervalSecs: UInt64(600),
-            logLevel: .trace
+            logLevel: .debug
         )
 
         let nodeBuilder = Builder.fromConfig(config: config)

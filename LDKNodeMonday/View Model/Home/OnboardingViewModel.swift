@@ -69,6 +69,19 @@ class OnboardingViewModel: ObservableObject {
 
     }
 
+    var availableURLs: [String] {
+        switch selectedNetwork {
+        case .bitcoin:
+            return Constants.Config.EsploraServerURLNetwork.Bitcoin.allValues
+        case .testnet:
+            return Constants.Config.EsploraServerURLNetwork.Testnet.allValues
+        case .regtest:
+            return Constants.Config.EsploraServerURLNetwork.Regtest.allValues
+        case .signet:
+            return Constants.Config.EsploraServerURLNetwork.Signet.allValues
+        }
+    }
+
     var buttonColor: Color {
         switch selectedNetwork {
         case .bitcoin:
@@ -79,19 +92,6 @@ class OnboardingViewModel: ObservableObject {
             return Constants.BitcoinNetworkColor.signet.color
         case .regtest:
             return Constants.BitcoinNetworkColor.regtest.color
-        }
-    }
-
-    var availableURLs: [String] {
-        switch selectedNetwork {
-        case .bitcoin:
-            return Constants.Config.EsploraServerURLNetwork.Bitcoin.allValues
-        case .testnet:
-            return Constants.Config.EsploraServerURLNetwork.Testnet.allValues
-        case .regtest:
-            return [Constants.Config.EsploraServerURLNetwork.regtest]
-        case .signet:
-            return [Constants.Config.EsploraServerURLNetwork.signet]
         }
     }
 

@@ -72,4 +72,29 @@ class NodeIDViewModel: ObservableObject {
         }
     }
 
+    func onboarding() {
+        do {
+            // Stop Node...
+            try LightningNodeService.shared.stop()
+            // Delete network and URL settings using KeyClient
+            try KeyClient.live.deleteNetwork()
+            try KeyClient.live.deleteEsplora()
+            // ... then set isOnboarding to true
+            self.isOnboarding = true
+            // ... which should send you back to OnboardingView
+        } catch let error as NodeError {
+            let errorString = handleNodeError(error)
+            DispatchQueue.main.async {
+                self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.nodeIDError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
+            }
+        }
+    }
+
 }

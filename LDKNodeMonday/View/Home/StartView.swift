@@ -24,24 +24,29 @@ struct StartView: View {
                 if viewModel.isStarted {
                     TabHomeView(viewModel: .init())
                 } else {
-                    //                    ProgressView {
-                    //                        HStack {
-                    //                            Image(systemName: "bolt.fill")
-                    //                                .foregroundColor(
-                    //                                    Color(red: 119 / 255, green: 243 / 255, blue: 205 / 255)
-                    //                                )
-                    //                            Text("Starting Node")
-                    //                        }
-                    //                        .font(.caption)
-                    //                    }
-                    withAnimation {
-                        Image(systemName: "bolt.horizontal")
-                            .symbolEffect(
-                                .pulse.wholeSymbol
-                            )
-                            .foregroundColor(
-                                Color(red: 119 / 255, green: 243 / 255, blue: 205 / 255)
-                            )
+                    VStack(spacing: 20) {
+                        withAnimation {
+                            Image(systemName: "bolt.horizontal")
+                                .symbolEffect(
+                                    .pulse.wholeSymbol
+                                )
+                                .foregroundColor(
+                                    Color(red: 119 / 255, green: 243 / 255, blue: 205 / 255)
+                                )
+                        }
+                        .padding()
+                        Button {
+                            viewModel.onboarding()
+                        } label: {
+                            HStack {
+                                Image(systemName: "arrowshape.backward")
+                                Text("Go Back To Onboarding")
+                            }
+                            .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                        }
+                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.bordered)
+                        .padding()
                     }
                 }
             }

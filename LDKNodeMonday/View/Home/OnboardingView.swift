@@ -13,7 +13,7 @@ struct OnboardingView: View {
     @ObservedObject var viewModel: OnboardingViewModel
     @AppStorage("isOnboarding") var isOnboarding: Bool?
     @State private var showingOnboardingViewErrorAlert = false
-    @State private var displayedURL: String = ""
+    @AppStorage("isFirstTime") var isFirstTime: Bool = true
 
     var body: some View {
         ZStack {
@@ -75,7 +75,16 @@ struct OnboardingView: View {
                             selection: $viewModel.selectedURL
                         ) {
                             ForEach(viewModel.availableURLs, id: \.self) { url in
-                                Text(url).tag(url)
+                                Text(
+                                    url.replacingOccurrences(
+                                        of: "https://",
+                                        with: ""
+                                    ).replacingOccurrences(
+                                        of: "http://",
+                                        with: ""
+                                    )
+                                )
+                                .tag(url)
                             }
                         }
                         .pickerStyle(.automatic)
@@ -87,17 +96,23 @@ struct OnboardingView: View {
                 .padding()
 
                 VStack {
-                    TextField("24 word Seed Phrase (Optional)", text: $viewModel.seedPhrase)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal, 40)
+                    TextField(
+                        isFirstTime
+                            ? "24 word Seed Phrase (Optional)" : "24 word Seed Phrase (Required)",
+                        text: $viewModel.seedPhrase
+                    )
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal, 40)
                 }
                 .padding()
 
                 VStack(spacing: 25) {
                     Button("Start Node") {
                         viewModel.saveSeed()
+                        isFirstTime = false
                     }
                     .buttonStyle(BitcoinFilled(tintColor: viewModel.buttonColor, isCapsule: true))
+                    .disabled(!isFirstTime && viewModel.seedPhrase.isEmpty)
                 }
                 .padding(.all, 25)
 
