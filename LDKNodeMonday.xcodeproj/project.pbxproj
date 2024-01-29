@@ -30,7 +30,6 @@
 		AE1D9BEC2B2A1FFD00620748 /* BitcoinUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE1D9BEB2B2A1FFD00620748 /* BitcoinUI */; };
 		AE1D9C0B2B2A251500620748 /* ChannelDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */; };
 		AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84B2A24F96F002623E8 /* Constants.swift */; };
-		AE49E84E2A24FDD7002623E8 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */; };
 		AE49E8502A2535E3002623E8 /* TabHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84F2A2535E3002623E8 /* TabHomeViewModel.swift */; };
 		AE49E8522A253618002623E8 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8512A253618002623E8 /* StartViewModel.swift */; };
 		AE49E8542A253647002623E8 /* BitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8532A253647002623E8 /* BitcoinViewModel.swift */; };
@@ -111,7 +110,6 @@
 		AE186B8D2A1540B700338463 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChannelDetails+Extensions.swift"; sourceTree = "<group>"; };
 		AE49E84B2A24F96F002623E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		AE49E84F2A2535E3002623E8 /* TabHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeViewModel.swift; sourceTree = "<group>"; };
 		AE49E8512A253618002623E8 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
 		AE49E8532A253647002623E8 /* BitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinViewModel.swift; sourceTree = "<group>"; };
@@ -500,7 +498,6 @@
 				AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */,
 				AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */,
 				AE0BD4AB2B598C3F00B9901E /* UInt32+Extensions.swift */,
-				AE49E84D2A24FDD7002623E8 /* FileManager+Extensions.swift */,
 				AE51BEF92B37A2A500BAE452 /* Event+Extensions.swift */,
 				AEDF47F22B3FBAB900145D64 /* Notification+Extensions.swift */,
 				AE0055112B47A65700100797 /* Color+Extensions.swift */,
@@ -599,7 +596,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE83142629AED67B00088A70 /* MondayError.swift in Sources */,
-				AE49E84E2A24FDD7002623E8 /* FileManager+Extensions.swift in Sources */,
 				AE49E8562A253674002623E8 /* AddressViewModel.swift in Sources */,
 				AE7096352B5C205F0038BE56 /* PriceServiceError.swift in Sources */,
 				AE186B8E2A1540B700338463 /* StartView.swift in Sources */,
