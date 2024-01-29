@@ -83,30 +83,6 @@ struct NodeIDView: View {
                         VStack(spacing: 20) {
 
                             Button {
-                                showingStopNodeConfirmation = true
-                            } label: {
-                                HStack {
-                                    Image(systemName: "xmark")
-                                    Text("Stop Node")
-                                }
-                                .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                                .bold()
-                                .frame(width: 130)
-                            }
-                            .buttonBorderShape(.capsule)
-                            .buttonStyle(.borderedProminent)
-                            .tint(.red)
-                            .alert(
-                                "Are you sure you want to stop the node?",
-                                isPresented: $showingStopNodeConfirmation
-                            ) {
-                                Button("Yes", role: .destructive) {
-                                    viewModel.stop()
-                                }
-                                Button("No", role: .cancel) {}
-                            }
-
-                            Button {
                                 showingShowSeedConfirmation = true
                             } label: {
                                 HStack {
@@ -115,7 +91,7 @@ struct NodeIDView: View {
                                 }
                                 .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .bold()
-                                .frame(width: 130)
+                                .frame(width: 200)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
@@ -131,25 +107,25 @@ struct NodeIDView: View {
                             }
 
                             Button {
-                                showingDeleteSeedConfirmation = true
+                                showingStopNodeConfirmation = true
                             } label: {
                                 HStack {
-                                    Image(systemName: "minus")
-                                    Text("Delete Seed")
+                                    Image(systemName: "xmark")
+                                    Text("Stop Node")
                                 }
                                 .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .bold()
-                                .frame(width: 130)
+                                .frame(width: 200)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
                             .tint(.red)
                             .alert(
-                                "Are you sure you want to delete the seed?",
-                                isPresented: $showingDeleteSeedConfirmation
+                                "Are you sure you want to stop the node?",
+                                isPresented: $showingStopNodeConfirmation
                             ) {
                                 Button("Yes", role: .destructive) {
-                                    viewModel.delete()
+                                    viewModel.stop()
                                 }
                                 Button("No", role: .cancel) {}
                             }
@@ -158,22 +134,46 @@ struct NodeIDView: View {
                                 showingResetAppConfirmation = true
                             } label: {
                                 HStack {
-                                    Image(systemName: "figure.snowboarding")
-                                    Text("Reset App")
+                                    Image(systemName: "arrow.uturn.backward")
+                                    Text("Reset Preferences")
                                 }
                                 .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .bold()
-                                .frame(width: 130)
+                                .frame(width: 200)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
                             .tint(.red)
                             .alert(
-                                "Are you sure you want to reset the app?",
+                                "Are you sure you want to reset preferences?",
                                 isPresented: $showingResetAppConfirmation
                             ) {
                                 Button("Yes", role: .destructive) {
                                     viewModel.onboarding()
+                                }
+                                Button("No", role: .cancel) {}
+                            }
+
+                            Button {
+                                showingDeleteSeedConfirmation = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: "minus")
+                                    Text("Delete Seed")
+                                }
+                                .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                                .bold()
+                                .frame(width: 200)
+                            }
+                            .buttonBorderShape(.capsule)
+                            .buttonStyle(.borderedProminent)
+                            .tint(.red)
+                            .alert(
+                                "Are you sure you want to reset preferences and delete the seed?",
+                                isPresented: $showingDeleteSeedConfirmation
+                            ) {
+                                Button("Yes", role: .destructive) {
+                                    viewModel.delete()
                                 }
                                 Button("No", role: .cancel) {}
                             }

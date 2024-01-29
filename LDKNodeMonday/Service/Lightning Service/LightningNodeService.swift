@@ -239,3 +239,10 @@ extension LightningNodeService {
         try keyService.saveBackupInfo(backupInfo)
     }
 }
+
+// Delete Documents
+extension LightningNodeService {
+    func deleteDocuments() throws {
+        try storageManager.deleteAllContentsInDocuments()
+    }
+}

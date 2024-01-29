@@ -14,4 +14,22 @@ struct LightningStorage {
         let pathString = path.path
         return pathString
     }
+
+    func deleteAllContentsInDocuments() throws {
+        let fileManager = FileManager.default
+        let documentsURL = try fileManager.url(
+            for: .documentDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: false
+        )
+        let contents = try fileManager.contentsOfDirectory(
+            at: documentsURL,
+            includingPropertiesForKeys: nil,
+            options: []
+        )
+        for fileURL in contents {
+            try fileManager.removeItem(at: fileURL)
+        }
+    }
 }

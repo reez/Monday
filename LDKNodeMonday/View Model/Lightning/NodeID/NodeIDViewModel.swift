@@ -54,6 +54,8 @@ class NodeIDViewModel: ObservableObject {
             // Delete network and URL settings using KeyClient
             try KeyClient.live.deleteNetwork()
             try KeyClient.live.deleteEsplora()
+            // ... then delete all files
+            try LightningNodeService.shared.deleteDocuments()
             // ... then set isOnboarding to true
             self.isOnboarding = true
             // ... which should send you back to OnboardingView
