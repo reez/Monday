@@ -17,6 +17,7 @@ struct NodeIDView: View {
     @State private var showingStopNodeConfirmation = false
     @State private var showingDeleteSeedConfirmation = false
     @State private var showingShowSeedConfirmation = false
+    @State private var showingResetAppConfirmation = false
 
     var body: some View {
 
@@ -90,6 +91,7 @@ struct NodeIDView: View {
                                 }
                                 .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .bold()
+                                .frame(width: 130)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
@@ -113,6 +115,7 @@ struct NodeIDView: View {
                                 }
                                 .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .bold()
+                                .frame(width: 130)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
@@ -136,6 +139,7 @@ struct NodeIDView: View {
                                 }
                                 .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .bold()
+                                .frame(width: 130)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
@@ -146,6 +150,30 @@ struct NodeIDView: View {
                             ) {
                                 Button("Yes", role: .destructive) {
                                     viewModel.delete()
+                                }
+                                Button("No", role: .cancel) {}
+                            }
+
+                            Button {
+                                showingResetAppConfirmation = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: "figure.snowboarding")
+                                    Text("Reset App")
+                                }
+                                .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                                .bold()
+                                .frame(width: 130)
+                            }
+                            .buttonBorderShape(.capsule)
+                            .buttonStyle(.borderedProminent)
+                            .tint(.red)
+                            .alert(
+                                "Are you sure you want to reset the app?",
+                                isPresented: $showingResetAppConfirmation
+                            ) {
+                                Button("Yes", role: .destructive) {
+                                    viewModel.onboarding()
                                 }
                                 Button("No", role: .cancel) {}
                             }
