@@ -10,7 +10,7 @@ import SimpleToast
 import SwiftUI
 
 struct ChannelsListView: View {
-    @ObservedObject var viewModel: ChannelsListViewModel
+    @Bindable var viewModel: ChannelsListViewModel
     @State private var isSendPresented = false
     @State private var isReceivePresented = false
     @State private var isViewPeersPresented = false
@@ -92,6 +92,19 @@ struct ChannelsListView: View {
                                                 Text("\(channel.channelValueSats) sats ")
                                                     .font(.caption)
                                                     .bold()
+                                                if let alias = viewModel.aliases[
+                                                    channel.counterpartyNodeId
+                                                ] {
+                                                    Text(alias)
+                                                        .font(.caption)
+                                                        .fontWeight(.semibold)
+                                                        .foregroundColor(.secondary)
+                                                } else {
+                                                    Text("None")
+                                                        .font(.caption)
+                                                        .fontWeight(.semibold)
+                                                        .foregroundColor(.secondary)
+                                                }
                                                 Text(channel.counterpartyNodeId)
                                                     .font(.caption)
                                                     .truncationMode(.middle)
@@ -108,7 +121,7 @@ struct ChannelsListView: View {
                         }
                         .listStyle(.plain)
                         .refreshable {
-                            viewModel.listChannels()
+                            await viewModel.listChannels()
                         }
                     }
 
@@ -162,11 +175,13 @@ struct ChannelsListView: View {
                     "\(viewModel.channels.count) \(viewModel.channels.count == 1 ? "Channel" : "Channels")"
                 )
                 .onAppear {
-                    viewModel.listChannels()
-                    viewModel.getColor()
-                    if refreshFlag {
-                        viewModel.listChannels()
-                        refreshFlag = false
+                    Task {
+                        await viewModel.listChannels()
+                        viewModel.getColor()
+                        if refreshFlag {
+                            await viewModel.listChannels()
+                            refreshFlag = false
+                        }
                     }
                 }
                 .simpleToast(
@@ -201,7 +216,9 @@ struct ChannelsListView: View {
                 .sheet(
                     isPresented: $isSendPresented,
                     onDismiss: {
-                        viewModel.listChannels()
+                        Task {
+                            await viewModel.listChannels()
+                        }
                     }
                 ) {
                     SendView(viewModel: .init())
@@ -210,7 +227,9 @@ struct ChannelsListView: View {
                 .sheet(
                     isPresented: $isReceivePresented,
                     onDismiss: {
-                        viewModel.listChannels()
+                        Task {
+                            await viewModel.listChannels()
+                        }
                     }
                 ) {
                     ReceiveView(viewModel: .init())
@@ -220,7 +239,9 @@ struct ChannelsListView: View {
                 .sheet(
                     isPresented: $isViewPeersPresented,
                     onDismiss: {
-                        viewModel.listChannels()
+                        Task {
+                            await viewModel.listChannels()
+                        }
                     }
                 ) {
                     PeersListView(viewModel: .init())
@@ -229,7 +250,9 @@ struct ChannelsListView: View {
                 .sheet(
                     isPresented: $isAddChannelPresented,
                     onDismiss: {
-                        viewModel.listChannels()
+                        Task {
+                            await viewModel.listChannels()
+                        }
                     }
                 ) {
                     ChannelAddView(viewModel: .init())
@@ -238,7 +261,9 @@ struct ChannelsListView: View {
                 .sheet(
                     isPresented: $isPaymentsPresented,
                     onDismiss: {
-                        viewModel.listChannels()
+                        Task {
+                            await viewModel.listChannels()
+                        }
                     }
                 ) {
                     PaymentsView(viewModel: .init())
@@ -255,8 +280,8 @@ struct ChannelsListView: View {
 
 struct ChannelsListView_Previews: PreviewProvider {
     static var previews: some View {
-        ChannelsListView(viewModel: .init())
-        ChannelsListView(viewModel: .init())
+        ChannelsListView(viewModel: .init(nodeInfoClient: .mock))
+        ChannelsListView(viewModel: .init(nodeInfoClient: .mock))
             .environment(\.colorScheme, .dark)
     }
 }

@@ -26,7 +26,7 @@ struct TabHomeView: View {
                         )
                     }
 
-                ChannelsListView(viewModel: .init())
+                ChannelsListView(viewModel: .init(nodeInfoClient: .live))
                     .tabItem {
                         Label(
                             "",
