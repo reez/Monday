@@ -99,11 +99,6 @@ struct ChannelsListView: View {
                                                         .font(.caption)
                                                         .fontWeight(.semibold)
                                                         .foregroundColor(.secondary)
-                                                } else {
-                                                    Text("None")
-                                                        .font(.caption)
-                                                        .fontWeight(.semibold)
-                                                        .foregroundColor(.secondary)
                                                 }
                                                 Text(channel.counterpartyNodeId)
                                                     .font(.caption)
