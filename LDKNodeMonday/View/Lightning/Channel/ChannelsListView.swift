@@ -20,6 +20,7 @@ struct ChannelsListView: View {
 
     @StateObject private var eventService = EventService()
     @State private var showToast = false
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
 
@@ -180,9 +181,15 @@ struct ChannelsListView: View {
                         .padding()
                         .background(
                             Capsule()
-                                .foregroundColor(viewModel.networkColor)
+                                .foregroundColor(
+                                    Color(
+                                        uiColor:
+                                            colorScheme == .dark
+                                            ? .secondarySystemBackground : .systemGray6
+                                    )
+                                )
                         )
-                        .foregroundColor(Color.white)
+                        .foregroundColor(Color.primary)
                         .font(.caption2)
                 }
                 .onChange(

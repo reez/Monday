@@ -108,26 +108,12 @@ class LightningNodeService {
     }
 
     func spendableOnchainBalanceSats() async throws -> UInt64 {
-        let startTime = Date()
-        Logger.log("spendableOnchainBalanceSats started at: \(startTime)")
         let balance = try ldkNode.spendableOnchainBalanceSats()
-        let endTime = Date()
-        Logger.log("spendableOnchainBalanceSats ended at: \(startTime)")
-        Logger.log(
-            "Time taken for spendableOnchainBalanceSats: \(endTime.timeIntervalSince(startTime)) seconds"
-        )
         return balance
     }
 
     func totalOnchainBalanceSats() async throws -> UInt64 {
-        let startTime = Date()
-        Logger.log("totalOnchainBalanceSats started at: \(startTime)")
         let balance = try ldkNode.totalOnchainBalanceSats()
-        let endTime = Date()
-        Logger.log("totalOnchainBalanceSats ended at: \(startTime)")
-        Logger.log(
-            "Time taken for totalOnchainBalanceSats: \(endTime.timeIntervalSince(startTime)) seconds"
-        )
         return balance
     }
 
