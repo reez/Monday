@@ -29,6 +29,9 @@
 		AE186B8E2A1540B700338463 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE186B8D2A1540B700338463 /* StartView.swift */; };
 		AE1D9BEC2B2A1FFD00620748 /* BitcoinUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE1D9BEB2B2A1FFD00620748 /* BitcoinUI */; };
 		AE1D9C0B2B2A251500620748 /* ChannelDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */; };
+		AE3815362B6A9705006B2952 /* LightningNodesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3815352B6A9705006B2952 /* LightningNodesService.swift */; };
+		AE3815392B6A978A006B2952 /* LightningNodeServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3815382B6A978A006B2952 /* LightningNodeServiceError.swift */; };
+		AE38153B2B6A979E006B2952 /* LightningNodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE38153A2B6A979E006B2952 /* LightningNodeInfo.swift */; };
 		AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84B2A24F96F002623E8 /* Constants.swift */; };
 		AE49E8502A2535E3002623E8 /* TabHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84F2A2535E3002623E8 /* TabHomeViewModel.swift */; };
 		AE49E8522A253618002623E8 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8512A253618002623E8 /* StartViewModel.swift */; };
@@ -109,6 +112,9 @@
 		AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeService.swift; sourceTree = "<group>"; };
 		AE186B8D2A1540B700338463 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChannelDetails+Extensions.swift"; sourceTree = "<group>"; };
+		AE3815352B6A9705006B2952 /* LightningNodesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodesService.swift; sourceTree = "<group>"; };
+		AE3815382B6A978A006B2952 /* LightningNodeServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeServiceError.swift; sourceTree = "<group>"; };
+		AE38153A2B6A979E006B2952 /* LightningNodeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeInfo.swift; sourceTree = "<group>"; };
 		AE49E84B2A24F96F002623E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		AE49E84F2A2535E3002623E8 /* TabHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHomeViewModel.swift; sourceTree = "<group>"; };
 		AE49E8512A253618002623E8 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
@@ -229,6 +235,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE3815372B6A970D006B2952 /* LightningNodesService */ = {
+			isa = PBXGroup;
+			children = (
+				AE3815352B6A9705006B2952 /* LightningNodesService.swift */,
+				AE3815382B6A978A006B2952 /* LightningNodeServiceError.swift */,
+			);
+			path = LightningNodesService;
 			sourceTree = "<group>";
 		};
 		AE49E86D2A253A9A002623E8 /* Channel */ = {
@@ -372,6 +387,7 @@
 				AE89C7652AC5D49800EF8217 /* KeyService */,
 				AE49E8792A253D43002623E8 /* Lightning Service */,
 				AE7096362B5C206F0038BE56 /* PriceService */,
+				AE3815372B6A970D006B2952 /* LightningNodesService */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -386,6 +402,7 @@
 				AE70963B2B5C22270038BE56 /* CurrencyCode.swift */,
 				AEDF76032B5C687F002DDEE1 /* AnyOptional.swift */,
 				AEDF76052B5C68A0002DDEE1 /* ChannelDetailsFormatted.swift */,
+				AE38153A2B6A979E006B2952 /* LightningNodeInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -609,9 +626,11 @@
 				AE49E8542A253647002623E8 /* BitcoinViewModel.swift in Sources */,
 				AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */,
 				AEBAA4922A01C34A0042EA82 /* ChannelDetailView.swift in Sources */,
+				AE38153B2B6A979E006B2952 /* LightningNodeInfo.swift in Sources */,
 				AE70963A2B5C22060038BE56 /* Double+Extensions.swift in Sources */,
 				AE0A02242A0AD71900F2479E /* LogView.swift in Sources */,
 				AE49E8502A2535E3002623E8 /* TabHomeViewModel.swift in Sources */,
+				AE3815392B6A978A006B2952 /* LightningNodeServiceError.swift in Sources */,
 				AE83142829AEDDAD00088A70 /* SendView.swift in Sources */,
 				AE49E8662A2537D5002623E8 /* PeerViewModel.swift in Sources */,
 				AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */,
@@ -640,6 +659,7 @@
 				AE0055122B47A65700100797 /* Color+Extensions.swift in Sources */,
 				AED09EF42A312ACE00BBCFB1 /* SendBitcoinViewModel.swift in Sources */,
 				AE7C4A0C2B40785F0061189D /* SeedView.swift in Sources */,
+				AE3815362B6A9705006B2952 /* LightningNodesService.swift in Sources */,
 				AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */,
 				AEDF76042B5C687F002DDEE1 /* AnyOptional.swift in Sources */,
 				AE01C5B62AB3C0A200F28C7E /* BackupInfo.swift in Sources */,
