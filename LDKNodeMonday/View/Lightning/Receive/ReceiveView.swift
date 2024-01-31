@@ -61,7 +61,7 @@ struct ReceiveView: View {
                             let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
                             await viewModel.receivePayment(
                                 amountMsat: amountMsat,
-                                description: "LDKNodeMonday",
+                                description: "Monday Wallet",
                                 expirySecs: UInt32(3600)
                             )
                         }

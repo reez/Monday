@@ -19,6 +19,8 @@ class EventService: ObservableObject {
         ) { [weak self] notification in
             if let message = notification.object as? String {
                 self?.lastMessage = message
+            } else {
+                self?.lastMessage = "\(notification.object.debugDescription)"
             }
         }
 
@@ -29,7 +31,7 @@ class EventService: ObservableObject {
         ) { [weak self] notification in
             if let error = notification.object as? NodeError {
                 let errorDetails = handleNodeError(error)
-                self?.lastMessage = "\(errorDetails.title)"  //: \(errorDetails.detail)"
+                self?.lastMessage = "\(errorDetails.title)"
             } else {
                 self?.lastMessage = "\(notification.object.debugDescription)"
             }
