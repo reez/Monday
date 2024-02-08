@@ -38,7 +38,7 @@ class LightningNodeService {
             onchainWalletSyncIntervalSecs: UInt64(60),
             walletSyncIntervalSecs: UInt64(20),
             feeRateCacheUpdateIntervalSecs: UInt64(600),
-            logLevel: .debug
+            logLevel: .trace
         )
 
         let nodeBuilder = Builder.fromConfig(config: config)
