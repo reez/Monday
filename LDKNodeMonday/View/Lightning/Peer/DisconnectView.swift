@@ -44,10 +44,13 @@ struct DisconnectView: View {
                         .bold()
                         .foregroundColor(Color(uiColor: UIColor.systemBackground))
                         .frame(maxWidth: .infinity)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
                         .padding(.all, 8)
                 }
                 .buttonBorderShape(.capsule)
                 .buttonStyle(.borderedProminent)
+                .frame(width: 200, height: 50)
                 .tint(viewModel.networkColor)
                 .padding()
 

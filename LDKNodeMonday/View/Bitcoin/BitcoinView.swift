@@ -122,9 +122,12 @@ struct BitcoinView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "arrow.up")
+                                    .minimumScaleFactor(0.5)
                                 Text("Send")
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             }
-                            .frame(width: 100)
+                            .frame(width: 100, height: 25)
                             .padding(.all, 8)
                         }
                         .buttonBorderShape(.capsule)
@@ -138,8 +141,10 @@ struct BitcoinView: View {
                             HStack {
                                 Image(systemName: "arrow.down")
                                 Text("Receive")
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             }
-                            .frame(width: 100)
+                            .frame(width: 100, height: 25)
                             .padding(.all, 8)
                         }
                         .buttonBorderShape(.capsule)

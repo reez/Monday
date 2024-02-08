@@ -453,8 +453,8 @@
 			isa = PBXGroup;
 			children = (
 				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
-				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
 				AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */,
+				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
 			);
 			path = Bitcoin;
 			sourceTree = "<group>";

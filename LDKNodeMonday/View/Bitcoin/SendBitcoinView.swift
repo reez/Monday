@@ -48,8 +48,12 @@ struct SendBitcoinView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "doc.on.doc")
+                                    .minimumScaleFactor(0.5)
                                 Text("Paste")
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             }
+                            .frame(width: 100, height: 25)
                         }
                         .padding()
 
@@ -60,8 +64,12 @@ struct SendBitcoinView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "qrcode.viewfinder")
+                                    .minimumScaleFactor(0.5)
                                 Text("Scan")
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             }
+                            .frame(width: 100, height: 25)
                         }
                         .padding()
 
@@ -115,10 +123,12 @@ struct SendBitcoinView: View {
                                     .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                     .frame(maxWidth: .infinity)
                                     .padding(.all, 8)
+                                    .lineLimit(1)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
                             .tint(viewModel.networkColor)
+                            .frame(width: 200, height: 25)
                             .padding(.horizontal)
                             .padding(.horizontal)
                         } else {

@@ -53,8 +53,12 @@ struct ChannelAddView: View {
                     } label: {
                         HStack {
                             Image(systemName: "doc.on.doc")
+                                .minimumScaleFactor(0.5)
                             Text("Paste")
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
                         }
+                        .frame(width: 100, height: 25)
                     }
 
                     Spacer()
@@ -64,8 +68,12 @@ struct ChannelAddView: View {
                     } label: {
                         HStack {
                             Image(systemName: "qrcode.viewfinder")
+                                .minimumScaleFactor(0.5)
                             Text("Scan")
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
                         }
+                        .frame(width: 100, height: 25)
                     }
 
                 }
@@ -86,6 +94,7 @@ struct ChannelAddView: View {
                 VStack(alignment: .leading) {
 
                     Text("Node ID")
+                        .minimumScaleFactor(0.5)
                         .bold()
 
                     ZStack {
@@ -99,6 +108,7 @@ struct ChannelAddView: View {
                         }
                         .keyboardType(.numbersAndPunctuation)
                         .truncationMode(.middle)
+                        .minimumScaleFactor(0.5)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
 
                         if !viewModel.nodeId.isEmpty {
@@ -116,6 +126,7 @@ struct ChannelAddView: View {
                     }
 
                     Text("Address")
+                        .minimumScaleFactor(0.5)
                         .bold()
 
                     ZStack {
@@ -128,6 +139,7 @@ struct ChannelAddView: View {
                         }
                         .keyboardType(.numbersAndPunctuation)
                         .truncationMode(.middle)
+                        .minimumScaleFactor(0.5)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
 
                         if !viewModel.address.isEmpty {
@@ -147,6 +159,7 @@ struct ChannelAddView: View {
                     }
 
                     Text("Sats")
+                        .minimumScaleFactor(0.5)
                         .bold()
 
                     ZStack {
@@ -155,6 +168,7 @@ struct ChannelAddView: View {
                             text: $viewModel.channelAmountSats
                         )
                         .keyboardType(.numberPad)
+                        .minimumScaleFactor(0.5)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
 
                         if !viewModel.channelAmountSats.isEmpty {
@@ -178,6 +192,7 @@ struct ChannelAddView: View {
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
+                .minimumScaleFactor(0.4)
 
                 Button {
                     isFocused = false
@@ -200,11 +215,14 @@ struct ChannelAddView: View {
                         .bold()
                         .foregroundColor(Color(uiColor: UIColor.systemBackground))
                         .frame(maxWidth: .infinity)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                         .padding(.all, 8)
                 }
                 .buttonBorderShape(.capsule)
                 .buttonStyle(.borderedProminent)
                 .tint(viewModel.networkColor)
+                .frame(width: 200, height: 25)
                 .padding(.horizontal)
                 .padding(.bottom, 80.0)
 

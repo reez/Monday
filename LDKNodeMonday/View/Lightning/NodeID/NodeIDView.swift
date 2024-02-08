@@ -33,12 +33,12 @@ struct NodeIDView: View {
                         Spacer()
 
                         Image(systemName: "person.circle.fill")
-                            .font(.system(size: 50))
+                            .font(.largeTitle)
+                            .minimumScaleFactor(0.5)
                             .foregroundColor(viewModel.networkColor)
 
                         HStack(alignment: .center) {
                             Text(viewModel.nodeID)
-                                .frame(width: 200, height: 50)
                                 .truncationMode(.middle)
                                 .lineLimit(1)
                                 .foregroundColor(.secondary)
@@ -63,9 +63,13 @@ struct NodeIDView: View {
                                 .bold()
                                 .foregroundColor(viewModel.networkColor)
                             }
+                            .minimumScaleFactor(0.75)
 
                         }
                         .padding(.horizontal)
+                        .minimumScaleFactor(0.5)
+                        .frame(width: 300, height: 50)
+
                     }
                     .padding()
 
@@ -76,6 +80,8 @@ struct NodeIDView: View {
                             Text("Desperate times call for desperate measures")
                                 .italic()
                                 .font(.caption)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
                         }
                         .foregroundColor(.red)
                         .padding()
@@ -87,11 +93,14 @@ struct NodeIDView: View {
                             } label: {
                                 HStack {
                                     Image(systemName: "list.number")
+                                        .minimumScaleFactor(0.5)
                                     Text("Show Seed")
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.5)
                                 }
                                 .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .bold()
-                                .frame(width: 200)
+                                .frame(width: 200, height: 25)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
@@ -111,11 +120,14 @@ struct NodeIDView: View {
                             } label: {
                                 HStack {
                                     Image(systemName: "xmark")
+                                        .minimumScaleFactor(0.5)
                                     Text("Stop Node")
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.5)
                                 }
                                 .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .bold()
-                                .frame(width: 200)
+                                .frame(width: 200, height: 25)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
@@ -135,11 +147,14 @@ struct NodeIDView: View {
                             } label: {
                                 HStack {
                                     Image(systemName: "arrow.uturn.backward")
+                                        .minimumScaleFactor(0.5)
                                     Text("Reset Preferences")
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.5)
                                 }
                                 .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .bold()
-                                .frame(width: 200)
+                                .frame(width: 200, height: 25)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
@@ -159,11 +174,14 @@ struct NodeIDView: View {
                             } label: {
                                 HStack {
                                     Image(systemName: "minus")
+                                        .minimumScaleFactor(0.5)
                                     Text("Delete Seed")
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.5)
                                 }
                                 .foregroundColor(Color(uiColor: UIColor.systemBackground))
                                 .bold()
-                                .frame(width: 200)
+                                .frame(width: 200, height: 25)
                             }
                             .buttonBorderShape(.capsule)
                             .buttonStyle(.borderedProminent)
@@ -180,7 +198,7 @@ struct NodeIDView: View {
 
                         }
                         .padding()
-                        .padding(.bottom, 120.0)
+                        .padding(.bottom, 80.0)
                     }
                     .padding()
 
