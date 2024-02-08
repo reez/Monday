@@ -40,9 +40,13 @@ struct StartView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "arrowshape.backward")
-                                Text("Go Back To Onboarding")
+                                    .minimumScaleFactor(0.5)
+                                Text("Onboarding")
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             }
                             .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                            .frame(width: 200, height: 25)
                         }
                         .buttonBorderShape(.capsule)
                         .buttonStyle(.bordered)

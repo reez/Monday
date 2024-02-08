@@ -77,10 +77,13 @@ struct ReceiveView: View {
                             .foregroundColor(Color(uiColor: UIColor.systemBackground))
                             .frame(maxWidth: .infinity)
                             .padding(.all, 8)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
                     }
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.borderedProminent)
                     .tint(viewModel.networkColor)
+                    .frame(width: 200, height: 25)
                     .padding(.horizontal, 30.0)
                     .padding(.bottom)
 
@@ -126,6 +129,7 @@ struct ReceiveView: View {
                                                     ? "checkmark" : "doc.on.doc"
                                             )
                                             .font(.title2)
+                                            .minimumScaleFactor(0.5)
                                         }
                                     }
                                     .bold()

@@ -136,9 +136,12 @@ struct ChannelsListView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "arrow.up")
+                                    .minimumScaleFactor(0.5)
                                 Text("Send")
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             }
-                            .frame(width: 100)
+                            .frame(width: 100, height: 25)
                             .padding(.all, 8)
                         }
                         .buttonBorderShape(.capsule)
@@ -152,9 +155,12 @@ struct ChannelsListView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "arrow.down")
+                                    .minimumScaleFactor(0.5)
                                 Text("Receive")
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             }
-                            .frame(width: 100)
+                            .frame(width: 100, height: 25)
                             .padding(.all, 8)
                         }
                         .buttonBorderShape(.capsule)
@@ -228,8 +234,7 @@ struct ChannelsListView: View {
                     }
                 ) {
                     ReceiveView(viewModel: .init())
-                        .presentationDetents([.medium, .large])
-                        .presentationDragIndicator(.visible)
+                        .presentationDetents([.medium])
                 }
                 .sheet(
                     isPresented: $isViewPeersPresented,
@@ -251,7 +256,7 @@ struct ChannelsListView: View {
                     }
                 ) {
                     ChannelAddView(viewModel: .init())
-                        .presentationDetents([.medium])
+                        .presentationDetents([.medium, .large])
                 }
                 .sheet(
                     isPresented: $isPaymentsPresented,

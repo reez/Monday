@@ -50,8 +50,12 @@ struct PeerView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "doc.on.doc")
+                                    .minimumScaleFactor(0.5)
                                 Text("Paste")
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             }
+                            .frame(width: 100, height: 25)
                         }
 
                         Spacer()
@@ -61,8 +65,12 @@ struct PeerView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "qrcode.viewfinder")
+                                    .minimumScaleFactor(0.5)
                                 Text("Scan")
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             }
+                            .frame(width: 100, height: 25)
                         }
 
                     }
@@ -85,6 +93,7 @@ struct PeerView: View {
                 VStack(alignment: .leading) {
 
                     Text("Node ID")
+                        .minimumScaleFactor(0.5)
                         .bold()
 
                     ZStack {
@@ -110,6 +119,7 @@ struct PeerView: View {
                     }
 
                     Text("Address")
+                        .minimumScaleFactor(0.5)
                         .bold()
 
                     ZStack {
@@ -164,11 +174,14 @@ struct PeerView: View {
                         .bold()
                         .foregroundColor(Color(uiColor: UIColor.systemBackground))
                         .frame(maxWidth: .infinity)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
                         .padding(.all, 8)
                 }
                 .buttonBorderShape(.capsule)
                 .buttonStyle(.borderedProminent)
                 .tint(viewModel.networkColor)
+                .frame(width: 200, height: 50)
                 .padding(.horizontal)
 
                 Spacer()

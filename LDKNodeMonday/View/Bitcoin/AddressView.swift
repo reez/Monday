@@ -71,6 +71,7 @@ struct AddressView: View {
                                 withAnimation {
                                     Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
                                         .font(.title2)
+                                        .minimumScaleFactor(0.5)
                                 }
                             }
                             .bold()

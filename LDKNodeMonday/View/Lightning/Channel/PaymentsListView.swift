@@ -60,6 +60,8 @@ struct PaymentsListView: View {
                                         }
                                         HStack {
                                             Text("Payment Hash")
+                                                .lineLimit(1)
+                                                .minimumScaleFactor(0.75)
                                             Text(payment.hash)
                                                 .truncationMode(.middle)
                                                 .lineLimit(1)
@@ -69,6 +71,8 @@ struct PaymentsListView: View {
                                         if let preimage = payment.preimage {
                                             HStack {
                                                 Text("Preimage")
+                                                    .lineLimit(1)
+                                                    .minimumScaleFactor(0.75)
                                                 Text(preimage)
                                                     .truncationMode(.middle)
                                                     .lineLimit(1)
