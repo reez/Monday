@@ -91,6 +91,7 @@ struct SendBitcoinView: View {
                             TextField("1BvBMSEYstWet...m4GFg7xJaNVN2", text: $viewModel.address)
                                 .truncationMode(.middle)
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
+                            
 
                             if !viewModel.address.isEmpty {
                                 HStack {

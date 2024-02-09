@@ -10,7 +10,11 @@ import SwiftUI
 
 class SendBitcoinViewModel: ObservableObject {
     let spendableBalance: String
-    @Published var address: String = ""
+    @Published var address: String = "" {
+          didSet {
+              address = address.trimmingCharacters(in: .whitespacesAndNewlines)
+          }
+      }
     @Published var txId: String = ""
     @Published var sendViewError: MondayError?
     @Published var networkColor = Color.gray
