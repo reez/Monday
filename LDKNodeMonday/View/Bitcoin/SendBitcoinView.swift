@@ -91,7 +91,6 @@ struct SendBitcoinView: View {
                             TextField("1BvBMSEYstWet...m4GFg7xJaNVN2", text: $viewModel.address)
                                 .truncationMode(.middle)
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
-                            
 
                             if !viewModel.address.isEmpty {
                                 HStack {
@@ -234,6 +233,8 @@ extension SendBitcoinView {
 struct SendBitcoinView_Previews: PreviewProvider {
     static var previews: some View {
         SendBitcoinView(viewModel: .init(spendableBalance: "1000000"))
+        SendBitcoinView(viewModel: .init(spendableBalance: "1000000"))
+            .environment(\.sizeCategory, .accessibilityLarge)
         SendBitcoinView(viewModel: .init(spendableBalance: "1010101"))
             .environment(\.colorScheme, .dark)
     }

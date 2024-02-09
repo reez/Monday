@@ -37,11 +37,15 @@ struct OnboardingView: View {
                             .fontDesign(.monospaced)
                             .fontWeight(.light)
                             .multilineTextAlignment(.center)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
                     }
                     Text("LDK Node Lightning Wallet")
                         .foregroundColor(Color(hex: "77F3CD"))
                         .fontDesign(.monospaced)
                         .multilineTextAlignment(.center)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 10)
                         .background(
@@ -106,14 +110,20 @@ struct OnboardingView: View {
                 }
                 .padding()
 
-                VStack(spacing: 25) {
-                    Button("Start Node") {
-                        viewModel.saveSeed()
-                        isFirstTime = false
-                    }
-                    .buttonStyle(BitcoinFilled(tintColor: viewModel.buttonColor, isCapsule: true))
-                    .disabled(!isFirstTime && viewModel.seedPhrase.isEmpty)
+                Button {
+                    viewModel.saveSeed()
+                    isFirstTime = false
+                } label: {
+                    Text("Start Node")
+                        .bold()
+                        .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                        .frame(maxWidth: .infinity)
+                        .minimumScaleFactor(0.9)
+                        .padding(.all, 8)
                 }
+                .frame(width: 200, height: 25)
+                .buttonStyle(BitcoinFilled(tintColor: viewModel.buttonColor, isCapsule: true))
+                .disabled(!isFirstTime && viewModel.seedPhrase.isEmpty)
                 .padding(.all, 25)
 
                 Spacer()
@@ -136,4 +146,15 @@ struct OnboardingView: View {
 
 #Preview {
     OnboardingView(viewModel: .init())
+        .environment(\.sizeCategory, .accessibilityLarge)
+}
+
+#Preview {
+    OnboardingView(viewModel: .init())
+        .environment(\.sizeCategory, .accessibilityLarge)
+}
+
+#Preview {
+    OnboardingView(viewModel: .init())
+        .environment(\.sizeCategory, .accessibilityLarge)
 }

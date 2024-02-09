@@ -101,6 +101,13 @@ struct SendConfirmationView_Previews: PreviewProvider {
                     "lnbcrt500120n1pjyda0cpp5trnsfsxu96ucq6x4zgwyy9va2gr0ezuljtr8n26a8hs0anry0hmqdq62pshjmt9de6zqar0yp3kzun0dssp5quqw63ueftrzyku8zxcgcyyy972z0t2vqnj89vr22qu06f2fd6dsmqz9gxqrrsscqp79q2sqqqqqysgq8uc7st2lhhnjsmn8lrt4axjshg5xmy7v47p4hnmp0mhpsmzv346q8hjlql3sadl272f7er48gm7k3hzgmc4d3q4v2he2h3dykft0sxgppeqrtj"
             )
         )
+        .environment(\.sizeCategory, .accessibilityLarge)
+        SendConfirmationView(
+            viewModel: .init(
+                invoice:
+                    "lnbcrt500120n1pjyda0cpp5trnsfsxu96ucq6x4zgwyy9va2gr0ezuljtr8n26a8hs0anry0hmqdq62pshjmt9de6zqar0yp3kzun0dssp5quqw63ueftrzyku8zxcgcyyy972z0t2vqnj89vr22qu06f2fd6dsmqz9gxqrrsscqp79q2sqqqqqysgq8uc7st2lhhnjsmn8lrt4axjshg5xmy7v47p4hnmp0mhpsmzv346q8hjlql3sadl272f7er48gm7k3hzgmc4d3q4v2he2h3dykft0sxgppeqrtj"
+            )
+        )
         .environment(\.colorScheme, .dark)
     }
 }

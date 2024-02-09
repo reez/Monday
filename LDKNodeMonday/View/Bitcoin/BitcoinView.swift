@@ -220,6 +220,8 @@ struct BalanceView_Previews: PreviewProvider {
     static var previews: some View {
         BitcoinView(viewModel: .init(priceClient: .mock))
         BitcoinView(viewModel: .init(priceClient: .mock))
+            .environment(\.sizeCategory, .accessibilityLarge)
+        BitcoinView(viewModel: .init(priceClient: .mock))
             .environment(\.colorScheme, .dark)
     }
 }

@@ -282,6 +282,8 @@ struct ChannelsListView_Previews: PreviewProvider {
     static var previews: some View {
         ChannelsListView(viewModel: .init(nodeInfoClient: .mock))
         ChannelsListView(viewModel: .init(nodeInfoClient: .mock))
+            .environment(\.sizeCategory, .accessibilityLarge)
+        ChannelsListView(viewModel: .init(nodeInfoClient: .mock))
             .environment(\.colorScheme, .dark)
     }
 }

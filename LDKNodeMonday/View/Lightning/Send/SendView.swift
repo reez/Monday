@@ -130,13 +130,11 @@ struct SendView: View {
                             .foregroundColor(Color(uiColor: UIColor.systemBackground))
                             .frame(maxWidth: .infinity)
                             .padding(.all, 8)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.5)
                     }
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.borderedProminent)
                     .tint(viewModel.networkColor)
-                    .frame(width: 200, height: 25)
+                    .frame(width: 300, height: 25)
                     .padding(.horizontal, 30.0)
                     .padding(.bottom, 40.0)
 
@@ -243,6 +241,8 @@ extension SendView {
 struct SendView_Previews: PreviewProvider {
     static var previews: some View {
         SendView(viewModel: .init())
+        SendView(viewModel: .init())
+            .environment(\.sizeCategory, .accessibilityLarge)
         SendView(viewModel: .init())
             .environment(\.colorScheme, .dark)
     }

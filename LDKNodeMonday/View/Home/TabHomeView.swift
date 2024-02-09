@@ -60,6 +60,8 @@ struct TabHomeView_Previews: PreviewProvider {
     static var previews: some View {
         TabHomeView(viewModel: .init())
         TabHomeView(viewModel: .init())
+            .environment(\.sizeCategory, .accessibilityLarge)
+        TabHomeView(viewModel: .init())
             .environment(\.colorScheme, .dark)
     }
 }

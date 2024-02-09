@@ -153,6 +153,35 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                 ),
             ]
         )
+        .environment(\.sizeCategory, .accessibilityLarge)
+        PaymentsListView(
+            payments: [
+                .init(
+                    hash: .localizedName(of: .ascii),
+                    preimage: nil,
+                    secret: nil,
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .succeeded
+                ),
+                .init(
+                    hash: .localizedName(of: .ascii),
+                    preimage: nil,
+                    secret: nil,
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .pending
+                ),
+                .init(
+                    hash: .localizedName(of: .ascii),
+                    preimage: nil,
+                    secret: nil,
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .failed
+                ),
+            ]
+        )
         .environment(\.colorScheme, .dark)
     }
 }

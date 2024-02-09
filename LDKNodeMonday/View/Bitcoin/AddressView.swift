@@ -117,6 +117,8 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         AddressView(viewModel: .init())
         AddressView(viewModel: .init())
+            .environment(\.sizeCategory, .accessibilityLarge)
+        AddressView(viewModel: .init())
             .environment(\.colorScheme, .dark)
     }
 }
