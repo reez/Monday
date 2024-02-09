@@ -93,7 +93,7 @@ struct PeerView: View {
                 VStack(alignment: .leading) {
 
                     Text("Node ID")
-                        .minimumScaleFactor(0.5)
+                        .minimumScaleFactor(0.75)
                         .bold()
 
                     ZStack {
@@ -174,14 +174,12 @@ struct PeerView: View {
                         .bold()
                         .foregroundColor(Color(uiColor: UIColor.systemBackground))
                         .frame(maxWidth: .infinity)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
                         .padding(.all, 8)
                 }
                 .buttonBorderShape(.capsule)
                 .buttonStyle(.borderedProminent)
                 .tint(viewModel.networkColor)
-                .frame(width: 200, height: 50)
+                .frame(width: 300, height: 50)
                 .padding(.horizontal)
 
                 Spacer()
@@ -251,6 +249,8 @@ extension PeerView {
 struct PeerView_Previews: PreviewProvider {
     static var previews: some View {
         PeerView(viewModel: .init())
+        PeerView(viewModel: .init())
+            .environment(\.sizeCategory, .accessibilityLarge)
         PeerView(viewModel: .init())
             .environment(\.colorScheme, .dark)
     }

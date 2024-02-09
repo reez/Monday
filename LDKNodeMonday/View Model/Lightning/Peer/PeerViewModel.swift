@@ -10,17 +10,17 @@ import SwiftUI
 
 class PeerViewModel: ObservableObject {
     @Published var address: String = "" {
-         didSet {
-             address = address.trimmingCharacters(in: .whitespacesAndNewlines)
-         }
-     }
+        didSet {
+            address = address.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
     @Published var peerViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey = "" {
-         didSet {
-             nodeId = nodeId.trimmingCharacters(in: .whitespacesAndNewlines)
-         }
-     }
+        didSet {
+            nodeId = nodeId.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
     @Published var isProgressViewShowing: Bool = false
 
     func connect(

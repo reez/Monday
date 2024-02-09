@@ -34,7 +34,6 @@ struct NodeIDView: View {
 
                         Image(systemName: "person.circle.fill")
                             .font(.largeTitle)
-                            .minimumScaleFactor(0.5)
                             .foregroundColor(viewModel.networkColor)
 
                         HStack(alignment: .center) {
@@ -63,11 +62,9 @@ struct NodeIDView: View {
                                 .bold()
                                 .foregroundColor(viewModel.networkColor)
                             }
-                            .minimumScaleFactor(0.75)
 
                         }
                         .padding(.horizontal)
-                        .minimumScaleFactor(0.5)
                         .frame(width: 300, height: 50)
 
                     }
@@ -245,6 +242,8 @@ struct NodeIDView: View {
 struct NodeIDView_Previews: PreviewProvider {
     static var previews: some View {
         NodeIDView(viewModel: .init())
+        NodeIDView(viewModel: .init())
+            .environment(\.sizeCategory, .accessibilityLarge)
         NodeIDView(viewModel: .init())
             .environment(\.colorScheme, .dark)
     }

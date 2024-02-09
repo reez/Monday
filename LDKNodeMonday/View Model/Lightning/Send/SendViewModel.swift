@@ -10,10 +10,10 @@ import SwiftUI
 
 class SendViewModel: ObservableObject {
     @Published var invoice: PublicKey = "" {
-         didSet {
-             invoice = invoice.trimmingCharacters(in: .whitespacesAndNewlines)
-         }
-     }
+        didSet {
+            invoice = invoice.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
     @Published var networkColor = Color.gray
     @Published var parseError: MondayError?
 

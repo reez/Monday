@@ -162,6 +162,8 @@ struct ChannelCloseView_Previews: PreviewProvider {
         )
         ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
         ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
+            .environment(\.sizeCategory, .accessibilityLarge)
+        ChannelDetailView(viewModel: .init(channel: channel), refreshFlag: .constant(false))
             .environment(\.colorScheme, .dark)
     }
 

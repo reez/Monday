@@ -94,7 +94,7 @@ struct ChannelAddView: View {
                 VStack(alignment: .leading) {
 
                     Text("Node ID")
-                        .minimumScaleFactor(0.5)
+                        .minimumScaleFactor(0.75)
                         .bold()
 
                     ZStack {
@@ -215,14 +215,12 @@ struct ChannelAddView: View {
                         .bold()
                         .foregroundColor(Color(uiColor: UIColor.systemBackground))
                         .frame(maxWidth: .infinity)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
                         .padding(.all, 8)
                 }
                 .buttonBorderShape(.capsule)
                 .buttonStyle(.borderedProminent)
                 .tint(viewModel.networkColor)
-                .frame(width: 200, height: 25)
+                .frame(width: 300, height: 25)
                 .padding(.horizontal)
                 .padding(.bottom, 80.0)
 
@@ -294,6 +292,8 @@ extension ChannelAddView {
 struct ChannelView_Previews: PreviewProvider {
     static var previews: some View {
         ChannelAddView(viewModel: .init())
+        ChannelAddView(viewModel: .init())
+            .environment(\.sizeCategory, .accessibilityLarge)
         ChannelAddView(viewModel: .init())
             .environment(\.colorScheme, .dark)
     }

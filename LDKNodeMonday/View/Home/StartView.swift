@@ -100,6 +100,8 @@ struct StartView_Previews: PreviewProvider {
     static var previews: some View {
         StartView(viewModel: .init())
         StartView(viewModel: .init())
+            .environment(\.sizeCategory, .accessibilityLarge)
+        StartView(viewModel: .init())
             .environment(\.colorScheme, .dark)
     }
 }

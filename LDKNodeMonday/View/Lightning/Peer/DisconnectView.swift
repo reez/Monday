@@ -44,13 +44,11 @@ struct DisconnectView: View {
                         .bold()
                         .foregroundColor(Color(uiColor: UIColor.systemBackground))
                         .frame(maxWidth: .infinity)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
                         .padding(.all, 8)
                 }
                 .buttonBorderShape(.capsule)
                 .buttonStyle(.borderedProminent)
-                .frame(width: 200, height: 50)
+                .frame(width: 300, height: 50)
                 .tint(viewModel.networkColor)
                 .padding()
 
@@ -88,6 +86,12 @@ struct DisconnectView_Previews: PreviewProvider {
                 nodeId: "03e39c737a691931dac0f9f9ee803f2ab08f7fd3bbb25ec08d9b8fdb8f51d3a8db"
             )
         )
+        DisconnectView(
+            viewModel: .init(
+                nodeId: "03e39c737a691931dac0f9f9ee803f2ab08f7fd3bbb25ec08d9b8fdb8f51d3a8db"
+            )
+        )
+        .environment(\.sizeCategory, .accessibilityLarge)
         DisconnectView(
             viewModel: .init(
                 nodeId: "03e39c737a691931dac0f9f9ee803f2ab08f7fd3bbb25ec08d9b8fdb8f51d3a8db"

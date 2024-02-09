@@ -10,22 +10,22 @@ import SwiftUI
 
 class ChannelAddViewModel: ObservableObject {
     @Published var address: String = "" {
-         didSet {
-             address = address.trimmingCharacters(in: .whitespacesAndNewlines)
-         }
-     }
+        didSet {
+            address = address.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
     @Published var channelAmountSats: String = "" {
-         didSet {
-             channelAmountSats = channelAmountSats.trimmingCharacters(in: .whitespacesAndNewlines)
-         }
-     }
+        didSet {
+            channelAmountSats = channelAmountSats.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
     @Published var channelAddViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey = "" {
-         didSet {
-             nodeId = nodeId.trimmingCharacters(in: .whitespacesAndNewlines)
-         }
-     }
+        didSet {
+            nodeId = nodeId.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
     @Published var isOpenChannelFinished: Bool = false
     @Published var isProgressViewShowing: Bool = false
 
