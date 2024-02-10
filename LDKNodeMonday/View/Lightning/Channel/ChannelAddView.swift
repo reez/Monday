@@ -108,6 +108,7 @@ struct ChannelAddView: View {
                         }
                         .keyboardType(.numbersAndPunctuation)
                         .truncationMode(.middle)
+                        .submitLabel(.next)
                         .minimumScaleFactor(0.5)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
 
@@ -139,6 +140,7 @@ struct ChannelAddView: View {
                         }
                         .keyboardType(.numbersAndPunctuation)
                         .truncationMode(.middle)
+                        .submitLabel(.next)
                         .minimumScaleFactor(0.5)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
 
@@ -168,6 +170,7 @@ struct ChannelAddView: View {
                             text: $viewModel.channelAmountSats
                         )
                         .keyboardType(.numberPad)
+                        .submitLabel(.done)
                         .minimumScaleFactor(0.5)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
 

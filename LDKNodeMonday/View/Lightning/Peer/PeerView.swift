@@ -102,6 +102,7 @@ struct PeerView: View {
                             text: $viewModel.nodeId
                         )
                         .truncationMode(.middle)
+                        .submitLabel(.next)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
 
                         if !viewModel.nodeId.isEmpty {
@@ -129,6 +130,7 @@ struct PeerView: View {
                             text: $viewModel.address
                         )
                         .truncationMode(.middle)
+                        .submitLabel(.done)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
 
                         if !viewModel.address.isEmpty {
