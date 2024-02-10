@@ -15,11 +15,9 @@ struct Constants {
         struct EsploraServerURLNetwork {
             struct Bitcoin {
                 static let blockstream = "https://blockstream.info/api"
-                static let kuutamo = "https://esplora.kuutamo.cloud"
                 static let mempoolspace = "https://mempool.space/api"
                 static let allValues = [
                     blockstream,
-                    kuutamo,
                     mempoolspace,
                 ]
             }
