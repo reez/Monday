@@ -33,7 +33,7 @@ class LightningNodeService {
         let config = Config(
             storageDirPath: storageManager.getDocumentsDirectory(),
             network: network,
-            listeningAddresses: ["0.0.0.0:9735"],
+            listeningAddresses: nil,
             defaultCltvExpiryDelta: UInt32(144),
             onchainWalletSyncIntervalSecs: UInt64(60),
             walletSyncIntervalSecs: UInt64(20),
