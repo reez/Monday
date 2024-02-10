@@ -106,6 +106,7 @@ struct OnboardingView: View {
                         text: $viewModel.seedPhrase
                     )
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .submitLabel(.done)
                     .padding(.horizontal, 40)
                 }
                 .padding()

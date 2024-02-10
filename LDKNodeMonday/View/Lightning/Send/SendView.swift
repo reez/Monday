@@ -91,6 +91,7 @@ struct SendView: View {
                                 text: $viewModel.invoice
                             )
                             .truncationMode(.middle)
+                            .submitLabel(.done)
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
 
                             if !viewModel.invoice.isEmpty {

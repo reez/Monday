@@ -36,6 +36,7 @@ struct ReceiveView: View {
                                 text: $viewModel.amountMsat
                             )
                             .keyboardType(.numberPad)
+                            .submitLabel(.done)
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
 
                             if !viewModel.amountMsat.isEmpty {
