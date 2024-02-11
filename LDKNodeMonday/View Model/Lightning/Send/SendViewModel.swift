@@ -9,11 +9,7 @@ import LDKNode
 import SwiftUI
 
 class SendViewModel: ObservableObject {
-    @Published var invoice: PublicKey = "" {
-        didSet {
-            invoice = invoice.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-    }
+    @Published var invoice: PublicKey = ""
     @Published var networkColor = Color.gray
     @Published var parseError: MondayError?
 

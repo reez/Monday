@@ -9,23 +9,11 @@ import LDKNode
 import SwiftUI
 
 class ChannelAddViewModel: ObservableObject {
-    @Published var address: String = "" {
-        didSet {
-            address = address.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-    }
-    @Published var channelAmountSats: String = "" {
-        didSet {
-            channelAmountSats = channelAmountSats.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-    }
+    @Published var address: String = ""
+    @Published var channelAmountSats: String = ""
     @Published var channelAddViewError: MondayError?
     @Published var networkColor = Color.gray
-    @Published var nodeId: PublicKey = "" {
-        didSet {
-            nodeId = nodeId.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-    }
+    @Published var nodeId: PublicKey = ""
     @Published var isOpenChannelFinished: Bool = false
     @Published var isProgressViewShowing: Bool = false
 
