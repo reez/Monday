@@ -234,7 +234,7 @@ struct ChannelsListView: View {
                     }
                 ) {
                     ReceiveView(viewModel: .init())
-                        .presentationDetents([.medium])
+                        .presentationDetents([.medium, .large])
                 }
                 .sheet(
                     isPresented: $isViewPeersPresented,
