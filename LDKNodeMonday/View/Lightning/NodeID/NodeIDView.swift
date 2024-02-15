@@ -26,7 +26,7 @@ struct NodeIDView: View {
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
 
-                VStack(spacing: 20.0) {
+                VStack(spacing: 10.0) {
 
                     VStack {
 
@@ -69,6 +69,25 @@ struct NodeIDView: View {
 
                     }
                     .padding()
+
+                    VStack {
+                        if let network = viewModel.network, let url = viewModel.esploraURL {
+                            Text("Network: \(network)".uppercased()).bold()
+                            Text(
+                                url.replacingOccurrences(
+                                    of: "https://",
+                                    with: ""
+                                ).replacingOccurrences(
+                                    of: "http://",
+                                    with: ""
+                                )
+                            )
+                        }
+
+                    }
+                    .foregroundColor(viewModel.networkColor)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
 
                     VStack(spacing: 10) {
                         VStack {
@@ -195,7 +214,7 @@ struct NodeIDView: View {
 
                         }
                         .padding()
-                        .padding(.bottom, 80.0)
+                        .padding(.bottom, 60.0)
                     }
                     .padding()
 
@@ -219,6 +238,8 @@ struct NodeIDView: View {
                 .onAppear {
                     Task {
                         viewModel.getNodeID()
+                        viewModel.getNetwork()
+                        viewModel.getEsploraUrl()
                         viewModel.getColor()
                     }
                 }

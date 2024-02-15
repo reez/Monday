@@ -10,10 +10,18 @@ import LDKNode
 import SwiftUI
 
 class NodeIDViewModel: ObservableObject {
+    let keyClient: KeyClient
+
     @Published var nodeIDError: MondayError?
     @Published var networkColor = Color.gray
     @Published var nodeID: String = ""
+    @Published var network: String?
+    @Published var esploraURL: String?
     @AppStorage("isOnboarding") var isOnboarding: Bool?
+
+    init(keyClient: KeyClient = .live) {
+        self.keyClient = keyClient
+    }
 
     func getNodeID() {
         let nodeID = LightningNodeService.shared.nodeId()
@@ -84,6 +92,42 @@ class NodeIDViewModel: ObservableObject {
             // ... then set isOnboarding to true
             self.isOnboarding = true
             // ... which should send you back to OnboardingView
+        } catch let error as NodeError {
+            let errorString = handleNodeError(error)
+            DispatchQueue.main.async {
+                self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.nodeIDError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
+            }
+        }
+    }
+
+    func getNetwork() {
+        do {
+            self.network = try keyClient.getNetwork()
+        } catch let error as NodeError {
+            let errorString = handleNodeError(error)
+            DispatchQueue.main.async {
+                self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.nodeIDError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
+            }
+        }
+    }
+
+    func getEsploraUrl() {
+        do {
+            self.esploraURL = try keyClient.getEsploraURL()
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
