@@ -87,7 +87,7 @@ struct SendView: View {
                         ZStack {
 
                             TextField(
-                                "lnbc10u1pwz...8f8r9ckzr0r",
+                                "Lightning Invoice",
                                 text: $viewModel.invoice
                             )
                             .truncationMode(.middle)

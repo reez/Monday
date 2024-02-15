@@ -88,7 +88,7 @@ struct SendBitcoinView: View {
 
                         ZStack {
 
-                            TextField("1BvBMSEYstWet...m4GFg7xJaNVN2", text: $viewModel.address)
+                            TextField("Bitcoin Address", text: $viewModel.address)
                                 .truncationMode(.middle)
                                 .submitLabel(.done)
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
