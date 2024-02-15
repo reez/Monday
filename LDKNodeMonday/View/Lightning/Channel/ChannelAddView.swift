@@ -109,7 +109,7 @@ struct ChannelAddView: View {
                         .keyboardType(.numbersAndPunctuation)
                         .truncationMode(.middle)
                         .submitLabel(.next)
-                        .minimumScaleFactor(0.5)
+                        .minimumScaleFactor(0.95)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
 
                         if !viewModel.nodeId.isEmpty {
