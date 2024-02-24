@@ -28,15 +28,6 @@
       }
     },
     {
-      "identity" : "ldk-node",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/lightningdevkit/ldk-node.git",
-      "state" : {
-        "revision" : "5153c6c96387608dc33b8fd564308482e90f1521",
-        "version" : "0.2.1"
-      }
-    },
-    {
       "identity" : "simpletoast",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sanzaru/SimpleToast.git",

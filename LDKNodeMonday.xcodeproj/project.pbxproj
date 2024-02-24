@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -61,7 +61,6 @@
 		AE70963A2B5C22060038BE56 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7096392B5C22060038BE56 /* Double+Extensions.swift */; };
 		AE70963C2B5C22270038BE56 /* CurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE70963B2B5C22270038BE56 /* CurrencyCode.swift */; };
 		AE7594812A4FAE0200EAEDA2 /* PaymentsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7594802A4FAE0200EAEDA2 /* PaymentsListView.swift */; };
-		AE7BF29C2A44A24F0030FDE5 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE7BF29B2A44A24F0030FDE5 /* LDKNode */; };
 		AE7C4A082B406D590061189D /* SimpleToast in Frameworks */ = {isa = PBXBuildFile; productRef = AE7C4A072B406D590061189D /* SimpleToast */; };
 		AE7C4A0C2B40785F0061189D /* SeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7C4A0B2B40785F0061189D /* SeedView.swift */; };
 		AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */; };
@@ -76,6 +75,9 @@
 		AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48C2A01A93B0042EA82 /* PeerView.swift */; };
 		AEBAA4922A01C34A0042EA82 /* ChannelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */; };
 		AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */; };
+		AEBFD8AA2B8916A00024E3F7 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AEBFD8A92B8916A00024E3F7 /* LDKNode */; };
+		AEBFD8AC2B8941DA0024E3F7 /* LightningBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8AB2B8941DA0024E3F7 /* LightningBalanceView.swift */; };
+		AEBFD8AE2B894A980024E3F7 /* PendingSweepBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8AD2B894A980024E3F7 /* PendingSweepBalanceView.swift */; };
 		AED09EF22A312AC200BBCFB1 /* SendBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */; };
 		AED09EF42A312ACE00BBCFB1 /* SendBitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED09EF32A312ACE00BBCFB1 /* SendBitcoinViewModel.swift */; };
 		AEDF47F12B3FADF900145D64 /* EventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDF47F02B3FADF900145D64 /* EventService.swift */; };
@@ -156,6 +158,8 @@
 		AEBAA48C2A01A93B0042EA82 /* PeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerView.swift; sourceTree = "<group>"; };
 		AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelDetailView.swift; sourceTree = "<group>"; };
 		AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectView.swift; sourceTree = "<group>"; };
+		AEBFD8AB2B8941DA0024E3F7 /* LightningBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningBalanceView.swift; sourceTree = "<group>"; };
+		AEBFD8AD2B894A980024E3F7 /* PendingSweepBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingSweepBalanceView.swift; sourceTree = "<group>"; };
 		AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendBitcoinView.swift; sourceTree = "<group>"; };
 		AED09EF32A312ACE00BBCFB1 /* SendBitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendBitcoinViewModel.swift; sourceTree = "<group>"; };
 		AEDF47F02B3FADF900145D64 /* EventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventService.swift; sourceTree = "<group>"; };
@@ -174,12 +178,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE7BF29C2A44A24F0030FDE5 /* LDKNode in Frameworks */,
 				AE1D9BEC2B2A1FFD00620748 /* BitcoinUI in Frameworks */,
 				AE581D5A2A4214EA0000D979 /* LDKNode in Frameworks */,
 				AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */,
 				AE51BEFD2B37A5DC00BAE452 /* SimpleToast in Frameworks */,
 				AE7C4A082B406D590061189D /* SimpleToast in Frameworks */,
+				AEBFD8AA2B8916A00024E3F7 /* LDKNode in Frameworks */,
 				AE01C5B02AB3BEED00F28C7E /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -453,6 +457,8 @@
 			isa = PBXGroup;
 			children = (
 				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
+				AEBFD8AB2B8941DA0024E3F7 /* LightningBalanceView.swift */,
+				AEBFD8AD2B894A980024E3F7 /* PendingSweepBalanceView.swift */,
 				AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */,
 				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
 			);
@@ -544,11 +550,11 @@
 			packageProductDependencies = (
 				AEE5B7642A09B1FC001E5E59 /* CodeScanner */,
 				AE581D592A4214EA0000D979 /* LDKNode */,
-				AE7BF29B2A44A24F0030FDE5 /* LDKNode */,
 				AE01C5AF2AB3BEED00F28C7E /* KeychainAccess */,
 				AE1D9BEB2B2A1FFD00620748 /* BitcoinUI */,
 				AE51BEFC2B37A5DC00BAE452 /* SimpleToast */,
 				AE7C4A072B406D590061189D /* SimpleToast */,
+				AEBFD8A92B8916A00024E3F7 /* LDKNode */,
 			);
 			productName = LDKNodeMonday;
 			productReference = AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */;
@@ -580,10 +586,10 @@
 			mainGroup = AE17E8CD29A402E30058C9C9;
 			packageReferences = (
 				AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */,
-				AE7BF29A2A44A24F0030FDE5 /* XCRemoteSwiftPackageReference "ldk-node" */,
 				AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				AE1D9BEA2B2A1FFD00620748 /* XCRemoteSwiftPackageReference "BitcoinUI" */,
 				AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */,
+				AEBFD8A82B8916A00024E3F7 /* XCLocalSwiftPackageReference "../ldk-node/bindings/swift" */,
 			);
 			productRefGroup = AE17E8D729A402E30058C9C9 /* Products */;
 			projectDirPath = "";
@@ -614,6 +620,7 @@
 			files = (
 				AE83142629AED67B00088A70 /* MondayError.swift in Sources */,
 				AE49E8562A253674002623E8 /* AddressViewModel.swift in Sources */,
+				AEBFD8AC2B8941DA0024E3F7 /* LightningBalanceView.swift in Sources */,
 				AE7096352B5C205F0038BE56 /* PriceServiceError.swift in Sources */,
 				AE186B8E2A1540B700338463 /* StartView.swift in Sources */,
 				AE49E8602A253761002623E8 /* SendConfirmationViewModel.swift in Sources */,
@@ -648,6 +655,7 @@
 				AE49E8622A25378C002623E8 /* ReceiveViewModel.swift in Sources */,
 				AEDF76062B5C68A0002DDEE1 /* ChannelDetailsFormatted.swift in Sources */,
 				AE01C5B82AB3C0C400F28C7E /* KeyServiceError.swift in Sources */,
+				AEBFD8AE2B894A980024E3F7 /* PendingSweepBalanceView.swift in Sources */,
 				AE6BB5712A00947B009E16E3 /* ReceiveView.swift in Sources */,
 				AE49E8582A2536B4002623E8 /* ChannelsListViewModel.swift in Sources */,
 				AE7594812A4FAE0200EAEDA2 /* PaymentsListView.swift in Sources */,
@@ -894,6 +902,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		AEBFD8A82B8916A00024E3F7 /* XCLocalSwiftPackageReference "../ldk-node/bindings/swift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../ldk-node/bindings/swift";
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -909,14 +924,6 @@
 			requirement = {
 				kind = exactVersion;
 				version = 1.0.3;
-			};
-		};
-		AE7BF29A2A44A24F0030FDE5 /* XCRemoteSwiftPackageReference "ldk-node" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lightningdevkit/ldk-node.git";
-			requirement = {
-				kind = exactVersion;
-				version = 0.2.1;
 			};
 		};
 		AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */ = {
@@ -956,15 +963,14 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = LDKNode;
 		};
-		AE7BF29B2A44A24F0030FDE5 /* LDKNode */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AE7BF29A2A44A24F0030FDE5 /* XCRemoteSwiftPackageReference "ldk-node" */;
-			productName = LDKNode;
-		};
 		AE7C4A072B406D590061189D /* SimpleToast */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */;
 			productName = SimpleToast;
+		};
+		AEBFD8A92B8916A00024E3F7 /* LDKNode */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LDKNode;
 		};
 		AEE5B7642A09B1FC001E5E59 /* CodeScanner */ = {
 			isa = XCSwiftPackageProductDependency;

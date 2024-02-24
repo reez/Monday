@@ -32,12 +32,15 @@ class LightningNodeService {
 
         let config = Config(
             storageDirPath: storageManager.getDocumentsDirectory(),
+            logDirPath: nil,
             network: network,
             listeningAddresses: nil,
             defaultCltvExpiryDelta: UInt32(144),
             onchainWalletSyncIntervalSecs: UInt64(60),
             walletSyncIntervalSecs: UInt64(20),
             feeRateCacheUpdateIntervalSecs: UInt64(600),
+            trustedPeers0conf: [],
+            probingLiquidityLimitMultiplier: UInt64(3),
             logLevel: .trace
         )
 
@@ -107,13 +110,28 @@ class LightningNodeService {
         return fundingAddress
     }
 
-    func spendableOnchainBalanceSats() async throws -> UInt64 {
-        let balance = try ldkNode.spendableOnchainBalanceSats()
+    func spendableOnchainBalanceSats() async -> UInt64 {
+        let balance = ldkNode.listBalances().spendableOnchainBalanceSats
         return balance
     }
 
-    func totalOnchainBalanceSats() async throws -> UInt64 {
-        let balance = try ldkNode.totalOnchainBalanceSats()
+    func totalOnchainBalanceSats() async -> UInt64 {
+        let balance = ldkNode.listBalances().totalOnchainBalanceSats
+        return balance
+    }
+
+    func totalLightningBalanceSats() async -> UInt64 {
+        let balance = ldkNode.listBalances().totalLightningBalanceSats
+        return balance
+    }
+
+    func lightningBalances() async -> [LightningBalance] {
+        let balance = ldkNode.listBalances().lightningBalances
+        return balance
+    }
+
+    func pendingBalancesFromChannelClosures() async -> [PendingSweepBalance] {
+        let balance = ldkNode.listBalances().pendingBalancesFromChannelClosures
         return balance
     }
 
@@ -136,8 +154,8 @@ class LightningNodeService {
         pushToCounterpartyMsat: UInt64?,
         channelConfig: ChannelConfig?,
         announceChannel: Bool = false
-    ) async throws {
-        try ldkNode.connectOpenChannel(
+    ) async throws -> UserChannelId {
+        let userChannelId = try ldkNode.connectOpenChannel(
             nodeId: nodeId,
             address: address,
             channelAmountSats: channelAmountSats,
@@ -145,10 +163,14 @@ class LightningNodeService {
             channelConfig: nil,
             announceChannel: false
         )
+        return userChannelId
     }
 
-    func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) throws {
-        try ldkNode.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
+    func closeChannel(userChannelId: ChannelId, counterpartyNodeId: PublicKey) throws {
+        try ldkNode.closeChannel(
+            userChannelId: userChannelId,
+            counterpartyNodeId: counterpartyNodeId
+        )
     }
 
     func sendPayment(invoice: Bolt11Invoice) async throws -> PaymentHash {

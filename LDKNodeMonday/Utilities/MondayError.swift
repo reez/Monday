@@ -107,6 +107,15 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .InvalidSocketAddress(let message):
         return .init(title: "InvalidSocketAddress", detail: message)
 
+    case .LiquidityRequestFailed(let message):
+        return .init(title: "LiquidityRequestFailed", detail: message)
+
+    case .LiquiditySourceUnavailable(let message):
+        return .init(title: "LiquiditySourceUnavailable", detail: message)
+
+    case .LiquidityFeeTooHigh(let message):
+        return .init(title: "LiquidityFeeTooHigh", detail: message)
+
     }
 
 }

@@ -105,7 +105,8 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     secret: nil,
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .succeeded
+                    status: .succeeded,
+                    lspFeeLimits: nil  //<#LspFeeLimits?#>
                 ),
                 .init(
                     hash: .localizedName(of: .ascii),
@@ -113,7 +114,8 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     secret: nil,
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .pending
+                    status: .pending,
+                    lspFeeLimits: nil  //<#LspFeeLimits?#>
                 ),
                 .init(
                     hash: .localizedName(of: .ascii),
@@ -121,7 +123,8 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     secret: nil,
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .failed
+                    status: .failed,
+                    lspFeeLimits: nil  //<#LspFeeLimits?#>
                 ),
             ]
         )
@@ -133,7 +136,8 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     secret: nil,
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .succeeded
+                    status: .succeeded,
+                    lspFeeLimits: nil  //<#LspFeeLimits?#>
                 ),
                 .init(
                     hash: .localizedName(of: .ascii),
@@ -141,7 +145,8 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     secret: nil,
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .pending
+                    status: .pending,
+                    lspFeeLimits: nil  //<#LspFeeLimits?#>
                 ),
                 .init(
                     hash: .localizedName(of: .ascii),
@@ -149,7 +154,8 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     secret: nil,
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .failed
+                    status: .failed,
+                    lspFeeLimits: nil  //<#LspFeeLimits?#>
                 ),
             ]
         )
@@ -162,7 +168,8 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     secret: nil,
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .succeeded
+                    status: .succeeded,
+                    lspFeeLimits: nil  //<#LspFeeLimits?#>
                 ),
                 .init(
                     hash: .localizedName(of: .ascii),
@@ -170,7 +177,8 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     secret: nil,
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .pending
+                    status: .pending,
+                    lspFeeLimits: nil  //<#LspFeeLimits?#>
                 ),
                 .init(
                     hash: .localizedName(of: .ascii),
@@ -178,7 +186,8 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     secret: nil,
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .failed
+                    status: .failed,
+                    lspFeeLimits: nil  //<#LspFeeLimits?#>
                 ),
             ]
         )

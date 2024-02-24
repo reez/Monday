@@ -13,10 +13,13 @@ class BitcoinViewModel: ObservableObject {
 
     @Published var bitcoinViewError: MondayError?
     @Published var networkColor = Color.gray
-    @Published var spendableBalance: String = "0.00 000 000"
+    @Published var spendableBalance: UInt64 = 0
     @Published var totalBalance: UInt64 = 0
+    @Published var totalLightningBalance: UInt64 = 0
+    @Published var lightningBalances: [LightningBalance] = []
     @Published var isSpendableBalanceFinished: Bool = false
     @Published var isTotalBalanceFinished: Bool = false
+    @Published var isTotalLightningBalanceFinished: Bool = false
     @Published var isPriceFinished: Bool = false
 
     var price: Double = 0.00
@@ -25,53 +28,43 @@ class BitcoinViewModel: ObservableObject {
         let usdValue = Double(totalBalance).valueInUSD(price: price)
         return usdValue
     }
+    var satsLightningPrice: String {
+        let usdValue = Double(totalLightningBalance).valueInUSD(price: price)
+        return usdValue
+    }
 
     init(priceClient: PriceClient) {
         self.priceClient = priceClient
     }
 
     func getTotalOnchainBalanceSats() async {
-        do {
-            let balance = try await LightningNodeService.shared.totalOnchainBalanceSats()
-            DispatchQueue.main.async {
-                self.totalBalance = balance
-                self.isTotalBalanceFinished = true
-            }
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.bitcoinViewError = .init(title: errorString.title, detail: errorString.detail)
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.bitcoinViewError = .init(
-                    title: "Unexpected error",
-                    detail: error.localizedDescription
-                )
-            }
+        let balance = await LightningNodeService.shared.totalOnchainBalanceSats()
+        DispatchQueue.main.async {
+            self.totalBalance = balance
+            self.isTotalBalanceFinished = true
         }
     }
 
     func getSpendableOnchainBalanceSats() async {
-        do {
-            let balance = try await LightningNodeService.shared.spendableOnchainBalanceSats()
-            let stringIntBalance = balance.formattedSatoshis()
-            DispatchQueue.main.async {
-                self.spendableBalance = stringIntBalance
-                self.isSpendableBalanceFinished = true
-            }
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.bitcoinViewError = .init(title: errorString.title, detail: errorString.detail)
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.bitcoinViewError = .init(
-                    title: "Unexpected error",
-                    detail: error.localizedDescription
-                )
-            }
+        let balance = await LightningNodeService.shared.spendableOnchainBalanceSats()
+        DispatchQueue.main.async {
+            self.spendableBalance = balance
+            self.isSpendableBalanceFinished = true
+        }
+    }
+
+    func getTotalLightningBalanceSats() async {
+        let balance = await LightningNodeService.shared.totalLightningBalanceSats()
+        DispatchQueue.main.async {
+            self.totalLightningBalance = balance
+            self.isTotalLightningBalanceFinished = true
+        }
+    }
+
+    func getLightningBalances() async {
+        let balance = await LightningNodeService.shared.lightningBalances()
+        DispatchQueue.main.async {
+            self.lightningBalances = balance
         }
     }
 

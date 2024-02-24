@@ -20,7 +20,7 @@ class ChannelDetailViewModel: ObservableObject {
     func close() {
         do {
             try LightningNodeService.shared.closeChannel(
-                channelId: self.channel.channelId,
+                userChannelId: self.channel.channelId,
                 counterpartyNodeId: self.channel.counterpartyNodeId
             )
             channelDetailViewError = nil

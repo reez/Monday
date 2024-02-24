@@ -137,7 +137,6 @@ struct ChannelCloseView_Previews: PreviewProvider {
             unspendablePunishmentReserve: nil,
             userChannelId: UserChannelId(stringLiteral: "userChannelId"),
             feerateSatPer1000Weight: UInt32(20000),
-            balanceMsat: UInt64(2_000_000),
             outboundCapacityMsat: UInt64(500000),
             inboundCapacityMsat: UInt64(400000),
             confirmationsRequired: nil,

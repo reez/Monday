@@ -15,6 +15,7 @@ struct BitcoinView: View {
     @State private var showingBitcoinViewErrorAlert = false
     @State private var isAddressSheetPresented = false
     @State private var isSendSheetPresented = false
+    @State private var isLightningBalanceSheetPresented = false
 
     var body: some View {
 
@@ -56,7 +57,7 @@ struct BitcoinView: View {
 
                             HStack(spacing: 5) {
                                 Spacer()
-                                Text(viewModel.spendableBalance)
+                                Text(viewModel.spendableBalance.formattedSatoshis())
                                     .contentTransition(.numericText())
                                     .fontWeight(.semibold)
                                     .fontDesign(.rounded)
@@ -88,6 +89,69 @@ struct BitcoinView: View {
                             .font(.subheadline)
                             .foregroundColor(.secondary)
 
+                            Spacer()
+
+                            HStack(spacing: 15) {
+
+                                Spacer()
+                                Image(systemName: "bolt")
+                                    .foregroundColor(.secondary)
+                                    .font(.title)
+                                    .fontWeight(.thin)
+
+                                Text(viewModel.totalLightningBalance.formattedSatoshis())
+                                    .contentTransition(.numericText())
+                                    .font(.largeTitle)
+                                    .fontWeight(.semibold)
+                                    .fontDesign(.rounded)
+                                    .redacted(
+                                        reason: viewModel.isTotalLightningBalanceFinished
+                                            ? [] : .placeholder
+                                    )
+                                Text("sats")
+                                    .foregroundColor(.secondary)
+                                    .font(.title)
+                                    .fontWeight(.thin)
+                                Spacer()
+
+                            }
+                            .minimumScaleFactor(0.5)
+                            .lineLimit(1)
+                            .foregroundColor(.primary)
+
+                            Button {
+                                isLightningBalanceSheetPresented = true
+                            } label: {
+                                Image(systemName: "info.circle")
+                                    .foregroundColor(.secondary)
+                                    .font(.caption)
+                            }
+                            .sheet(
+                                isPresented: $isLightningBalanceSheetPresented,
+                                onDismiss: {
+                                    isLightningBalanceSheetPresented = false
+                                }
+                            ) {
+                                LightningBalanceView(balances: viewModel.lightningBalances)
+                                    .presentationDetents([.medium])
+                            }
+
+                            HStack {
+                                Spacer()
+                                Text(viewModel.satsLightningPrice)
+                                    .contentTransition(.numericText())
+                                    .fontWeight(.semibold)
+                                    .fontDesign(.rounded)
+                                    .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+                                Spacer()
+                            }
+                            .lineLimit(1)
+                            .animation(.spring(), value: viewModel.satsPrice)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
+                            Spacer()
+
                             if !viewModel.isTotalBalanceFinished,
                                 !viewModel.isSpendableBalanceFinished
                             {
@@ -110,6 +174,7 @@ struct BitcoinView: View {
                     .refreshable {
                         await viewModel.getSpendableOnchainBalanceSats()
                         await viewModel.getTotalOnchainBalanceSats()
+                        await viewModel.getTotalLightningBalanceSats()
                         await viewModel.getPrices()
                     }
 
@@ -177,7 +242,9 @@ struct BitcoinView: View {
                     Task {
                         await viewModel.getSpendableOnchainBalanceSats()
                         await viewModel.getTotalOnchainBalanceSats()
+                        await viewModel.getTotalLightningBalanceSats()
                         await viewModel.getPrices()
+                        await viewModel.getLightningBalances()
                         viewModel.getColor()
                     }
                 }
@@ -204,8 +271,10 @@ struct BitcoinView: View {
                         }
                     }
                 ) {
-                    SendBitcoinView(viewModel: .init(spendableBalance: viewModel.spendableBalance))
-                        .presentationDetents([.medium])
+                    SendBitcoinView(
+                        viewModel: .init(spendableBalance: String(viewModel.spendableBalance))
+                    )
+                    .presentationDetents([.medium])
                 }
 
             }
