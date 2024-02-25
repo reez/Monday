@@ -46,6 +46,12 @@ struct Constants {
                 ]
             }
         }
+        
+        struct LiquiditySourceLsps2 {
+            struct Signet {
+                static let mutiny = mutinyLSP
+            }
+        }
 
         struct RGSServerURLNetwork {
             static let bitcoin = "https://rapidsync.lightningdevkit.org/snapshot/"

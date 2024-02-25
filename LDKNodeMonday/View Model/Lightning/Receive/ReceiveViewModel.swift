@@ -11,6 +11,7 @@ import SwiftUI
 class ReceiveViewModel: ObservableObject {
     @Published var amountMsat: String = ""
     @Published var invoice: Bolt11Invoice = ""
+    @Published var invoiceJIT: Bolt11Invoice = ""
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
 
@@ -37,7 +38,33 @@ class ReceiveViewModel: ObservableObject {
                 )
             }
         }
-
+    }
+    
+    func receivePaymentViaJitChannel(amountMsat: UInt64, description: String, expirySecs: UInt32, maxLspFeeLimitMsat: UInt64?) async {
+        do {
+            let invoiceJIT = try await LightningNodeService.shared.receivePaymentViaJitChannel(
+                amountMsat: amountMsat,
+                description: description,
+                expirySecs: expirySecs,
+                maxLspFeeLimitMsat: maxLspFeeLimitMsat
+            )
+            print("invoiceJIT: \n \(invoiceJIT)")
+            DispatchQueue.main.async {
+                self.invoiceJIT = invoiceJIT
+            }
+        } catch let error as NodeError {
+            let errorString = handleNodeError(error)
+            DispatchQueue.main.async {
+                self.receiveViewError = .init(title: errorString.title, detail: errorString.detail)
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.receiveViewError = .init(
+                    title: "Unexpected error",
+                    detail: error.localizedDescription
+                )
+            }
+        }
     }
 
     func clearInvoice() {

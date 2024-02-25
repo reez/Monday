@@ -57,34 +57,71 @@ struct ReceiveView: View {
                     }
                     .padding()
 
-                    Button {
-                        Task {
-                            let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
-                            await viewModel.receivePayment(
-                                amountMsat: amountMsat,
-                                description: "Monday Wallet",
-                                expirySecs: UInt32(3600)
+                    VStack(spacing: 20) {
+                        Button {
+                            Task {
+                                let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
+                                await viewModel.receivePayment(
+                                    amountMsat: amountMsat,
+                                    description: "Monday Wallet",
+                                    expirySecs: UInt32(3600)
+                                )
+                            }
+                            UIApplication.shared.sendAction(
+                                #selector(UIResponder.resignFirstResponder),
+                                to: nil,
+                                from: nil,
+                                for: nil
                             )
+                        } label: {
+                            Text("Create Invoice")
+                                .bold()
+                                .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                                .frame(maxWidth: .infinity)
+                                .padding(.all, 8)
                         }
-                        UIApplication.shared.sendAction(
-                            #selector(UIResponder.resignFirstResponder),
-                            to: nil,
-                            from: nil,
-                            for: nil
-                        )
-                    } label: {
-                        Text("Create Invoice")
-                            .bold()
-                            .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                            .frame(maxWidth: .infinity)
-                            .padding(.all, 8)
+                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.borderedProminent)
+                        .tint(viewModel.networkColor)
+                        .frame(width: 300, height: 25)
+                        .padding(.horizontal, 30.0)
+                        .padding(.bottom)
+                        
+                        // TODO: do better
+                        if viewModel.networkColor == Constants.BitcoinNetworkColor.signet.color {
+                            Button {
+                                Task {
+                                    let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
+                                    await viewModel.receivePaymentViaJitChannel(
+                                        amountMsat: amountMsat,
+                                        description: "Monday Wallet",
+                                        expirySecs: UInt32(3600),
+                                        maxLspFeeLimitMsat: nil
+                                    )
+                                }
+                                UIApplication.shared.sendAction(
+                                    #selector(UIResponder.resignFirstResponder),
+                                    to: nil,
+                                    from: nil,
+                                    for: nil
+                                )
+                            } label: {
+                                Text("Create JIT Invoice")
+                                    .bold()
+                                    .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.all, 8)
+                            }
+                            .buttonBorderShape(.capsule)
+                            .buttonStyle(.borderedProminent)
+                            .tint(viewModel.networkColor)
+                            .frame(width: 300, height: 25)
+                            .padding(.horizontal, 30.0)
+                            .padding(.bottom)
+                        }
+                        
                     }
-                    .buttonBorderShape(.capsule)
-                    .buttonStyle(.borderedProminent)
-                    .tint(viewModel.networkColor)
-                    .frame(width: 300, height: 25)
-                    .padding(.horizontal, 30.0)
-                    .padding(.bottom)
+             
 
                     if viewModel.invoice != "" {
 

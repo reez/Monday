@@ -78,6 +78,7 @@
 		AEBFD8AA2B8916A00024E3F7 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AEBFD8A92B8916A00024E3F7 /* LDKNode */; };
 		AEBFD8AC2B8941DA0024E3F7 /* LightningBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8AB2B8941DA0024E3F7 /* LightningBalanceView.swift */; };
 		AEBFD8AE2B894A980024E3F7 /* PendingSweepBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8AD2B894A980024E3F7 /* PendingSweepBalanceView.swift */; };
+		AEBFD8B02B8A97DB0024E3F7 /* LightningServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8AF2B8A97DB0024E3F7 /* LightningServiceProvider.swift */; };
 		AED09EF22A312AC200BBCFB1 /* SendBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */; };
 		AED09EF42A312ACE00BBCFB1 /* SendBitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED09EF32A312ACE00BBCFB1 /* SendBitcoinViewModel.swift */; };
 		AEDF47F12B3FADF900145D64 /* EventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDF47F02B3FADF900145D64 /* EventService.swift */; };
@@ -160,6 +161,7 @@
 		AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectView.swift; sourceTree = "<group>"; };
 		AEBFD8AB2B8941DA0024E3F7 /* LightningBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningBalanceView.swift; sourceTree = "<group>"; };
 		AEBFD8AD2B894A980024E3F7 /* PendingSweepBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingSweepBalanceView.swift; sourceTree = "<group>"; };
+		AEBFD8AF2B8A97DB0024E3F7 /* LightningServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningServiceProvider.swift; sourceTree = "<group>"; };
 		AED09EF12A312AC200BBCFB1 /* SendBitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendBitcoinView.swift; sourceTree = "<group>"; };
 		AED09EF32A312ACE00BBCFB1 /* SendBitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendBitcoinViewModel.swift; sourceTree = "<group>"; };
 		AEDF47F02B3FADF900145D64 /* EventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventService.swift; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 				AEDF76032B5C687F002DDEE1 /* AnyOptional.swift */,
 				AEDF76052B5C68A0002DDEE1 /* ChannelDetailsFormatted.swift */,
 				AE38153A2B6A979E006B2952 /* LightningNodeInfo.swift */,
+				AEBFD8AF2B8A97DB0024E3F7 /* LightningServiceProvider.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -679,6 +682,7 @@
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
 				AE00550E2B479EF000100797 /* OnboardingView.swift in Sources */,
 				AED09EF22A312AC200BBCFB1 /* SendBitcoinView.swift in Sources */,
+				AEBFD8B02B8A97DB0024E3F7 /* LightningServiceProvider.swift in Sources */,
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
 				AE49E85A2A2536D4002623E8 /* ChannelAddViewModel.swift in Sources */,
 				AE0055142B4895B500100797 /* SeedViewModel.swift in Sources */,

@@ -39,7 +39,9 @@ class LightningNodeService {
             onchainWalletSyncIntervalSecs: UInt64(60),
             walletSyncIntervalSecs: UInt64(20),
             feeRateCacheUpdateIntervalSecs: UInt64(600),
-            trustedPeers0conf: [],
+            trustedPeers0conf: [
+                Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
+            ],
             probingLiquidityLimitMultiplier: UInt64(3),
             logLevel: .trace
         )
@@ -59,6 +61,11 @@ class LightningNodeService {
             )
             self.networkColor = Constants.BitcoinNetworkColor.testnet.color
         case .signet:
+            nodeBuilder.setLiquiditySourceLsps2(
+                address: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.address,
+                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId,
+                token: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.token
+            )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
         case .regtest:
             self.networkColor = Constants.BitcoinNetworkColor.regtest.color
@@ -185,6 +192,16 @@ class LightningNodeService {
             amountMsat: amountMsat,
             description: description,
             expirySecs: expirySecs
+        )
+        return invoice
+    }
+    
+    func receivePaymentViaJitChannel(amountMsat: UInt64, description: String, expirySecs: UInt32, maxLspFeeLimitMsat: UInt64?) async throws -> Bolt11Invoice {
+        let invoice = try ldkNode.receivePaymentViaJitChannel(
+            amountMsat: amountMsat,
+            description: description,
+            expirySecs: expirySecs,
+            maxLspFeeLimitMsat: maxLspFeeLimitMsat
         )
         return invoice
     }
