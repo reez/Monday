@@ -44,31 +44,6 @@ class OnboardingViewModel: ObservableObject {
             }
         }
     }
-
-    init() {
-
-        do {
-            if let networkString = try KeyClient.live.getNetwork() {
-                self.selectedNetwork = Network(stringValue: networkString) ?? .testnet
-            } else {
-                self.selectedNetwork = .testnet
-            }
-            if let esploraURL = try KeyClient.live.getEsploraURL() {
-                self.selectedURL = esploraURL
-            } else {
-                self.selectedURL = availableURLs.first ?? ""
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.onboardingViewError = .init(
-                    title: "Error Getting Network/Esplora",
-                    detail: error.localizedDescription
-                )
-            }
-        }
-
-    }
-
     var availableURLs: [String] {
         switch selectedNetwork {
         case .bitcoin:
@@ -93,6 +68,30 @@ class OnboardingViewModel: ObservableObject {
         case .regtest:
             return Constants.BitcoinNetworkColor.regtest.color
         }
+    }
+
+    init() {
+
+        do {
+            if let networkString = try KeyClient.live.getNetwork() {
+                self.selectedNetwork = Network(stringValue: networkString) ?? .testnet
+            } else {
+                self.selectedNetwork = .testnet
+            }
+            if let esploraURL = try KeyClient.live.getEsploraURL() {
+                self.selectedURL = esploraURL
+            } else {
+                self.selectedURL = availableURLs.first ?? ""
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.onboardingViewError = .init(
+                    title: "Error Getting Network/Esplora",
+                    detail: error.localizedDescription
+                )
+            }
+        }
+
     }
 
     func saveSeed() {

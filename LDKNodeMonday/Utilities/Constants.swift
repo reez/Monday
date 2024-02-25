@@ -46,10 +46,10 @@ struct Constants {
                 ]
             }
         }
-        
+
         struct LiquiditySourceLsps2 {
             struct Signet {
-                static let mutiny = mutinyLSP
+                static let mutiny = LSP.mutiny
             }
         }
 
@@ -58,6 +58,14 @@ struct Constants {
             static let testnet = "https://rapidsync.lightningdevkit.org/testnet/snapshot/"
         }
 
+    }
+
+    struct LSP {
+        static let mutiny = LightningServiceProvider(
+            address: "3.84.56.108:39735",
+            nodeId: "0371d6fd7d75de2d0372d03ea00e8bacdacb50c27d0eaea0a76a0622eff1f5ef2b",
+            token: "4GH1W3YW"
+        )
     }
 
     enum BitcoinNetworkColor {

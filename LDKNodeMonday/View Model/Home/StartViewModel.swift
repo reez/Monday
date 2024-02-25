@@ -9,10 +9,10 @@ import LDKNode
 import SwiftUI
 
 class StartViewModel: ObservableObject {
+    @AppStorage("isOnboarding") var isOnboarding: Bool?
     @Published var networkColor = Color.gray
     @Published var isStarted: Bool = false
     @Published var startViewError: MondayError?
-    @AppStorage("isOnboarding") var isOnboarding: Bool?
 
     func start() async throws {
         do {
@@ -34,18 +34,13 @@ class StartViewModel: ObservableObject {
 
     func onboarding() {
         do {
-            // Delete network and URL settings using KeyClient
             try KeyClient.live.deleteNetwork()
             try KeyClient.live.deleteEsplora()
-            // ... then set isOnboarding to true
             self.isOnboarding = true
-            // ... which should send you back to OnboardingView
         } catch _ as NodeError {
             self.isOnboarding = true
-            // ... which should send you back to OnboardingView
         } catch {
             self.isOnboarding = true
-            // ... which should send you back to OnboardingView
         }
     }
 

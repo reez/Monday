@@ -12,7 +12,9 @@ extension UInt64 {
     func formattedAmount() -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
+        formatter.groupingSeparator = ","
         formatter.groupingSize = 3
+        formatter.locale = Locale(identifier: "en_US")
 
         let satValue = self / 1000
         if let formattedNumber = formatter.string(from: NSNumber(value: satValue)) {

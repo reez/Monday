@@ -10,12 +10,13 @@ import LDKNode
 import SwiftUI
 
 struct OnboardingView: View {
-    @ObservedObject var viewModel: OnboardingViewModel
     @AppStorage("isOnboarding") var isOnboarding: Bool?
-    @State private var showingOnboardingViewErrorAlert = false
     @AppStorage("isFirstTime") var isFirstTime: Bool = true
+    @ObservedObject var viewModel: OnboardingViewModel
+    @State private var showingOnboardingViewErrorAlert = false
 
     var body: some View {
+
         ZStack {
             Color(uiColor: .systemBackground)
                 .ignoresSafeArea()

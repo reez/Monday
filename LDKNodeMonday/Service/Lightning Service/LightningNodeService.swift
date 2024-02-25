@@ -13,7 +13,6 @@ import os
 class LightningNodeService {
     static var shared: LightningNodeService = LightningNodeService()
     private let ldkNode: LdkNode
-    private let storageManager = LightningStorage()
     private let keyService: KeyClient
     var networkColor = Color.black
     var network: Network
@@ -31,7 +30,7 @@ class LightningNodeService {
         self.keyService = keyService
 
         let config = Config(
-            storageDirPath: storageManager.getDocumentsDirectory(),
+            storageDirPath: FileManager.default.getDocumentsDirectoryPath(),
             logDirPath: nil,
             network: network,
             listeningAddresses: nil,
@@ -185,6 +184,16 @@ class LightningNodeService {
         return paymentHash
     }
 
+    func sendPaymentUsingAmount(invoice: Bolt11Invoice, amountMsat: UInt64) async throws
+        -> PaymentHash
+    {
+        let paymentHash = try ldkNode.sendPaymentUsingAmount(
+            invoice: invoice,
+            amountMsat: amountMsat
+        )
+        return paymentHash
+    }
+
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async throws
         -> Bolt11Invoice
     {
@@ -195,8 +204,23 @@ class LightningNodeService {
         )
         return invoice
     }
-    
-    func receivePaymentViaJitChannel(amountMsat: UInt64, description: String, expirySecs: UInt32, maxLspFeeLimitMsat: UInt64?) async throws -> Bolt11Invoice {
+
+    func receiveVariableAmountPayment(description: String, expirySecs: UInt32) async throws
+        -> Bolt11Invoice
+    {
+        let invoice = try ldkNode.receiveVariableAmountPayment(
+            description: description,
+            expirySecs: expirySecs
+        )
+        return invoice
+    }
+
+    func receivePaymentViaJitChannel(
+        amountMsat: UInt64,
+        description: String,
+        expirySecs: UInt32,
+        maxLspFeeLimitMsat: UInt64?
+    ) async throws -> Bolt11Invoice {
         let invoice = try ldkNode.receivePaymentViaJitChannel(
             amountMsat: amountMsat,
             description: description,
@@ -228,7 +252,6 @@ class LightningNodeService {
 
 }
 
-// Danger Zone
 extension LightningNodeService {
     func deleteWallet() throws {
         try keyService.deleteBackupInfo()
@@ -239,25 +262,21 @@ extension LightningNodeService {
     }
 }
 
-// Event Handling
 extension LightningNodeService {
     func listenForEvents() {
         Task {
             while true {
-                if let event = ldkNode.nextEvent() {
-                    NotificationCenter.default.post(
-                        name: .ldkEventReceived,
-                        object: event.description
-                    )
-                    ldkNode.eventHandled()
-                }
-                try? await Task.sleep(nanoseconds: 5_000_000_000)
+                let event = await ldkNode.nextEventAsync()
+                NotificationCenter.default.post(
+                    name: .ldkEventReceived,
+                    object: event.description
+                )
+                ldkNode.eventHandled()
             }
         }
     }
 }
 
-// Save Seed
 extension LightningNodeService {
     func save(mnemonic: Mnemonic) throws {
         let backupInfo = BackupInfo(mnemonic: mnemonic)
@@ -265,9 +284,8 @@ extension LightningNodeService {
     }
 }
 
-// Delete Documents
 extension LightningNodeService {
     func deleteDocuments() throws {
-        try storageManager.deleteAllContentsInDocuments()
+        try FileManager.default.deleteAllContentsInDocumentsDirectory()
     }
 }

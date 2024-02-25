@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "ldk-node",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tnull/ldk-node.git",
+      "state" : {
+        "branch" : "2024-01-0.3-pre-alpha",
+        "revision" : "5cb611d612c34f8939146fa2b4848487dd490263"
+      }
+    },
+    {
       "identity" : "simpletoast",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sanzaru/SimpleToast.git",

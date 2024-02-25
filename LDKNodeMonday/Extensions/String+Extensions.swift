@@ -8,6 +8,7 @@
 import Foundation
 
 extension String {
+
     func bolt11amount() -> String? {
         let regex = try! NSRegularExpression(pattern: "ln.*?(\\d+)([munp]?)", options: [])
         if let match = regex.firstMatch(
@@ -66,6 +67,20 @@ extension String {
         }
     }
 
+    func formattedAmountZero() -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.groupingSize = 3
+
+        if let number = Int(self),
+            let formattedNumber = formatter.string(from: NSNumber(value: number))
+        {
+            return formattedNumber
+        } else {
+            return "0"
+        }
+    }
+
     func parseConnectionInfo() -> Peer? {
         if let atIndex = self.firstIndex(of: "@") {
             let nodeID = String(self[..<atIndex])
@@ -101,6 +116,51 @@ extension String {
         }.split(separator: " ")
 
         return words.map { $0.capitalized }.joined(separator: " ")
+    }
+
+    var isLightningAddress: Bool {
+        return starts(with: "ln") || lowercased().hasPrefix("lightning:")
+    }
+
+    var isBitcoinAddress: Bool {
+        return lowercased().hasPrefix("bitcoin:") || isValidBitcoinAddress
+    }
+
+    var isValidBitcoinAddress: Bool {
+        let patterns = [
+            "^1[a-km-zA-HJ-NP-Z1-9]{25,34}$",  // P2PKH Mainnet
+            "^[mn2][a-km-zA-HJ-NP-Z1-9]{33}$",  // P2PKH or P2SH Testnet
+            "^bc1[qzp][a-z0-9]{38,}$",  // Bech32 Mainnet
+            "^tb1[qzp][a-z0-9]{38,}$",  // Bech32 Testnet
+        ]
+        return patterns.contains {
+            self.range(of: $0, options: [.regularExpression, .caseInsensitive]) != nil
+        }
+    }
+
+    func extractPaymentInfo(spendableBalance: UInt64) -> (
+        address: String, amount: String, payment: Payment
+    ) {
+        if self.isLightningAddress && !self.starts(with: "lnurl") {
+            let address = self
+            let amount = self.bolt11amount() ?? "0"
+            return (address, amount, .isLightning)
+        } else if self.isBitcoinAddress {
+            let address = self.extractBitcoinAddress()
+            let amount = self.bolt11amount() ?? String(spendableBalance)
+            return (address, amount, .isBitcoin)
+        } else if self.starts(with: "lnurl") {
+            return ("LNURL not supported yet", "0", .isLightningURL)
+        } else {
+            return ("", "0", .isNone)
+        }
+    }
+
+    private func extractBitcoinAddress() -> String {
+        if self.lowercased().hasPrefix("bitcoin:") {
+            return self.replacingOccurrences(of: "bitcoin:", with: "")
+        }
+        return self
     }
 
 }
