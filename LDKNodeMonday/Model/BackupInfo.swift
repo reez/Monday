@@ -9,6 +9,7 @@ import Foundation
 
 struct BackupInfo: Codable, Equatable {
     var mnemonic: String
+
     init(mnemonic: String) {
         self.mnemonic = mnemonic
     }

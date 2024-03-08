@@ -13,7 +13,6 @@ import os
 class LightningNodeService {
     static var shared: LightningNodeService = LightningNodeService()
     private let ldkNode: LdkNode
-    private let storageManager = LightningStorage()
     private let keyService: KeyClient
     var networkColor = Color.black
     var network: Network
@@ -31,13 +30,18 @@ class LightningNodeService {
         self.keyService = keyService
 
         let config = Config(
-            storageDirPath: storageManager.getDocumentsDirectory(),
+            storageDirPath: FileManager.default.getDocumentsDirectoryPath(),
+            logDirPath: nil,
             network: network,
             listeningAddresses: nil,
             defaultCltvExpiryDelta: UInt32(144),
             onchainWalletSyncIntervalSecs: UInt64(60),
             walletSyncIntervalSecs: UInt64(20),
             feeRateCacheUpdateIntervalSecs: UInt64(600),
+            trustedPeers0conf: [
+                Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
+            ],
+            probingLiquidityLimitMultiplier: UInt64(3),
             logLevel: .trace
         )
 
@@ -56,6 +60,11 @@ class LightningNodeService {
             )
             self.networkColor = Constants.BitcoinNetworkColor.testnet.color
         case .signet:
+            nodeBuilder.setLiquiditySourceLsps2(
+                address: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.address,
+                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId,
+                token: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.token
+            )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
         case .regtest:
             self.networkColor = Constants.BitcoinNetworkColor.regtest.color
@@ -107,13 +116,28 @@ class LightningNodeService {
         return fundingAddress
     }
 
-    func spendableOnchainBalanceSats() async throws -> UInt64 {
-        let balance = try ldkNode.spendableOnchainBalanceSats()
+    func spendableOnchainBalanceSats() async -> UInt64 {
+        let balance = ldkNode.listBalances().spendableOnchainBalanceSats
         return balance
     }
 
-    func totalOnchainBalanceSats() async throws -> UInt64 {
-        let balance = try ldkNode.totalOnchainBalanceSats()
+    func totalOnchainBalanceSats() async -> UInt64 {
+        let balance = ldkNode.listBalances().totalOnchainBalanceSats
+        return balance
+    }
+
+    func totalLightningBalanceSats() async -> UInt64 {
+        let balance = ldkNode.listBalances().totalLightningBalanceSats
+        return balance
+    }
+
+    func lightningBalances() async -> [LightningBalance] {
+        let balance = ldkNode.listBalances().lightningBalances
+        return balance
+    }
+
+    func pendingBalancesFromChannelClosures() async -> [PendingSweepBalance] {
+        let balance = ldkNode.listBalances().pendingBalancesFromChannelClosures
         return balance
     }
 
@@ -136,8 +160,8 @@ class LightningNodeService {
         pushToCounterpartyMsat: UInt64?,
         channelConfig: ChannelConfig?,
         announceChannel: Bool = false
-    ) async throws {
-        try ldkNode.connectOpenChannel(
+    ) async throws -> UserChannelId {
+        let userChannelId = try ldkNode.connectOpenChannel(
             nodeId: nodeId,
             address: address,
             channelAmountSats: channelAmountSats,
@@ -145,14 +169,28 @@ class LightningNodeService {
             channelConfig: nil,
             announceChannel: false
         )
+        return userChannelId
     }
 
-    func closeChannel(channelId: ChannelId, counterpartyNodeId: PublicKey) throws {
-        try ldkNode.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
+    func closeChannel(userChannelId: ChannelId, counterpartyNodeId: PublicKey) throws {
+        try ldkNode.closeChannel(
+            userChannelId: userChannelId,
+            counterpartyNodeId: counterpartyNodeId
+        )
     }
 
     func sendPayment(invoice: Bolt11Invoice) async throws -> PaymentHash {
         let paymentHash = try ldkNode.sendPayment(invoice: invoice)
+        return paymentHash
+    }
+
+    func sendPaymentUsingAmount(invoice: Bolt11Invoice, amountMsat: UInt64) async throws
+        -> PaymentHash
+    {
+        let paymentHash = try ldkNode.sendPaymentUsingAmount(
+            invoice: invoice,
+            amountMsat: amountMsat
+        )
         return paymentHash
     }
 
@@ -163,6 +201,31 @@ class LightningNodeService {
             amountMsat: amountMsat,
             description: description,
             expirySecs: expirySecs
+        )
+        return invoice
+    }
+
+    func receiveVariableAmountPayment(description: String, expirySecs: UInt32) async throws
+        -> Bolt11Invoice
+    {
+        let invoice = try ldkNode.receiveVariableAmountPayment(
+            description: description,
+            expirySecs: expirySecs
+        )
+        return invoice
+    }
+
+    func receivePaymentViaJitChannel(
+        amountMsat: UInt64,
+        description: String,
+        expirySecs: UInt32,
+        maxLspFeeLimitMsat: UInt64?
+    ) async throws -> Bolt11Invoice {
+        let invoice = try ldkNode.receivePaymentViaJitChannel(
+            amountMsat: amountMsat,
+            description: description,
+            expirySecs: expirySecs,
+            maxLspFeeLimitMsat: maxLspFeeLimitMsat
         )
         return invoice
     }
@@ -189,7 +252,6 @@ class LightningNodeService {
 
 }
 
-// Danger Zone
 extension LightningNodeService {
     func deleteWallet() throws {
         try keyService.deleteBackupInfo()
@@ -200,25 +262,21 @@ extension LightningNodeService {
     }
 }
 
-// Event Handling
 extension LightningNodeService {
     func listenForEvents() {
         Task {
             while true {
-                if let event = ldkNode.nextEvent() {
-                    NotificationCenter.default.post(
-                        name: .ldkEventReceived,
-                        object: event.description
-                    )
-                    ldkNode.eventHandled()
-                }
-                try? await Task.sleep(nanoseconds: 5_000_000_000)
+                let event = await ldkNode.nextEventAsync()
+                NotificationCenter.default.post(
+                    name: .ldkEventReceived,
+                    object: event.description
+                )
+                ldkNode.eventHandled()
             }
         }
     }
 }
 
-// Save Seed
 extension LightningNodeService {
     func save(mnemonic: Mnemonic) throws {
         let backupInfo = BackupInfo(mnemonic: mnemonic)
@@ -226,9 +284,8 @@ extension LightningNodeService {
     }
 }
 
-// Delete Documents
 extension LightningNodeService {
     func deleteDocuments() throws {
-        try storageManager.deleteAllContentsInDocuments()
+        try FileManager.default.deleteAllContentsInDocumentsDirectory()
     }
 }

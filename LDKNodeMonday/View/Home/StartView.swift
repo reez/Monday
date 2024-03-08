@@ -7,7 +7,6 @@
 
 import BitcoinUI
 import LDKNode
-import SimpleToast
 import SwiftUI
 
 struct StartView: View {
@@ -22,7 +21,7 @@ struct StartView: View {
 
             VStack {
                 if viewModel.isStarted {
-                    TabHomeView(viewModel: .init())
+                    BitcoinView(viewModel: .init(priceClient: .live))
                 } else {
                     VStack(spacing: 20) {
                         withAnimation {
