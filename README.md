@@ -4,49 +4,13 @@
 
 An example iOS app using [LDK Node](https://github.com/lightningdevkit/ldk-node)
 
-<img src="Docs/lightning-screen.png" alt="Screenshot" width="236" height="511">
+<img src="Docs/main-screen.png" alt="Screenshot" width="236" height="511">
 
 ## Functionality
 
-This app is an experimental work in progress. 
+*This app is an experimental work in progress.*
 
-### Implemented
-
-- [x] `start`
-
-- [x] `stop`
-
-- [x] `nodeId`
-
-- [x] `newOnchainAddress`
-
-- [x] `spendableOnchainBalanceSats`
-
-- [x] `totalOnchainBalanceSats`
-
-- [x] `connect`
-
-- [x] `disconnect`
-
-- [x] `connectOpenChannel`
-
-- [x] `closeChannel`
-
-- [x] `sendPayment`
-
-- [x] `receivePayment`
-
-- [x] `listPeers`
-
-- [x] `listChannels`
-
-- [x] `sendAllToOnchainAddress`
-
-- [x] `listPayments`
-
-- [x] `nextEvent` 
-
-- [x] `eventHandled` 
+A lightning node on your iPhone with the ability to send & receive on-chain & lightning over any network.
 
 ## Swift Packages
 
