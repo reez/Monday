@@ -120,6 +120,10 @@ extension String {
 
     var isLightningAddress: Bool {
         let lowercasedSelf = self.lowercased()
+        let queryParams = self.queryParameters()
+        if let lightningParam = queryParams["lightning"], !lightningParam.isEmpty {
+            return true
+        }
         return lowercasedSelf.starts(with: "ln") || lowercasedSelf.hasPrefix("lightning:")
     }
 
@@ -139,16 +143,38 @@ extension String {
         }
     }
 
+    private func queryParameters() -> [String: String] {
+        guard let range = self.range(of: "?") else { return [:] }
+        let queryString = self[range.upperBound...]
+
+        var params: [String: String] = [:]
+        queryString.split(separator: "&").forEach {
+            let pair = $0.split(separator: "=")
+            if pair.count == 2 {
+                params[String(pair[0])] = String(pair[1])
+            }
+        }
+
+        return params
+    }
+
     func extractPaymentInfo(spendableBalance: UInt64) -> (
         address: String, amount: String, payment: Payment
     ) {
-        if self.isLightningAddress && !self.starts(with: "lnurl") {
+        let queryParams = self.queryParameters()
+
+        if let lightningAddress = queryParams["lightning"], !lightningAddress.isEmpty {
+            let address = lightningAddress
+            let newAddress = address.lowercased()
+            let amount = newAddress.bolt11amount() ?? "0"
+            return (newAddress, amount, .isLightning)
+        } else if self.isLightningAddress && !self.starts(with: "lnurl") {
             let address = self
-            let amount = self.bolt11amount() ?? "0"
+            let amount = address.bolt11amount() ?? "0"
             return (address, amount, .isLightning)
         } else if self.isBitcoinAddress {
             let address = self.extractBitcoinAddress()
-            let amount = self.bolt11amount() ?? String(spendableBalance)
+            let amount = String(spendableBalance)
             return (address, amount, .isBitcoin)
         } else if self.starts(with: "lnurl") {
             return ("LNURL not supported yet", "0", .isLightningURL)
