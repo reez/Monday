@@ -133,6 +133,7 @@ struct ChannelCloseView_Previews: PreviewProvider {
             channelId: ChannelId(stringLiteral: "channelID"),
             counterpartyNodeId: PublicKey(stringLiteral: "counterpartyNodeId"),
             fundingTxo: nil,
+            channelType: nil,
             channelValueSats: UInt64(1_000_000),
             unspendablePunishmentReserve: nil,
             userChannelId: UserChannelId(stringLiteral: "userChannelId"),

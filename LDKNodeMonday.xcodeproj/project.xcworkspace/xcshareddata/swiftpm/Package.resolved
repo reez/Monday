@@ -33,7 +33,7 @@
       "location" : "https://github.com/tnull/ldk-node.git",
       "state" : {
         "branch" : "2024-01-0.3-pre-alpha",
-        "revision" : "5cb611d612c34f8939146fa2b4848487dd490263"
+        "revision" : "bcff50aa72c0a8857f1edb7655ea9f11a3c6b387"
       }
     },
     {

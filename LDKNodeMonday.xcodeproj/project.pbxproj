@@ -52,7 +52,6 @@
 		AE51BEFD2B37A5DC00BAE452 /* SimpleToast in Frameworks */ = {isa = PBXBuildFile; productRef = AE51BEFC2B37A5DC00BAE452 /* SimpleToast */; };
 		AE551D472B8ECE7D0034B61E /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE551D462B8ECE7D0034B61E /* Payment.swift */; };
 		AE551D492B8ECEB00034B61E /* AmountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE551D482B8ECEB00034B61E /* AmountViewModel.swift */; };
-		AE581D5A2A4214EA0000D979 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE581D592A4214EA0000D979 /* LDKNode */; };
 		AE5C4FD529A5565700BE3285 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AE5C4FD429A5565700BE3285 /* README.md */; };
 		AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */; };
 		AE7096332B5C20480038BE56 /* PriceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7096322B5C20480038BE56 /* PriceService.swift */; };
@@ -68,7 +67,6 @@
 		AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* NodeIDView.swift */; };
 		AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelAddView.swift */; };
 		AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9422692A007D6C007E4F12 /* ChannelsListView.swift */; };
-		AEA057DF2B911A9E00DB1096 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AEA057DE2B911A9E00DB1096 /* LDKNode */; };
 		AEA057E92B912C3C00DB1096 /* ZeroInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA057E82B912C3C00DB1096 /* ZeroInvoiceView.swift */; };
 		AEA057EB2B912E1800DB1096 /* AmountInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA057EA2B912E1800DB1096 /* AmountInvoiceView.swift */; };
 		AEA057ED2B912FEA00DB1096 /* JITInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA057EC2B912FEA00DB1096 /* JITInvoiceView.swift */; };
@@ -88,6 +86,8 @@
 		AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE5B7692A09C722001E5E59 /* Peer.swift */; };
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
 		AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */; };
+		AEF66F502BA4A3E600FA15F9 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AEF66F4F2BA4A3E600FA15F9 /* LDKNode */; };
+		AEF66F522BA4B11A00FA15F9 /* PaymentKind+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF66F512BA4B11A00FA15F9 /* PaymentKind+Extensions.swift */; };
 		AEFAF2922A433F6F001128DF /* LightningPaymentStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFAF2912A433F6F001128DF /* LightningPaymentStatus.swift */; };
 /* End PBXBuildFile section */
 
@@ -167,6 +167,7 @@
 		AEE5B7692A09C722001E5E59 /* Peer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
 		AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		AEF66F512BA4B11A00FA15F9 /* PaymentKind+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentKind+Extensions.swift"; sourceTree = "<group>"; };
 		AEFAF2912A433F6F001128DF /* LightningPaymentStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningPaymentStatus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -175,13 +176,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEA057DF2B911A9E00DB1096 /* LDKNode in Frameworks */,
 				AE1D9BEC2B2A1FFD00620748 /* BitcoinUI in Frameworks */,
-				AE581D5A2A4214EA0000D979 /* LDKNode in Frameworks */,
 				AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */,
 				AE51BEFD2B37A5DC00BAE452 /* SimpleToast in Frameworks */,
 				AE7C4A082B406D590061189D /* SimpleToast in Frameworks */,
 				AEBFD8AA2B8916A00024E3F7 /* LDKNode in Frameworks */,
+				AEF66F502BA4A3E600FA15F9 /* LDKNode in Frameworks */,
 				AE01C5B02AB3BEED00F28C7E /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -515,6 +515,7 @@
 				AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */,
 				AE0BD4AB2B598C3F00B9901E /* UInt32+Extensions.swift */,
 				AE6BB56E2A008CBA009E16E3 /* UInt64+Extensions.swift */,
+				AEF66F512BA4B11A00FA15F9 /* PaymentKind+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -537,13 +538,12 @@
 			name = LDKNodeMonday;
 			packageProductDependencies = (
 				AEE5B7642A09B1FC001E5E59 /* CodeScanner */,
-				AE581D592A4214EA0000D979 /* LDKNode */,
 				AE01C5AF2AB3BEED00F28C7E /* KeychainAccess */,
 				AE1D9BEB2B2A1FFD00620748 /* BitcoinUI */,
 				AE51BEFC2B37A5DC00BAE452 /* SimpleToast */,
 				AE7C4A072B406D590061189D /* SimpleToast */,
 				AEBFD8A92B8916A00024E3F7 /* LDKNode */,
-				AEA057DE2B911A9E00DB1096 /* LDKNode */,
+				AEF66F4F2BA4A3E600FA15F9 /* LDKNode */,
 			);
 			productName = LDKNodeMonday;
 			productReference = AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */;
@@ -578,7 +578,7 @@
 				AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				AE1D9BEA2B2A1FFD00620748 /* XCRemoteSwiftPackageReference "BitcoinUI" */,
 				AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */,
-				AEA057DD2B911A9E00DB1096 /* XCRemoteSwiftPackageReference "ldk-node" */,
+				AEF66F4E2BA4A3E600FA15F9 /* XCRemoteSwiftPackageReference "ldk-node" */,
 			);
 			productRefGroup = AE17E8D729A402E30058C9C9 /* Products */;
 			projectDirPath = "";
@@ -629,6 +629,7 @@
 				AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
 				AEA057ED2B912FEA00DB1096 /* JITInvoiceView.swift in Sources */,
+				AEF66F522BA4B11A00FA15F9 /* PaymentKind+Extensions.swift in Sources */,
 				AE0055102B479F1100100797 /* OnboardingViewModel.swift in Sources */,
 				AE1D9C0B2B2A251500620748 /* ChannelDetails+Extensions.swift in Sources */,
 				AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */,
@@ -914,20 +915,20 @@
 				version = 0.8.1;
 			};
 		};
-		AEA057DD2B911A9E00DB1096 /* XCRemoteSwiftPackageReference "ldk-node" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/tnull/ldk-node.git";
-			requirement = {
-				branch = "2024-01-0.3-pre-alpha";
-				kind = branch;
-			};
-		};
 		AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/twostraws/CodeScanner";
 			requirement = {
 				kind = exactVersion;
 				version = 2.0.0;
+			};
+		};
+		AEF66F4E2BA4A3E600FA15F9 /* XCRemoteSwiftPackageReference "ldk-node" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tnull/ldk-node.git";
+			requirement = {
+				branch = "2024-01-0.3-pre-alpha";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -947,19 +948,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = SimpleToast;
 		};
-		AE581D592A4214EA0000D979 /* LDKNode */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LDKNode;
-		};
 		AE7C4A072B406D590061189D /* SimpleToast */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */;
 			productName = SimpleToast;
-		};
-		AEA057DE2B911A9E00DB1096 /* LDKNode */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AEA057DD2B911A9E00DB1096 /* XCRemoteSwiftPackageReference "ldk-node" */;
-			productName = LDKNode;
 		};
 		AEBFD8A92B8916A00024E3F7 /* LDKNode */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -969,6 +961,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
+		};
+		AEF66F4F2BA4A3E600FA15F9 /* LDKNode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AEF66F4E2BA4A3E600FA15F9 /* XCRemoteSwiftPackageReference "ldk-node" */;
+			productName = LDKNode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
