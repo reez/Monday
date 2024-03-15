@@ -119,7 +119,8 @@ extension String {
     }
 
     var isLightningAddress: Bool {
-        return starts(with: "ln") || lowercased().hasPrefix("lightning:")
+        let lowercasedSelf = self.lowercased()
+        return lowercasedSelf.starts(with: "ln") || lowercasedSelf.hasPrefix("lightning:")
     }
 
     var isBitcoinAddress: Bool {
