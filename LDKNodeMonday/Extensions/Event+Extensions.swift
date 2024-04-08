@@ -14,18 +14,16 @@ extension Event: CustomStringConvertible {
 
         switch self {
 
-        case .paymentSuccessful(paymentId: _, let paymentHash, feePaidMsat: _):
-            let truncatedHash = paymentHash.truncated(toLength: 10)
-            return "Payment Successful \(truncatedHash)"
+        case .paymentSuccessful(let paymentHash, feePaidMsat: _):
+            return "Payment Successful \(paymentHash.truncated(toLength: 10))"
 
-        case .paymentFailed(paymentId: _, let paymentHash, let reason):
-            let truncatedHash = paymentHash.truncated(toLength: 10)
-            let debugReason = reason.debugDescription
-            return "Payment Failed \(debugReason) \(truncatedHash))"
+        case .paymentFailed(let paymentHash, let paymentFailureReason):
+            return
+                "Payment Failed \(paymentFailureReason.debugDescription) \(paymentHash.truncated(toLength: 10))"
 
-        case .paymentReceived(paymentId: _, paymentHash: _, let amountMsat):
-            let formattedAmount = amountMsat.formattedAmount()
-            return "Payment Received \(formattedAmount) sats"
+        case .paymentReceived(_, let amountMsat):
+            let formatted = amountMsat.formattedAmount()
+            return "Payment Received \(formatted) sats"
 
         case .channelPending(_, _, _, let counterpartyNodeId, _):
             return "Channel Pending \(counterpartyNodeId.truncated(toLength: 10))"

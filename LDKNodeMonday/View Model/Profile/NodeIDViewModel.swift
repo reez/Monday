@@ -16,6 +16,8 @@ class NodeIDViewModel: ObservableObject {
     @Published var nodeID: String = ""
     @Published var network: String?
     @Published var esploraURL: String?
+    @Published var status: NodeStatus?
+    @Published var isStatusFinished: Bool = false
     let keyClient: KeyClient
 
     init(keyClient: KeyClient = .live) {
@@ -72,6 +74,14 @@ class NodeIDViewModel: ObservableObject {
                     detail: error.localizedDescription
                 )
             }
+        }
+    }
+
+    func getStatus() async {
+        let status = LightningNodeService.shared.status()
+        DispatchQueue.main.async {
+            self.status = status
+            self.isStatusFinished = true
         }
     }
 

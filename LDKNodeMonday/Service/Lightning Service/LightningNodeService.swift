@@ -12,7 +12,7 @@ import os
 
 class LightningNodeService {
     static var shared: LightningNodeService = LightningNodeService()
-    private let ldkNode: Node
+    private let ldkNode: LdkNode
     private let keyService: KeyClient
     var networkColor = Color.black
     var network: Network
@@ -42,8 +42,7 @@ class LightningNodeService {
                 Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
             ],
             probingLiquidityLimitMultiplier: UInt64(3),
-            logLevel: .trace,
-            anchorChannelsConfig: nil
+            logLevel: .trace
         )
 
         let nodeBuilder = Builder.fromConfig(config: config)
@@ -113,7 +112,7 @@ class LightningNodeService {
     }
 
     func newOnchainAddress() async throws -> String {
-        let fundingAddress = try ldkNode.onchainPayment().newAddress()
+        let fundingAddress = try ldkNode.newOnchainAddress()
         return fundingAddress
     }
 
@@ -176,20 +175,19 @@ class LightningNodeService {
     func closeChannel(userChannelId: ChannelId, counterpartyNodeId: PublicKey) throws {
         try ldkNode.closeChannel(
             userChannelId: userChannelId,
-            counterpartyNodeId: counterpartyNodeId,
-            force: false  // TODO: double check
+            counterpartyNodeId: counterpartyNodeId
         )
     }
 
     func sendPayment(invoice: Bolt11Invoice) async throws -> PaymentHash {
-        let paymentHash = try ldkNode.bolt11Payment().send(invoice: invoice)
+        let paymentHash = try ldkNode.sendPayment(invoice: invoice)
         return paymentHash
     }
 
     func sendPaymentUsingAmount(invoice: Bolt11Invoice, amountMsat: UInt64) async throws
         -> PaymentHash
     {
-        let paymentHash = try ldkNode.bolt11Payment().sendUsingAmount(
+        let paymentHash = try ldkNode.sendPaymentUsingAmount(
             invoice: invoice,
             amountMsat: amountMsat
         )
@@ -199,7 +197,7 @@ class LightningNodeService {
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async throws
         -> Bolt11Invoice
     {
-        let invoice = try ldkNode.bolt11Payment().receive(
+        let invoice = try ldkNode.receivePayment(
             amountMsat: amountMsat,
             description: description,
             expirySecs: expirySecs
@@ -210,7 +208,7 @@ class LightningNodeService {
     func receiveVariableAmountPayment(description: String, expirySecs: UInt32) async throws
         -> Bolt11Invoice
     {
-        let invoice = try ldkNode.bolt11Payment().receiveVariableAmount(
+        let invoice = try ldkNode.receiveVariableAmountPayment(
             description: description,
             expirySecs: expirySecs
         )
@@ -223,7 +221,7 @@ class LightningNodeService {
         expirySecs: UInt32,
         maxLspFeeLimitMsat: UInt64?
     ) async throws -> Bolt11Invoice {
-        let invoice = try ldkNode.bolt11Payment().receiveViaJitChannel(
+        let invoice = try ldkNode.receivePaymentViaJitChannel(
             amountMsat: amountMsat,
             description: description,
             expirySecs: expirySecs,
@@ -243,13 +241,18 @@ class LightningNodeService {
     }
 
     func sendAllToOnchainAddress(address: Address) async throws -> Txid {
-        let txId = try ldkNode.onchainPayment().sendAllToAddress(address: address)
+        let txId = try ldkNode.sendAllToOnchainAddress(address: address)
         return txId
     }
 
     func listPayments() -> [PaymentDetails] {
         let payments = ldkNode.listPayments()
         return payments
+    }
+
+    func status() -> NodeStatus {
+        let status = ldkNode.status()
+        return status
     }
 
 }

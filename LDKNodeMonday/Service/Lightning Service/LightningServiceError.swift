@@ -116,17 +116,17 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .LiquidityFeeTooHigh(let message):
         return .init(title: "LiquidityFeeTooHigh", detail: message)
 
-    case .OfferCreationFailed(let message):
-        return .init(title: "OfferCreationFailed", detail: message)
-
-    case .InvalidPaymentId(let message):
-        return .init(title: "InvalidPaymentId", detail: message)
-
-    case .InvalidOffer(let message):
-        return .init(title: "InvalidOffer", detail: message)
-
-    case .UnsupportedCurrency(let message):
-        return .init(title: "UnsupportedCurrency", detail: message)
+    //    case .OfferCreationFailed(let message):
+    //        return .init(title: "OfferCreationFailed", detail: message)
+    //
+    //    case .InvalidPaymentId(let message):
+    //        return .init(title: "InvalidPaymentId", detail: message)
+    //
+    //    case .InvalidOffer(let message):
+    //        return .init(title: "InvalidOffer", detail: message)
+    //
+    //    case .UnsupportedCurrency(let message):
+    //        return .init(title: "UnsupportedCurrency", detail: message)
 
     }
 

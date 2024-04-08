@@ -7,16 +7,16 @@
 
 import LDKNode
 
-extension PaymentKind {
-    var preimageAsString: String? {
-        switch self {
-        case .bolt11(_, let preimage, _),
-            .bolt11Jit(_, let preimage, _, _),
-            .bolt12(_, let preimage, _),
-            .spontaneous(_, let preimage):
-            return preimage
-        case .onchain:
-            return nil
-        }
-    }
-}
+//extension PaymentKind {
+//    var preimageAsString: String? {
+//        switch self {
+//        case .bolt11(_, let preimage, _),
+//            .bolt11Jit(_, let preimage, _, _),
+//            .bolt12(_, let preimage, _),
+//            .spontaneous(_, let preimage):
+//            return preimage
+//        case .onchain:
+//            return nil
+//        }
+//    }
+//}

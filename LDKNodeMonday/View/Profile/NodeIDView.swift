@@ -29,16 +29,24 @@ struct NodeIDView: View {
 
             VStack {
 
-                VStack(spacing: 20) {
-                    Image(systemName: "bolt.horizontal.fill")
-                        .font(.largeTitle)
-                        .foregroundColor(viewModel.networkColor)
+                VStack(spacing: 10) {
+
+                    HStack {
+                        Image(systemName: "circle.fill")
+                            .foregroundColor(
+                                viewModel.status?.isRunning ?? false ? .green : .secondary
+                            )
+                        Text(
+                            viewModel.status?.isRunning ?? false ? "On" : "Off"
+                        )
+                    }
+                    .font(.caption2)
 
                     HStack {
                         Text(viewModel.nodeID)
                             .truncationMode(.middle)
                             .lineLimit(1)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.primary)
                             .font(.subheadline)
                         Button(action: {
                             UIPasteboard.general.string = viewModel.nodeID
@@ -54,22 +62,20 @@ struct NodeIDView: View {
                         }
                         .foregroundColor(viewModel.networkColor)
                     }
+
                     if let network = viewModel.network, let url = viewModel.esploraURL {
-                        Section(header: Text("\(network)".uppercased())) {
-                            Text(
-                                url.replacingOccurrences(of: "https://", with: "")
-                                    .replacingOccurrences(
-                                        of: "http://",
-                                        with: ""
-                                    )
-                            )
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.5)
-                        }
+                        Text(
+                            "\(network)".uppercased() + " "
+                                + url.replacingOccurrences(of: "https://", with: "")
+                                .replacingOccurrences(of: "http://", with: "")
+                        )
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
                         .foregroundColor(viewModel.networkColor)
                         .fontDesign(.monospaced)
-                        .font(.subheadline)
+                        .font(.caption2)
                     }
+
                 }
                 .padding(.all, 40.0)
                 .fontDesign(.monospaced)
@@ -158,6 +164,7 @@ struct NodeIDView: View {
                         viewModel.getNetwork()
                         viewModel.getEsploraUrl()
                         viewModel.getColor()
+                        await viewModel.getStatus()
                     }
                 }
                 .onReceive(viewModel.$nodeIDError) { errorMessage in
