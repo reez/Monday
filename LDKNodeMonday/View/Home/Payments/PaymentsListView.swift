@@ -39,7 +39,7 @@ struct PaymentsListView: View {
             ForEach(orderedStatuses, id: \.self) { status in
                 if let payments = groupedPayments[status] {
                     Section(header: Text(statusDescriptions[status] ?? "")) {
-                        ForEach(payments, id: \.hash) { payment in
+                        ForEach(payments, id: \.id) { payment in
                             VStack {
                                 HStack(alignment: .center, spacing: 15) {
                                     VStack(alignment: .leading, spacing: 5.0) {
@@ -62,28 +62,28 @@ struct PaymentsListView: View {
                                                     .bold()
                                             }
                                         }
-                                        HStack {
-                                            Text("Payment Hash")
-                                                .lineLimit(1)
-                                                .minimumScaleFactor(0.75)
-                                            Text(payment.hash)
-                                                .truncationMode(.middle)
-                                                .lineLimit(1)
-                                                .foregroundColor(.secondary)
-                                        }
-                                        .font(.caption)
-                                        if let preimage = payment.preimage {
-                                            HStack {
-                                                Text("Preimage")
-                                                    .lineLimit(1)
-                                                    .minimumScaleFactor(0.75)
-                                                Text(preimage)
-                                                    .truncationMode(.middle)
-                                                    .lineLimit(1)
-                                                    .foregroundColor(.secondary)
-                                            }
-                                            .font(.caption)
-                                        }
+//                                        HStack {
+//                                            Text("Payment Hash")
+//                                                .lineLimit(1)
+//                                                .minimumScaleFactor(0.75)
+//                                            Text(payment.kind.bolt11.hash)
+//                                                .truncationMode(.middle)
+//                                                .lineLimit(1)
+//                                                .foregroundColor(.secondary)
+//                                        }
+//                                        .font(.caption)
+//                                        if let preimage = payment.preimage {
+//                                            HStack {
+//                                                Text("Preimage")
+//                                                    .lineLimit(1)
+//                                                    .minimumScaleFactor(0.75)
+//                                                Text(preimage)
+//                                                    .truncationMode(.middle)
+//                                                    .lineLimit(1)
+//                                                    .foregroundColor(.secondary)
+//                                            }
+//                                            .font(.caption)
+//                                        }
                                     }
                                     Spacer()
                                 }
@@ -103,62 +103,50 @@ struct PaymentsListItemView_Previews: PreviewProvider {
         PaymentsListView(
             payments: [
                 .init(
-                    hash: .localizedName(of: .ascii),
-                    preimage: nil,
-                    secret: nil,
+                    id: .init(),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .succeeded,
-                    lspFeeLimits: nil
+                    status: .succeeded
                 ),
                 .init(
-                    hash: .localizedName(of: .ascii),
-                    preimage: nil,
-                    secret: nil,
+                    id: .init(),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .pending,
-                    lspFeeLimits: nil
+                    status: .pending
                 ),
                 .init(
-                    hash: .localizedName(of: .ascii),
-                    preimage: nil,
-                    secret: nil,
+                    id: .init(),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .failed,
-                    lspFeeLimits: nil
+                    status: .failed
                 ),
             ]
         )
         PaymentsListView(
             payments: [
                 .init(
-                    hash: .localizedName(of: .ascii),
-                    preimage: nil,
-                    secret: nil,
+                    id: .init(),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .succeeded,
-                    lspFeeLimits: nil
+                    status: .succeeded
                 ),
                 .init(
-                    hash: .localizedName(of: .ascii),
-                    preimage: nil,
-                    secret: nil,
+                    id: .init(),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .pending,
-                    lspFeeLimits: nil
+                    status: .pending
                 ),
                 .init(
-                    hash: .localizedName(of: .ascii),
-                    preimage: nil,
-                    secret: nil,
+                    id: .init(),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .failed,
-                    lspFeeLimits: nil
+                    status: .failed
                 ),
             ]
         )
@@ -166,31 +154,25 @@ struct PaymentsListItemView_Previews: PreviewProvider {
         PaymentsListView(
             payments: [
                 .init(
-                    hash: .localizedName(of: .ascii),
-                    preimage: nil,
-                    secret: nil,
+                    id: .init(),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .succeeded,
-                    lspFeeLimits: nil
+                    status: .succeeded
                 ),
                 .init(
-                    hash: .localizedName(of: .ascii),
-                    preimage: nil,
-                    secret: nil,
+                    id: .init(),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .pending,
-                    lspFeeLimits: nil
+                    status: .pending
                 ),
                 .init(
-                    hash: .localizedName(of: .ascii),
-                    preimage: nil,
-                    secret: nil,
+                    id: .init(),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .failed,
-                    lspFeeLimits: nil
+                    status: .failed
                 ),
             ]
         )

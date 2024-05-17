@@ -14,14 +14,14 @@ extension Event: CustomStringConvertible {
 
         switch self {
 
-        case .paymentSuccessful(let paymentHash, feePaidMsat: _):
+        case .paymentSuccessful(let paymentId, let paymentHash, _):
             return "Payment Successful \(paymentHash.truncated(toLength: 10))"
 
-        case .paymentFailed(let paymentHash, let paymentFailureReason):
+        case .paymentFailed(let paymentId, let paymentHash, let paymentFailureReason):
             return
                 "Payment Failed \(paymentFailureReason.debugDescription) \(paymentHash.truncated(toLength: 10))"
 
-        case .paymentReceived(_, let amountMsat):
+        case .paymentReceived(let paymentId, _, let amountMsat):
             let formatted = amountMsat.formattedAmount()
             return "Payment Received \(formatted) sats"
 
