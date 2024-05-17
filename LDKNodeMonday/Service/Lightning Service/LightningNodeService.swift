@@ -12,7 +12,7 @@ import os
 
 class LightningNodeService {
     static var shared: LightningNodeService = LightningNodeService()
-    private let ldkNode: Node//LdkNode
+    private let ldkNode: Node  //LdkNode
     private let keyService: KeyClient
     var networkColor = Color.black
     var network: Network
@@ -187,7 +187,10 @@ class LightningNodeService {
     func sendPaymentUsingAmount(invoice: Bolt11Invoice, amountMsat: UInt64) async throws
         -> PaymentHash
     {
-        let paymentHash = try ldkNode.bolt11Payment().sendUsingAmount(invoice: invoice, amountMsat: amountMsat)
+        let paymentHash = try ldkNode.bolt11Payment().sendUsingAmount(
+            invoice: invoice,
+            amountMsat: amountMsat
+        )
         return paymentHash
     }
 

@@ -116,7 +116,7 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .LiquidityFeeTooHigh(let message):
         return .init(title: "LiquidityFeeTooHigh", detail: message)
 
-    case .InvalidPaymentId(message: let message):
+    case .InvalidPaymentId(let message):
         return .init(title: "InvalidPaymentId", detail: message)
     }
 

@@ -62,28 +62,28 @@ struct PaymentsListView: View {
                                                     .bold()
                                             }
                                         }
-//                                        HStack {
-//                                            Text("Payment Hash")
-//                                                .lineLimit(1)
-//                                                .minimumScaleFactor(0.75)
-//                                            Text(payment.kind.bolt11.hash)
-//                                                .truncationMode(.middle)
-//                                                .lineLimit(1)
-//                                                .foregroundColor(.secondary)
-//                                        }
-//                                        .font(.caption)
-//                                        if let preimage = payment.preimage {
-//                                            HStack {
-//                                                Text("Preimage")
-//                                                    .lineLimit(1)
-//                                                    .minimumScaleFactor(0.75)
-//                                                Text(preimage)
-//                                                    .truncationMode(.middle)
-//                                                    .lineLimit(1)
-//                                                    .foregroundColor(.secondary)
-//                                            }
-//                                            .font(.caption)
-//                                        }
+                                        //                                        HStack {
+                                        //                                            Text("Payment Hash")
+                                        //                                                .lineLimit(1)
+                                        //                                                .minimumScaleFactor(0.75)
+                                        //                                            Text(payment.kind.bolt11.hash)
+                                        //                                                .truncationMode(.middle)
+                                        //                                                .lineLimit(1)
+                                        //                                                .foregroundColor(.secondary)
+                                        //                                        }
+                                        //                                        .font(.caption)
+                                        //                                        if let preimage = payment.preimage {
+                                        //                                            HStack {
+                                        //                                                Text("Preimage")
+                                        //                                                    .lineLimit(1)
+                                        //                                                    .minimumScaleFactor(0.75)
+                                        //                                                Text(preimage)
+                                        //                                                    .truncationMode(.middle)
+                                        //                                                    .lineLimit(1)
+                                        //                                                    .foregroundColor(.secondary)
+                                        //                                            }
+                                        //                                            .font(.caption)
+                                        //                                        }
                                     }
                                     Spacer()
                                 }
