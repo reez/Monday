@@ -15,14 +15,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Select Xcode Version
-        run: sudo xcode-select -switch /Applications/Xcode_15.2.app
-      - name: Set Default Scheme
-        run: |
-          scheme_list=$(xcodebuild -list -json | tr -d "\n")
-          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          echo $default | cat >default
-          echo Using default scheme: $default
-      - name: List Devices
-        run: xcrun xctrace list devices 2>&1
-      - name: Build
-        run: xcodebuild build-for-testing -scheme LDKNodeMonday -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2'
+        run: sudo xcode-select -switch /Applications/Xcode_15.4.app
+#      - name: Set Default Scheme
+#        run: |
+#          scheme_list=$(xcodebuild -list -json | tr -d "\n")
+#          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
+#          echo $default | cat >default
+#          echo Using default scheme: $default
+#      - name: List Devices
+#        run: xcrun xctrace list devices 2>&1
+#      - name: Build
+#        run: xcodebuild build-for-testing -scheme LDKNodeMonday -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2'

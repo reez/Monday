@@ -94,7 +94,6 @@ struct PaymentDetailView: View {
                     .font(.caption)
 
                     if let preimage = payment.kind.preimageAsString {
-                        //if let preimage = payment.preimage {
                         HStack {
                             Text("Preimage")
                                 .lineLimit(1)

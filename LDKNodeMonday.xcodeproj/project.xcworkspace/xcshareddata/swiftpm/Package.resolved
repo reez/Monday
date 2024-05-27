@@ -1,4 +1,5 @@
 {
+  "originHash" : "2d457a0d145c5ec561d10ae3f13d805b262d5bfda9ebf0868311848416a25b6e",
   "pins" : [
     {
       "identity" : "bitcoinui",
@@ -28,15 +29,6 @@
       }
     },
     {
-      "identity" : "ldk-node",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tnull/ldk-node.git",
-      "state" : {
-        "branch" : "2024-01-0.3-pre-alpha",
-        "revision" : "bcff50aa72c0a8857f1edb7655ea9f11a3c6b387"
-      }
-    },
-    {
       "identity" : "simpletoast",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sanzaru/SimpleToast.git",
@@ -46,5 +38,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

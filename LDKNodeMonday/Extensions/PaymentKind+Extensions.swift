@@ -10,13 +10,14 @@ import LDKNode
 extension PaymentKind {
     var preimageAsString: String? {
         switch self {
-        case .bolt11(_, let preimage, _),
-            .bolt11Jit(_, let preimage, _, _),
-            .bolt12(_, let preimage, _),
-            .spontaneous(_, let preimage):
-            return preimage
         case .onchain:
             return nil
+        case .bolt11(let hash, let preimage, let secret):
+            return preimage
+        case .bolt11Jit(let hash, let preimage, let secret, let lspFeeLimits):
+            return preimage
+        case .spontaneous(let hash, let preimage):
+            return preimage
         }
     }
 }
