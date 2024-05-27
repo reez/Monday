@@ -42,8 +42,7 @@ class LightningNodeService {
                 Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
             ],
             probingLiquidityLimitMultiplier: UInt64(3),
-            logLevel: .trace,
-            anchorChannelsConfig: nil
+            logLevel: .trace
         )
 
         let nodeBuilder = Builder.fromConfig(config: config)
@@ -176,8 +175,7 @@ class LightningNodeService {
     func closeChannel(userChannelId: ChannelId, counterpartyNodeId: PublicKey) throws {
         try ldkNode.closeChannel(
             userChannelId: userChannelId,
-            counterpartyNodeId: counterpartyNodeId,
-            force: false  // TODO: double check
+            counterpartyNodeId: counterpartyNodeId
         )
     }
 

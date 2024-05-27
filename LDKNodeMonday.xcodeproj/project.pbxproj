@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -24,6 +24,7 @@
 		AE028A2A2B96328600B336E7 /* JITInvoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A292B96328600B336E7 /* JITInvoiceViewModel.swift */; };
 		AE028A2C2B96381200B336E7 /* LightningServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A2B2B96381200B336E7 /* LightningServiceError.swift */; };
 		AE028A2E2B9638EC00B336E7 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A2D2B9638EC00B336E7 /* FileManager+Extensions.swift */; };
+		AE060C382C051B59006724F1 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE060C372C051B59006724F1 /* LDKNode */; };
 		AE0BD4AC2B598C3F00B9901E /* UInt32+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0BD4AB2B598C3F00B9901E /* UInt32+Extensions.swift */; };
 		AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */; };
 		AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E8DB29A402E30058C9C9 /* AddressView.swift */; };
@@ -74,7 +75,6 @@
 		AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48C2A01A93B0042EA82 /* PeerView.swift */; };
 		AEBAA4922A01C34A0042EA82 /* ChannelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */; };
 		AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */; };
-		AEBFD8AA2B8916A00024E3F7 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AEBFD8A92B8916A00024E3F7 /* LDKNode */; };
 		AEBFD8B02B8A97DB0024E3F7 /* LightningServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8AF2B8A97DB0024E3F7 /* LightningServiceProvider.swift */; };
 		AEBFD8B22B8ABF7C0024E3F7 /* AmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8B12B8ABF7C0024E3F7 /* AmountView.swift */; };
 		AEBFD8B62B8BABC00024E3F7 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */; };
@@ -86,7 +86,6 @@
 		AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE5B7692A09C722001E5E59 /* Peer.swift */; };
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
 		AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */; };
-		AEF66F502BA4A3E600FA15F9 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AEF66F4F2BA4A3E600FA15F9 /* LDKNode */; };
 		AEF66F522BA4B11A00FA15F9 /* PaymentKind+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF66F512BA4B11A00FA15F9 /* PaymentKind+Extensions.swift */; };
 		AEFAF2922A433F6F001128DF /* LightningPaymentStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFAF2912A433F6F001128DF /* LightningPaymentStatus.swift */; };
 /* End PBXBuildFile section */
@@ -176,12 +175,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE060C382C051B59006724F1 /* LDKNode in Frameworks */,
 				AE1D9BEC2B2A1FFD00620748 /* BitcoinUI in Frameworks */,
 				AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */,
 				AE51BEFD2B37A5DC00BAE452 /* SimpleToast in Frameworks */,
 				AE7C4A082B406D590061189D /* SimpleToast in Frameworks */,
-				AEBFD8AA2B8916A00024E3F7 /* LDKNode in Frameworks */,
-				AEF66F502BA4A3E600FA15F9 /* LDKNode in Frameworks */,
 				AE01C5B02AB3BEED00F28C7E /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -542,8 +540,7 @@
 				AE1D9BEB2B2A1FFD00620748 /* BitcoinUI */,
 				AE51BEFC2B37A5DC00BAE452 /* SimpleToast */,
 				AE7C4A072B406D590061189D /* SimpleToast */,
-				AEBFD8A92B8916A00024E3F7 /* LDKNode */,
-				AEF66F4F2BA4A3E600FA15F9 /* LDKNode */,
+				AE060C372C051B59006724F1 /* LDKNode */,
 			);
 			productName = LDKNodeMonday;
 			productReference = AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */;
@@ -578,7 +575,7 @@
 				AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				AE1D9BEA2B2A1FFD00620748 /* XCRemoteSwiftPackageReference "BitcoinUI" */,
 				AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */,
-				AEF66F4E2BA4A3E600FA15F9 /* XCRemoteSwiftPackageReference "ldk-node" */,
+				AE060C362C051B59006724F1 /* XCLocalSwiftPackageReference "../ldk-node/bindings/swift" */,
 			);
 			productRefGroup = AE17E8D729A402E30058C9C9 /* Products */;
 			projectDirPath = "";
@@ -890,6 +887,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		AE060C362C051B59006724F1 /* XCLocalSwiftPackageReference "../ldk-node/bindings/swift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../ldk-node/bindings/swift";
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -923,14 +927,6 @@
 				version = 2.0.0;
 			};
 		};
-		AEF66F4E2BA4A3E600FA15F9 /* XCRemoteSwiftPackageReference "ldk-node" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/tnull/ldk-node.git";
-			requirement = {
-				branch = "2024-01-0.3-pre-alpha";
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -938,6 +934,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
+		};
+		AE060C372C051B59006724F1 /* LDKNode */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LDKNode;
 		};
 		AE1D9BEB2B2A1FFD00620748 /* BitcoinUI */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -953,19 +953,10 @@
 			package = AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */;
 			productName = SimpleToast;
 		};
-		AEBFD8A92B8916A00024E3F7 /* LDKNode */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LDKNode;
-		};
 		AEE5B7642A09B1FC001E5E59 /* CodeScanner */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
-		};
-		AEF66F4F2BA4A3E600FA15F9 /* LDKNode */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AEF66F4E2BA4A3E600FA15F9 /* XCRemoteSwiftPackageReference "ldk-node" */;
-			productName = LDKNode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
