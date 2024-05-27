@@ -250,6 +250,11 @@ class LightningNodeService {
         return payments
     }
 
+    func status() -> NodeStatus {
+        let status = ldkNode.status()
+        return status
+    }
+
 }
 
 extension LightningNodeService {
