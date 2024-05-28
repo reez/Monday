@@ -16,10 +16,11 @@ class AmountViewModel {
     var networkColor = Color.gray
     var amountConfirmationViewError: MondayError?
 
-    func sendAllToOnchain(address: String) async {
+    func sendToOnchain(address: String, amountMsat: UInt64) async {
         do {
-            try await LightningNodeService.shared.sendAllToOnchainAddress(
-                address: address
+            try await LightningNodeService.shared.sendToOnchainAddress(
+                address: address,
+                amountMsat: amountMsat
             )
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
