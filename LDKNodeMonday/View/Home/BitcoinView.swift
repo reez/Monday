@@ -35,54 +35,87 @@ struct BitcoinView: View {
 
                         VStack(spacing: 20) {
 
-                            HStack(spacing: 15) {
-                                Spacer()
-                                Image(systemName: "bitcoinsign")
-                                    .foregroundColor(.secondary)
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Text(viewModel.totalBalance.formattedSatoshis())
-                                    .contentTransition(.numericText())
-                                    .font(.largeTitle)
-                                    .fontWeight(.semibold)
-                                    .fontDesign(.rounded)
-                                    .redacted(
-                                        reason: viewModel.isTotalBalanceFinished ? [] : .placeholder
-                                    )
-                                Text("sats")
-                                    .foregroundColor(.secondary)
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Spacer()
-                            }
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
-                            .foregroundColor(.primary)
+                            VStack {
+                                HStack(spacing: 15) {
+                                    Spacer()
+                                    Image(systemName: "bitcoinsign")
+                                        .font(.title)
+                                        .fontWeight(.thin)
+                                        .padding(.leading, 2)
+                                    Text(viewModel.totalBalance.formattedSatoshis())
+                                        .contentTransition(.numericText())
+                                        .font(.largeTitle)
+                                        .fontWeight(.semibold)
+                                        .fontDesign(.rounded)
+                                        .redacted(
+                                            reason: viewModel.isTotalBalanceFinished
+                                                ? [] : .placeholder
+                                        )
+                                    Text("sats")
+                                        .font(.title)
+                                        .fontWeight(.thin)
+                                    Spacer()
+                                }
+                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
+                                .foregroundColor(.primary)
 
-                            HStack(spacing: 15) {
-                                Spacer()
-                                Image(systemName: "bolt")
-                                    .foregroundColor(.secondary)
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Text(viewModel.totalLightningBalance.formattedSatoshis())
-                                    .contentTransition(.numericText())
-                                    .font(.largeTitle)
-                                    .fontWeight(.semibold)
-                                    .fontDesign(.rounded)
-                                    .redacted(
-                                        reason: viewModel.isTotalLightningBalanceFinished
-                                            ? [] : .placeholder
+                                let date = Date(
+                                    timeIntervalSince1970: TimeInterval(
+                                        viewModel.status?.latestOnchainWalletSyncTimestamp
+                                            ?? UInt64(0)
                                     )
-                                Text("sats")
+                                )
+                                Text(date.formattedDate())
+                                    .lineLimit(1)
+                                    .font(.caption2)
                                     .foregroundColor(.secondary)
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Spacer()
+                                    .padding(.bottom, 20.0)
+                                    .minimumScaleFactor(0.5)
+                                    .redacted(
+                                        reason: viewModel.isStatusFinished ? [] : .placeholder
+                                    )
                             }
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
-                            .foregroundColor(.primary)
+
+                            VStack {
+                                HStack(spacing: 15) {
+                                    Spacer()
+                                    Image(systemName: "bolt")
+                                        .font(.title)
+                                        .fontWeight(.thin)
+                                    Text(viewModel.totalLightningBalance.formattedSatoshis())
+                                        .contentTransition(.numericText())
+                                        .font(.largeTitle)
+                                        .fontWeight(.semibold)
+                                        .fontDesign(.rounded)
+                                        .redacted(
+                                            reason: viewModel.isTotalLightningBalanceFinished
+                                                ? [] : .placeholder
+                                        )
+                                    Text("sats")
+                                        .font(.title)
+                                        .fontWeight(.thin)
+                                    Spacer()
+                                }
+                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
+                                .foregroundColor(.primary)
+
+                                let date = Date(
+                                    timeIntervalSince1970: TimeInterval(
+                                        viewModel.status?.latestWalletSyncTimestamp ?? UInt64(0)
+                                    )
+                                )
+                                Text(date.formattedDate())
+                                    .lineLimit(1)
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                                    .padding(.bottom, 20.0)
+                                    .minimumScaleFactor(0.5)
+                                    .redacted(
+                                        reason: viewModel.isStatusFinished ? [] : .placeholder
+                                    )
+                            }
 
                             HStack {
                                 Spacer()
@@ -97,15 +130,8 @@ struct BitcoinView: View {
                             .animation(.spring(), value: viewModel.isPriceFinished)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
-                            Spacer()
 
-                            if !viewModel.isTotalBalanceFinished {
-                                Image(systemName: "slowmo")
-                                    .symbolEffect(
-                                        .variableColor.cumulative
-                                    )
-                                    .contentTransition(.symbolEffect(.replace.offUp))
-                            }
+                            Spacer()
 
                         }
                         .listRowSeparator(.hidden)
@@ -113,11 +139,13 @@ struct BitcoinView: View {
                     }
                     .listStyle(.plain)
                     .padding(.top, 120.0)
+                    .padding(.horizontal, -20)
                     .refreshable {
                         await viewModel.getTotalOnchainBalanceSats()
                         await viewModel.getTotalLightningBalanceSats()
                         await viewModel.getPrices()
                         await viewModel.getSpendableOnchainBalanceSats()
+                        await viewModel.getStatus()
                     }
 
                     Spacer()
@@ -183,7 +211,7 @@ struct BitcoinView: View {
                         }) {
                             Image(systemName: "person.circle.fill")
                                 .font(.title)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.primary)
                         }
                     }
                 }
@@ -194,6 +222,7 @@ struct BitcoinView: View {
                         await viewModel.getPrices()
                         viewModel.getColor()
                         await viewModel.getSpendableOnchainBalanceSats()
+                        await viewModel.getStatus()
                     }
                 }
                 .onChange(
@@ -213,6 +242,7 @@ struct BitcoinView: View {
                         await viewModel.getTotalLightningBalanceSats()
                         await viewModel.getPrices()
                         await viewModel.getSpendableOnchainBalanceSats()
+                        await viewModel.getStatus()
                     }
                 }
                 .sheet(
@@ -223,6 +253,7 @@ struct BitcoinView: View {
                             await viewModel.getTotalLightningBalanceSats()
                             await viewModel.getPrices()
                             await viewModel.getSpendableOnchainBalanceSats()
+                            await viewModel.getStatus()
                         }
                     }
                 ) {
@@ -268,6 +299,7 @@ struct BitcoinView: View {
                             await viewModel.getTotalLightningBalanceSats()
                             await viewModel.getPrices()
                             await viewModel.getSpendableOnchainBalanceSats()
+                            await viewModel.getStatus()
                         }
                     }
                 ) {
@@ -282,6 +314,7 @@ struct BitcoinView: View {
                             await viewModel.getTotalLightningBalanceSats()
                             await viewModel.getPrices()
                             await viewModel.getSpendableOnchainBalanceSats()
+                            await viewModel.getStatus()
                         }
                     }
                 ) {
@@ -297,6 +330,7 @@ struct BitcoinView: View {
                             await viewModel.getTotalLightningBalanceSats()
                             await viewModel.getPrices()
                             await viewModel.getSpendableOnchainBalanceSats()
+                            await viewModel.getStatus()
                         }
                     }
                 ) {

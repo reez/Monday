@@ -11,6 +11,8 @@ import SwiftUI
 class BitcoinViewModel: ObservableObject {
     @Published var bitcoinViewError: MondayError?
     @Published var networkColor = Color.gray
+    @Published var status: NodeStatus?
+    @Published var isStatusFinished: Bool = false
     @Published var spendableBalance: UInt64 = 0
     @Published var totalBalance: UInt64 = 0
     @Published var totalLightningBalance: UInt64 = 0
@@ -33,6 +35,14 @@ class BitcoinViewModel: ObservableObject {
 
     init(priceClient: PriceClient) {
         self.priceClient = priceClient
+    }
+
+    func getStatus() async {
+        let status = LightningNodeService.shared.status()
+        DispatchQueue.main.async {
+            self.status = status
+            self.isStatusFinished = true
+        }
     }
 
     func getTotalOnchainBalanceSats() async {
