@@ -174,8 +174,12 @@ extension String {
             return (address, amount, .isLightning)
         } else if self.isBitcoinAddress {
             let address = self.extractBitcoinAddress()
-            let amount = String(spendableBalance)
-            return (address, amount, .isBitcoin)
+            let amount = queryParams["amount"] ?? "0"
+            if let amountValue = UInt64(amount), amountValue <= spendableBalance {
+                return (address, amount, .isBitcoin)
+            } else {
+                return (address, "0", .isBitcoin)
+            }
         } else if self.starts(with: "lnurl") {
             return ("LNURL not supported yet", "0", .isLightningURL)
         } else {

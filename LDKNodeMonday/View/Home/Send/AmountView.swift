@@ -41,89 +41,6 @@ struct AmountView: View {
 
                         Spacer()
 
-                        //                        Button {
-                        //                            if pasteboard.hasStrings {
-                        //                                if let string = pasteboard.string {
-                        //
-                        //                                    let scanString = string.lowercased()
-                        //
-                        //                                    if scanString.starts(with: "ln") {
-                        //                                        if let amount = scanString.bolt11amount() {
-                        //                                            numpadAmount = amount
-                        //                                        }
-                        //                                        address = scanString
-                        //                                        payment = .isLightning
-                        //                                    } else if scanString.hasPrefix("lightning:") {
-                        //                                        address = ""
-                        //                                        numpadAmount = ""
-                        //
-                        //                                        let invoiceScanned = scanString.replacingOccurrences(
-                        //                                            of: "lightning:",
-                        //                                            with: ""
-                        //                                        )
-                        //
-                        //                                        let a = extractInvoiceAndAmount(from: invoiceScanned)
-                        //                                        let invoice = a.invoice
-                        //
-                        //                                        if let unwrappedInvoice = invoice {
-                        //                                            address = unwrappedInvoice
-                        //                                            payment = .isLightning
-                        //                                        }
-                        //
-                        //                                        if let a = invoiceScanned.bolt11amount() {
-                        //                                            numpadAmount = a
-                        //                                            payment = .isLightning
-                        //                                        }
-                        //
-                        //                                    } else if scanString.hasPrefix("bitcoin:") {
-                        //                                        address = ""
-                        //                                        numpadAmount = ""
-                        //
-                        //                                        if let invoice = extractInvoiceFromBIP21(scanString) {
-                        //
-                        //                                            if let amount = invoice.bolt11amount() {
-                        //                                                address = invoice
-                        //                                                numpadAmount = amount
-                        //                                                payment = .isBitcoin
-                        //                                            } else {
-                        //                                                // TODO: handle this
-                        //                                            }
-                        //
-                        //                                        } else {
-                        //                                            // not a bip21
-                        //                                            let addressScanned = scanString.replacingOccurrences(
-                        //                                                of: "bitcoin:",
-                        //                                                with: ""
-                        //                                            )
-                        //                                            address = addressScanned
-                        //                                            numpadAmount = String(spendableBalance)
-                        //                                            payment = .isBitcoin
-                        //                                        }
-                        //
-                        //                                    } else if isValidBitcoinAddress(scanString) {
-                        //                                        address = scanString
-                        //                                        numpadAmount = String(spendableBalance)
-                        //                                        payment = .isBitcoin
-                        //                                    } else {
-                        //                                        self.parseError = .init(
-                        //                                            title: "Scan Error",
-                        //                                            detail: "Unsupported paste format"
-                        //                                        )
-                        //                                    }
-                        //
-                        //                                } else {
-                        //                                    // TODO: handle error no string
-                        //                                }
-                        //                            } else {
-                        //                                // TODO: handle error no strings
-                        //                            }
-                        //                        } label: {
-                        //                            HStack {
-                        //                                Image(systemName: "doc.on.doc")
-                        //                                    .minimumScaleFactor(0.5)
-                        //                            }
-                        //                        }
-
                         Button {
                             if pasteboard.hasStrings, let string = pasteboard.string {
                                 let (extractedAddress, extractedAmount, extractedPayment) =
@@ -217,9 +134,25 @@ struct AmountView: View {
                                 }
 
                             case .isBitcoin:
-                                await viewModel.sendAllToOnchain(address: address)
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                                    self.presentationMode.wrappedValue.dismiss()
+
+                                if numpadAmount == "0" {
+                                    viewModel.amountConfirmationViewError = .init(
+                                        title: "Unexpected error",
+                                        detail: "Invalid amount entered"
+                                    )
+                                } else if let amount = UInt64(numpadAmount) {
+                                    await viewModel.sendToOnchain(
+                                        address: address,
+                                        amountMsat: amount
+                                    )
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                                        self.presentationMode.wrappedValue.dismiss()
+                                    }
+                                } else {
+                                    viewModel.amountConfirmationViewError = .init(
+                                        title: "Unexpected error",
+                                        detail: "Not sure"  // TODO: do better
+                                    )
                                 }
                             case .isLightningURL:
                                 viewModel.amountConfirmationViewError = .init(

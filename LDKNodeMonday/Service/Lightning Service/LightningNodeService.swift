@@ -240,8 +240,11 @@ class LightningNodeService {
         return channels
     }
 
-    func sendAllToOnchainAddress(address: Address) async throws -> Txid {
-        let txId = try ldkNode.onchainPayment().sendAllToAddress(address: address)
+    func sendToOnchainAddress(address: Address, amountMsat: UInt64) async throws -> Txid {
+        let txId = try ldkNode.onchainPayment().sendToAddress(
+            address: address,
+            amountMsat: amountMsat
+        )
         return txId
     }
 
