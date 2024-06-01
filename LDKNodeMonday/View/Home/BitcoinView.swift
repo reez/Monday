@@ -41,7 +41,6 @@ struct BitcoinView: View {
                                     Image(systemName: "bitcoinsign")
                                         .font(.title)
                                         .fontWeight(.thin)
-                                        .padding(.leading, 2)
                                     Text(viewModel.totalBalance.formattedSatoshis())
                                         .contentTransition(.numericText())
                                         .font(.largeTitle)
