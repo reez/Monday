@@ -12,11 +12,15 @@ extension PaymentKind {
         switch self {
         case .onchain:
             return nil
-        case .bolt11(let hash, let preimage, let secret):
+        case .bolt11(_, let preimage, _):
             return preimage
-        case .bolt11Jit(let hash, let preimage, let secret, let lspFeeLimits):
+        case .bolt11Jit(_, let preimage, _, _):
             return preimage
-        case .spontaneous(let hash, let preimage):
+        case .spontaneous(_, let preimage):
+            return preimage
+        case .bolt12Offer(hash: _, let preimage, secret: _, offerId: _):
+            return preimage
+        case .bolt12Refund(hash: _, let preimage, secret: _):
             return preimage
         }
     }

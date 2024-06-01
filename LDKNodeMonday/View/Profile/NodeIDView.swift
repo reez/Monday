@@ -61,7 +61,7 @@ struct NodeIDView: View {
                         }
                         .foregroundColor(viewModel.networkColor)
                     }
-                    if let network = viewModel.network, let url = viewModel.esploraURL {
+                    if let url = viewModel.esploraURL {
                         Text(
                             url.replacingOccurrences(of: "https://", with: "")
                                 .replacingOccurrences(
