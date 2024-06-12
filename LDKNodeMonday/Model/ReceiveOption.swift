@@ -11,6 +11,7 @@ enum ReceiveOption: String, CaseIterable, Identifiable {
     case zeroInvoice = "Zero"
     case amountInvoice = "Amount"
     case jitInvoice = "JIT"
+    case bolt12 = "Bolt12"
     case bitcoin = "Address"
 
     var id: Self { self }

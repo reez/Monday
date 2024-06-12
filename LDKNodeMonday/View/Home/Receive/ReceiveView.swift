@@ -27,6 +27,8 @@ struct ReceiveView: View {
                 AmountInvoiceView(viewModel: .init())
             case .jitInvoice:
                 JITInvoiceView(viewModel: .init())
+            case .bolt12:
+                Bolt12InvoiceView(viewModel: .init())
             }
 
         }
@@ -46,7 +48,7 @@ struct CustomSegmentedPicker: View {
                 Button(action: {
                     self.selectedOption = option
                 }) {
-                    HStack {
+                    VStack {
                         Image(systemName: option.systemImageName)
                         Text(option.rawValue)
                     }

@@ -215,6 +215,11 @@ class LightningNodeService {
         return invoice
     }
 
+    func receiveVariableAmountBolt12(description: String) async throws -> Bolt12Invoice {
+        let offer = try ldkNode.bolt12Payment().receiveVariableAmount(description: description)
+        return offer
+    }
+
     func receivePaymentViaJitChannel(
         amountMsat: UInt64,
         description: String,
