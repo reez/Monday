@@ -29,21 +29,13 @@ class LightningNodeService {
         self.network = Network(stringValue: storedNetworkString) ?? .testnet
         self.keyService = keyService
 
-        let config = Config(
-            storageDirPath: FileManager.default.getDocumentsDirectoryPath(),
-            logDirPath: FileManager.default.getDocumentsDirectoryPath(),
-            network: network,
-            listeningAddresses: nil,
-            defaultCltvExpiryDelta: UInt32(144),
-            onchainWalletSyncIntervalSecs: UInt64(60),
-            walletSyncIntervalSecs: UInt64(20),
-            feeRateCacheUpdateIntervalSecs: UInt64(600),
-            trustedPeers0conf: [
-                Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
-            ],
-            probingLiquidityLimitMultiplier: UInt64(3),
-            logLevel: .trace
-        )
+        var config = defaultConfig()
+        config.storageDirPath = FileManager.default.getDocumentsDirectoryPath()
+        config.logDirPath = FileManager.default.getDocumentsDirectoryPath()
+        config.network = self.network
+        config.trustedPeers0conf = [
+            Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
+        ]
 
         let nodeBuilder = Builder.fromConfig(config: config)
         nodeBuilder.setEsploraServer(esploraServerUrl: storedEsploraURL)
