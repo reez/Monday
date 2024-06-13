@@ -31,7 +31,7 @@ class LightningNodeService {
 
         let config = Config(
             storageDirPath: FileManager.default.getDocumentsDirectoryPath(),
-            logDirPath: nil,
+            logDirPath: FileManager.default.getDocumentsDirectoryPath(),
             network: network,
             listeningAddresses: nil,
             defaultCltvExpiryDelta: UInt32(144),
