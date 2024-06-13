@@ -33,13 +33,13 @@ extension PriceClient {
     static let live = Self(fetchPrice: { try await PriceService().prices() })
 }
 
-//#if DEBUG
-extension PriceClient {
-    static let mock = Self(fetchPrice: { currentPriceMock })
-    static let mockPause = Self(fetchPrice: {
-        try await Task.sleep(until: .now + .seconds(2))
-        return currentPriceMock
-    })
-    static let mockZero = Self(fetchPrice: { currentPriceMockZero })
-}
-//#endif
+#if DEBUG
+    extension PriceClient {
+        static let mock = Self(fetchPrice: { currentPriceMock })
+        static let mockPause = Self(fetchPrice: {
+            try await Task.sleep(until: .now + .seconds(2))
+            return currentPriceMock
+        })
+        static let mockZero = Self(fetchPrice: { currentPriceMockZero })
+    }
+#endif

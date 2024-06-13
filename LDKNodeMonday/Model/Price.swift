@@ -53,25 +53,25 @@ struct ExchangeRates: Codable {
     }
 }
 
-//#if DEBUG
-let currentPriceMock = Price(
-    time: 1_693_079_705,
-    usd: 26030,
-    eur: 24508,
-    gbp: 22486,
-    cad: 35314,
-    chf: 23088,
-    aud: 40657,
-    jpy: 3_816_606
-)
-let currentPriceMockZero = Price(
-    time: 1_693_079_705,
-    usd: 0,
-    eur: 24508,
-    gbp: 22486,
-    cad: 35314,
-    chf: 23088,
-    aud: 40657,
-    jpy: 3_816_606
-)
-//#endif
+#if DEBUG
+    let currentPriceMock = Price(
+        time: 1_693_079_705,
+        usd: 26030,
+        eur: 24508,
+        gbp: 22486,
+        cad: 35314,
+        chf: 23088,
+        aud: 40657,
+        jpy: 3_816_606
+    )
+    let currentPriceMockZero = Price(
+        time: 1_693_079_705,
+        usd: 0,
+        eur: 24508,
+        gbp: 22486,
+        cad: 35314,
+        chf: 23088,
+        aud: 40657,
+        jpy: 3_816_606
+    )
+#endif

@@ -40,21 +40,21 @@ struct LightningNodeInfo: Codable {
     }
 }
 
-//#if DEBUG
-let nodeMock = LightningNodeInfo.Node(
-    publicKey: "publicKey",
-    alias: "alias",
-    capacity: 1,
-    channels: 1
-)
-let channelMock = LightningNodeInfo.Channel(
-    channelId: "channelId",
-    node1Pub: "node1Pub",
-    node2Pub: "node2Pub",
-    capacity: 100
-)
-let nodeInfoMock = LightningNodeInfo(
-    nodes: [nodeMock],
-    channels: [channelMock]
-)
-//#endif
+#if DEBUG
+    let nodeMock = LightningNodeInfo.Node(
+        publicKey: "publicKey",
+        alias: "alias",
+        capacity: 1,
+        channels: 1
+    )
+    let channelMock = LightningNodeInfo.Channel(
+        channelId: "channelId",
+        node1Pub: "node1Pub",
+        node2Pub: "node2Pub",
+        capacity: 100
+    )
+    let nodeInfoMock = LightningNodeInfo(
+        nodes: [nodeMock],
+        channels: [channelMock]
+    )
+#endif

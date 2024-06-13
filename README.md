@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](https://github.com/reez/Monday/blob/master/LICENSE) 
 
-An example iOS app using [LDK Node](https://github.com/lightningdevkit/ldk-node)
+An example iOS app using [LDK Node](https://github.com/lightningdevkit/ldk-node).
 
 <img src="Docs/main-screen.png" alt="Screenshot" width="236" height="511">
 

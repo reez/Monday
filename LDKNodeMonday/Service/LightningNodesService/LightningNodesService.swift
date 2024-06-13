@@ -45,8 +45,8 @@ extension NodeInfoClient {
     })
 }
 
-//#if DEBUG
-extension NodeInfoClient {
-    static let mock = Self(fetchNodeInfo: { searchText in nodeInfoMock })
-}
-//#endif
+#if DEBUG
+    extension NodeInfoClient {
+        static let mock = Self(fetchNodeInfo: { searchText in nodeInfoMock })
+    }
+#endif

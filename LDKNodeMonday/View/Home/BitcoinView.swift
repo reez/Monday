@@ -317,7 +317,6 @@ struct BitcoinView: View {
                         }
                     }
                 ) {
-                    // TODO: when i come back to this i need to refresh the view again
                     AmountView(viewModel: .init(), spendableBalance: viewModel.spendableBalance)
                         .presentationDetents([.large])
                 }
