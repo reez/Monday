@@ -40,7 +40,12 @@ struct ChannelAddView: View {
                                     )
                                 }
                             } else {
-                                // TODO: Handle
+                                DispatchQueue.main.async {
+                                    viewModel.channelAddViewError = .init(
+                                        title: "Unexpected error",
+                                        detail: "Failed to retrieve string from pasteboard."
+                                    )
+                                }
                             }
                         } else {
                             DispatchQueue.main.async {

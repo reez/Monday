@@ -81,12 +81,7 @@ class LightningNodeService {
         }
         nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
 
-        // TODO: -!
-        /// 06.22.23
-        /// Breaking change in ldk-node 0.1 today
-        /// `build` now `throws`
-        /// - Resolve by actually handling error
-        let ldkNode = try! nodeBuilder.build()
+        let ldkNode = try! nodeBuilder.build()  // Handle error instead of "!"
         self.ldkNode = ldkNode
     }
 
