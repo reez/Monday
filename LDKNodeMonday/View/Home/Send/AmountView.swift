@@ -151,7 +151,7 @@ struct AmountView: View {
                                 } else {
                                     viewModel.amountConfirmationViewError = .init(
                                         title: "Unexpected error",
-                                        detail: "Not sure"  // TODO: do better
+                                        detail: "Unknown error occured"
                                     )
                                 }
                             case .isLightningURL:
