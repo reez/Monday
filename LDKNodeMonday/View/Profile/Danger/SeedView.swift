@@ -5,6 +5,7 @@
 //  Created by Matthew Ramsden on 12/30/23.
 //
 
+import BitcoinUI
 import LDKNode
 import SwiftUI
 
@@ -21,16 +22,10 @@ struct SeedView: View {
                 .ignoresSafeArea()
 
             VStack(alignment: .leading) {
-                ForEach(
-                    Array(viewModel.seed.mnemonic.components(separatedBy: " ").enumerated()),
-                    id: \.element
-                ) { index, word in
-                    HStack {
-                        Text("\(index + 1). \(word)")
-                        Spacer()
-                    }
-                    .padding(.horizontal, 40.0)
-                }
+                SeedPhraseView(
+                    words: viewModel.seed.mnemonic.components(separatedBy: " "),
+                    preferredWordsPerRow: 3
+                )
                 HStack {
                     Spacer()
                     Button {

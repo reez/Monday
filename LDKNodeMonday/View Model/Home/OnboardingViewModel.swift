@@ -12,7 +12,12 @@ class OnboardingViewModel: ObservableObject {
     @AppStorage("isOnboarding") var isOnboarding: Bool?
     @Published var networkColor = Color.gray
     @Published var onboardingViewError: MondayError?
-    @Published var seedPhrase: String = ""
+    @Published var seedPhrase: String = "" {
+        didSet {
+            updateSeedPhraseArray()
+        }
+    }
+    @Published var seedPhraseArray: [String] = []
     @Published var selectedNetwork: Network = .testnet {
         didSet {
             do {
@@ -125,5 +130,10 @@ class OnboardingViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.networkColor = color
         }
+    }
+
+    private func updateSeedPhraseArray() {
+        let trimmedWords = seedPhrase.trimmingCharacters(in: .whitespacesAndNewlines)
+        seedPhraseArray = trimmedWords.split(separator: " ").map { String($0) }
     }
 }

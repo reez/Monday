@@ -54,13 +54,10 @@ struct OnboardingView: View {
                                 .foregroundColor(Color(uiColor: .label))
                         )
                 }
-                .padding(.all, 50)
+                .padding(.vertical, 10)
+                .padding(.horizontal, 50)
 
                 VStack {
-
-                    Text("Choose your Network. This is final.")
-                        .textStyle(BitcoinBody4())
-                        .multilineTextAlignment(.center)
 
                     VStack {
                         Picker(
@@ -109,8 +106,13 @@ struct OnboardingView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .submitLabel(.done)
                     .padding(.horizontal, 40)
+                    if viewModel.seedPhraseArray != [] {
+                        SeedPhraseView(words: viewModel.seedPhraseArray, preferredWordsPerRow: 3)
+                    }
                 }
                 .padding()
+
+                Spacer()
 
                 Button {
                     viewModel.saveSeed()
@@ -127,8 +129,6 @@ struct OnboardingView: View {
                 .buttonStyle(BitcoinFilled(tintColor: viewModel.buttonColor, isCapsule: true))
                 .disabled(!isFirstTime && viewModel.seedPhrase.isEmpty)
                 .padding(.all, 25)
-
-                Spacer()
 
             }
 
