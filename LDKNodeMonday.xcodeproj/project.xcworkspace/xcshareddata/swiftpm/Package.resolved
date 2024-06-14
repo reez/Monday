@@ -1,13 +1,13 @@
 {
-  "originHash" : "2d457a0d145c5ec561d10ae3f13d805b262d5bfda9ebf0868311848416a25b6e",
+  "originHash" : "205ed5286a50854d994301c2ba51d3a38173557dcfa21e1c3da1ccccb0730a15",
   "pins" : [
     {
       "identity" : "bitcoinui",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/reez/BitcoinUI.git",
       "state" : {
-        "revision" : "65690af03588a9efc91bf12160f3cc255088a35b",
-        "version" : "1.0.3"
+        "branch" : "main",
+        "revision" : "1c10c7916fffcade65d0f6937e7b22a5f3a3db49"
       }
     },
     {
