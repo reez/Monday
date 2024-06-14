@@ -118,7 +118,7 @@ extension String {
         return words.map { $0.capitalized }.joined(separator: " ")
     }
 
-    var isLightningAddress: Bool {
+    private var isLightningAddress: Bool {
         let lowercasedSelf = self.lowercased()
         let queryParams = self.queryParameters()
         if let lightningParam = queryParams["lightning"], !lightningParam.isEmpty {
@@ -127,11 +127,11 @@ extension String {
         return lowercasedSelf.starts(with: "ln") || lowercasedSelf.hasPrefix("lightning:")
     }
 
-    var isBitcoinAddress: Bool {
+    private var isBitcoinAddress: Bool {
         return lowercased().hasPrefix("bitcoin:") || isValidBitcoinAddress
     }
 
-    var isValidBitcoinAddress: Bool {
+    private var isValidBitcoinAddress: Bool {
         let patterns = [
             "^1[a-km-zA-HJ-NP-Z1-9]{25,34}$",  // P2PKH Mainnet
             "^[mn2][a-km-zA-HJ-NP-Z1-9]{33}$",  // P2PKH or P2SH Testnet
@@ -189,9 +189,10 @@ extension String {
 
     private func extractBitcoinAddress() -> String {
         if self.lowercased().hasPrefix("bitcoin:") {
-            return self.replacingOccurrences(of: "bitcoin:", with: "")
+            let address = self.replacingOccurrences(of: "bitcoin:", with: "")
+            return address.uppercased()
         }
-        return self
+        return self.uppercased()
     }
 
 }
