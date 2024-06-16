@@ -140,6 +140,9 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .UnsupportedCurrency(let message):
         return .init(title: "UnsupportedCurrency", detail: message)
 
+    case .InvalidNodeId(let message):
+        return .init(title: "InvalidNodeId", detail: message)
+
     }
 
 }

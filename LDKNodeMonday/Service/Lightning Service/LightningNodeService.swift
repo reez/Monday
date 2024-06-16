@@ -36,6 +36,7 @@ class LightningNodeService {
         config.trustedPeers0conf = [
             Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
         ]
+        config.logLevel = .trace
 
         let nodeBuilder = Builder.fromConfig(config: config)
         nodeBuilder.setEsploraServer(esploraServerUrl: storedEsploraURL)
@@ -166,6 +167,8 @@ class LightningNodeService {
         )
     }
 
+    /// Send - Bolt 11
+
     func sendPayment(invoice: Bolt11Invoice) async throws -> PaymentHash {
         let paymentHash = try ldkNode.bolt11Payment().send(invoice: invoice)
         return paymentHash
@@ -180,6 +183,28 @@ class LightningNodeService {
         )
         return paymentHash
     }
+
+    /// Send - Bolt 12
+
+    func sendPaymentBolt12(invoice: Bolt12Invoice) async throws -> PaymentId {
+        let payerNote = "BOLT 12 payment payer note"
+        let paymentId = try ldkNode.bolt12Payment().send(offer: invoice, payerNote: payerNote)
+        return paymentId
+    }
+
+    func sendPaymentUsingAmountBolt12(invoice: Bolt12Invoice, amountMsat: UInt64) async throws
+        -> PaymentId
+    {
+        let payerNote = "BOLT 12 payment payer note"
+        let paymentId = try ldkNode.bolt12Payment().sendUsingAmount(
+            offer: invoice,
+            payerNote: payerNote,
+            amountMsat: amountMsat
+        )
+        return paymentId
+    }
+
+    /// Receive - Bolt 11
 
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async throws
         -> Bolt11Invoice
@@ -202,10 +227,24 @@ class LightningNodeService {
         return invoice
     }
 
+    /// Receive - Bolt 12
+
+    // name these like receive(with amountMSat: ...)
+    func receivePaymentBolt12(amountMsat: UInt64, description: String) async throws -> Bolt12Invoice
+    {
+        let offer = try ldkNode.bolt12Payment().receive(
+            amountMsat: amountMsat,
+            description: description
+        )
+        return offer
+    }
+
     func receiveVariableAmountBolt12(description: String) async throws -> Bolt12Invoice {
         let offer = try ldkNode.bolt12Payment().receiveVariableAmount(description: description)
         return offer
     }
+
+    /// Receive - JIT
 
     func receivePaymentViaJitChannel(
         amountMsat: UInt64,

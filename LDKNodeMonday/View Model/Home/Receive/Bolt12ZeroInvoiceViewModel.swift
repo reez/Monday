@@ -1,24 +1,22 @@
 //
-//  Bolt12InvoiceViewModel.swift
+//  Bolt12ZeroInvoiceViewModel.swift
 //  LDKNodeMonday
 //
-//  Created by Matthew Ramsden on 6/1/24.
+//  Created by Matthew Ramsden on 6/19/24.
 //
 
 import Foundation
 import LDKNode
 import SwiftUI
 
-class Bolt12InvoiceViewModel: ObservableObject {
+class Bolt12ZeroInvoiceViewModel: ObservableObject {
     @Published var invoice: Bolt12Invoice = ""
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
-    @Published var amountMsat: String = ""
 
-    func receivePayment(amountMsat: UInt64, description: String) async {
+    func receivePayment(description: String) async {
         do {
-            let invoice = try await LightningNodeService.shared.receivePaymentBolt12(
-                amountMsat: amountMsat,
+            let invoice = try await LightningNodeService.shared.receiveVariableAmountBolt12(
                 description: description
             )
             DispatchQueue.main.async {
@@ -37,10 +35,6 @@ class Bolt12InvoiceViewModel: ObservableObject {
                 )
             }
         }
-    }
-
-    func clearInvoice() {
-        self.invoice = ""
     }
 
     func getColor() {

@@ -43,16 +43,24 @@ struct AmountView: View {
 
                         Button {
                             if pasteboard.hasStrings, let string = pasteboard.string {
-                                let (extractedAddress, extractedAmount, extractedPayment) =
-                                    string.extractPaymentInfo(spendableBalance: spendableBalance)
-                                address = extractedAddress
-                                numpadAmount = extractedAmount
-                                payment = extractedPayment
-                                if extractedPayment == .isNone {
-                                    self.parseError = .init(
-                                        title: "Scan Error",
-                                        detail: "Unsupported paste format"
-                                    )
+                                if address.starts(with: "lno") {
+                                    address = address
+                                    numpadAmount = "0"
+                                    payment = .isLightning
+                                } else {
+                                    let (extractedAddress, extractedAmount, extractedPayment) =
+                                        string.extractPaymentInfo(
+                                            spendableBalance: spendableBalance
+                                        )
+                                    address = extractedAddress
+                                    numpadAmount = extractedAmount
+                                    payment = extractedPayment
+                                    if extractedPayment == .isNone {
+                                        self.parseError = .init(
+                                            title: "Scan Error",
+                                            detail: "Unsupported paste format"
+                                        )
+                                    }
                                 }
                             } else {
                                 self.parseError = .init(
@@ -82,14 +90,29 @@ struct AmountView: View {
                     Spacer()
 
                     VStack {
-                        Text("\(numpadAmount.formattedAmountZero()) sats")
-                            .textStyle(BitcoinTitle1())
-                        Text(address)
-                            .lineLimit(1)
-                            .truncationMode(.middle)
-                            .fontWeight(.semibold)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+
+                        // Need to figure out how to decode or add amount
+                        if address.starts(with: "lno") {
+                            // TODO: grab amount
+                            Text("Bolt 12 Offer")
+                                .textStyle(BitcoinTitle1())
+                            Text(address)
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                                .fontWeight(.semibold)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        } else {
+                            Text("\(numpadAmount.formattedAmountZero()) sats")
+                                .textStyle(BitcoinTitle1())
+                            Text(address)
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                                .fontWeight(.semibold)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+
                     }
                     .padding()
 
@@ -111,59 +134,32 @@ struct AmountView: View {
                         Task {
                             switch payment {
                             case .isLightning:
-
-                                if address.bolt11amount() == "0" {
-                                    if let amountSats = UInt64(numpadAmount) {
-                                        let amountMsat = amountSats * 1000
-                                        await viewModel.sendPaymentUsingAmount(
-                                            invoice: address,
-                                            amountMsat: amountMsat
-                                        )
-
-                                    } else {
-                                        viewModel.amountConfirmationViewError = .init(
-                                            title: "Unexpected error",
-                                            detail: "Invalid amount entered"
-                                        )
-                                    }
-                                } else {
-                                    await viewModel.sendPayment(invoice: address)
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                                    self.presentationMode.wrappedValue.dismiss()
-                                }
-
+                                await viewModel.handleLightningPayment(
+                                    address: address,
+                                    numpadAmount: numpadAmount
+                                )
                             case .isBitcoin:
-
-                                if numpadAmount == "0" {
-                                    viewModel.amountConfirmationViewError = .init(
-                                        title: "Unexpected error",
-                                        detail: "Invalid amount entered"
-                                    )
-                                } else if let amount = UInt64(numpadAmount) {
-                                    await viewModel.sendToOnchain(
-                                        address: address,
-                                        amountMsat: amount
-                                    )
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                                        self.presentationMode.wrappedValue.dismiss()
-                                    }
-                                } else {
-                                    viewModel.amountConfirmationViewError = .init(
-                                        title: "Unexpected error",
-                                        detail: "Unknown error occured"
-                                    )
-                                }
+                                await viewModel.handleBitcoinPayment(
+                                    address: address,
+                                    numpadAmount: numpadAmount
+                                )
                             case .isLightningURL:
                                 viewModel.amountConfirmationViewError = .init(
                                     title: "LNURL Error",
-                                    detail: "LNURL not supported yet"
+                                    detail: "LNURL not supported yet."
                                 )
                             case .isNone:
-                                print("not sure")
+                                viewModel.amountConfirmationViewError = .init(
+                                    title: "Unexpected Error",
+                                    detail: "Not any payment type."
+                                )
                             }
                         }
-
+                        if viewModel.amountConfirmationViewError == nil {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                                self.presentationMode.wrappedValue.dismiss()
+                            }
+                        }
                     } label: {
                         Text("Send")
                             .bold()

@@ -20,67 +20,120 @@ struct Bolt12InvoiceView: View {
 
         VStack {
 
-            QRCodeView(qrCodeType: .lightning(viewModel.invoice))
+            if viewModel.invoice == "" {
 
-            VStack {
+                VStack(alignment: .leading) {
 
-                HStack(alignment: .center) {
+                    Text("Sats")
+                        .bold()
+                        .padding(.horizontal)
 
-                    VStack(alignment: .leading, spacing: 5.0) {
-                        HStack {
-                            Text("Lightning Network")
-                                .font(.caption)
-                                .bold()
-                        }
-                        Text(viewModel.invoice)
-                            .font(.caption)
-                            .truncationMode(.middle)
-                            .lineLimit(1)
-                            .foregroundColor(.secondary)
-                            .redacted(
-                                reason: viewModel.invoice.isEmpty ? .placeholder : []
-                            )
-                    }
+                    ZStack {
+                        TextField(
+                            "0",
+                            text: $viewModel.amountMsat
+                        )
+                        .keyboardType(.numberPad)
+                        .submitLabel(.done)
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
 
-                    Spacer()
-
-                    Button {
-                        UIPasteboard.general.string = viewModel.invoice
-                        isCopied = true
-                        showCheckmark = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            isCopied = false
-                            showCheckmark = false
-                        }
-                    } label: {
-                        HStack {
-                            withAnimation {
-                                Image(
-                                    systemName: showCheckmark
-                                        ? "checkmark" : "doc.on.doc"
-                                )
-                                .font(.title2)
-                                .minimumScaleFactor(0.5)
+                        if !viewModel.amountMsat.isEmpty {
+                            HStack {
+                                Spacer()
+                                Button {
+                                    self.viewModel.amountMsat = ""
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.trailing, 8)
                             }
                         }
-                        .bold()
-                        .foregroundColor(viewModel.networkColor)
                     }
+                    .padding(.horizontal)
 
                 }
                 .padding()
+
+                Button {
+                    Task {
+                        let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
+                        await viewModel.receivePayment(
+                            amountMsat: amountMsat,
+                            description: "Monday Wallet"
+                        )
+                    }
+                } label: {
+                    Text("Create Amount Invoice")
+                }
+
+            } else {
+
+                QRCodeView(qrCodeType: .lightning(viewModel.invoice))
+
+                VStack {
+
+                    HStack(alignment: .center) {
+
+                        VStack(alignment: .leading, spacing: 5.0) {
+                            HStack {
+                                Text("Lightning Network")
+                                    .font(.caption)
+                                    .bold()
+                            }
+                            Text(viewModel.invoice)
+                                .font(.caption)
+                                .truncationMode(.middle)
+                                .lineLimit(1)
+                                .foregroundColor(.secondary)
+                                .redacted(
+                                    reason: viewModel.invoice.isEmpty ? .placeholder : []
+                                )
+                        }
+
+                        Spacer()
+
+                        Button {
+                            UIPasteboard.general.string = viewModel.invoice
+                            isCopied = true
+                            showCheckmark = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                isCopied = false
+                                showCheckmark = false
+                            }
+                        } label: {
+                            HStack {
+                                withAnimation {
+                                    Image(
+                                        systemName: showCheckmark
+                                            ? "checkmark" : "doc.on.doc"
+                                    )
+                                    .font(.title2)
+                                    .minimumScaleFactor(0.5)
+                                }
+                            }
+                            .bold()
+                            .foregroundColor(viewModel.networkColor)
+                        }
+
+                    }
+                    .padding()
+
+                    Button("Clear Invoice") {
+                        viewModel.clearInvoice()
+                    }
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.bordered)
+                    .tint(viewModel.networkColor)
+                    .padding()
+
+                }
 
             }
 
         }
         .onAppear {
-            Task {
-                await viewModel.receiveVariableAmountPayment(
-                    description: "Monday Wallet",
-                    expirySecs: UInt32(3600)
-                )
-                viewModel.getColor()
-            }
+            viewModel.getColor()
         }
         .onReceive(viewModel.$receiveViewError) { errorMessage in
             if errorMessage != nil {
@@ -112,6 +165,7 @@ struct Bolt12InvoiceView: View {
         }
 
     }
+
 }
 
 #Preview {
