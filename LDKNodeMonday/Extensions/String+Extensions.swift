@@ -164,26 +164,38 @@ extension String {
         let queryParams = self.queryParameters()
 
         if let lightningAddress = queryParams["lightning"], !lightningAddress.isEmpty {
-            let address = lightningAddress
-            let newAddress = address.lowercased()
-            let amount = newAddress.bolt11amount() ?? "0"
-            return (newAddress, amount, .isLightning)
+            return processLightningAddress(lightningAddress)
         } else if self.isLightningAddress && !self.starts(with: "lnurl") {
-            let address = self
-            let amount = address.bolt11amount() ?? "0"
-            return (address, amount, .isLightning)
+            return processLightningAddress(self)
         } else if self.isBitcoinAddress {
-            let address = self.extractBitcoinAddress()
-            let amount = queryParams["amount"] ?? "0"
-            if let amountValue = UInt64(amount), amountValue <= spendableBalance {
-                return (address, amount, .isBitcoin)
-            } else {
-                return (address, "0", .isBitcoin)
-            }
+            return processBitcoinAddress(spendableBalance)
         } else if self.starts(with: "lnurl") {
             return ("LNURL not supported yet", "0", .isLightningURL)
         } else {
             return ("", "0", .isNone)
+        }
+    }
+
+    private func processBitcoinAddress(_ spendableBalance: UInt64) -> (String, String, Payment) {
+        let address = self.extractBitcoinAddress()
+        let queryParams = self.queryParameters()
+        let amount = queryParams["amount"] ?? "0"
+
+        if let amountValue = UInt64(amount), amountValue <= spendableBalance {
+            return (address, amount, .isBitcoin)
+        } else {
+            return (address, "0", .isBitcoin)
+        }
+    }
+
+    private func processLightningAddress(_ address: String) -> (String, String, Payment) {
+        let sanitizedAddress = address.replacingOccurrences(of: "lightning:", with: "")
+
+        if sanitizedAddress.starts(with: "lno") {
+            return (sanitizedAddress, "0", .isLightning)
+        } else {
+            let amount = sanitizedAddress.bolt11amount() ?? "0"
+            return (sanitizedAddress, amount, .isLightning)
         }
     }
 

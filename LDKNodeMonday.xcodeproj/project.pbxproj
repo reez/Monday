@@ -73,6 +73,8 @@
 		AEA057E92B912C3C00DB1096 /* ZeroInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA057E82B912C3C00DB1096 /* ZeroInvoiceView.swift */; };
 		AEA057EB2B912E1800DB1096 /* AmountInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA057EA2B912E1800DB1096 /* AmountInvoiceView.swift */; };
 		AEA057ED2B912FEA00DB1096 /* JITInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA057EC2B912FEA00DB1096 /* JITInvoiceView.swift */; };
+		AEAAD9D12C23394D00765F5B /* Bolt12ZeroInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEAAD9D02C23394D00765F5B /* Bolt12ZeroInvoiceView.swift */; };
+		AEAAD9D32C23399700765F5B /* Bolt12ZeroInvoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEAAD9D22C23399700765F5B /* Bolt12ZeroInvoiceViewModel.swift */; };
 		AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4822A01A80A0042EA82 /* PeersListView.swift */; };
 		AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48C2A01A93B0042EA82 /* PeerView.swift */; };
 		AEBAA4922A01C34A0042EA82 /* ChannelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */; };
@@ -156,6 +158,8 @@
 		AEA057E82B912C3C00DB1096 /* ZeroInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeroInvoiceView.swift; sourceTree = "<group>"; };
 		AEA057EA2B912E1800DB1096 /* AmountInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountInvoiceView.swift; sourceTree = "<group>"; };
 		AEA057EC2B912FEA00DB1096 /* JITInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JITInvoiceView.swift; sourceTree = "<group>"; };
+		AEAAD9D02C23394D00765F5B /* Bolt12ZeroInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bolt12ZeroInvoiceView.swift; sourceTree = "<group>"; };
+		AEAAD9D22C23399700765F5B /* Bolt12ZeroInvoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bolt12ZeroInvoiceViewModel.swift; sourceTree = "<group>"; };
 		AEBAA4822A01A80A0042EA82 /* PeersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersListView.swift; sourceTree = "<group>"; };
 		AEBAA48C2A01A93B0042EA82 /* PeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerView.swift; sourceTree = "<group>"; };
 		AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelDetailView.swift; sourceTree = "<group>"; };
@@ -274,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				AE028A252B9631F100B336E7 /* ZeroAmountViewModel.swift */,
+				AEAAD9D22C23399700765F5B /* Bolt12ZeroInvoiceViewModel.swift */,
 				AE5BFE852C0B9D7B003B467C /* Bolt12InvoiceViewModel.swift */,
 				AE028A272B96325700B336E7 /* AmountInvoiceViewModel.swift */,
 				AE028A292B96328600B336E7 /* JITInvoiceViewModel.swift */,
@@ -369,6 +374,7 @@
 				AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */,
 				AEA057E82B912C3C00DB1096 /* ZeroInvoiceView.swift */,
 				AE5BFE832C0B9D06003B467C /* Bolt12InvoiceView.swift */,
+				AEAAD9D02C23394D00765F5B /* Bolt12ZeroInvoiceView.swift */,
 				AEA057EA2B912E1800DB1096 /* AmountInvoiceView.swift */,
 				AEA057EC2B912FEA00DB1096 /* JITInvoiceView.swift */,
 				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
@@ -638,6 +644,7 @@
 				AE1D9C0B2B2A251500620748 /* ChannelDetails+Extensions.swift in Sources */,
 				AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */,
 				AE7096332B5C20480038BE56 /* PriceService.swift in Sources */,
+				AEAAD9D12C23394D00765F5B /* Bolt12ZeroInvoiceView.swift in Sources */,
 				AEDF76022B5C6863002DDEE1 /* Optional+Extensions.swift in Sources */,
 				AE5BFE842C0B9D06003B467C /* Bolt12InvoiceView.swift in Sources */,
 				AEA057E92B912C3C00DB1096 /* ZeroInvoiceView.swift in Sources */,
@@ -669,6 +676,7 @@
 				AE7D3FAD2A4263C100EAE730 /* PaymentsViewModel.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
 				AE028A2A2B96328600B336E7 /* JITInvoiceViewModel.swift in Sources */,
+				AEAAD9D32C23399700765F5B /* Bolt12ZeroInvoiceViewModel.swift in Sources */,
 				AE00550E2B479EF000100797 /* OnboardingView.swift in Sources */,
 				AEBFD8B02B8A97DB0024E3F7 /* LightningServiceProvider.swift in Sources */,
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
