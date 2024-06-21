@@ -36,6 +36,14 @@ extension Event: CustomStringConvertible {
             return
                 "Channel Closed \(debugReason) \(counterpartyNodeId?.truncated(toLength: 10) ?? "")"
 
+        case .paymentClaimable(
+            let paymentId,
+            let paymentHash,
+            let claimableAmountMsat,
+            let claimDeadline
+        ):
+            return "Payment Claimable \(paymentHash.truncated(toLength: 10))"
+
         }
 
     }

@@ -83,7 +83,7 @@ struct PaymentDetailView: View {
                             .bold()
                     }
                     HStack {
-                        Text("Payment Hash")
+                        Text("Payment ID")
                             .lineLimit(1)
                             .minimumScaleFactor(0.75)
                         Text(payment.id)
@@ -106,6 +106,20 @@ struct PaymentDetailView: View {
                         .font(.caption)
                     }
 
+                    HStack(spacing: 4) {
+                        Text("Updated at")
+                        Text(
+                            Date(
+                                timeIntervalSince1970: TimeInterval(payment.latestUpdateTimestamp)
+                            ),
+                            style: .time
+                        )
+                    }
+                    .fontWeight(.light)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .minimumScaleFactor(0.75)
+
                 }
                 Spacer()
             }
@@ -125,21 +139,24 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .succeeded
+                    status: .succeeded,
+                    latestUpdateTimestamp: 1_718_841_600
                 ),
                 .init(
                     id: .localizedName(of: .ascii),
                     kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .pending
+                    status: .pending,
+                    latestUpdateTimestamp: 1_718_841_600
                 ),
                 .init(
                     id: .localizedName(of: .ascii),
                     kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .failed
+                    status: .failed,
+                    latestUpdateTimestamp: 1_718_841_600
                 ),
             ]
         )
@@ -151,21 +168,24 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .succeeded
+                    status: .succeeded,
+                    latestUpdateTimestamp: 1_718_841_600
                 ),
                 .init(
                     id: .localizedName(of: .ascii),
                     kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .pending
+                    status: .pending,
+                    latestUpdateTimestamp: 1_718_841_600
                 ),
                 .init(
                     id: .localizedName(of: .ascii),
                     kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .failed
+                    status: .failed,
+                    latestUpdateTimestamp: 1_718_841_600
                 ),
             ]
         )
@@ -178,21 +198,24 @@ struct PaymentsListItemView_Previews: PreviewProvider {
                     kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .succeeded
+                    status: .succeeded,
+                    latestUpdateTimestamp: 1_718_841_600
                 ),
                 .init(
                     id: .localizedName(of: .ascii),
                     kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .pending
+                    status: .pending,
+                    latestUpdateTimestamp: 1_718_841_600
                 ),
                 .init(
                     id: .localizedName(of: .ascii),
                     kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
                     amountMsat: nil,
                     direction: .inbound,
-                    status: .failed
+                    status: .failed,
+                    latestUpdateTimestamp: 1_718_841_600
                 ),
             ]
         )

@@ -143,6 +143,18 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .InvalidNodeId(let message):
         return .init(title: "InvalidNodeId", detail: message)
 
+    case .FeerateEstimationUpdateTimeout(let message):
+        return .init(title: "FeerateEstimationUpdateTimeout", detail: message)
+
+    case .WalletOperationTimeout(let message):
+        return .init(title: "WalletOperationTimeout", detail: message)
+
+    case .TxSyncTimeout(let message):
+        return .init(title: "TxSyncTimeout", detail: message)
+
+    case .GossipUpdateTimeout(let message):
+        return .init(title: "GossipUpdateTimeout", detail: message)
+
     }
 
 }
