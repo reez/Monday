@@ -107,7 +107,12 @@ struct OnboardingView: View {
                     .submitLabel(.done)
                     .padding(.horizontal, 40)
                     if viewModel.seedPhraseArray != [] {
-                        SeedPhraseView(words: viewModel.seedPhraseArray, preferredWordsPerRow: 3)
+                        SeedPhraseView(
+                            words: viewModel.seedPhraseArray,
+                            preferredWordsPerRow: 2,
+                            usePaging: true,
+                            wordsPerPage: 6
+                        )
                     }
                 }
                 .padding()

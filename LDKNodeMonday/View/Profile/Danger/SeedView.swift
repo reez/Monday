@@ -24,7 +24,9 @@ struct SeedView: View {
             VStack(alignment: .leading) {
                 SeedPhraseView(
                     words: viewModel.seed.mnemonic.components(separatedBy: " "),
-                    preferredWordsPerRow: 3
+                    preferredWordsPerRow: 2,
+                    usePaging: true,
+                    wordsPerPage: 6
                 )
                 HStack {
                     Spacer()
