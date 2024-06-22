@@ -66,6 +66,12 @@ struct Constants {
             nodeId: "0371d6fd7d75de2d0372d03ea00e8bacdacb50c27d0eaea0a76a0622eff1f5ef2b",
             token: "4GH1W3YW"
         )
+        /// [Olympus Docs](https://docs.zeusln.app/lsp/api/flow/)
+        static let olympus = LightningServiceProvider(
+            address: "45.79.192.236:9735",
+            nodeId: "031b301307574bbe9b9ac7b79cbe1700e31e544513eae0b5d7497483083f99e581",
+            token: ""
+        )
     }
 
     enum BitcoinNetworkColor {
