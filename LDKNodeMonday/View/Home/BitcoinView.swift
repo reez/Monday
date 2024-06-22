@@ -59,21 +59,22 @@ struct BitcoinView: View {
                                 .lineLimit(1)
                                 .foregroundColor(.primary)
 
-                                let date = Date(
-                                    timeIntervalSince1970: TimeInterval(
-                                        viewModel.status?.latestOnchainWalletSyncTimestamp
-                                            ?? UInt64(0)
+                                if let status = viewModel.status,
+                                    let timestamp = status.latestOnchainWalletSyncTimestamp
+                                {
+                                    let date = Date(
+                                        timeIntervalSince1970: TimeInterval(
+                                            timestamp
+                                        )
                                     )
-                                )
-                                Text(date.formattedDate())
-                                    .lineLimit(1)
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
-                                    .padding(.bottom, 20.0)
-                                    .minimumScaleFactor(0.5)
-                                    .redacted(
-                                        reason: viewModel.isStatusFinished ? [] : .placeholder
-                                    )
+                                    Text(date.formattedDate())
+                                        .lineLimit(1)
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                        .padding(.bottom, 20.0)
+                                        .minimumScaleFactor(0.5)
+                                }
+
                             }
 
                             VStack {
@@ -100,20 +101,21 @@ struct BitcoinView: View {
                                 .lineLimit(1)
                                 .foregroundColor(.primary)
 
-                                let date = Date(
-                                    timeIntervalSince1970: TimeInterval(
-                                        viewModel.status?.latestWalletSyncTimestamp ?? UInt64(0)
+                                if let status = viewModel.status,
+                                    let timestamp = status.latestOnchainWalletSyncTimestamp
+                                {
+                                    let date = Date(
+                                        timeIntervalSince1970: TimeInterval(
+                                            timestamp
+                                        )
                                     )
-                                )
-                                Text(date.formattedDate())
-                                    .lineLimit(1)
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
-                                    .padding(.bottom, 20.0)
-                                    .minimumScaleFactor(0.5)
-                                    .redacted(
-                                        reason: viewModel.isStatusFinished ? [] : .placeholder
-                                    )
+                                    Text(date.formattedDate())
+                                        .lineLimit(1)
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                        .padding(.bottom, 20.0)
+                                        .minimumScaleFactor(0.5)
+                                }
                             }
 
                             HStack {
