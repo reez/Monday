@@ -16,7 +16,7 @@ class AddressViewModel: ObservableObject {
 
     func newFundingAddress() async {
         do {
-            let address = try await LightningNodeService.shared.newOnchainAddress()
+            let address = try await LightningNodeService.shared.newAddress()
             DispatchQueue.main.async {
                 self.address = address
                 self.isAddressFinished = true

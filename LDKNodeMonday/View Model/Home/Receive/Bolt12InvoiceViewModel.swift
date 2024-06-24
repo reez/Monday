@@ -17,7 +17,7 @@ class Bolt12InvoiceViewModel: ObservableObject {
 
     func receivePayment(amountMsat: UInt64, description: String) async {
         do {
-            let invoice = try await LightningNodeService.shared.receivePaymentBolt12(
+            let invoice = try await LightningNodeService.shared.receive(
                 amountMsat: amountMsat,
                 description: description
             )

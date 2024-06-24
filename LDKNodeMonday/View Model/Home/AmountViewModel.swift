@@ -18,7 +18,7 @@ class AmountViewModel {
 
     func sendToOnchain(address: String, amountMsat: UInt64) async {
         do {
-            try await LightningNodeService.shared.sendToOnchainAddress(
+            try await LightningNodeService.shared.sendToAddress(
                 address: address,
                 amountMsat: amountMsat
             )
@@ -42,7 +42,7 @@ class AmountViewModel {
 
     func sendPayment(invoice: Bolt11Invoice) async {
         do {
-            try await LightningNodeService.shared.sendPayment(invoice: invoice)
+            try await LightningNodeService.shared.send(bolt11Invoice: invoice)
         } catch let error as NodeError {
             NotificationCenter.default.post(name: .ldkErrorReceived, object: error)
 
@@ -65,8 +65,8 @@ class AmountViewModel {
 
     func sendPaymentUsingAmount(invoice: Bolt11Invoice, amountMsat: UInt64) async {
         do {
-            try await LightningNodeService.shared.sendPaymentUsingAmount(
-                invoice: invoice,
+            try await LightningNodeService.shared.sendUsingAmount(
+                bolt11Invoice: invoice,
                 amountMsat: amountMsat
             )
         } catch let error as NodeError {
@@ -90,7 +90,7 @@ class AmountViewModel {
 
     func sendPaymentBolt12(invoice: Bolt12Invoice) async {
         do {
-            try await LightningNodeService.shared.sendPaymentBolt12(invoice: invoice)
+            try await LightningNodeService.shared.send(bolt12Invoice: invoice)
         } catch let error as NodeError {
             NotificationCenter.default.post(name: .ldkErrorReceived, object: error)
             let errorString = handleNodeError(error)
