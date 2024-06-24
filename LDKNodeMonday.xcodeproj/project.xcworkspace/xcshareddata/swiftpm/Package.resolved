@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/reez/BitcoinUI.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "f42cdf1e33c60f1c5c2c1bc22a35781f912f70f5"
+        "branch" : "1.0.6",
+        "revision" : "2f4f1a49a869ebd19c08718ade319ffdf59e6da1"
       }
     },
     {
