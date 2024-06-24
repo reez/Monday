@@ -95,13 +95,13 @@ class LightningNodeService {
     }
 
     func nodeId() -> String {
-        let nodeID = ldkNode.nodeId()
-        return nodeID
+        let nodeId = ldkNode.nodeId()
+        return nodeId
     }
 
-    func newOnchainAddress() async throws -> String {
-        let fundingAddress = try ldkNode.onchainPayment().newAddress()
-        return fundingAddress
+    func newAddress() async throws -> String {
+        let address = try ldkNode.onchainPayment().newAddress()
+        return address
     }
 
     func spendableOnchainBalanceSats() async -> UInt64 {
@@ -120,13 +120,13 @@ class LightningNodeService {
     }
 
     func lightningBalances() async -> [LightningBalance] {
-        let balance = ldkNode.listBalances().lightningBalances
-        return balance
+        let balances = ldkNode.listBalances().lightningBalances
+        return balances
     }
 
     func pendingBalancesFromChannelClosures() async -> [PendingSweepBalance] {
-        let balance = ldkNode.listBalances().pendingBalancesFromChannelClosures
-        return balance
+        let balances = ldkNode.listBalances().pendingBalancesFromChannelClosures
+        return balances
     }
 
     func connect(nodeId: PublicKey, address: String, persist: Bool) async throws {
@@ -167,46 +167,48 @@ class LightningNodeService {
         )
     }
 
-    /// Send - Bolt 11
+    func sendToAddress(address: Address, amountMsat: UInt64) async throws -> Txid {
+        let txId = try ldkNode.onchainPayment().sendToAddress(
+            address: address,
+            amountMsat: amountMsat
+        )
+        return txId
+    }
 
-    func sendPayment(invoice: Bolt11Invoice) async throws -> PaymentHash {
-        let paymentHash = try ldkNode.bolt11Payment().send(invoice: invoice)
+    func send(bolt11Invoice: Bolt11Invoice) async throws -> PaymentHash {
+        let paymentHash = try ldkNode.bolt11Payment().send(invoice: bolt11Invoice)
         return paymentHash
     }
 
-    func sendPaymentUsingAmount(invoice: Bolt11Invoice, amountMsat: UInt64) async throws
+    func send(bolt12Invoice: Bolt12Invoice) async throws -> PaymentId {
+        let payerNote = "BOLT 12 payer note"
+        let paymentId = try ldkNode.bolt12Payment().send(offer: bolt12Invoice, payerNote: payerNote)
+        return paymentId
+    }
+
+    func sendUsingAmount(bolt11Invoice: Bolt11Invoice, amountMsat: UInt64) async throws
         -> PaymentHash
     {
         let paymentHash = try ldkNode.bolt11Payment().sendUsingAmount(
-            invoice: invoice,
+            invoice: bolt11Invoice,
             amountMsat: amountMsat
         )
         return paymentHash
     }
 
-    /// Send - Bolt 12
-
-    func sendPaymentBolt12(invoice: Bolt12Invoice) async throws -> PaymentId {
-        let payerNote = "BOLT 12 payment payer note"
-        let paymentId = try ldkNode.bolt12Payment().send(offer: invoice, payerNote: payerNote)
-        return paymentId
-    }
-
-    func sendPaymentUsingAmountBolt12(invoice: Bolt12Invoice, amountMsat: UInt64) async throws
+    func sendUsingAmount(bolt12Invoice: Bolt12Invoice, amountMsat: UInt64) async throws
         -> PaymentId
     {
-        let payerNote = "BOLT 12 payment payer note"
+        let payerNote = "BOLT 12 payer note"
         let paymentId = try ldkNode.bolt12Payment().sendUsingAmount(
-            offer: invoice,
+            offer: bolt12Invoice,
             payerNote: payerNote,
             amountMsat: amountMsat
         )
         return paymentId
     }
 
-    /// Receive - Bolt 11
-
-    func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async throws
+    func receive(amountMsat: UInt64, description: String, expirySecs: UInt32) async throws
         -> Bolt11Invoice
     {
         let invoice = try ldkNode.bolt11Payment().receive(
@@ -217,7 +219,15 @@ class LightningNodeService {
         return invoice
     }
 
-    func receiveVariableAmountPayment(description: String, expirySecs: UInt32) async throws
+    func receive(amountMsat: UInt64, description: String) async throws -> Bolt12Invoice {
+        let offer = try ldkNode.bolt12Payment().receive(
+            amountMsat: amountMsat,
+            description: description
+        )
+        return offer
+    }
+
+    func receiveVariableAmount(description: String, expirySecs: UInt32) async throws
         -> Bolt11Invoice
     {
         let invoice = try ldkNode.bolt11Payment().receiveVariableAmount(
@@ -227,26 +237,12 @@ class LightningNodeService {
         return invoice
     }
 
-    /// Receive - Bolt 12
-
-    // name these like receive(with amountMSat: ...)
-    func receivePaymentBolt12(amountMsat: UInt64, description: String) async throws -> Bolt12Invoice
-    {
-        let offer = try ldkNode.bolt12Payment().receive(
-            amountMsat: amountMsat,
-            description: description
-        )
-        return offer
-    }
-
-    func receiveVariableAmountBolt12(description: String) async throws -> Bolt12Invoice {
+    func receiveVariableAmount(description: String) async throws -> Bolt12Invoice {
         let offer = try ldkNode.bolt12Payment().receiveVariableAmount(description: description)
         return offer
     }
 
-    /// Receive - JIT
-
-    func receivePaymentViaJitChannel(
+    func receiveViaJitChannel(
         amountMsat: UInt64,
         description: String,
         expirySecs: UInt32,
@@ -269,14 +265,6 @@ class LightningNodeService {
     func listChannels() -> [ChannelDetails] {
         let channels = ldkNode.listChannels()
         return channels
-    }
-
-    func sendToOnchainAddress(address: Address, amountMsat: UInt64) async throws -> Txid {
-        let txId = try ldkNode.onchainPayment().sendToAddress(
-            address: address,
-            amountMsat: amountMsat
-        )
-        return txId
     }
 
     func listPayments() -> [PaymentDetails] {

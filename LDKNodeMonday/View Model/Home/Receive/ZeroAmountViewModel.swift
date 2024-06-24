@@ -16,7 +16,7 @@ class ZeroAmountViewModel: ObservableObject {
 
     func receiveVariableAmountPayment(description: String, expirySecs: UInt32) async {
         do {
-            let invoice = try await LightningNodeService.shared.receiveVariableAmountPayment(
+            let invoice = try await LightningNodeService.shared.receiveVariableAmount(
                 description: description,
                 expirySecs: expirySecs
             )

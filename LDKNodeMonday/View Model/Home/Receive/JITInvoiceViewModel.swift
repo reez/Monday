@@ -23,7 +23,7 @@ class JITInvoiceViewModel: ObservableObject {
         maxLspFeeLimitMsat: UInt64?
     ) async {
         do {
-            let invoice = try await LightningNodeService.shared.receivePaymentViaJitChannel(
+            let invoice = try await LightningNodeService.shared.receiveViaJitChannel(
                 amountMsat: amountMsat,
                 description: description,
                 expirySecs: expirySecs,

@@ -18,7 +18,7 @@ class AmountInvoiceViewModel: ObservableObject {
 
     func receivePayment(amountMsat: UInt64, description: String, expirySecs: UInt32) async {
         do {
-            let invoice = try await LightningNodeService.shared.receivePayment(
+            let invoice = try await LightningNodeService.shared.receive(
                 amountMsat: amountMsat,
                 description: description,
                 expirySecs: expirySecs
