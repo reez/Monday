@@ -31,6 +31,8 @@ struct ReceiveView: View {
                 Bolt12InvoiceView(viewModel: .init())
             case .bitcoin:
                 AddressView(viewModel: .init())
+            case .bip21:
+                BIP21View(viewModel: .init())
             }
 
         }

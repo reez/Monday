@@ -186,6 +186,12 @@ class LightningNodeService {
         return paymentId
     }
 
+    // Parses a URI string, attempts to pay a BOLT12 offer, BOLT11 invoice, then falls back to the on-chain address if the offer and invoice fail.
+    func send(uriStr: String) async throws -> QrPaymentResult {
+        let qrPaymentResult = try ldkNode.unifiedQrPayment().send(uriStr: uriStr)
+        return qrPaymentResult
+    }
+
     func sendUsingAmount(bolt11Invoice: Bolt11Invoice, amountMsat: UInt64) async throws
         -> PaymentHash
     {
@@ -225,6 +231,16 @@ class LightningNodeService {
             description: description
         )
         return offer
+    }
+
+    // Generates a BIP21 URI string with an on the address and BOLT11 invoice.
+    func receive(amountSat: UInt64, message: String, expirySec: UInt32) async throws -> String {
+        let bip21UriString = try ldkNode.unifiedQrPayment().receive(
+            amountSats: amountSat,
+            message: message,
+            expirySec: expirySec
+        )
+        return bip21UriString
     }
 
     func receiveVariableAmount(description: String, expirySecs: UInt32) async throws
