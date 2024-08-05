@@ -11,8 +11,13 @@ import SwiftUI
 
 struct BIP21View: View {
     @ObservedObject var viewModel: BIP21ViewModel
-    @State private var isCopied = false
-    @State private var showCheckmark = false
+    @State private var onchainIsCopied = false
+    @State private var onchainShowCheckmark = false
+    @State private var bolt11IsCopied = false
+    @State private var bolt11ShowCheckmark = false
+    @State private var bolt12IsCopied = false
+    @State private var bolt12ShowCheckmark = false
+
     @State private var showingReceiveViewErrorAlert = false
     @State private var isKeyboardVisible = false
 
@@ -77,44 +82,142 @@ struct BIP21View: View {
                     HStack(alignment: .center) {
 
                         VStack(alignment: .leading, spacing: 5.0) {
-                            HStack {
-                                Text("Lightning Network")
-                                    .font(.caption)
-                                    .bold()
-                            }
-                            Text(viewModel.unified)
+                            Text("On Chain")
                                 .font(.caption)
-                                .truncationMode(.middle)
-                                .lineLimit(1)
-                                .foregroundColor(.secondary)
-                                .redacted(
-                                    reason: viewModel.unified.isEmpty ? .placeholder : []
-                                )
+                                .bold()
+                            if let components = parseUnifiedQR(viewModel.unified) {
+                                Text(components.onchain)
+                                    .font(.caption)
+                                    .truncationMode(.middle)
+                                    .lineLimit(1)
+                                    .foregroundColor(.secondary)
+                                    .redacted(
+                                        reason: viewModel.unified.isEmpty ? .placeholder : []
+                                    )
+                            }
                         }
 
                         Spacer()
 
-                        Button {
-                            UIPasteboard.general.string = viewModel.unified
-                            isCopied = true
-                            showCheckmark = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                isCopied = false
-                                showCheckmark = false
-                            }
-                        } label: {
-                            HStack {
-                                withAnimation {
-                                    Image(
-                                        systemName: showCheckmark
-                                            ? "checkmark" : "doc.on.doc"
-                                    )
-                                    .font(.title2)
-                                    .minimumScaleFactor(0.5)
+                        if let components = parseUnifiedQR(viewModel.unified) {
+                            Button {
+                                UIPasteboard.general.string = components.onchain
+                                onchainIsCopied = true
+                                onchainShowCheckmark = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    onchainIsCopied = false
+                                    onchainShowCheckmark = false
                                 }
+                            } label: {
+                                HStack {
+                                    withAnimation {
+                                        Image(
+                                            systemName: onchainShowCheckmark
+                                                ? "checkmark" : "doc.on.doc"
+                                        )
+                                        .font(.title2)
+                                        .minimumScaleFactor(0.5)
+                                    }
+                                }
+                                .bold()
+                                .foregroundColor(viewModel.networkColor)
                             }
-                            .bold()
-                            .foregroundColor(viewModel.networkColor)
+                        }
+
+                    }
+                    .padding()
+
+                    HStack(alignment: .center) {
+
+                        VStack(alignment: .leading, spacing: 5.0) {
+                            Text("Bolt 11")
+                                .font(.caption)
+                                .bold()
+                            if let components = parseUnifiedQR(viewModel.unified) {
+                                Text(components.bolt11)
+                                    .font(.caption)
+                                    .truncationMode(.middle)
+                                    .lineLimit(1)
+                                    .foregroundColor(.secondary)
+                                    .redacted(
+                                        reason: viewModel.unified.isEmpty ? .placeholder : []
+                                    )
+                            }
+                        }
+
+                        Spacer()
+
+                        if let components = parseUnifiedQR(viewModel.unified) {
+                            Button {
+                                UIPasteboard.general.string = components.bolt11
+                                bolt11IsCopied = true
+                                bolt11ShowCheckmark = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    bolt11IsCopied = false
+                                    bolt11ShowCheckmark = false
+                                }
+                            } label: {
+                                HStack {
+                                    withAnimation {
+                                        Image(
+                                            systemName: bolt11ShowCheckmark
+                                                ? "checkmark" : "doc.on.doc"
+                                        )
+                                        .font(.title2)
+                                        .minimumScaleFactor(0.5)
+                                    }
+                                }
+                                .bold()
+                                .foregroundColor(viewModel.networkColor)
+                            }
+                        }
+
+                    }
+                    .padding()
+
+                    HStack(alignment: .center) {
+
+                        VStack(alignment: .leading, spacing: 5.0) {
+                            Text("Bolt 12")
+                                .font(.caption)
+                                .bold()
+                            if let components = parseUnifiedQR(viewModel.unified) {
+                                Text(components.bolt12)
+                                    .font(.caption)
+                                    .truncationMode(.middle)
+                                    .lineLimit(1)
+                                    .foregroundColor(.secondary)
+                                    .redacted(
+                                        reason: viewModel.unified.isEmpty ? .placeholder : []
+                                    )
+                            }
+                        }
+
+                        Spacer()
+
+                        if let components = parseUnifiedQR(viewModel.unified) {
+                            Button {
+                                UIPasteboard.general.string = components.bolt12
+                                bolt12IsCopied = true
+                                bolt12ShowCheckmark = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    bolt12IsCopied = false
+                                    bolt12ShowCheckmark = false
+                                }
+                            } label: {
+                                HStack {
+                                    withAnimation {
+                                        Image(
+                                            systemName: bolt12ShowCheckmark
+                                                ? "checkmark" : "doc.on.doc"
+                                        )
+                                        .font(.title2)
+                                        .minimumScaleFactor(0.5)
+                                    }
+                                }
+                                .bold()
+                                .foregroundColor(viewModel.networkColor)
+                            }
                         }
 
                     }
@@ -168,6 +271,46 @@ struct BIP21View: View {
 
     }
 
+}
+
+struct UnifiedQRComponents {
+    let onchain: String
+    let bolt11: String
+    let bolt12: String
+}
+
+func parseUnifiedQR(_ unifiedQR: String) -> UnifiedQRComponents? {
+    // Split the string by '?'
+    let components = unifiedQR.components(separatedBy: "?")
+
+    guard components.count > 1 else { return nil }
+
+    // Extract onchain (everything before the first '?') and remove the "BITCOIN:" prefix
+    var onchain = components[0]
+    if onchain.lowercased().hasPrefix("bitcoin:") {
+        onchain = String(onchain.dropFirst(8))  // Remove "BITCOIN:"
+    }
+
+    // Join the rest of the components back together
+    let remainingString = components.dropFirst().joined(separator: "?")
+
+    // Split the remaining string by '&'
+    let params = remainingString.components(separatedBy: "&")
+
+    var bolt11: String?
+    var bolt12: String?
+
+    for param in params {
+        if param.starts(with: "lightning=") {
+            bolt11 = String(param.dropFirst("lightning=".count))
+        } else if param.starts(with: "lno=") {
+            bolt12 = String(param.dropFirst("lno=".count))
+        }
+    }
+
+    guard let bolt11 = bolt11, let bolt12 = bolt12 else { return nil }
+
+    return UnifiedQRComponents(onchain: onchain, bolt11: bolt11, bolt12: bolt12)
 }
 
 #Preview {
