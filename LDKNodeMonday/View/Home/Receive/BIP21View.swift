@@ -75,7 +75,7 @@ struct BIP21View: View {
 
             } else {
 
-                //                QRCodeView(qrCodeType: .lightning(viewModel.invoice))
+                QRCodeView(qrCodeType: .bip21(viewModel.unified))
 
                 VStack {
 
