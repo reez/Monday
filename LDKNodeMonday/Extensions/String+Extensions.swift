@@ -165,10 +165,8 @@ extension String {
 
         if let lightningAddress = queryParams["lightning"], !lightningAddress.isEmpty {
             return processLightningAddress(lightningAddress)
-        } else if self.isLightningAddress && !self.starts(with: "lnurl") {
-            return processLightningAddress(self)
         } else if self.isBitcoinAddress {
-            return processBitcoinAddress(spendableBalance)
+            return processBitcoinAddress(spendableBalance)  // Modified to handle BIP21
         } else if self.starts(with: "lnurl") {
             return ("LNURL not supported yet", "0", .isLightningURL)
         } else {
@@ -177,10 +175,11 @@ extension String {
     }
 
     private func processBitcoinAddress(_ spendableBalance: UInt64) -> (String, String, Payment) {
-        let address = self.extractBitcoinAddress()
+        let address = self.extractBitcoinAddress()  // Modified for BIP21 extraction
         let queryParams = self.queryParameters()
-        let amount = queryParams["amount"] ?? "0"
+        let amount = queryParams["amount"] ?? "0"  // Modified: Handling BIP21 amount only
 
+        // Validate the amount against the spendable balance
         if let amountValue = UInt64(amount), amountValue <= spendableBalance {
             return (address, amount, .isBitcoin)
         } else {
@@ -201,7 +200,11 @@ extension String {
 
     private func extractBitcoinAddress() -> String {
         if self.lowercased().hasPrefix("bitcoin:") {
+            // Extract the address from the "bitcoin:" URI, ignoring any query parameters
             let address = self.replacingOccurrences(of: "bitcoin:", with: "")
+            if let addressEnd = address.range(of: "?")?.lowerBound {  // New: Handles query parameters in BIP21
+                return String(address[..<addressEnd]).uppercased()
+            }
             return address.uppercased()
         }
         return self.uppercased()
