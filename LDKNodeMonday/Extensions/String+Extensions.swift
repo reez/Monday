@@ -10,46 +10,68 @@ import Foundation
 extension String {
 
     func bolt11amount() -> String? {
-        let regex = try! NSRegularExpression(pattern: "ln.*?(\\d+)([munp]?)", options: [])
+        print("Entering bolt11amount() with input: \(self)")
+
+        // Updated regex pattern to be more flexible
+        let regex = try! NSRegularExpression(
+            pattern: "ln(?:bc|tb|tbs)(?<amount>\\d+)(?<multiplier>[munp]?)",
+            options: [.caseInsensitive]
+        )
+        print("Regex pattern: \(regex.pattern)")
+
         if let match = regex.firstMatch(
             in: self,
             options: [],
             range: NSRange(location: 0, length: self.utf16.count)
         ) {
-            let amountRange = match.range(at: 1)
-            let multiplierRange = match.range(at: 2)
+            print("Regex match found")
 
-            if let amountSwiftRange = Range(amountRange, in: self),
-                let multiplierSwiftRange = Range(multiplierRange, in: self)
-            {
-
-                let amountString = self[amountSwiftRange]
-                let multiplierString = self[multiplierSwiftRange]
-                let numberFormatter = NumberFormatter()
-
-                if let amount = numberFormatter.number(from: String(amountString))?.doubleValue {
-                    var conversion = amount
-
-                    switch multiplierString {
-                    case "m":
-                        conversion *= 0.001
-                    case "u":
-                        conversion *= 0.000001
-                    case "n":
-                        conversion *= 0.000000001
-                    case "p":
-                        conversion *= 0.000000000001
-                    default:
-                        break
-                    }
-
-                    let convertedAmount = conversion * 100_000_000
-                    let formattedAmount = String(format: "%.0f", convertedAmount)
-                    return formattedAmount
-                }
+            guard let amountRange = Range(match.range(withName: "amount"), in: self),
+                let multiplierRange = Range(match.range(withName: "multiplier"), in: self)
+            else {
+                print("Failed to extract amount or multiplier ranges")
+                return nil
             }
+
+            let amountString = String(self[amountRange])
+            let multiplierString = String(self[multiplierRange])
+
+            print("Extracted amount: \(amountString), multiplier: \(multiplierString)")
+
+            guard let amount = Int(amountString) else {
+                print("Failed to convert amount to Int")
+                return nil
+            }
+
+            var conversion = Double(amount)
+            print("Initial conversion: \(conversion)")
+
+            switch multiplierString.lowercased() {
+            case "m":
+                conversion *= 0.001
+                print("Applied 'm' multiplier")
+            case "u":
+                conversion *= 0.000001
+                print("Applied 'u' multiplier")
+            case "n":
+                conversion *= 0.000000001
+                print("Applied 'n' multiplier")
+            case "p":
+                conversion *= 0.000000000001
+                print("Applied 'p' multiplier")
+            default:
+                print("No multiplier applied")
+            }
+
+            let convertedAmount = conversion * 100_000_000
+            let formattedAmount = String(format: "%.0f", convertedAmount)
+            print("Final converted amount: \(formattedAmount) satoshis")
+            return formattedAmount
+        } else {
+            print("No regex match found")
         }
 
+        print("Returning nil from bolt11amount()")
         return nil
     }
 
