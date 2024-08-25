@@ -56,7 +56,7 @@ extension String {
         return nil
     }
 
-    func formattedAmount() -> String {
+    func formattedAmount(defaultValue: String = "") -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.groupingSize = 3
@@ -66,21 +66,7 @@ extension String {
         {
             return formattedNumber
         } else {
-            return ""
-        }
-    }
-
-    func formattedAmountZero() -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.groupingSize = 3
-
-        if let number = Int(self),
-            let formattedNumber = formatter.string(from: NSNumber(value: number))
-        {
-            return formattedNumber
-        } else {
-            return "0"
+            return defaultValue
         }
     }
 
