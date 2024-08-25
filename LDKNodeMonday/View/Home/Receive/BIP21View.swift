@@ -76,18 +76,17 @@ struct BIP21View: View {
             } else {
 
                 QRCodeView(qrCodeType: .bip21(viewModel.unified))
+                //                    .padding(-30.0)
 
-                VStack {
+                VStack(spacing: 5.0) {
 
                     HStack(alignment: .center) {
 
                         VStack(alignment: .leading, spacing: 5.0) {
                             Text("On Chain")
-                                .font(.caption)
                                 .bold()
                             if let components = parseUnifiedQR(viewModel.unified) {
                                 Text(components.onchain)
-                                    .font(.caption)
                                     .truncationMode(.middle)
                                     .lineLimit(1)
                                     .foregroundColor(.secondary)
@@ -96,6 +95,7 @@ struct BIP21View: View {
                                     )
                             }
                         }
+                        .font(.caption2)
 
                         Spacer()
 
@@ -115,27 +115,27 @@ struct BIP21View: View {
                                             systemName: onchainShowCheckmark
                                                 ? "checkmark" : "doc.on.doc"
                                         )
-                                        .font(.title2)
+                                        .font(.title3)
                                         .minimumScaleFactor(0.5)
                                     }
                                 }
                                 .bold()
                                 .foregroundColor(viewModel.networkColor)
                             }
+                            .font(.caption2)
+
                         }
 
                     }
-                    .padding()
+                    .padding(.horizontal)
 
                     HStack(alignment: .center) {
 
                         VStack(alignment: .leading, spacing: 5.0) {
                             Text("Bolt 11")
-                                .font(.caption)
                                 .bold()
                             if let components = parseUnifiedQR(viewModel.unified) {
                                 Text(components.bolt11)
-                                    .font(.caption)
                                     .truncationMode(.middle)
                                     .lineLimit(1)
                                     .foregroundColor(.secondary)
@@ -144,6 +144,7 @@ struct BIP21View: View {
                                     )
                             }
                         }
+                        .font(.caption2)
 
                         Spacer()
 
@@ -163,27 +164,27 @@ struct BIP21View: View {
                                             systemName: bolt11ShowCheckmark
                                                 ? "checkmark" : "doc.on.doc"
                                         )
-                                        .font(.title2)
+                                        .font(.title3)
                                         .minimumScaleFactor(0.5)
                                     }
                                 }
                                 .bold()
                                 .foregroundColor(viewModel.networkColor)
                             }
+                            .font(.caption2)
+
                         }
 
                     }
-                    .padding()
+                    .padding(.horizontal)
 
                     HStack(alignment: .center) {
 
                         VStack(alignment: .leading, spacing: 5.0) {
                             Text("Bolt 12")
-                                .font(.caption)
                                 .bold()
                             if let components = parseUnifiedQR(viewModel.unified) {
                                 Text(components.bolt12)
-                                    .font(.caption)
                                     .truncationMode(.middle)
                                     .lineLimit(1)
                                     .foregroundColor(.secondary)
@@ -192,6 +193,7 @@ struct BIP21View: View {
                                     )
                             }
                         }
+                        .font(.caption2)
 
                         Spacer()
 
@@ -211,17 +213,19 @@ struct BIP21View: View {
                                             systemName: bolt12ShowCheckmark
                                                 ? "checkmark" : "doc.on.doc"
                                         )
-                                        .font(.title2)
+                                        .font(.title3)
                                         .minimumScaleFactor(0.5)
                                     }
                                 }
                                 .bold()
                                 .foregroundColor(viewModel.networkColor)
                             }
+                            .font(.caption2)
+
                         }
 
                     }
-                    .padding()
+                    .padding(.horizontal)
 
                     Button("Clear Invoice") {
                         viewModel.clearInvoice()
