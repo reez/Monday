@@ -19,18 +19,8 @@ struct ReceiveView: View {
             Spacer()
 
             switch selectedOption {
-            //            case .bolt11Zero:
-            //                ZeroInvoiceView(viewModel: .init())
-            //            case .bolt11:
-            //                AmountInvoiceView(viewModel: .init())
             case .bolt11JIT:
                 JITInvoiceView(viewModel: .init())
-            //            case .bolt12Zero:
-            //                Bolt12ZeroInvoiceView(viewModel: .init())
-            //            case .bolt12:
-            //                Bolt12InvoiceView(viewModel: .init())
-            //            case .bitcoin:
-            //                AddressView(viewModel: .init())
             case .bip21:
                 BIP21View(viewModel: .init())
             }
@@ -54,9 +44,7 @@ struct CustomSegmentedPicker: View {
                 }) {
                     VStack {
                         Image(systemName: option.systemImageName)
-                        //.font(.system(size: 6))
                         Text(option.rawValue)
-                        //.font(.system(size: 6))
                     }
                     .padding()
                     .font(.body)

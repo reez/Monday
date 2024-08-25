@@ -90,10 +90,8 @@ class AmountViewModel {
 
     func sendPaymentBolt12(invoice: Bolt12Invoice) async {
         do {
-            let paymentId = try await LightningNodeService.shared.send(bolt12Invoice: invoice)
-            print("sendPaymentBolt12 success w paymentId: \(paymentId)")
+            let _ = try await LightningNodeService.shared.send(bolt12Invoice: invoice)
         } catch let error as NodeError {
-            print("sendPaymentBolt12 NodeError: \(error.localizedDescription)")
             NotificationCenter.default.post(name: .ldkErrorReceived, object: error)
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
@@ -104,7 +102,6 @@ class AmountViewModel {
             }
         } catch {
             DispatchQueue.main.async {
-                print("sendPaymentBolt12 error: \(error.localizedDescription)")
                 self.amountConfirmationViewError = .init(
                     title: "Unexpected error",
                     detail: error.localizedDescription

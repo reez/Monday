@@ -62,7 +62,7 @@ struct BIP21View: View {
 
                 Button {
                     Task {
-                        let amountSat = (UInt64(viewModel.amountSat) ?? 0)  // * 1000
+                        let amountSat = (UInt64(viewModel.amountSat) ?? 0)
                         await viewModel.receivePayment(
                             amountSat: amountSat,
                             message: "Monday Wallet",
@@ -76,7 +76,6 @@ struct BIP21View: View {
             } else {
 
                 QRCodeView(qrCodeType: .bip21(viewModel.unified))
-                //                    .padding(-30.0)
 
                 VStack(spacing: 5.0) {
 
@@ -242,7 +241,6 @@ struct BIP21View: View {
         }
         .onAppear {
             viewModel.getColor()
-            print("unified: \n \(viewModel.unified)")
         }
         .onReceive(viewModel.$receiveViewError) { errorMessage in
             if errorMessage != nil {

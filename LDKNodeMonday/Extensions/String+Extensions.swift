@@ -10,68 +10,49 @@ import Foundation
 extension String {
 
     func bolt11amount() -> String? {
-        print("Entering bolt11amount() with input: \(self)")
-
-        // Updated regex pattern to be more flexible
         let regex = try! NSRegularExpression(
             pattern: "ln(?:bc|tb|tbs)(?<amount>\\d+)(?<multiplier>[munp]?)",
             options: [.caseInsensitive]
         )
-        print("Regex pattern: \(regex.pattern)")
 
         if let match = regex.firstMatch(
             in: self,
             options: [],
             range: NSRange(location: 0, length: self.utf16.count)
         ) {
-            print("Regex match found")
 
             guard let amountRange = Range(match.range(withName: "amount"), in: self),
                 let multiplierRange = Range(match.range(withName: "multiplier"), in: self)
             else {
-                print("Failed to extract amount or multiplier ranges")
                 return nil
             }
 
             let amountString = String(self[amountRange])
             let multiplierString = String(self[multiplierRange])
 
-            print("Extracted amount: \(amountString), multiplier: \(multiplierString)")
-
             guard let amount = Int(amountString) else {
-                print("Failed to convert amount to Int")
                 return nil
             }
 
             var conversion = Double(amount)
-            print("Initial conversion: \(conversion)")
-
             switch multiplierString.lowercased() {
             case "m":
                 conversion *= 0.001
-                print("Applied 'm' multiplier")
             case "u":
                 conversion *= 0.000001
-                print("Applied 'u' multiplier")
             case "n":
                 conversion *= 0.000000001
-                print("Applied 'n' multiplier")
             case "p":
                 conversion *= 0.000000000001
-                print("Applied 'p' multiplier")
             default:
-                print("No multiplier applied")
+                break
             }
 
             let convertedAmount = conversion * 100_000_000
             let formattedAmount = String(format: "%.0f", convertedAmount)
-            print("Final converted amount: \(formattedAmount) satoshis")
             return formattedAmount
-        } else {
-            print("No regex match found")
         }
 
-        print("Returning nil from bolt11amount()")
         return nil
     }
 
@@ -181,11 +162,9 @@ extension String {
     }
 
     func processBIP21(_ input: String, spendableBalance: UInt64) -> (String, String, Payment) {
-        print("Processing BIP21 URI")
         guard let url = URL(string: input),
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         else {
-            print("Failed to parse BIP21 URI")
             return ("", "0", .isNone)
         }
 
@@ -198,7 +177,7 @@ extension String {
             switch item.name.lowercased() {
             case "amount":
                 if let value = item.value, let btcAmount = Double(value) {
-                    amount = String(format: "%.0f", btcAmount * 100_000_000)  // Convert BTC to satoshis
+                    amount = String(format: "%.0f", btcAmount * 100_000_000)
                 }
             case "lightning":
                 bolt11Invoice = item.value
@@ -209,44 +188,26 @@ extension String {
             }
         }
 
-        // Priority: Bolt 12 > Bolt 11 > On-chain
         if let offer = bolt12Offer {
-            print("Bolt 12 offer found in BIP21 URI")
             return processLightningAddress(offer)
         }
-
         if let invoice = bolt11Invoice {
-            print("Bolt 11 invoice found in BIP21 URI")
             return processLightningAddress(invoice)
         }
-
-        print("Using on-chain Bitcoin address from BIP21 URI")
         return (bitcoinAddress, amount, .isBitcoin)
     }
 
     func extractPaymentInfo(spendableBalance: UInt64) -> (
         address: String, amount: String, payment: Payment
     ) {
-        // BIP 21
         if self.lowercased().starts(with: "bitcoin:") && self.contains("?") {
             return processBIP21(self, spendableBalance: spendableBalance)
-        }
-
-        // Bolt 11 JIT
-        // Check for BOLT11 invoice, including those prefixed with "lightning:"
-        if self.lowercased().starts(with: "lightning:") {
+        } else if self.lowercased().starts(with: "lightning:") {
             let invoice = String(self.dropFirst(10))  // Remove "lightning:" prefix
             return processLightningAddress(invoice)
         } else if self.lowercased().starts(with: "lnbc") || self.lowercased().starts(with: "lntb") {
             return processLightningAddress(self)
-        }
-
-        //        let queryParams = self.queryParameters()
-        //
-        //        if let lightningAddress = queryParams["lightning"], !lightningAddress.isEmpty {
-        //            return processLightningAddress(lightningAddress)
-        //        }
-        else if self.isBitcoinAddress {
+        } else if self.isBitcoinAddress {
             return processBitcoinAddress(spendableBalance)
         } else if self.starts(with: "lnurl") {
             return ("LNURL not supported yet", "0", .isLightningURL)
@@ -260,7 +221,6 @@ extension String {
         let queryParams = self.queryParameters()
         let amount = queryParams["amount"] ?? "0"
 
-        // Validate the amount against the spendable balance
         if let amountValue = UInt64(amount), amountValue <= spendableBalance {
             return (address, amount, .isBitcoin)
         } else {
@@ -281,9 +241,8 @@ extension String {
 
     private func extractBitcoinAddress() -> String {
         if self.lowercased().hasPrefix("bitcoin:") {
-            // Extract the address from the "bitcoin:" URI, ignoring any query parameters
             let address = self.replacingOccurrences(of: "bitcoin:", with: "")
-            if let addressEnd = address.range(of: "?")?.lowerBound {  // New: Handles query parameters in BIP21
+            if let addressEnd = address.range(of: "?")?.lowerBound {
                 return String(address[..<addressEnd]).uppercased()
             }
             return address.uppercased()
