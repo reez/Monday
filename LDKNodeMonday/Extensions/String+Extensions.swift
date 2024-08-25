@@ -180,15 +180,74 @@ extension String {
         return params
     }
 
+    func processBIP21(_ input: String, spendableBalance: UInt64) -> (String, String, Payment) {
+        print("Processing BIP21 URI")
+        guard let url = URL(string: input),
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        else {
+            print("Failed to parse BIP21 URI")
+            return ("", "0", .isNone)
+        }
+
+        let bitcoinAddress = url.path
+        var amount = "0"
+        var bolt12Offer: String?
+        var bolt11Invoice: String?
+
+        for item in components.queryItems ?? [] {
+            switch item.name.lowercased() {
+            case "amount":
+                if let value = item.value, let btcAmount = Double(value) {
+                    amount = String(format: "%.0f", btcAmount * 100_000_000)  // Convert BTC to satoshis
+                }
+            case "lightning":
+                bolt11Invoice = item.value
+            case "lno":
+                bolt12Offer = item.value
+            default:
+                break
+            }
+        }
+
+        // Priority: Bolt 12 > Bolt 11 > On-chain
+        if let offer = bolt12Offer {
+            print("Bolt 12 offer found in BIP21 URI")
+            return processLightningAddress(offer)
+        }
+
+        if let invoice = bolt11Invoice {
+            print("Bolt 11 invoice found in BIP21 URI")
+            return processLightningAddress(invoice)
+        }
+
+        print("Using on-chain Bitcoin address from BIP21 URI")
+        return (bitcoinAddress, amount, .isBitcoin)
+    }
+
     func extractPaymentInfo(spendableBalance: UInt64) -> (
         address: String, amount: String, payment: Payment
     ) {
-        let queryParams = self.queryParameters()
+        // BIP 21
+        if self.lowercased().starts(with: "bitcoin:") && self.contains("?") {
+            return processBIP21(self, spendableBalance: spendableBalance)
+        }
 
-        if let lightningAddress = queryParams["lightning"], !lightningAddress.isEmpty {
-            return processLightningAddress(lightningAddress)
-        } else if self.isBitcoinAddress {
-            return processBitcoinAddress(spendableBalance)  // Modified to handle BIP21
+        // Bolt 11 JIT
+        // Check for BOLT11 invoice, including those prefixed with "lightning:"
+        if self.lowercased().starts(with: "lightning:") {
+            let invoice = String(self.dropFirst(10))  // Remove "lightning:" prefix
+            return processLightningAddress(invoice)
+        } else if self.lowercased().starts(with: "lnbc") || self.lowercased().starts(with: "lntb") {
+            return processLightningAddress(self)
+        }
+
+        //        let queryParams = self.queryParameters()
+        //
+        //        if let lightningAddress = queryParams["lightning"], !lightningAddress.isEmpty {
+        //            return processLightningAddress(lightningAddress)
+        //        }
+        else if self.isBitcoinAddress {
+            return processBitcoinAddress(spendableBalance)
         } else if self.starts(with: "lnurl") {
             return ("LNURL not supported yet", "0", .isLightningURL)
         } else {
@@ -197,9 +256,9 @@ extension String {
     }
 
     private func processBitcoinAddress(_ spendableBalance: UInt64) -> (String, String, Payment) {
-        let address = self.extractBitcoinAddress()  // Modified for BIP21 extraction
+        let address = self.extractBitcoinAddress()
         let queryParams = self.queryParameters()
-        let amount = queryParams["amount"] ?? "0"  // Modified: Handling BIP21 amount only
+        let amount = queryParams["amount"] ?? "0"
 
         // Validate the amount against the spendable balance
         if let amountValue = UInt64(amount), amountValue <= spendableBalance {
@@ -212,7 +271,7 @@ extension String {
     private func processLightningAddress(_ address: String) -> (String, String, Payment) {
         let sanitizedAddress = address.replacingOccurrences(of: "lightning:", with: "")
 
-        if sanitizedAddress.starts(with: "lno") {
+        if sanitizedAddress.lowercased().starts(with: "lno") {
             return (sanitizedAddress, "0", .isLightning)
         } else {
             let amount = sanitizedAddress.bolt11amount() ?? "0"
