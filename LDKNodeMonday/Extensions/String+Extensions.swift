@@ -56,7 +56,7 @@ extension String {
         return nil
     }
 
-    func formattedAmount() -> String {
+    func formattedAmount(defaultValue: String = "") -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.groupingSize = 3
@@ -66,21 +66,7 @@ extension String {
         {
             return formattedNumber
         } else {
-            return ""
-        }
-    }
-
-    func formattedAmountZero() -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.groupingSize = 3
-
-        if let number = Int(self),
-            let formattedNumber = formatter.string(from: NSNumber(value: number))
-        {
-            return formattedNumber
-        } else {
-            return "0"
+            return defaultValue
         }
     }
 
@@ -146,19 +132,9 @@ extension String {
         }
     }
 
-    private func queryParameters() -> [String: String] {
-        guard let range = self.range(of: "?") else { return [:] }
-        let queryString = self[range.upperBound...]
-
-        var params: [String: String] = [:]
-        queryString.split(separator: "&").forEach {
-            let pair = $0.split(separator: "=")
-            if pair.count == 2 {
-                params[String(pair[0])] = String(pair[1])
-            }
-        }
-
-        return params
+    func queryParameters() -> [String: String] {
+        guard let url = URL(string: self) else { return [:] }
+        return url.queryParameters()
     }
 
     func processBIP21(_ input: String, spendableBalance: UInt64) -> (String, String, Payment) {

@@ -103,7 +103,7 @@ struct AmountView: View {
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         } else {
-                            Text("\(numpadAmount.formattedAmountZero()) sats")
+                            Text("\(numpadAmount.formattedAmount(defaultValue: "0")) sats")
                                 .textStyle(BitcoinTitle1())
                             Text(address)
                                 .lineLimit(1)
