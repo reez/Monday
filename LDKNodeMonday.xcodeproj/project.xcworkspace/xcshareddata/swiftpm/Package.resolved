@@ -1,13 +1,13 @@
 {
-  "originHash" : "3c4f831e3e2d84e3d749572be35ef446cf04910008de67451a51af6ca58e22b3",
+  "originHash" : "205ed5286a50854d994301c2ba51d3a38173557dcfa21e1c3da1ccccb0730a15",
   "pins" : [
     {
       "identity" : "bitcoinui",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/reez/BitcoinUI.git",
       "state" : {
-        "branch" : "1.0.6",
-        "revision" : "2f4f1a49a869ebd19c08718ade319ffdf59e6da1"
+        "branch" : "main",
+        "revision" : "22ea27e2495aac9035c39a1b09165a802d90bdde"
       }
     },
     {
@@ -26,15 +26,6 @@
       "state" : {
         "revision" : "84e546727d66f1adc5439debad16270d0fdd04e7",
         "version" : "4.2.2"
-      }
-    },
-    {
-      "identity" : "ldk-node",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/lightningdevkit/ldk-node.git",
-      "state" : {
-        "revision" : "bd9bd683201c1597d8930ac4118fa950cedfd56c",
-        "version" : "0.3.0"
       }
     },
     {

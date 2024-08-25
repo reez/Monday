@@ -90,7 +90,7 @@ class AmountViewModel {
 
     func sendPaymentBolt12(invoice: Bolt12Invoice) async {
         do {
-            try await LightningNodeService.shared.send(bolt12Invoice: invoice)
+            let _ = try await LightningNodeService.shared.send(bolt12Invoice: invoice)
         } catch let error as NodeError {
             NotificationCenter.default.post(name: .ldkErrorReceived, object: error)
             let errorString = handleNodeError(error)
@@ -118,7 +118,7 @@ class AmountViewModel {
     }
 
     func handleLightningPayment(address: String, numpadAmount: String) async {
-        if address.starts(with: "lno") {
+        if address.lowercased().starts(with: "lno") {
             await sendPaymentBolt12(invoice: address)
         } else if address.bolt11amount() == "0" {
             if let amountSats = UInt64(numpadAmount) {

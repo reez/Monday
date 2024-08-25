@@ -155,6 +155,12 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .GossipUpdateTimeout(let message):
         return .init(title: "GossipUpdateTimeout", detail: message)
 
+    case .UriParameterParsingFailed(let message):
+        return .init(title: "UriParameterParsingFailed", detail: message)
+
+    case .InvalidUri(let message):
+        return .init(title: "InvalidUri", detail: message)
+
     }
 
 }

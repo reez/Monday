@@ -10,44 +10,47 @@ import Foundation
 extension String {
 
     func bolt11amount() -> String? {
-        let regex = try! NSRegularExpression(pattern: "ln.*?(\\d+)([munp]?)", options: [])
+        let regex = try! NSRegularExpression(
+            pattern: "ln(?:bc|tb|tbs)(?<amount>\\d+)(?<multiplier>[munp]?)",
+            options: [.caseInsensitive]
+        )
+
         if let match = regex.firstMatch(
             in: self,
             options: [],
             range: NSRange(location: 0, length: self.utf16.count)
         ) {
-            let amountRange = match.range(at: 1)
-            let multiplierRange = match.range(at: 2)
 
-            if let amountSwiftRange = Range(amountRange, in: self),
-                let multiplierSwiftRange = Range(multiplierRange, in: self)
-            {
-
-                let amountString = self[amountSwiftRange]
-                let multiplierString = self[multiplierSwiftRange]
-                let numberFormatter = NumberFormatter()
-
-                if let amount = numberFormatter.number(from: String(amountString))?.doubleValue {
-                    var conversion = amount
-
-                    switch multiplierString {
-                    case "m":
-                        conversion *= 0.001
-                    case "u":
-                        conversion *= 0.000001
-                    case "n":
-                        conversion *= 0.000000001
-                    case "p":
-                        conversion *= 0.000000000001
-                    default:
-                        break
-                    }
-
-                    let convertedAmount = conversion * 100_000_000
-                    let formattedAmount = String(format: "%.0f", convertedAmount)
-                    return formattedAmount
-                }
+            guard let amountRange = Range(match.range(withName: "amount"), in: self),
+                let multiplierRange = Range(match.range(withName: "multiplier"), in: self)
+            else {
+                return nil
             }
+
+            let amountString = String(self[amountRange])
+            let multiplierString = String(self[multiplierRange])
+
+            guard let amount = Int(amountString) else {
+                return nil
+            }
+
+            var conversion = Double(amount)
+            switch multiplierString.lowercased() {
+            case "m":
+                conversion *= 0.001
+            case "u":
+                conversion *= 0.000001
+            case "n":
+                conversion *= 0.000000001
+            case "p":
+                conversion *= 0.000000000001
+            default:
+                break
+            }
+
+            let convertedAmount = conversion * 100_000_000
+            let formattedAmount = String(format: "%.0f", convertedAmount)
+            return formattedAmount
         }
 
         return nil
@@ -158,14 +161,51 @@ extension String {
         return params
     }
 
+    func processBIP21(_ input: String, spendableBalance: UInt64) -> (String, String, Payment) {
+        guard let url = URL(string: input),
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        else {
+            return ("", "0", .isNone)
+        }
+
+        let bitcoinAddress = url.path
+        var amount = "0"
+        var bolt12Offer: String?
+        var bolt11Invoice: String?
+
+        for item in components.queryItems ?? [] {
+            switch item.name.lowercased() {
+            case "amount":
+                if let value = item.value, let btcAmount = Double(value) {
+                    amount = String(format: "%.0f", btcAmount * 100_000_000)
+                }
+            case "lightning":
+                bolt11Invoice = item.value
+            case "lno":
+                bolt12Offer = item.value
+            default:
+                break
+            }
+        }
+
+        if let offer = bolt12Offer {
+            return processLightningAddress(offer)
+        }
+        if let invoice = bolt11Invoice {
+            return processLightningAddress(invoice)
+        }
+        return (bitcoinAddress, amount, .isBitcoin)
+    }
+
     func extractPaymentInfo(spendableBalance: UInt64) -> (
         address: String, amount: String, payment: Payment
     ) {
-        let queryParams = self.queryParameters()
-
-        if let lightningAddress = queryParams["lightning"], !lightningAddress.isEmpty {
-            return processLightningAddress(lightningAddress)
-        } else if self.isLightningAddress && !self.starts(with: "lnurl") {
+        if self.lowercased().starts(with: "bitcoin:") && self.contains("?") {
+            return processBIP21(self, spendableBalance: spendableBalance)
+        } else if self.lowercased().starts(with: "lightning:") {
+            let invoice = String(self.dropFirst(10))  // Remove "lightning:" prefix
+            return processLightningAddress(invoice)
+        } else if self.lowercased().starts(with: "lnbc") || self.lowercased().starts(with: "lntb") {
             return processLightningAddress(self)
         } else if self.isBitcoinAddress {
             return processBitcoinAddress(spendableBalance)
@@ -191,7 +231,7 @@ extension String {
     private func processLightningAddress(_ address: String) -> (String, String, Payment) {
         let sanitizedAddress = address.replacingOccurrences(of: "lightning:", with: "")
 
-        if sanitizedAddress.starts(with: "lno") {
+        if sanitizedAddress.lowercased().starts(with: "lno") {
             return (sanitizedAddress, "0", .isLightning)
         } else {
             let amount = sanitizedAddress.bolt11amount() ?? "0"
@@ -202,6 +242,9 @@ extension String {
     private func extractBitcoinAddress() -> String {
         if self.lowercased().hasPrefix("bitcoin:") {
             let address = self.replacingOccurrences(of: "bitcoin:", with: "")
+            if let addressEnd = address.range(of: "?")?.lowerBound {
+                return String(address[..<addressEnd]).uppercased()
+            }
             return address.uppercased()
         }
         return self.uppercased()

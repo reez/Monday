@@ -15,6 +15,7 @@ A lightning node on your iPhone with the ability to send & receive on-chain & li
 ## Swift Packages
 
 - LDK Node via [ldk-node](https://github.com/lightningdevkit/ldk-node)
+  *Note: Sometimes, a [local build of LDK Node](https://github.com/lightningdevkit/ldk-node/blob/main/scripts/uniffi_bindgen_generate_swift.sh) is used instead of the remote Swift package.*
 
 - Bitcoin UI Kit via [BitcoinUI](https://github.com/reez/BitcoinUI)
 
