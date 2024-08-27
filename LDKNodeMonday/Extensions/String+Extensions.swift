@@ -107,15 +107,6 @@ extension String {
         return words.map { $0.capitalized }.joined(separator: " ")
     }
 
-    private var isLightningAddress: Bool {
-        let lowercasedSelf = self.lowercased()
-        let queryParams = self.queryParameters()
-        if let lightningParam = queryParams["lightning"], !lightningParam.isEmpty {
-            return true
-        }
-        return lowercasedSelf.starts(with: "ln") || lowercasedSelf.hasPrefix("lightning:")
-    }
-
     private var isBitcoinAddress: Bool {
         return lowercased().hasPrefix("bitcoin:") || isValidBitcoinAddress
     }
