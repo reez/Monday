@@ -23,7 +23,6 @@ class BIP21ViewModel: ObservableObject {
                 message: message,
                 expirySec: expirySecs
             )
-            let unifiedLowercase = unified.lowercaseScheme()
 
             DispatchQueue.main.async {
                 self.unified = unifiedLowercase

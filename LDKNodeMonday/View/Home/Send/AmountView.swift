@@ -184,7 +184,7 @@ extension AmountView {
             let scanString = scanResult.string
             let (_, extractedAmount, extractedPayment) =
                 scanString.extractPaymentInfo(spendableBalance: spendableBalance)
-            address = scanString.lowercaseScheme()
+            address = scanString
             numpadAmount = extractedAmount
             payment = extractedPayment
 
