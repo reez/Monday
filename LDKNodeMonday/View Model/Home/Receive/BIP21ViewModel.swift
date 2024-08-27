@@ -23,8 +23,10 @@ class BIP21ViewModel: ObservableObject {
                 message: message,
                 expirySec: expirySecs
             )
+            let unifiedLowercase = unified.lowercaseScheme()
+
             DispatchQueue.main.async {
-                self.unified = unified
+                self.unified = unifiedLowercase
             }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)

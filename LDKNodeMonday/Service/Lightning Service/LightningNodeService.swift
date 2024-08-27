@@ -21,12 +21,12 @@ class LightningNodeService {
         keyService: KeyClient = .live
     ) {
 
-        let storedNetworkString = try! keyService.getNetwork() ?? Network.testnet.description
+        let storedNetworkString = try! keyService.getNetwork() ?? Network.signet.description
         let storedEsploraURL =
             try! keyService.getEsploraURL()
-            ?? Constants.Config.EsploraServerURLNetwork.Testnet.mempoolspace
+            ?? Constants.Config.EsploraServerURLNetwork.Signet.mutiny
 
-        self.network = Network(stringValue: storedNetworkString) ?? .testnet
+        self.network = Network(stringValue: storedNetworkString) ?? .signet
         self.keyService = keyService
 
         var config = defaultConfig()
@@ -167,70 +167,10 @@ class LightningNodeService {
         )
     }
 
-    func sendToAddress(address: Address, amountMsat: UInt64) async throws -> Txid {
-        let txId = try ldkNode.onchainPayment().sendToAddress(
-            address: address,
-            amountMsat: amountMsat
-        )
-        return txId
-    }
-
-    func send(bolt11Invoice: Bolt11Invoice) async throws -> PaymentHash {
-        let paymentHash = try ldkNode.bolt11Payment().send(invoice: bolt11Invoice)
-        return paymentHash
-    }
-
-    func send(bolt12Invoice: Bolt12Invoice) async throws -> PaymentId {
-        let payerNote = "BOLT 12 payer note"
-        let paymentId = try ldkNode.bolt12Payment().send(offer: bolt12Invoice, payerNote: payerNote)
-        return paymentId
-    }
-
     // Parses a URI string, attempts to pay a BOLT12 offer, BOLT11 invoice, then falls back to the on-chain address if the offer and invoice fail.
     func send(uriStr: String) async throws -> QrPaymentResult {
         let qrPaymentResult = try ldkNode.unifiedQrPayment().send(uriStr: uriStr)
         return qrPaymentResult
-    }
-
-    func sendUsingAmount(bolt11Invoice: Bolt11Invoice, amountMsat: UInt64) async throws
-        -> PaymentHash
-    {
-        let paymentHash = try ldkNode.bolt11Payment().sendUsingAmount(
-            invoice: bolt11Invoice,
-            amountMsat: amountMsat
-        )
-        return paymentHash
-    }
-
-    func sendUsingAmount(bolt12Invoice: Bolt12Invoice, amountMsat: UInt64) async throws
-        -> PaymentId
-    {
-        let payerNote = "BOLT 12 payer note"
-        let paymentId = try ldkNode.bolt12Payment().sendUsingAmount(
-            offer: bolt12Invoice,
-            payerNote: payerNote,
-            amountMsat: amountMsat
-        )
-        return paymentId
-    }
-
-    func receive(amountMsat: UInt64, description: String, expirySecs: UInt32) async throws
-        -> Bolt11Invoice
-    {
-        let invoice = try ldkNode.bolt11Payment().receive(
-            amountMsat: amountMsat,
-            description: description,
-            expirySecs: expirySecs
-        )
-        return invoice
-    }
-
-    func receive(amountMsat: UInt64, description: String) async throws -> Bolt12Invoice {
-        let offer = try ldkNode.bolt12Payment().receive(
-            amountMsat: amountMsat,
-            description: description
-        )
-        return offer
     }
 
     // Generates a BIP21 URI string with an on the address and BOLT11 invoice.
@@ -241,21 +181,6 @@ class LightningNodeService {
             expirySec: expirySec
         )
         return bip21UriString
-    }
-
-    func receiveVariableAmount(description: String, expirySecs: UInt32) async throws
-        -> Bolt11Invoice
-    {
-        let invoice = try ldkNode.bolt11Payment().receiveVariableAmount(
-            description: description,
-            expirySecs: expirySecs
-        )
-        return invoice
-    }
-
-    func receiveVariableAmount(description: String) async throws -> Bolt12Invoice {
-        let offer = try ldkNode.bolt12Payment().receiveVariableAmount(description: description)
-        return offer
     }
 
     func receiveViaJitChannel(
