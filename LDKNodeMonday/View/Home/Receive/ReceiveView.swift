@@ -14,7 +14,16 @@ struct ReceiveView: View {
 
         VStack {
 
-            CustomSegmentedPicker(options: ReceiveOption.allCases, selectedOption: $selectedOption)
+            Picker("Options", selection: $selectedOption) {
+                ForEach(ReceiveOption.allCases, id: \.self) { option in
+                    HStack(spacing: 5) {
+                        Image(systemName: option.systemImageName)
+                        Text(option.rawValue)
+                    }
+                    .tag(option)
+                }
+            }
+            .pickerStyle(.menu)
 
             Spacer()
 
@@ -30,39 +39,9 @@ struct ReceiveView: View {
         .padding(.vertical, 40.0)
 
     }
-}
 
-struct CustomSegmentedPicker: View {
-    let options: [ReceiveOption]
-    @Binding var selectedOption: ReceiveOption
-
-    var body: some View {
-        HStack {
-            ForEach(options, id: \.self) { option in
-                Button(action: {
-                    self.selectedOption = option
-                }) {
-                    VStack {
-                        Image(systemName: option.systemImageName)
-                        Text(option.rawValue)
-                    }
-                    .padding()
-                    .font(.body)
-                    .foregroundColor(
-                        self.selectedOption == option ? Color.primary : Color.secondary
-                    )
-
-                }
-            }
-        }
-
-    }
 }
 
 #Preview {
     ReceiveView()
-}
-
-#Preview {
-    CustomSegmentedPicker(options: ReceiveOption.allCases, selectedOption: .constant(.bip21))
 }

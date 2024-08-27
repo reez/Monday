@@ -14,7 +14,7 @@ struct BitcoinView: View {
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
-    @State private var isAddressSheetPresented = false
+    @State private var isReceiveSheetPresented = false
     @State private var isSendSheetPresented = false
     @State private var isPaymentsPresented = false
     @State private var showToast = false
@@ -183,7 +183,7 @@ struct BitcoinView: View {
                         .padding(.horizontal)
 
                         Button {
-                            isAddressSheetPresented = true
+                            isReceiveSheetPresented = true
                         } label: {
                             HStack {
                                 Image(systemName: "arrow.down")
@@ -293,7 +293,7 @@ struct BitcoinView: View {
                         .font(.caption2)
                 }
                 .sheet(
-                    isPresented: $isAddressSheetPresented,
+                    isPresented: $isReceiveSheetPresented,
                     onDismiss: {
                         Task {
                             await viewModel.getTotalOnchainBalanceSats()

@@ -25,7 +25,6 @@
 		AE060C382C051B59006724F1 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE060C372C051B59006724F1 /* LDKNode */; };
 		AE0BD4AC2B598C3F00B9901E /* UInt32+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0BD4AB2B598C3F00B9901E /* UInt32+Extensions.swift */; };
 		AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */; };
-		AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E8DB29A402E30058C9C9 /* AddressView.swift */; };
 		AE17E8DE29A402E40058C9C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE17E8DD29A402E40058C9C9 /* Assets.xcassets */; };
 		AE17E8E129A402E40058C9C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */; };
 		AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */; };
@@ -39,7 +38,6 @@
 		AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84B2A24F96F002623E8 /* Constants.swift */; };
 		AE49E8522A253618002623E8 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8512A253618002623E8 /* StartViewModel.swift */; };
 		AE49E8542A253647002623E8 /* BitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8532A253647002623E8 /* BitcoinViewModel.swift */; };
-		AE49E8562A253674002623E8 /* AddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8552A253674002623E8 /* AddressViewModel.swift */; };
 		AE49E8582A2536B4002623E8 /* ChannelsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8572A2536B4002623E8 /* ChannelsListViewModel.swift */; };
 		AE49E85A2A2536D4002623E8 /* ChannelAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8592A2536D4002623E8 /* ChannelAddViewModel.swift */; };
 		AE49E85C2A2536FB002623E8 /* ChannelDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E85B2A2536FB002623E8 /* ChannelDetailViewModel.swift */; };
@@ -108,7 +106,6 @@
 		AE0BD4AB2B598C3F00B9901E /* UInt32+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt32+Extensions.swift"; sourceTree = "<group>"; };
 		AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LDKNodeMonday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKNodeMondayApp.swift; sourceTree = "<group>"; };
-		AE17E8DB29A402E30058C9C9 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
 		AE17E8DD29A402E40058C9C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeService.swift; sourceTree = "<group>"; };
@@ -121,7 +118,6 @@
 		AE49E84B2A24F96F002623E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		AE49E8512A253618002623E8 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
 		AE49E8532A253647002623E8 /* BitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinViewModel.swift; sourceTree = "<group>"; };
-		AE49E8552A253674002623E8 /* AddressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressViewModel.swift; sourceTree = "<group>"; };
 		AE49E8572A2536B4002623E8 /* ChannelsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListViewModel.swift; sourceTree = "<group>"; };
 		AE49E8592A2536D4002623E8 /* ChannelAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelAddViewModel.swift; sourceTree = "<group>"; };
 		AE49E85B2A2536FB002623E8 /* ChannelDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelDetailViewModel.swift; sourceTree = "<group>"; };
@@ -246,6 +242,14 @@
 			path = LightningNodesService;
 			sourceTree = "<group>";
 		};
+		AE43F27A2C7E529C00406326 /* Send */ = {
+			isa = PBXGroup;
+			children = (
+				AE551D482B8ECEB00034B61E /* AmountViewModel.swift */,
+			);
+			path = Send;
+			sourceTree = "<group>";
+		};
 		AE49E86D2A253A9A002623E8 /* Channel */ = {
 			isa = PBXGroup;
 			children = (
@@ -271,7 +275,6 @@
 			children = (
 				AE80C2012C4AB38D006E7193 /* BIP21ViewModel.swift */,
 				AE028A292B96328600B336E7 /* JITInvoiceViewModel.swift */,
-				AE49E8552A253674002623E8 /* AddressViewModel.swift */,
 			);
 			path = Receive;
 			sourceTree = "<group>";
@@ -305,8 +308,8 @@
 				AE00550F2B479F1100100797 /* OnboardingViewModel.swift */,
 				AE49E8512A253618002623E8 /* StartViewModel.swift */,
 				AE49E8532A253647002623E8 /* BitcoinViewModel.swift */,
-				AE551D482B8ECEB00034B61E /* AmountViewModel.swift */,
 				AE551D452B8ECE180034B61E /* Payments */,
+				AE43F27A2C7E529C00406326 /* Send */,
 				AE49E8722A253AD5002623E8 /* Receive */,
 			);
 			path = Home;
@@ -363,7 +366,6 @@
 				AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */,
 				AE80C1FF2C4AB360006E7193 /* BIP21View.swift */,
 				AEA057EC2B912FEA00DB1096 /* JITInvoiceView.swift */,
-				AE17E8DB29A402E30058C9C9 /* AddressView.swift */,
 			);
 			path = Receive;
 			sourceTree = "<group>";
@@ -604,7 +606,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE49E8562A253674002623E8 /* AddressViewModel.swift in Sources */,
 				AE7096352B5C205F0038BE56 /* PriceServiceError.swift in Sources */,
 				AE186B8E2A1540B700338463 /* StartView.swift in Sources */,
 				AEDF47F32B3FBAB900145D64 /* Notification+Extensions.swift in Sources */,
@@ -634,7 +635,6 @@
 				AEDF76022B5C6863002DDEE1 /* Optional+Extensions.swift in Sources */,
 				AE7096382B5C208A0038BE56 /* Price.swift in Sources */,
 				AE49E86C2A253A32002623E8 /* NodeIDViewModel.swift in Sources */,
-				AE17E8DC29A402E30058C9C9 /* AddressView.swift in Sources */,
 				AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */,
 				AE028A242B96316B00B336E7 /* ReceiveOption.swift in Sources */,
 				AEDF76062B5C68A0002DDEE1 /* ChannelDetailsFormatted.swift in Sources */,
