@@ -19,7 +19,6 @@ struct BIP21View: View {
     @State private var bolt12ShowCheckmark = false
     @State private var unifiedIsCopied = false
     @State private var unifiedShowCheckmark = false
-
     @State private var showingReceiveViewErrorAlert = false
     @State private var isKeyboardVisible = false
 

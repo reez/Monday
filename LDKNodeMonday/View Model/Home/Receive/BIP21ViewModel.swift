@@ -25,7 +25,7 @@ class BIP21ViewModel: ObservableObject {
             )
 
             DispatchQueue.main.async {
-                self.unified = unifiedLowercase
+                self.unified = unified
             }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
