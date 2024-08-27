@@ -176,7 +176,7 @@ struct BIP21View: View {
                     HStack(alignment: .center) {
 
                         VStack(alignment: .leading, spacing: 5.0) {
-                            Text("Bolt 11")
+                            Text("BOLT 11")
                                 .bold()
                             if let components = parseUnifiedQR(viewModel.unified) {
                                 Text(components.bolt11)
@@ -225,7 +225,7 @@ struct BIP21View: View {
                     HStack(alignment: .center) {
 
                         VStack(alignment: .leading, spacing: 5.0) {
-                            Text("Bolt 12")
+                            Text("BOLT12")
                                 .bold()
                             if let components = parseUnifiedQR(viewModel.unified) {
                                 Text(components.bolt12)

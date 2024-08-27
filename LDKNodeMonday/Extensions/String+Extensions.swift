@@ -156,10 +156,10 @@ extension String {
         }
 
         if let offer = bolt12Offer {
-            return processLightningAddress(offer)
+            return processLightningAddress(offer, amount: amount)
         }
         if let invoice = bolt11Invoice {
-            return processLightningAddress(invoice)
+            return processLightningAddress(invoice, amount: amount)
         }
         return (bitcoinAddress, amount, .isBitcoin)
     }
@@ -171,9 +171,9 @@ extension String {
             return processBIP21(self, spendableBalance: spendableBalance)
         } else if self.lowercased().starts(with: "lightning:") {
             let invoice = String(self.dropFirst(10))  // Remove "lightning:" prefix
-            return processLightningAddress(invoice)
+            return processLightningAddress(invoice, amount: "0")
         } else if self.lowercased().starts(with: "lnbc") || self.lowercased().starts(with: "lntb") {
-            return processLightningAddress(self)
+            return processLightningAddress(self, amount: "0")
         } else if self.isBitcoinAddress {
             return processBitcoinAddress(spendableBalance)
         } else if self.starts(with: "lnurl") {
@@ -195,14 +195,17 @@ extension String {
         }
     }
 
-    private func processLightningAddress(_ address: String) -> (String, String, Payment) {
+    private func processLightningAddress(_ address: String, amount: String) -> (
+        String, String, Payment
+    ) {
         let sanitizedAddress = address.replacingOccurrences(of: "lightning:", with: "")
 
         if sanitizedAddress.lowercased().starts(with: "lno") {
-            return (sanitizedAddress, "0", .isLightning)
-        } else {
-            let amount = sanitizedAddress.bolt11amount() ?? "0"
+            // Use the amount passed from the BIP21 parsing logic
             return (sanitizedAddress, amount, .isLightning)
+        } else {
+            let bolt11Amount = sanitizedAddress.bolt11amount() ?? amount
+            return (sanitizedAddress, bolt11Amount, .isLightning)
         }
     }
 

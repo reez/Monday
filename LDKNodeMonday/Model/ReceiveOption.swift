@@ -10,7 +10,7 @@ import Foundation
 enum ReceiveOption: String, CaseIterable, Identifiable {
     var id: Self { self }
 
-    case bolt11JIT = "Bolt11 JIT"
+    case bolt11JIT = "BOLT11 JIT"
     case bip21 = "BIP21"
 }
 

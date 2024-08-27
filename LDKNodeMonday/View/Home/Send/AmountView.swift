@@ -94,7 +94,7 @@ struct AmountView: View {
                         // Need to figure out how to decode or add amount
                         if address.starts(with: "lno") {
                             // TODO: grab amount
-                            Text("Bolt 12 Offer")
+                            Text("BOLT12 Offer")
                                 .textStyle(BitcoinTitle1())
                             Text(address)
                                 .lineLimit(1)
