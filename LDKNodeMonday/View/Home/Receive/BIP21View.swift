@@ -17,6 +17,8 @@ struct BIP21View: View {
     @State private var bolt11ShowCheckmark = false
     @State private var bolt12IsCopied = false
     @State private var bolt12ShowCheckmark = false
+    @State private var unifiedIsCopied = false
+    @State private var unifiedShowCheckmark = false
 
     @State private var showingReceiveViewErrorAlert = false
     @State private var isKeyboardVisible = false
@@ -78,6 +80,50 @@ struct BIP21View: View {
                 QRCodeView(qrCodeType: .bip21(viewModel.unified))
 
                 VStack(spacing: 5.0) {
+
+                    HStack(alignment: .center) {
+
+                        VStack(alignment: .leading, spacing: 5.0) {
+                            Text("Unified")
+                                .bold()
+                            Text(viewModel.unified)
+                                .truncationMode(.middle)
+                                .lineLimit(1)
+                                .foregroundColor(.secondary)
+                                .redacted(
+                                    reason: viewModel.unified.isEmpty ? .placeholder : []
+                                )
+                        }
+                        .font(.caption2)
+
+                        Spacer()
+
+                        Button {
+                            UIPasteboard.general.string = viewModel.unified
+                            unifiedIsCopied = true
+                            unifiedShowCheckmark = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                unifiedIsCopied = false
+                                unifiedShowCheckmark = false
+                            }
+                        } label: {
+                            HStack {
+                                withAnimation {
+                                    Image(
+                                        systemName: unifiedShowCheckmark
+                                            ? "checkmark" : "doc.on.doc"
+                                    )
+                                    .font(.title3)
+                                    .minimumScaleFactor(0.5)
+                                }
+                            }
+                            .bold()
+                            .foregroundColor(viewModel.networkColor)
+                        }
+                        .font(.caption2)
+
+                    }
+                    .padding(.horizontal)
 
                     HStack(alignment: .center) {
 

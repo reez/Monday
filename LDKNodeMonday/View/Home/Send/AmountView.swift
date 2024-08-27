@@ -132,28 +132,7 @@ struct AmountView: View {
 
                     Button {
                         Task {
-                            switch payment {
-                            case .isLightning:
-                                await viewModel.handleLightningPayment(
-                                    address: address,
-                                    numpadAmount: numpadAmount
-                                )
-                            case .isBitcoin:
-                                await viewModel.handleBitcoinPayment(
-                                    address: address,
-                                    numpadAmount: numpadAmount
-                                )
-                            case .isLightningURL:
-                                viewModel.amountConfirmationViewError = .init(
-                                    title: "LNURL Error",
-                                    detail: "LNURL not supported yet."
-                                )
-                            case .isNone:
-                                viewModel.amountConfirmationViewError = .init(
-                                    title: "Unexpected Error",
-                                    detail: "Not any payment type."
-                                )
-                            }
+                            try await viewModel.send(uriStr: address)
                         }
                         if viewModel.amountConfirmationViewError == nil {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
@@ -203,9 +182,9 @@ extension AmountView {
         switch result {
         case .success(let scanResult):
             let scanString = scanResult.string
-            let (extractedAddress, extractedAmount, extractedPayment) =
+            let (_, extractedAmount, extractedPayment) =
                 scanString.extractPaymentInfo(spendableBalance: spendableBalance)
-            address = extractedAddress
+            address = scanString.lowercaseScheme()
             numpadAmount = extractedAmount
             payment = extractedPayment
 

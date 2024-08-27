@@ -226,4 +226,12 @@ extension String {
         return self.uppercased()
     }
 
+    func lowercaseScheme() -> String {
+        guard let colonIndex = self.firstIndex(of: ":") else {
+            return self
+        }
+        let scheme = self[..<colonIndex].lowercased()
+        return scheme + self[colonIndex...]
+    }
+
 }
