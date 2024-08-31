@@ -42,10 +42,6 @@ class BIP21ViewModel: ObservableObject {
         }
     }
 
-    func clearInvoice() {
-        self.unified = ""
-    }
-
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         DispatchQueue.main.async {
