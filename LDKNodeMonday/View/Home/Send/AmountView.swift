@@ -13,13 +13,14 @@ struct AmountView: View {
     @Bindable var viewModel: AmountViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
-    @State private var address: String = ""
+    @State var address: String = ""
     @State var numpadAmount = "0"
     @State var parseError: MondayError?
     @State var payment: Payment = .isNone
     @State private var showingAmountViewErrorAlert = false
     let pasteboard = UIPasteboard.general
     var spendableBalance: UInt64
+    @Binding var navigationPath: NavigationPath
 
     var body: some View {
 
@@ -79,13 +80,6 @@ struct AmountView: View {
                     .padding(.top, 40.0)
                     .font(.largeTitle)
                     .foregroundColor(Color(UIColor.label))
-                    .sheet(isPresented: $isShowingScanner) {
-                        CodeScannerView(
-                            codeTypes: [.qr],
-                            simulatedData: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2",
-                            completion: handleScan
-                        )
-                    }
 
                     Spacer()
 
@@ -136,7 +130,7 @@ struct AmountView: View {
                         }
                         if viewModel.amountConfirmationViewError == nil {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                                self.presentationMode.wrappedValue.dismiss()
+                                navigationPath.removeLast(navigationPath.count)
                             }
                         }
                     } label: {
@@ -174,28 +168,6 @@ struct AmountView: View {
 
     }
 
-}
-
-extension AmountView {
-    func handleScan(result: Result<ScanResult, ScanError>) {
-        isShowingScanner = false
-        switch result {
-        case .success(let scanResult):
-            let scanString = scanResult.string
-            let (_, extractedAmount, extractedPayment) =
-                scanString.extractPaymentInfo(spendableBalance: spendableBalance)
-            address = scanString
-            numpadAmount = extractedAmount
-            payment = extractedPayment
-
-            if extractedPayment == .isNone {
-                self.parseError = .init(title: "Scan Error", detail: "Unsupported scan format")
-            }
-
-        case .failure(let scanError):
-            self.parseError = .init(title: "Scan Error", detail: scanError.localizedDescription)
-        }
-    }
 }
 
 extension AmountView {
@@ -237,5 +209,9 @@ struct NumpadButton: View {
 }
 
 #Preview {
-    AmountView(viewModel: .init(), spendableBalance: UInt64(21000))
+    AmountView(
+        viewModel: .init(),
+        spendableBalance: UInt64(21000),
+        navigationPath: .constant(.init())
+    )
 }

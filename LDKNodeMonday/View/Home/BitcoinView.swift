@@ -15,19 +15,20 @@ struct BitcoinView: View {
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
     @State private var isReceiveSheetPresented = false
-    @State private var isSendSheetPresented = false
     @State private var isPaymentsPresented = false
     @State private var showToast = false
     @State private var showingNodeIDView = false
     @StateObject var viewModel: BitcoinViewModel
     @StateObject private var eventService = EventService()
+    @State private var sendNavigationPath = NavigationPath()
 
     var body: some View {
 
-        NavigationView {
+        NavigationStack(path: $sendNavigationPath) {
 
             ZStack {
                 Color(uiColor: UIColor.systemBackground)
+                    .ignoresSafeArea(.all)
 
                 VStack {
 
@@ -175,16 +176,15 @@ struct BitcoinView: View {
                         Spacer()
 
                         Button(action: {
-                            isSendSheetPresented = true
+                            sendNavigationPath.append(NavigationDestination.address)
                         }) {
                             Image(systemName: "qrcode.viewfinder")
                                 .font(.title)
                                 .foregroundColor(.primary)
-
                         }
 
                     }
-                    .padding()
+                    .padding([.horizontal, .bottom])
 
                 }
                 .padding()
@@ -292,21 +292,6 @@ struct BitcoinView: View {
                         .presentationDetents([.large])
                 }
                 .sheet(
-                    isPresented: $isSendSheetPresented,
-                    onDismiss: {
-                        Task {
-                            await viewModel.getTotalOnchainBalanceSats()
-                            await viewModel.getTotalLightningBalanceSats()
-                            await viewModel.getPrices()
-                            await viewModel.getSpendableOnchainBalanceSats()
-                            await viewModel.getStatus()
-                        }
-                    }
-                ) {
-                    AmountView(viewModel: .init(), spendableBalance: viewModel.spendableBalance)
-                        .presentationDetents([.large])
-                }
-                .sheet(
                     isPresented: $isPaymentsPresented,
                     onDismiss: {
                         Task {
@@ -323,11 +308,44 @@ struct BitcoinView: View {
                 }
 
             }
+            .navigationDestination(for: NavigationDestination.self) { destination in
+                switch destination {
+                case .address:
+                    AddressView(
+                        navigationPath: $sendNavigationPath,
+                        spendableBalance: viewModel.spendableBalance
+                    )
+                case .amount(let address, let amount, let payment):
+                    AmountView(
+                        viewModel: .init(),
+                        address: address,
+                        numpadAmount: amount,
+                        payment: payment,
+                        spendableBalance: viewModel.spendableBalance,
+                        navigationPath: $sendNavigationPath
+                    )
+                    .onDisappear {
+                        Task {
+                            await viewModel.getTotalOnchainBalanceSats()
+                            await viewModel.getTotalLightningBalanceSats()
+                            await viewModel.getPrices()
+                            await viewModel.getSpendableOnchainBalanceSats()
+                            await viewModel.getStatus()
+                        }
+                    }
+
+                }
+            }
 
         }
 
     }
 
+}
+
+enum NavigationDestination: Hashable {
+    case address
+    case amount(address: String, amount: String, payment: Payment)
 }
 
 #if DEBUG
