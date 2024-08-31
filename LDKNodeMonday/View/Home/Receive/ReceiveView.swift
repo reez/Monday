@@ -88,6 +88,46 @@ struct AmountEntryView: View {
     }
 }
 
+struct InvoiceRowView: View {
+    let title: String
+    let value: String
+    let isCopied: Bool
+    let showCheckmark: Bool
+    let networkColor: Color
+    let onCopy: () -> Void
+
+    var body: some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 5.0) {
+                Text(title)
+                    .bold()
+                Text(value)
+                    .truncationMode(.middle)
+                    .lineLimit(1)
+                    .foregroundColor(.secondary)
+                    .redacted(reason: value.isEmpty ? .placeholder : [])
+            }
+            .font(.caption2)
+
+            Spacer()
+
+            Button(action: onCopy) {
+                HStack {
+                    withAnimation {
+                        Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
+                            .font(.title3)
+                            .minimumScaleFactor(0.5)
+                    }
+                }
+                .bold()
+                .foregroundColor(networkColor)
+            }
+            .font(.caption2)
+        }
+        .padding(.horizontal)
+    }
+}
+
 #Preview {
     ReceiveView()
 }

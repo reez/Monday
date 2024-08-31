@@ -15,126 +15,90 @@ struct JITInvoiceView: View {
     @State private var showCheckmark = false
     @State private var showingReceiveViewErrorAlert = false
     @State private var isKeyboardVisible = false
+    @State private var showingAmountEntryView = false
+    @State private var isLoadingQR = true
 
     var body: some View {
 
         VStack {
 
-            if viewModel.invoice == "" {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.secondary.opacity(0.2))
+                    .aspectRatio(1, contentMode: .fit)
+                    .overlay(
+                        ProgressView()
+                    )
+                    .opacity(isLoadingQR ? 1 : 0)
 
-                VStack(alignment: .leading) {
+                if !isLoadingQR {
+                    QRCodeView(qrCodeType: .lightning(viewModel.invoice))
+                        .opacity(1)
+                        .transition(.opacity)
+                        .animation(.easeInOut, value: isLoadingQR)
+                }
+            }
+            .onAppear {
+                Task {
+                    isLoadingQR = true
+                    let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
+                    await viewModel.receivePaymentViaJitChannel(
+                        amountMsat: amountMsat,
+                        description: "Monday Wallet",
+                        expirySecs: UInt32(3600),
+                        maxLspFeeLimitMsat: nil
+                    )
+                    isLoadingQR = false
+                }
 
-                    Text("Sats")
+            }
+
+        }
+
+        Spacer()
+
+        VStack {
+
+            if viewModel.invoice != "" {
+
+                VStack {
+                    Text("\(viewModel.amountMsat.formattedAmount()) sats")
                         .bold()
-                        .padding(.horizontal)
+                        .font(.title)
 
-                    ZStack {
-                        TextField(
-                            "0",
-                            text: $viewModel.amountMsat
-                        )
-                        .keyboardType(.numberPad)
-                        .submitLabel(.done)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
-
-                        if !viewModel.amountMsat.isEmpty {
-                            HStack {
-                                Spacer()
-                                Button {
-                                    self.viewModel.amountMsat = ""
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.secondary)
-                                }
-                                .padding(.trailing, 8)
-                            }
-                        }
+                    Button("Update Amount") {
+                        showingAmountEntryView = true
                     }
-                    .padding(.horizontal)
-
+                    .tint(viewModel.networkColor)
+                    .font(.caption)
+                    .sheet(isPresented: $showingAmountEntryView) {
+                        AmountEntryView(amount: $viewModel.amountMsat)
+                    }
                 }
                 .padding()
 
-                Button {
-                    Task {
-                        let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
-                        await viewModel.receivePaymentViaJitChannel(
-                            amountMsat: amountMsat,
-                            description: "Monday Wallet",
-                            expirySecs: UInt32(3600),
-                            maxLspFeeLimitMsat: nil
-                        )
-                    }
-                } label: {
-                    Text("Create JIT Invoice")
+                InvoiceRowView(
+                    title: "JIT Invoice",
+                    value: viewModel.invoice,
+                    isCopied: isCopied,
+                    showCheckmark: showCheckmark,
+                    networkColor: viewModel.networkColor
+                ) {
+                    copyToClipboard(
+                        text: viewModel.invoice,
+                        isCopied: $isCopied,
+                        showCheckmark: $showCheckmark
+                    )
                 }
 
-            }
-
-            else {
-
-                QRCodeView(qrCodeType: .lightning(viewModel.invoice))
-
-                VStack {
-
-                    HStack(alignment: .center) {
-
-                        VStack(alignment: .leading, spacing: 5.0) {
-                            HStack {
-                                Text("Lightning Network")
-                                    .font(.caption)
-                                    .bold()
-                            }
-                            Text(viewModel.invoice)
-                                .font(.caption)
-                                .truncationMode(.middle)
-                                .lineLimit(1)
-                                .foregroundColor(.secondary)
-                                .redacted(
-                                    reason: viewModel.invoice.isEmpty ? .placeholder : []
-                                )
-                        }
-
-                        Spacer()
-
-                        Button {
-                            UIPasteboard.general.string = viewModel.invoice
-                            isCopied = true
-                            showCheckmark = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                isCopied = false
-                                showCheckmark = false
-                            }
-                        } label: {
-                            HStack {
-                                withAnimation {
-                                    Image(
-                                        systemName: showCheckmark
-                                            ? "checkmark" : "doc.on.doc"
-                                    )
-                                    .font(.title2)
-                                    .minimumScaleFactor(0.5)
-                                }
-                            }
-                            .bold()
-                            .foregroundColor(viewModel.networkColor)
-                        }
-
-                    }
-                    .padding()
-
-                    Button("Clear Invoice") {
-                        viewModel.clearInvoice()
-                    }
-                    .buttonBorderShape(.capsule)
-                    .buttonStyle(.bordered)
-                    .tint(viewModel.networkColor)
-                    .padding()
-
+                Button("Clear Invoice") {
+                    viewModel.clearInvoice()
                 }
+                .font(.caption)
+                .tint(viewModel.networkColor)
+                .padding()
 
             }
-
         }
         .padding()
         .onAppear {
@@ -169,6 +133,20 @@ struct JITInvoiceView: View {
             )
         }
 
+    }
+
+    private func copyToClipboard(
+        text: String,
+        isCopied: Binding<Bool>,
+        showCheckmark: Binding<Bool>
+    ) {
+        UIPasteboard.general.string = text
+        isCopied.wrappedValue = true
+        showCheckmark.wrappedValue = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            isCopied.wrappedValue = false
+            showCheckmark.wrappedValue = false
+        }
     }
 
 }
