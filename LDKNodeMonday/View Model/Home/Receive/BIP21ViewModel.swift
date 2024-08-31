@@ -14,7 +14,7 @@ class BIP21ViewModel: ObservableObject {
     @Published var unified: String = ""
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
-    @Published var amountSat: String = ""
+    @Published var amountSat: String = "0"
 
     func receivePayment(amountSat: UInt64, message: String, expirySecs: UInt32) async {
         do {

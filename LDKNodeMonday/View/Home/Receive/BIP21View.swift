@@ -20,262 +20,117 @@ struct BIP21View: View {
     @State private var unifiedIsCopied = false
     @State private var unifiedShowCheckmark = false
     @State private var showingReceiveViewErrorAlert = false
-    @State private var isKeyboardVisible = false
+    @State private var showingAmountEntryView = false
+    @State private var isLoadingQR = true
 
     var body: some View {
 
         VStack {
 
-            if viewModel.unified == "" {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.secondary.opacity(0.2))
+                    .aspectRatio(1, contentMode: .fit)
+                    .overlay(
+                        ProgressView()
+                    )
+                    .opacity(isLoadingQR ? 1 : 0)
 
-                VStack(alignment: .leading) {
-
-                    Text("Sats")
-                        .bold()
-                        .padding(.horizontal)
-
-                    ZStack {
-                        TextField(
-                            "0",
-                            text: $viewModel.amountSat
-                        )
-                        .keyboardType(.numberPad)
-                        .submitLabel(.done)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32))
-
-                        if !viewModel.amountSat.isEmpty {
-                            HStack {
-                                Spacer()
-                                Button {
-                                    self.viewModel.amountSat = ""
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.secondary)
-                                }
-                                .padding(.trailing, 8)
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-
+                if !isLoadingQR {
+                    QRCodeView(qrCodeType: .bip21(viewModel.unified))
+                        .opacity(1)
+                        .transition(.opacity)
+                        .animation(.easeInOut, value: isLoadingQR)
                 }
-                .padding()
-
-                Button {
-                    Task {
-                        let amountSat = (UInt64(viewModel.amountSat) ?? 0)
-                        await viewModel.receivePayment(
-                            amountSat: amountSat,
-                            message: "Monday Wallet",
-                            expirySecs: UInt32(3600)
-                        )
-                    }
-                } label: {
-                    Text("Create Unified QR")
+            }
+            .onAppear {
+                Task {
+                    await generateUnifiedQR()
                 }
+            }
 
-            } else {
+            Spacer()
 
-                QRCodeView(qrCodeType: .bip21(viewModel.unified))
+            VStack(spacing: 5.0) {
 
-                VStack(spacing: 5.0) {
+                if let components = parseUnifiedQR(viewModel.unified) {
 
-                    HStack(alignment: .center) {
-
-                        VStack(alignment: .leading, spacing: 5.0) {
-                            Text("Unified")
-                                .bold()
-                            Text(viewModel.unified)
-                                .truncationMode(.middle)
-                                .lineLimit(1)
-                                .foregroundColor(.secondary)
-                                .redacted(
-                                    reason: viewModel.unified.isEmpty ? .placeholder : []
-                                )
-                        }
-                        .font(.caption2)
-
-                        Spacer()
-
-                        Button {
-                            UIPasteboard.general.string = viewModel.unified
-                            unifiedIsCopied = true
-                            unifiedShowCheckmark = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                unifiedIsCopied = false
-                                unifiedShowCheckmark = false
-                            }
-                        } label: {
-                            HStack {
-                                withAnimation {
-                                    Image(
-                                        systemName: unifiedShowCheckmark
-                                            ? "checkmark" : "doc.on.doc"
-                                    )
-                                    .font(.title3)
-                                    .minimumScaleFactor(0.5)
-                                }
-                            }
+                    VStack {
+                        Text("\(viewModel.amountSat.formattedAmount()) sats")
                             .bold()
-                            .foregroundColor(viewModel.networkColor)
-                        }
-                        .font(.caption2)
+                            .font(.title)
 
+                        Button("Update Amount") {
+                            showingAmountEntryView = true
+                        }
+                        .tint(viewModel.networkColor)
+                        .font(.caption)
+                        .sheet(isPresented: $showingAmountEntryView) {
+                            AmountEntryView(amount: $viewModel.amountSat)
+                        }
                     }
-                    .padding(.horizontal)
+                    .padding()
 
-                    HStack(alignment: .center) {
-
-                        VStack(alignment: .leading, spacing: 5.0) {
-                            Text("On Chain")
-                                .bold()
-                            if let components = parseUnifiedQR(viewModel.unified) {
-                                Text(components.onchain)
-                                    .truncationMode(.middle)
-                                    .lineLimit(1)
-                                    .foregroundColor(.secondary)
-                                    .redacted(
-                                        reason: viewModel.unified.isEmpty ? .placeholder : []
-                                    )
-                            }
-                        }
-                        .font(.caption2)
-
-                        Spacer()
-
-                        if let components = parseUnifiedQR(viewModel.unified) {
-                            Button {
-                                UIPasteboard.general.string = components.onchain
-                                onchainIsCopied = true
-                                onchainShowCheckmark = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    onchainIsCopied = false
-                                    onchainShowCheckmark = false
-                                }
-                            } label: {
-                                HStack {
-                                    withAnimation {
-                                        Image(
-                                            systemName: onchainShowCheckmark
-                                                ? "checkmark" : "doc.on.doc"
-                                        )
-                                        .font(.title3)
-                                        .minimumScaleFactor(0.5)
-                                    }
-                                }
-                                .bold()
-                                .foregroundColor(viewModel.networkColor)
-                            }
-                            .font(.caption2)
-
-                        }
-
+                    InvoiceRowView(
+                        title: "Unified",
+                        value: viewModel.unified,
+                        isCopied: unifiedIsCopied,
+                        showCheckmark: unifiedShowCheckmark,
+                        networkColor: viewModel.networkColor
+                    ) {
+                        copyToClipboard(
+                            text: viewModel.unified,
+                            isCopied: $unifiedIsCopied,
+                            showCheckmark: $unifiedShowCheckmark
+                        )
                     }
-                    .padding(.horizontal)
 
-                    HStack(alignment: .center) {
-
-                        VStack(alignment: .leading, spacing: 5.0) {
-                            Text("BOLT 11")
-                                .bold()
-                            if let components = parseUnifiedQR(viewModel.unified) {
-                                Text(components.bolt11)
-                                    .truncationMode(.middle)
-                                    .lineLimit(1)
-                                    .foregroundColor(.secondary)
-                                    .redacted(
-                                        reason: viewModel.unified.isEmpty ? .placeholder : []
-                                    )
-                            }
-                        }
-                        .font(.caption2)
-
-                        Spacer()
-
-                        if let components = parseUnifiedQR(viewModel.unified) {
-                            Button {
-                                UIPasteboard.general.string = components.bolt11
-                                bolt11IsCopied = true
-                                bolt11ShowCheckmark = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    bolt11IsCopied = false
-                                    bolt11ShowCheckmark = false
-                                }
-                            } label: {
-                                HStack {
-                                    withAnimation {
-                                        Image(
-                                            systemName: bolt11ShowCheckmark
-                                                ? "checkmark" : "doc.on.doc"
-                                        )
-                                        .font(.title3)
-                                        .minimumScaleFactor(0.5)
-                                    }
-                                }
-                                .bold()
-                                .foregroundColor(viewModel.networkColor)
-                            }
-                            .font(.caption2)
-
-                        }
-
+                    InvoiceRowView(
+                        title: "On Chain",
+                        value: components.onchain,
+                        isCopied: onchainIsCopied,
+                        showCheckmark: onchainShowCheckmark,
+                        networkColor: viewModel.networkColor
+                    ) {
+                        copyToClipboard(
+                            text: components.onchain,
+                            isCopied: $onchainIsCopied,
+                            showCheckmark: $onchainShowCheckmark
+                        )
                     }
-                    .padding(.horizontal)
 
-                    HStack(alignment: .center) {
-
-                        VStack(alignment: .leading, spacing: 5.0) {
-                            Text("BOLT12")
-                                .bold()
-                            if let components = parseUnifiedQR(viewModel.unified) {
-                                Text(components.bolt12)
-                                    .truncationMode(.middle)
-                                    .lineLimit(1)
-                                    .foregroundColor(.secondary)
-                                    .redacted(
-                                        reason: viewModel.unified.isEmpty ? .placeholder : []
-                                    )
-                            }
-                        }
-                        .font(.caption2)
-
-                        Spacer()
-
-                        if let components = parseUnifiedQR(viewModel.unified) {
-                            Button {
-                                UIPasteboard.general.string = components.bolt12
-                                bolt12IsCopied = true
-                                bolt12ShowCheckmark = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    bolt12IsCopied = false
-                                    bolt12ShowCheckmark = false
-                                }
-                            } label: {
-                                HStack {
-                                    withAnimation {
-                                        Image(
-                                            systemName: bolt12ShowCheckmark
-                                                ? "checkmark" : "doc.on.doc"
-                                        )
-                                        .font(.title3)
-                                        .minimumScaleFactor(0.5)
-                                    }
-                                }
-                                .bold()
-                                .foregroundColor(viewModel.networkColor)
-                            }
-                            .font(.caption2)
-
-                        }
-
+                    InvoiceRowView(
+                        title: "BOLT 11",
+                        value: components.bolt11,
+                        isCopied: bolt11IsCopied,
+                        showCheckmark: bolt11ShowCheckmark,
+                        networkColor: viewModel.networkColor
+                    ) {
+                        copyToClipboard(
+                            text: components.bolt11,
+                            isCopied: $bolt11IsCopied,
+                            showCheckmark: $bolt11ShowCheckmark
+                        )
                     }
-                    .padding(.horizontal)
+
+                    InvoiceRowView(
+                        title: "BOLT 12",
+                        value: components.bolt12,
+                        isCopied: bolt12IsCopied,
+                        showCheckmark: bolt12ShowCheckmark,
+                        networkColor: viewModel.networkColor
+                    ) {
+                        copyToClipboard(
+                            text: components.bolt12,
+                            isCopied: $bolt12IsCopied,
+                            showCheckmark: $bolt12ShowCheckmark
+                        )
+                    }
 
                     Button("Clear Invoice") {
                         viewModel.clearInvoice()
                     }
-                    .buttonBorderShape(.capsule)
-                    .buttonStyle(.bordered)
+                    .font(.caption)
                     .tint(viewModel.networkColor)
                     .padding()
 
@@ -287,24 +142,15 @@ struct BIP21View: View {
         .onAppear {
             viewModel.getColor()
         }
+        .onChange(of: viewModel.amountSat) { oldValue, newValue in
+            Task {
+                await generateUnifiedQR()
+            }
+        }
         .onReceive(viewModel.$receiveViewError) { errorMessage in
             if errorMessage != nil {
                 showingReceiveViewErrorAlert = true
             }
-        }
-        .onReceive(
-            NotificationCenter.default.publisher(
-                for: UIResponder.keyboardWillShowNotification
-            )
-        ) { _ in
-            isKeyboardVisible = true
-        }
-        .onReceive(
-            NotificationCenter.default.publisher(
-                for: UIResponder.keyboardWillHideNotification
-            )
-        ) { _ in
-            isKeyboardVisible = false
         }
         .alert(isPresented: $showingReceiveViewErrorAlert) {
             Alert(
@@ -316,6 +162,31 @@ struct BIP21View: View {
             )
         }
 
+    }
+
+    private func generateUnifiedQR() async {
+        isLoadingQR = true
+        let amountSat = (UInt64(viewModel.amountSat) ?? 0)
+        await viewModel.receivePayment(
+            amountSat: amountSat,
+            message: "Monday Wallet",
+            expirySecs: UInt32(3600)
+        )
+        isLoadingQR = false
+    }
+
+    private func copyToClipboard(
+        text: String,
+        isCopied: Binding<Bool>,
+        showCheckmark: Binding<Bool>
+    ) {
+        UIPasteboard.general.string = text
+        isCopied.wrappedValue = true
+        showCheckmark.wrappedValue = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            isCopied.wrappedValue = false
+            showCheckmark.wrappedValue = false
+        }
     }
 
 }
