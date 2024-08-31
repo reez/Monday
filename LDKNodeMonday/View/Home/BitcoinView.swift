@@ -165,7 +165,7 @@ struct BitcoinView: View {
                     HStack {
 
                         Button(action: {
-                            isSendSheetPresented = true
+                            isReceiveSheetPresented = true
                         }) {
                             Image(systemName: "qrcode")
                                 .font(.title)
@@ -175,7 +175,7 @@ struct BitcoinView: View {
                         Spacer()
 
                         Button(action: {
-                            isReceiveSheetPresented = true
+                            isSendSheetPresented = true
                         }) {
                             Image(systemName: "qrcode.viewfinder")
                                 .font(.title)

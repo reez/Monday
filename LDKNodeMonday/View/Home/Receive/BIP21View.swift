@@ -71,7 +71,7 @@ struct BIP21View: View {
                         )
                     }
                 } label: {
-                    Text("Create Amount Invoice")
+                    Text("Create Unified QR")
                 }
 
             } else {
