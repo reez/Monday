@@ -127,13 +127,6 @@ struct BIP21View: View {
                         )
                     }
 
-                    Button("Clear Invoice") {
-                        viewModel.clearInvoice()
-                    }
-                    .font(.caption)
-                    .tint(viewModel.networkColor)
-                    .padding()
-
                 }
 
             }

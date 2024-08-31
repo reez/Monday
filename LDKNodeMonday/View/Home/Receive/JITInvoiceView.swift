@@ -91,13 +91,6 @@ struct JITInvoiceView: View {
                     )
                 }
 
-                Button("Clear Invoice") {
-                    viewModel.clearInvoice()
-                }
-                .font(.caption)
-                .tint(viewModel.networkColor)
-                .padding()
-
             }
         }
         .padding()

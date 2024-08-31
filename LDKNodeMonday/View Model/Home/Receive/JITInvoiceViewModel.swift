@@ -47,10 +47,6 @@ class JITInvoiceViewModel: ObservableObject {
         }
     }
 
-    func clearInvoice() {
-        self.invoice = ""
-    }
-
     func getColor() {
         let color = LightningNodeService.shared.networkColor
         DispatchQueue.main.async {
