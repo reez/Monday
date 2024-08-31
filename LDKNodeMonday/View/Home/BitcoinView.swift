@@ -164,40 +164,24 @@ struct BitcoinView: View {
 
                     HStack {
 
-                        Button {
+                        Button(action: {
                             isSendSheetPresented = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "arrow.up")
-                                    .minimumScaleFactor(0.5)
-                                Text("Send")
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.5)
-                            }
-                            .frame(width: 100, height: 25)
-                            .padding(.all, 8)
+                        }) {
+                            Image(systemName: "qrcode")
+                                .font(.title)
+                                .foregroundColor(.primary)
                         }
-                        .buttonBorderShape(.capsule)
-                        .buttonStyle(.borderedProminent)
-                        .tint(viewModel.networkColor)
-                        .padding(.horizontal)
 
-                        Button {
+                        Spacer()
+
+                        Button(action: {
                             isReceiveSheetPresented = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "arrow.down")
-                                Text("Receive")
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.5)
-                            }
-                            .frame(width: 100, height: 25)
-                            .padding(.all, 8)
+                        }) {
+                            Image(systemName: "qrcode.viewfinder")
+                                .font(.title)
+                                .foregroundColor(.primary)
+
                         }
-                        .buttonBorderShape(.capsule)
-                        .buttonStyle(.borderedProminent)
-                        .tint(viewModel.networkColor)
-                        .padding(.horizontal)
 
                     }
                     .padding()
@@ -210,7 +194,7 @@ struct BitcoinView: View {
                         Button(action: {
                             showingNodeIDView = true
                         }) {
-                            Image(systemName: "person.circle.fill")
+                            Image(systemName: "person.crop.circle.dashed.circle")
                                 .font(.title)
                                 .foregroundColor(.primary)
                         }
