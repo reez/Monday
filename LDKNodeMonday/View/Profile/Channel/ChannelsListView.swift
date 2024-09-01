@@ -94,14 +94,6 @@ struct ChannelsRefactorView: View {
     }
 }
 
-#if DEBUG
-    struct ChannelsRefactorView_Previews: PreviewProvider {
-        static var previews: some View {
-            ChannelsRefactorView(viewModel: .init(nodeInfoClient: .mock))
-            ChannelsRefactorView(viewModel: .init(nodeInfoClient: .mock))
-                .environment(\.sizeCategory, .accessibilityLarge)
-            ChannelsRefactorView(viewModel: .init(nodeInfoClient: .mock))
-                .environment(\.colorScheme, .dark)
-        }
-    }
-#endif
+#Preview {
+    ChannelsRefactorView(viewModel: .init(nodeInfoClient: .mock))
+}

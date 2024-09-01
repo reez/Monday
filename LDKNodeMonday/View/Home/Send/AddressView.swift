@@ -163,11 +163,4 @@ struct CustomScannerView: View {
             spendableBalance: UInt64(21)
         )
     }
-    #Preview {
-        AddressView(
-            navigationPath: .constant(NavigationPath()),
-            spendableBalance: UInt64(2121)
-        )
-        .environment(\.dynamicTypeSize, .accessibility5)
-    }
 #endif

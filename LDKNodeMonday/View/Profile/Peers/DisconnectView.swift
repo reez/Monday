@@ -79,24 +79,10 @@ struct DisconnectView: View {
 
 }
 
-struct DisconnectView_Previews: PreviewProvider {
-    static var previews: some View {
-        DisconnectView(
-            viewModel: .init(
-                nodeId: "03e39c737a691931dac0f9f9ee803f2ab08f7fd3bbb25ec08d9b8fdb8f51d3a8db"
-            )
+#Preview {
+    DisconnectView(
+        viewModel: .init(
+            nodeId: "03e39c737a691931dac0f9f9ee803f2ab08f7fd3bbb25ec08d9b8fdb8f51d3a8db"
         )
-        DisconnectView(
-            viewModel: .init(
-                nodeId: "03e39c737a691931dac0f9f9ee803f2ab08f7fd3bbb25ec08d9b8fdb8f51d3a8db"
-            )
-        )
-        .environment(\.sizeCategory, .accessibilityLarge)
-        DisconnectView(
-            viewModel: .init(
-                nodeId: "03e39c737a691931dac0f9f9ee803f2ab08f7fd3bbb25ec08d9b8fdb8f51d3a8db"
-            )
-        )
-        .environment(\.colorScheme, .dark)
-    }
+    )
 }

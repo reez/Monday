@@ -297,12 +297,6 @@ extension ChannelAddView {
 
 }
 
-struct ChannelView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChannelAddView(viewModel: .init())
-        ChannelAddView(viewModel: .init())
-            .environment(\.sizeCategory, .accessibilityLarge)
-        ChannelAddView(viewModel: .init())
-            .environment(\.colorScheme, .dark)
-    }
+#Preview {
+    ChannelAddView(viewModel: .init())
 }

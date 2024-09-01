@@ -207,12 +207,6 @@ struct NodeIDView: View {
     }
 }
 
-struct NodeIDView_Previews: PreviewProvider {
-    static var previews: some View {
-        NodeIDView(viewModel: .init())
-        NodeIDView(viewModel: .init())
-            .environment(\.sizeCategory, .accessibilityLarge)
-        NodeIDView(viewModel: .init())
-            .environment(\.colorScheme, .dark)
-    }
+#Preview {
+    NodeIDView(viewModel: .init())
 }

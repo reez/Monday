@@ -153,15 +153,4 @@ struct OnboardingView: View {
 
 #Preview {
     OnboardingView(viewModel: .init())
-        .environment(\.sizeCategory, .accessibilityLarge)
-}
-
-#Preview {
-    OnboardingView(viewModel: .init())
-        .environment(\.sizeCategory, .accessibilityLarge)
-}
-
-#Preview {
-    OnboardingView(viewModel: .init())
-        .environment(\.sizeCategory, .accessibilityLarge)
 }
