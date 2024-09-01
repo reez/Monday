@@ -141,13 +141,13 @@ struct CustomScannerView: View {
                     Spacer()
 
                     Button(action: pasteAction) {
-                        Text("Paste Address")
+                        Text("Paste Payment")
                             .padding()
-                            .foregroundColor(.primary)
-                            .background(Color.white.opacity(0.8))
+                            .foregroundColor(Color(uiColor: .label))
+                            .background(Color(uiColor: .systemBackground).opacity(0.5))
                             .clipShape(Capsule())
                     }
-                    .padding(.bottom, geometry.safeAreaInsets.bottom + 20)
+                    .padding(.bottom, geometry.safeAreaInsets.bottom + 40)
                 }
             }
         }
