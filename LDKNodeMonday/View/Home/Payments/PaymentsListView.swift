@@ -129,97 +129,33 @@ struct PaymentDetailView: View {
 
 }
 
-struct PaymentsListItemView_Previews: PreviewProvider {
-    static var previews: some View {
-
-        PaymentsListView(
-            payments: [
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .succeeded,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .pending,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .failed,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-            ]
-        )
-
-        PaymentsListView(
-            payments: [
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .succeeded,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .pending,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .failed,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-            ]
-        )
-        .environment(\.sizeCategory, .accessibilityLarge)
-
-        PaymentsListView(
-            payments: [
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .succeeded,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .pending,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .failed,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-            ]
-        )
-        .environment(\.colorScheme, .dark)
-
-    }
+#Preview {
+    PaymentsListView(
+        payments: [
+            .init(
+                id: .localizedName(of: .ascii),
+                kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
+                amountMsat: nil,
+                direction: .inbound,
+                status: .succeeded,
+                latestUpdateTimestamp: 1_718_841_600
+            ),
+            .init(
+                id: .localizedName(of: .ascii),
+                kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
+                amountMsat: nil,
+                direction: .inbound,
+                status: .pending,
+                latestUpdateTimestamp: 1_718_841_600
+            ),
+            .init(
+                id: .localizedName(of: .ascii),
+                kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
+                amountMsat: nil,
+                direction: .inbound,
+                status: .failed,
+                latestUpdateTimestamp: 1_718_841_600
+            ),
+        ]
+    )
 }

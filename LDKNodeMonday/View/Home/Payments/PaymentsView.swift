@@ -50,10 +50,6 @@ struct PaymentsView: View {
 
 }
 
-struct PaymentsListView_Previews: PreviewProvider {
-    static var previews: some View {
-        PaymentsView(viewModel: .init())
-        PaymentsView(viewModel: .init())
-            .environment(\.colorScheme, .dark)
-    }
+#Preview {
+    PaymentsView(viewModel: .init())
 }

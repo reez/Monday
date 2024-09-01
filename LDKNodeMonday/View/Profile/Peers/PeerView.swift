@@ -248,12 +248,6 @@ extension PeerView {
 
 }
 
-struct PeerView_Previews: PreviewProvider {
-    static var previews: some View {
-        PeerView(viewModel: .init())
-        PeerView(viewModel: .init())
-            .environment(\.sizeCategory, .accessibilityLarge)
-        PeerView(viewModel: .init())
-            .environment(\.colorScheme, .dark)
-    }
+#Preview {
+    PeerView(viewModel: .init())
 }

@@ -120,12 +120,6 @@ struct PeersListView: View {
 
 }
 
-struct PeersListView_Previews: PreviewProvider {
-    static var previews: some View {
-        PeersListView(viewModel: .init())
-        PeersListView(viewModel: .init())
-            .environment(\.sizeCategory, .accessibilityLarge)
-        PeersListView(viewModel: .init())
-            .environment(\.colorScheme, .dark)
-    }
+#Preview {
+    PeersListView(viewModel: .init())
 }

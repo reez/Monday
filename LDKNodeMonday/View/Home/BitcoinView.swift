@@ -348,14 +348,6 @@ enum NavigationDestination: Hashable {
     case amount(address: String, amount: String, payment: Payment)
 }
 
-#if DEBUG
-    struct BalanceView_Previews: PreviewProvider {
-        static var previews: some View {
-            BitcoinView(viewModel: .init(priceClient: .mock))
-            BitcoinView(viewModel: .init(priceClient: .mock))
-                .environment(\.sizeCategory, .accessibilityLarge)
-            BitcoinView(viewModel: .init(priceClient: .mock))
-                .environment(\.colorScheme, .dark)
-        }
-    }
-#endif
+#Preview {
+    BitcoinView(viewModel: .init(priceClient: .mock))
+}
