@@ -4,7 +4,7 @@
 
 An example iOS app using [LDK Node](https://github.com/lightningdevkit/ldk-node).
 
-<img src="Docs/main-screen.png" alt="Screenshot" width="236" height="511">
+<img src="Docs/home-screen.png" alt="Screenshot" width="236" height="511">
 
 ## Functionality
 
