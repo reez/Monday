@@ -348,6 +348,8 @@ enum NavigationDestination: Hashable {
     case amount(address: String, amount: String, payment: Payment)
 }
 
+#if DEBUG
 #Preview {
     BitcoinView(viewModel: .init(priceClient: .mock))
 }
+#endif

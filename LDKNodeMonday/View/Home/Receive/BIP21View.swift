@@ -224,6 +224,8 @@ func parseUnifiedQR(_ unifiedQR: String) -> UnifiedQRComponents? {
     return UnifiedQRComponents(onchain: onchain, bolt11: bolt11, bolt12: bolt12)
 }
 
+#if DEBUG
 #Preview {
     BIP21View(viewModel: .init())
 }
+#endif

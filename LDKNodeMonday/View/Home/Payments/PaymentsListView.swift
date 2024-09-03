@@ -129,6 +129,7 @@ struct PaymentDetailView: View {
 
 }
 
+#if DEBUG
 #Preview {
     PaymentsListView(
         payments: [
@@ -159,3 +160,4 @@ struct PaymentDetailView: View {
         ]
     )
 }
+#endif

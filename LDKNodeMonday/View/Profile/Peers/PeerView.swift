@@ -248,6 +248,8 @@ extension PeerView {
 
 }
 
+#if DEBUG
 #Preview {
     PeerView(viewModel: .init())
 }
+#endif

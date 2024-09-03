@@ -94,6 +94,8 @@ struct ChannelsRefactorView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ChannelsRefactorView(viewModel: .init(nodeInfoClient: .mock))
 }
+#endif

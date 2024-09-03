@@ -88,6 +88,8 @@ struct StartView: View {
 
 }
 
+#if DEBUG
 #Preview {
     StartView(viewModel: .init())
 }
+#endif

@@ -144,6 +144,8 @@ struct JITInvoiceView: View {
 
 }
 
+#if DEBUG
 #Preview {
     JITInvoiceView(viewModel: .init())
 }
+#endif
