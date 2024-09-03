@@ -208,6 +208,7 @@ struct NumpadButton: View {
     }
 }
 
+#if DEBUG
 #Preview {
     AmountView(
         viewModel: .init(),
@@ -215,3 +216,4 @@ struct NumpadButton: View {
         navigationPath: .constant(.init())
     )
 }
+#endif

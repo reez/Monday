@@ -120,6 +120,8 @@ struct PeersListView: View {
 
 }
 
+#if DEBUG
 #Preview {
     PeersListView(viewModel: .init())
 }
+#endif

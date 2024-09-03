@@ -79,6 +79,7 @@ struct DisconnectView: View {
 
 }
 
+#if DEBUG
 #Preview {
     DisconnectView(
         viewModel: .init(
@@ -86,3 +87,4 @@ struct DisconnectView: View {
         )
     )
 }
+#endif

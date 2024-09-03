@@ -207,6 +207,8 @@ struct NodeIDView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NodeIDView(viewModel: .init())
 }
+#endif

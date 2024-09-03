@@ -128,6 +128,8 @@ struct InvoiceRowView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ReceiveView()
 }
+#endif

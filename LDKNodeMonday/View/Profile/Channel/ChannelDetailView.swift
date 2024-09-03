@@ -126,6 +126,7 @@ struct ChannelDetailView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ChannelDetailView(
         viewModel: .init(
@@ -163,3 +164,4 @@ struct ChannelDetailView: View {
         refreshFlag: .constant(false)
     )
 }
+#endif
