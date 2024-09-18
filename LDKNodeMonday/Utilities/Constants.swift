@@ -31,8 +31,8 @@ struct Constants {
                 static let bdk = "http://signet.bitcoindevkit.net"
                 static let mutiny = "https://mutinynet.com/api"
                 static let allValues = [
-                    bdk,
                     mutiny,
+                    bdk,
                 ]
             }
             struct Testnet {
