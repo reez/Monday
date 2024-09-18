@@ -11,13 +11,19 @@ import SwiftUI
 struct LDKNodeMondayApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @AppStorage("isOnboarding") var isOnboarding: Bool = true
+    @State private var navigationPath = NavigationPath()
 
     var body: some Scene {
         WindowGroup {
-            if isOnboarding {
-                OnboardingView(viewModel: .init())
-            } else {
-                StartView(viewModel: .init())
+            NavigationStack(path: $navigationPath) {
+                if isOnboarding {
+                    OnboardingView(viewModel: .init())
+                } else {
+                    StartView(viewModel: .init())
+                }
+            }
+            .onChange(of: isOnboarding) { oldValue, newValue in
+                navigationPath = NavigationPath()
             }
         }
     }

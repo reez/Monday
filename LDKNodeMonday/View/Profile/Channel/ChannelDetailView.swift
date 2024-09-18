@@ -127,41 +127,48 @@ struct ChannelDetailView: View {
 }
 
 #if DEBUG
-#Preview {
-    ChannelDetailView(
-        viewModel: .init(
-            channel: ChannelDetails(
-                channelId: ChannelId(stringLiteral: "channelID"),
-                counterpartyNodeId: PublicKey(stringLiteral: "counterpartyNodeId"),
-                fundingTxo: nil,
-                channelValueSats: UInt64(1_000_000),
-                unspendablePunishmentReserve: nil,
-                userChannelId: UserChannelId(stringLiteral: "userChannelId"),
-                feerateSatPer1000Weight: UInt32(20000),
-                outboundCapacityMsat: UInt64(500000),
-                inboundCapacityMsat: UInt64(400000),
-                confirmationsRequired: nil,
-                confirmations: nil,
-                isOutbound: false,
-                isChannelReady: true,
-                isUsable: true,
-                isPublic: true,
-                cltvExpiryDelta: nil,
-                counterpartyUnspendablePunishmentReserve: UInt64(1000),
-                counterpartyOutboundHtlcMinimumMsat: nil,
-                counterpartyOutboundHtlcMaximumMsat: nil,
-                counterpartyForwardingInfoFeeBaseMsat: nil,
-                counterpartyForwardingInfoFeeProportionalMillionths: nil,
-                counterpartyForwardingInfoCltvExpiryDelta: nil,
-                nextOutboundHtlcLimitMsat: UInt64(1000),
-                nextOutboundHtlcMinimumMsat: UInt64(1000),
-                forceCloseSpendDelay: nil,
-                inboundHtlcMinimumMsat: UInt64(1000),
-                inboundHtlcMaximumMsat: nil,
-                config: .init()
-            )
-        ),
-        refreshFlag: .constant(false)
-    )
-}
+    #Preview {
+        ChannelDetailView(
+            viewModel: .init(
+                channel: ChannelDetails(
+                    channelId: ChannelId(stringLiteral: "channelID"),
+                    counterpartyNodeId: PublicKey(stringLiteral: "counterpartyNodeId"),
+                    fundingTxo: nil,
+                    channelValueSats: UInt64(1_000_000),
+                    unspendablePunishmentReserve: nil,
+                    userChannelId: UserChannelId(stringLiteral: "userChannelId"),
+                    feerateSatPer1000Weight: UInt32(20000),
+                    outboundCapacityMsat: UInt64(500000),
+                    inboundCapacityMsat: UInt64(400000),
+                    confirmationsRequired: nil,
+                    confirmations: nil,
+                    isOutbound: false,
+                    isChannelReady: true,
+                    isUsable: true,
+                    isPublic: true,
+                    cltvExpiryDelta: nil,
+                    counterpartyUnspendablePunishmentReserve: UInt64(1000),
+                    counterpartyOutboundHtlcMinimumMsat: nil,
+                    counterpartyOutboundHtlcMaximumMsat: nil,
+                    counterpartyForwardingInfoFeeBaseMsat: nil,
+                    counterpartyForwardingInfoFeeProportionalMillionths: nil,
+                    counterpartyForwardingInfoCltvExpiryDelta: nil,
+                    nextOutboundHtlcLimitMsat: UInt64(1000),
+                    nextOutboundHtlcMinimumMsat: UInt64(1000),
+                    forceCloseSpendDelay: nil,
+                    inboundHtlcMinimumMsat: UInt64(1000),
+                    inboundHtlcMaximumMsat: nil,
+                    config: .init(
+                        forwardingFeeProportionalMillionths: UInt32(21),
+                        forwardingFeeBaseMsat: UInt32(21),
+                        cltvExpiryDelta: UInt16(2),
+                        maxDustHtlcExposure: .feeRateMultiplier(multiplier: UInt64(21)),
+                        forceCloseAvoidanceMaxFeeSatoshis: UInt64(21),
+                        acceptUnderpayingHtlcs: false
+                    )
+                )
+            ),
+            refreshFlag: .constant(false)
+        )
+    }
 #endif

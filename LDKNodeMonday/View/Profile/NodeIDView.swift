@@ -10,6 +10,7 @@ import SwiftUI
 
 struct NodeIDView: View {
     @ObservedObject var viewModel: NodeIDViewModel
+    @Environment(\.dismiss) private var dismiss
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingNodeIDErrorAlert = false
@@ -136,7 +137,10 @@ struct NodeIDView: View {
                             "Are you sure you want to reset preferences (and delete the seed)?",
                             isPresented: $showingResetAppConfirmation
                         ) {
-                            Button("Yes", role: .destructive) { viewModel.onboarding() }
+                            Button("Yes", role: .destructive) {
+                                viewModel.onboarding()
+                                dismiss()
+                            }
                             Button("No", role: .cancel) {}
                         }
 
@@ -147,7 +151,10 @@ struct NodeIDView: View {
                             "Are you sure you want to delete the seed (and reset preferences)?",
                             isPresented: $showingDeleteSeedConfirmation
                         ) {
-                            Button("Yes", role: .destructive) { viewModel.delete() }
+                            Button("Yes", role: .destructive) {
+                                viewModel.delete()
+                                dismiss()
+                            }
                             Button("No", role: .cancel) {}
                         }
                     }
@@ -208,7 +215,7 @@ struct NodeIDView: View {
 }
 
 #if DEBUG
-#Preview {
-    NodeIDView(viewModel: .init())
-}
+    #Preview {
+        NodeIDView(viewModel: .init())
+    }
 #endif

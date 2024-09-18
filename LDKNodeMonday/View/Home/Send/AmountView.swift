@@ -209,11 +209,11 @@ struct NumpadButton: View {
 }
 
 #if DEBUG
-#Preview {
-    AmountView(
-        viewModel: .init(),
-        spendableBalance: UInt64(21000),
-        navigationPath: .constant(.init())
-    )
-}
+    #Preview {
+        AmountView(
+            viewModel: .init(),
+            spendableBalance: UInt64(21000),
+            navigationPath: .constant(.init())
+        )
+    }
 #endif

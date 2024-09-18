@@ -161,6 +161,9 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .InvalidUri(let message):
         return .init(title: "InvalidUri", detail: message)
 
+    case .InvalidQuantity(let message):
+        return .init(title: "InvalidQuantity", detail: message)
+
     }
 
 }

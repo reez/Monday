@@ -130,34 +130,34 @@ struct PaymentDetailView: View {
 }
 
 #if DEBUG
-#Preview {
-    PaymentsListView(
-        payments: [
-            .init(
-                id: .localizedName(of: .ascii),
-                kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                amountMsat: nil,
-                direction: .inbound,
-                status: .succeeded,
-                latestUpdateTimestamp: 1_718_841_600
-            ),
-            .init(
-                id: .localizedName(of: .ascii),
-                kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                amountMsat: nil,
-                direction: .inbound,
-                status: .pending,
-                latestUpdateTimestamp: 1_718_841_600
-            ),
-            .init(
-                id: .localizedName(of: .ascii),
-                kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                amountMsat: nil,
-                direction: .inbound,
-                status: .failed,
-                latestUpdateTimestamp: 1_718_841_600
-            ),
-        ]
-    )
-}
+    #Preview {
+        PaymentsListView(
+            payments: [
+                .init(
+                    id: .localizedName(of: .ascii),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .succeeded,
+                    latestUpdateTimestamp: 1_718_841_600
+                ),
+                .init(
+                    id: .localizedName(of: .ascii),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .pending,
+                    latestUpdateTimestamp: 1_718_841_600
+                ),
+                .init(
+                    id: .localizedName(of: .ascii),
+                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
+                    amountMsat: nil,
+                    direction: .inbound,
+                    status: .failed,
+                    latestUpdateTimestamp: 1_718_841_600
+                ),
+            ]
+        )
+    }
 #endif
