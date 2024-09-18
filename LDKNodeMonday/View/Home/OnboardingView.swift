@@ -152,7 +152,7 @@ struct OnboardingView: View {
 }
 
 #if DEBUG
-#Preview {
-    OnboardingView(viewModel: .init())
-}
+    #Preview {
+        OnboardingView(viewModel: .init())
+    }
 #endif

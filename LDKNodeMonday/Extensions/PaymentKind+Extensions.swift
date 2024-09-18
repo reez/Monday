@@ -18,9 +18,9 @@ extension PaymentKind {
             return preimage
         case .spontaneous(_, let preimage):
             return preimage
-        case .bolt12Offer(hash: _, let preimage, secret: _, offerId: _):
+        case .bolt12Offer(hash: _, let preimage, secret: _, offerId: _, payerNote: _, quantity: _):
             return preimage
-        case .bolt12Refund(hash: _, let preimage, secret: _):
+        case .bolt12Refund(hash: _, let preimage, secret: _, payerNote: _, quantity: _):
             return preimage
         }
     }

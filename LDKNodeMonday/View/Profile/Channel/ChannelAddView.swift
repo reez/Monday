@@ -298,7 +298,7 @@ extension ChannelAddView {
 }
 
 #if DEBUG
-#Preview {
-    ChannelAddView(viewModel: .init())
-}
+    #Preview {
+        ChannelAddView(viewModel: .init())
+    }
 #endif

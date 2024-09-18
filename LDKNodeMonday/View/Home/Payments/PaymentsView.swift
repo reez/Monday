@@ -51,7 +51,7 @@ struct PaymentsView: View {
 }
 
 #if DEBUG
-#Preview {
-    PaymentsView(viewModel: .init())
-}
+    #Preview {
+        PaymentsView(viewModel: .init())
+    }
 #endif
