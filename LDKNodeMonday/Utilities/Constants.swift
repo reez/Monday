@@ -32,7 +32,7 @@ struct Constants {
                 static let mutiny = "https://mutinynet.com/api"
                 static let allValues = [
                     mutiny,
-                    bdk
+                    bdk,
                 ]
             }
             struct Testnet {
