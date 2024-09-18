@@ -101,7 +101,7 @@ struct NodeIDView: View {
                         }
 
                         NavigationLink("Channels") {
-                            ChannelsRefactorView(viewModel: .init(nodeInfoClient: .live))
+                            ChannelsListView(viewModel: .init(nodeInfoClient: .live))
                         }
 
                     }

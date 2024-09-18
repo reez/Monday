@@ -8,7 +8,7 @@
 import BitcoinUI
 import SwiftUI
 
-struct ChannelsRefactorView: View {
+struct ChannelsListView: View {
     @State private var refreshFlag = false
     let viewModel: ChannelsListViewModel
 
@@ -96,6 +96,6 @@ struct ChannelsRefactorView: View {
 
 #if DEBUG
     #Preview {
-        ChannelsRefactorView(viewModel: .init(nodeInfoClient: .mock))
+        ChannelsListView(viewModel: .init(nodeInfoClient: .mock))
     }
 #endif
