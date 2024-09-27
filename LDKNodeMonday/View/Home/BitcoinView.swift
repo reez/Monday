@@ -20,7 +20,7 @@ struct BitcoinView: View {
     @State private var showingNodeIDView = false
     @StateObject var viewModel: BitcoinViewModel
     @StateObject private var eventService = EventService()
-    @State private var sendNavigationPath = NavigationPath()
+    @Binding var sendNavigationPath: NavigationPath
 
     var body: some View {
 
@@ -346,6 +346,6 @@ enum NavigationDestination: Hashable {
 
 #if DEBUG
     #Preview {
-        BitcoinView(viewModel: .init(priceClient: .mock))
+        BitcoinView(viewModel: .init(priceClient: .mock), sendNavigationPath: .constant(.init()))
     }
 #endif

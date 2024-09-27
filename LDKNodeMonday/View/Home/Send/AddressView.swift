@@ -119,8 +119,12 @@ struct CustomScannerView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
-                CodeScannerView(codeTypes: codeTypes, completion: completion)
-                    .edgesIgnoringSafeArea(.all)
+                CodeScannerView(
+                    codeTypes: codeTypes,
+                    shouldVibrateOnSuccess: true,
+                    completion: completion
+                )
+                .edgesIgnoringSafeArea(.all)
 
                 VStack {
                     HStack {

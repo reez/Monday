@@ -19,7 +19,7 @@ struct LDKNodeMondayApp: App {
                 if isOnboarding {
                     OnboardingView(viewModel: .init())
                 } else {
-                    StartView(viewModel: .init())
+                    StartView(viewModel: .init(), navigationPath: $navigationPath)
                 }
             }
             .onChange(of: isOnboarding) { oldValue, newValue in

@@ -13,6 +13,7 @@ struct StartView: View {
     @ObservedObject var viewModel: StartViewModel
     @State private var showingStartViewErrorAlert = false
     @State var startViewError: MondayError?
+    @Binding var navigationPath: NavigationPath
 
     var body: some View {
 
@@ -21,8 +22,11 @@ struct StartView: View {
                 .ignoresSafeArea()
 
             if viewModel.isStarted {
-                BitcoinView(viewModel: .init(priceClient: .live))
-                    .edgesIgnoringSafeArea(.all)
+                BitcoinView(
+                    viewModel: .init(priceClient: .live),
+                    sendNavigationPath: $navigationPath
+                )
+                .edgesIgnoringSafeArea(.all)
             } else {
                 VStack(spacing: 20) {
                     Image(systemName: "bolt.horizontal")
@@ -90,6 +94,6 @@ struct StartView: View {
 
 #if DEBUG
     #Preview {
-        StartView(viewModel: .init())
+        StartView(viewModel: .init(), navigationPath: .constant(.init()))
     }
 #endif

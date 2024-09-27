@@ -106,7 +106,9 @@ class OnboardingViewModel: ObservableObject {
             try KeyClient.live.saveNetwork(selectedNetwork.description)
             try KeyClient.live.saveEsploraURL(selectedURL)
             LightningNodeService.shared = LightningNodeService()
-            self.isOnboarding = false
+            DispatchQueue.main.async {
+                self.isOnboarding = false
+            }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
