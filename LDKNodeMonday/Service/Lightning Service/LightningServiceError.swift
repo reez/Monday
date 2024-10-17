@@ -62,9 +62,6 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .OnchainTxSigningFailed(let message):
         return .init(title: "OnchainTxSigningFailed", detail: message)
 
-    case .MessageSigningFailed(let message):
-        return .init(title: "MessageSigningFailed", detail: message)
-
     case .GossipUpdateFailed(let message):
         return .init(title: "GossipUpdateFailed", detail: message)
 
@@ -163,6 +160,9 @@ func handleNodeError(_ error: NodeError) -> MondayError {
 
     case .InvalidQuantity(let message):
         return .init(title: "InvalidQuantity", detail: message)
+
+    case .InvalidNodeAlias(let message):
+        return .init(title: "InvalidNodeAlias", detail: message)
 
     }
 

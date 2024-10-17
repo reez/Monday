@@ -19,7 +19,7 @@ extension Event: CustomStringConvertible {
 
         case .paymentFailed(_, let paymentHash, let paymentFailureReason):
             return
-                "Payment Failed \(paymentFailureReason.debugDescription) \(paymentHash.truncated(toLength: 10))"
+                "Payment Failed \(paymentFailureReason.debugDescription) \(String(describing: paymentHash?.truncated(toLength: 10)))"
 
         case .paymentReceived(_, _, let amountMsat):
             let formatted = amountMsat.formattedAmount()
