@@ -39,7 +39,7 @@ class LightningNodeService {
         config.logLevel = .trace
 
         let nodeBuilder = Builder.fromConfig(config: config)
-        nodeBuilder.setEsploraServer(esploraServerUrl: storedEsploraURL)
+        nodeBuilder.setChainSourceEsplora(serverUrl: storedEsploraURL, config: nil)
 
         switch self.network {
         case .bitcoin:
@@ -149,13 +149,12 @@ class LightningNodeService {
         channelConfig: ChannelConfig?,
         announceChannel: Bool = false
     ) async throws -> UserChannelId {
-        let userChannelId = try ldkNode.connectOpenChannel(
+        let userChannelId = try ldkNode.openChannel(
             nodeId: nodeId,
             address: address,
             channelAmountSats: channelAmountSats,
             pushToCounterpartyMsat: pushToCounterpartyMsat,
-            channelConfig: nil,
-            announceChannel: false
+            channelConfig: nil
         )
         return userChannelId
     }

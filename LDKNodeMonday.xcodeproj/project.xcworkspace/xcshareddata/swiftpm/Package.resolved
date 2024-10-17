@@ -1,5 +1,5 @@
 {
-  "originHash" : "205ed5286a50854d994301c2ba51d3a38173557dcfa21e1c3da1ccccb0730a15",
+  "originHash" : "2bc7bdb21f660c68ca67dbbd096acde2dcd9c397a0238dc96bd98b886f4df9fc",
   "pins" : [
     {
       "identity" : "bitcoinui",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "84e546727d66f1adc5439debad16270d0fdd04e7",
         "version" : "4.2.2"
+      }
+    },
+    {
+      "identity" : "ldk-node",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lightningdevkit/ldk-node.git",
+      "state" : {
+        "revision" : "db66cb90e5878833f367f46c4368259efde31720",
+        "version" : "0.4.0"
       }
     },
     {

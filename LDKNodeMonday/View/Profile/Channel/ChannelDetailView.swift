@@ -145,7 +145,7 @@ struct ChannelDetailView: View {
                     isOutbound: false,
                     isChannelReady: true,
                     isUsable: true,
-                    isPublic: true,
+                    isAnnounced: true,
                     cltvExpiryDelta: nil,
                     counterpartyUnspendablePunishmentReserve: UInt64(1000),
                     counterpartyOutboundHtlcMinimumMsat: nil,
