@@ -26,11 +26,13 @@ struct OnboardingView: View {
                 Spacer()
 
                 VStack {
-                    Image("LDKLogo")
+                    Image(systemName: "bolt.horizontal.fill")
                         .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(.accent)
                         .frame(width: 150, height: 150, alignment: .center)
                         .padding(40)
-                    Text("LDK Node Wallet")
+                    Text("Monday Wallet")
                         .textStyle(BitcoinTitle1())
                     Text("An example bitcoin wallet\npowered by LDK Node")
                         .textStyle(BitcoinBody3())
