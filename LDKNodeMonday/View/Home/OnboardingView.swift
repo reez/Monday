@@ -40,7 +40,7 @@ struct OnboardingView: View {
                 }
 
                 Spacer()
-                
+
                 NavigationStack {
                     HStack {
                         Text("Network")
@@ -56,7 +56,7 @@ struct OnboardingView: View {
                         .tint(.accent)
                         .accessibilityLabel("Select bitcoin network")
                     }
-                    HStack{
+                    HStack {
                         Text("Server")
                         Spacer()
                         Picker(
@@ -101,7 +101,7 @@ struct OnboardingView: View {
                 }
 
                 Spacer()
-                
+
                 Button("Create wallet") {
                     viewModel.saveSeed()
                     isFirstTime = false
@@ -117,15 +117,15 @@ struct OnboardingView: View {
             }
 
         }.padding(.bottom, 20)
-        .alert(isPresented: $showingOnboardingViewErrorAlert) {
-            Alert(
-                title: Text(viewModel.onboardingViewError?.title ?? "Unknown"),
-                message: Text(viewModel.onboardingViewError?.detail ?? ""),
-                dismissButton: .default(Text("OK")) {
-                    viewModel.onboardingViewError = nil
-                }
-            )
-        }
+            .alert(isPresented: $showingOnboardingViewErrorAlert) {
+                Alert(
+                    title: Text(viewModel.onboardingViewError?.title ?? "Unknown"),
+                    message: Text(viewModel.onboardingViewError?.detail ?? ""),
+                    dismissButton: .default(Text("OK")) {
+                        viewModel.onboardingViewError = nil
+                    }
+                )
+            }
 
     }
 }
