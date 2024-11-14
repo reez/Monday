@@ -25,6 +25,7 @@ struct ReceiveView: View {
                 }
             }
             .pickerStyle(.menu)
+            .tint(.primary)
 
             Spacer()
 
@@ -51,6 +52,9 @@ struct AmountEntryView: View {
 
     var body: some View {
         VStack(spacing: 20) {
+
+            Spacer()
+
             Text("\(numpadAmount.formattedAmount(defaultValue: "0")) sats")
                 .textStyle(BitcoinTitle1())
                 .padding()
@@ -67,13 +71,24 @@ struct AmountEntryView: View {
             }
             .frame(height: 300)
 
-            Button("Confirm") {
+            Spacer()
+
+            Button {
                 amount = numpadAmount
                 dismiss()
+            } label: {
+                HStack(spacing: 1) {
+                    Text("Confirm")
+                        .padding(.horizontal, 40)
+                        .padding(.vertical, 5)
+                }
+                .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                .bold()
             }
-            .padding()
             .buttonBorderShape(.capsule)
-            .buttonStyle(.bordered)
+            .buttonStyle(.borderedProminent)
+            .tint(.primary)
+
         }
         .padding()
     }
@@ -130,6 +145,8 @@ struct InvoiceRowView: View {
 
 #if DEBUG
     #Preview {
-        ReceiveView()
+        AmountEntryView(
+            amount: .constant("21")
+        )
     }
 #endif
