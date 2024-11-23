@@ -9,7 +9,7 @@ import BitcoinUI
 import SwiftUI
 
 struct ReceiveView: View {
-    @State private var selectedOption: ReceiveOption = .bip21
+    @State private var selectedOption: ReceiveOption = .bolt11JIT//.bip21 // TODO: go back to bip21
 
     var body: some View {
 
