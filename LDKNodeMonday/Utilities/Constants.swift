@@ -64,6 +64,11 @@ struct Constants {
             nodeId: "031b301307574bbe9b9ac7b79cbe1700e31e544513eae0b5d7497483083f99e581",
             token: ""
         )
+        static let lqwd = LightningServiceProvider(
+            address: "192.243.215.101:26010",
+            nodeId: "035e8a9034a8c68f219aacadae748c7a3cd719109309db39b09886e5ff17696b1b",
+            token: ""
+        )
     }
 
     enum BitcoinNetworkColor {
