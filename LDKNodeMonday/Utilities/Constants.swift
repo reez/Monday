@@ -32,8 +32,8 @@ struct Constants {
                 static let mutiny = "https://mutinynet.com/api"
                 static let lqwd = "https://mutinynet.ltbl.io/api"
                 static let allValues = [
-                    mutiny,
                     lqwd,
+                    mutiny,
                     bdk,
                 ]
             }
@@ -52,6 +52,7 @@ struct Constants {
         struct LiquiditySourceLsps2 {
             struct Signet {
                 static let mutiny = LSP.mutiny
+                static let lqwd = LSP.lqwd2
             }
         }
 
