@@ -30,8 +30,10 @@ struct Constants {
             struct Signet {
                 static let bdk = "http://signet.bitcoindevkit.net"
                 static let mutiny = "https://mutinynet.com/api"
+                static let lqwd = "https://mutinynet.ltbl.io/api"
                 static let allValues = [
                     mutiny,
+                    lqwd,
                     bdk,
                 ]
             }
