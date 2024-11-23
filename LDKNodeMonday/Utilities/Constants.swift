@@ -43,6 +43,7 @@ struct Constants {
         struct LiquiditySourceLsps2 {
             struct Signet {
                 static let mutiny = LSP.mutiny
+                static let lqwd = LSP.lqwd2
             }
         }
 

@@ -54,9 +54,9 @@ class LightningNodeService {
             self.networkColor = Constants.BitcoinNetworkColor.testnet.color
         case .signet:
             nodeBuilder.setLiquiditySourceLsps2(
-                address: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.address,
-                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId,
-                token: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.token
+                address: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.address,
+                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId,
+                token: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.token
             )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
         case .regtest:
