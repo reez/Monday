@@ -28,6 +28,7 @@ struct Constants {
                 static let allValues = [
                     EsploraServer.mutiny_signet,
                     EsploraServer.bdk_signet,
+                    EsploraServer.lqwd_signet
                 ]
             }
             struct Testnet {
@@ -117,6 +118,7 @@ struct EsploraServer: Hashable {
 
     static let mutiny_signet = EsploraServer(name: "Mutiny", url: "https://mutinynet.com/api")
     static let bdk_signet = EsploraServer(name: "BDK", url: "http://signet.bitcoindevkit.net")
+    static let lqwd_signet = EsploraServer(name: "LQWD", url: "https://mutinynet.ltbl.io/api")
 
     static let local_regtest = EsploraServer(name: "Local", url: "http://127.0.0.1:3002")
 
