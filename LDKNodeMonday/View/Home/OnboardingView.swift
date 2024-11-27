@@ -14,9 +14,6 @@ struct OnboardingView: View {
     @AppStorage("isFirstTime") var isFirstTime: Bool = true
     @ObservedObject var viewModel: OnboardingViewModel
     @State private var showingOnboardingViewErrorAlert = false
-    
-    let airdropOptions = ["Receiving Off", "Contacts Only", "Everyone for 10 minutes"]
-    @State private var selectedAirdropOption = "Receiving Off"
 
     var body: some View {
 
