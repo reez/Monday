@@ -14,6 +14,9 @@ struct OnboardingView: View {
     @AppStorage("isFirstTime") var isFirstTime: Bool = true
     @ObservedObject var viewModel: OnboardingViewModel
     @State private var showingOnboardingViewErrorAlert = false
+    
+    let airdropOptions = ["Receiving Off", "Contacts Only", "Everyone for 10 minutes"]
+    @State private var selectedAirdropOption = "Receiving Off"
 
     var body: some View {
 
@@ -33,15 +36,18 @@ struct OnboardingView: View {
                         .frame(width: 150, height: 150, alignment: .center)
                         .padding(40)
                     Text("Monday Wallet")
-                        .textStyle(BitcoinTitle1())
+                        .font(.largeTitle .weight(.semibold))
                     Text("An example bitcoin wallet\npowered by LDK Node")
-                        .textStyle(BitcoinBody3())
+                        .font(.body)
                         .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 Spacer()
 
                 NavigationStack {
+                    // Default picker style
+                    /*
                     HStack {
                         Text("Network")
                         Spacer()
@@ -80,8 +86,49 @@ struct OnboardingView: View {
                         .tint(.accent)
                         .accessibilityLabel("Select esplora server")
                     }
-                }.padding(.horizontal, 50)
+                     */
+                    // NavigationLink picker style
+                    Form {
+                        Section() {
+                            Picker(
+                                "Network",
+                                selection: $viewModel.selectedNetwork
+                            ) {
+                                Text("Signet").tag(Network.signet)
+                                Text("Testnet").tag(Network.testnet)
+                            }
+                            .pickerStyle(.navigationLink)
+                            .accessibilityLabel("Select bitcoin network")
+                            .scrollContentBackground(.hidden)
+                            Picker(
+                                "Esplora server",
+                                selection: $viewModel.selectedURL
+                            ) {
+                                ForEach(viewModel.availableURLs, id: \.self) { url in
+                                    Text(
+                                        url.replacingOccurrences(
+                                            of: "https://",
+                                            with: ""
+                                        ).replacingOccurrences(
+                                            of: "http://",
+                                            with: ""
+                                        )
+                                    )
+                                    .tag(url)
+                                }
+                            }
+                            .pickerStyle(.navigationLink)
+                            .accessibilityLabel("Select esplora server")
+                            .scrollContentBackground(.hidden)
+                        }
+                    }
+                    .tint(.accent)
+                    .frame(maxHeight: 150)
+                    .scrollContentBackground(.hidden)
+                }
+                .padding(.horizontal, 20)
 
+                // Textfield for importing wallet
                 TextField(
                     isFirstTime
                         ? "24 word seed phrase (optional)" : "24 word seed phrase (required)",
