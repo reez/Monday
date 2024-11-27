@@ -114,7 +114,7 @@ struct OnboardingView: View {
                 )
                 .padding()
 
-            }
+            }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
 
         }.padding(.bottom, 20)
             .alert(isPresented: $showingOnboardingViewErrorAlert) {
