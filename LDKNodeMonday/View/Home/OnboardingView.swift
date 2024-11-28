@@ -45,49 +45,23 @@ struct OnboardingView: View {
 
                 NavigationStack {
                     // Default picker style
-                    /*
-                    HStack {
-                        Text("Network")
-                        Spacer()
-                        Picker(
-                            "Network",
-                            selection: $viewModel.selectedNetwork
-                        ) {
-                            Text("Signet").tag(Network.signet)
-                            Text("Testnet").tag(Network.testnet)
-                        }
-                        .pickerStyle(.automatic)
-                        .tint(.accent)
-                        .accessibilityLabel("Select bitcoin network")
-                    }
-                    HStack {
-                        Text("Server")
-                        Spacer()
-                        Picker(
-                            "Esplora server",
-                            selection: $viewModel.selectedURL
-                        ) {
-                            ForEach(viewModel.availableURLs, id: \.self) { url in
-                                Text(
-                                    url.replacingOccurrences(
-                                        of: "https://",
-                                        with: ""
-                                    ).replacingOccurrences(
-                                        of: "http://",
-                                        with: ""
-                                    )
-                                )
-                                .tag(url)
-                            }
-                        }
-                        .pickerStyle(.automatic)
-                        .tint(.accent)
-                        .accessibilityLabel("Select esplora server")
-                    }
-                     */
                     // NavigationLink picker style
                     Form {
                         Section() {
+//                            NavigationLink(destination: EmptyView()) {
+//                                HStack {
+//                                    Text(viewModel.selectedNetwork.description)
+//                                    Spacer()
+//                                    Text(viewModel.selectedURL.description.replacingOccurrences(
+//                                        of: "https://",
+//                                        with: ""
+//                                    ).replacingOccurrences(
+//                                        of: "http://",
+//                                        with: ""
+//                                    ))
+//                                }
+//                            }
+                            
                             Picker(
                                 "Network",
                                 selection: $viewModel.selectedNetwork
@@ -118,10 +92,12 @@ struct OnboardingView: View {
                             .pickerStyle(.navigationLink)
                             .accessibilityLabel("Select esplora server")
                             .scrollContentBackground(.hidden)
+                        } header: {
+                            Text("Network settings")
                         }
                     }
                     .tint(.accent)
-                    .frame(maxHeight: 150)
+                    .frame(maxHeight: 200)
                     .scrollContentBackground(.hidden)
                 }
                 .padding(.horizontal, 20)
