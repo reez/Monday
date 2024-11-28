@@ -14,6 +14,7 @@ struct OnboardingView: View {
     @AppStorage("isFirstTime") var isFirstTime: Bool = true
     @ObservedObject var viewModel: OnboardingViewModel
     @State private var showingOnboardingViewErrorAlert = false
+    @State private var showingImportWalletSheet = false
 
     var body: some View {
 
@@ -125,26 +126,9 @@ struct OnboardingView: View {
                 }
                 .padding(.horizontal, 20)
 
-                // Textfield for importing wallet
-                TextField(
-                    isFirstTime
-                        ? "24 word seed phrase (optional)" : "24 word seed phrase (required)",
-                    text: $viewModel.seedPhrase
-                )
-                .textFieldStyle(.roundedBorder)
-                .submitLabel(.done)
-                .padding(.horizontal, 50)
-                .padding(.vertical, 10)
-                if viewModel.seedPhraseArray != [] {
-                    SeedPhraseView(
-                        words: viewModel.seedPhraseArray,
-                        preferredWordsPerRow: 2,
-                        usePaging: true,
-                        wordsPerPage: 6
-                    )
-                }
-
                 Spacer()
+                
+                // Buttons for creating and importing wallet
 
                 Button("Create wallet") {
                     viewModel.saveSeed()
@@ -156,7 +140,14 @@ struct OnboardingView: View {
                         isCapsule: true
                     )
                 )
-                .padding()
+
+                Button("Import wallet") {
+                    showingImportWalletSheet.toggle()
+                }
+                .buttonStyle(BitcoinPlain(tintColor: .accent))
+                .sheet(isPresented: $showingImportWalletSheet) {
+                    ImportWalletView()
+                }
 
             }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
 
