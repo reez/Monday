@@ -32,12 +32,12 @@ struct ImportWalletView: View {
                         TextField("24 word recovery phrase",
                                   text: $viewModel.seedPhrase
                     )
-                    .frame(width: 260, height: 40)
+                    .frame(width: 260, height: 48)
                     .tint(.accentColor)
                     .padding([.leading, .trailing], 20)
                     .submitLabel(.done)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 16)
+                        RoundedRectangle(cornerRadius: 24)
                             .stroke(Color.accentColor, lineWidth: 2)
                     )
                     }
