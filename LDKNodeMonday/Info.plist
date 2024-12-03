@@ -5,10 +5,6 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSPasteboardUsageDescription</key>
-	<string> &quot;To allow users to copy and paste text between the app and other apps&quot;</string>
-	<key>NSCameraUsageDescription</key>
-	<string>&quot;To scan QR codes.&quot;</string>
-	<key>UISupportsDocumentBrowser</key>
-	<true/>
+	<string> "To allow users to copy and paste text between the app and other apps"</string>
 </dict>
 </plist>
