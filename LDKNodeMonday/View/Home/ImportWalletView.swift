@@ -75,7 +75,7 @@ struct ImportWalletView: View {
                         dismiss()
                     }, label: {
                         HStack(spacing: 4) {
-                            Image(systemName: "chevron.left")
+                            Image(systemName: "chevron.left").fontWeight(.medium)
                             Text("Back")
                         }
                     })

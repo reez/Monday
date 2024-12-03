@@ -41,7 +41,9 @@ struct OnboardingView: View {
                     .sheet(isPresented: $showingNetworkSettingsSheet) {
                         NetworkSettingsView(viewModel: viewModel)
                     }
-                }.padding()
+                }
+                .fontWeight(.medium)
+                .padding()
                 
                 // Logo, name and description
                 VStack {
