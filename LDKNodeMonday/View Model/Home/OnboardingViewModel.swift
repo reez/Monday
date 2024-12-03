@@ -10,7 +10,6 @@ import SwiftUI
 
 @Observable
 class OnboardingViewModel  {
-    //@AppStorage("isOnboarding") var isOnboarding: Bool?
     var networkColor = Color.gray
     var onboardingViewError: MondayError?
     var seedPhrase: String = "" {
