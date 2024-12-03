@@ -8,23 +8,24 @@
 import LDKNode
 import SwiftUI
 
-class OnboardingViewModel: ObservableObject {
-    @AppStorage("isOnboarding") var isOnboarding: Bool?
-    @Published var networkColor = Color.gray
-    @Published var onboardingViewError: MondayError?
-    @Published var seedPhrase: String = "" {
+@Observable
+class OnboardingViewModel  {
+    //@AppStorage("isOnboarding") var isOnboarding: Bool?
+    var networkColor = Color.gray
+    var onboardingViewError: MondayError?
+    var seedPhrase: String = "" {
         didSet {
             updateSeedPhraseArray()
         }
     }
-    @Published var seedPhraseArray: [String] = []
-    @Published var selectedNetwork: Network = .signet {
+    var seedPhraseArray: [String] = []
+    var selectedNetwork: Network = .signet {
         didSet {
             do {
                 let networkString = selectedNetwork.description
                 try KeyClient.live.saveNetwork(networkString)
-                selectedURL = availableURLs.first ?? ""
-                try KeyClient.live.saveEsploraURL(selectedURL)
+                self.selectedEsploraServer = availableEsploraServers.first!
+                try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -35,10 +36,10 @@ class OnboardingViewModel: ObservableObject {
             }
         }
     }
-    @Published var selectedURL: String = "" {
+    var selectedEsploraServer: EsploraServer = Constants.Config.EsploraServerURLNetwork.Signet.mutiny {
         didSet {
             do {
-                try KeyClient.live.saveEsploraURL(selectedURL)
+                try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -49,7 +50,7 @@ class OnboardingViewModel: ObservableObject {
             }
         }
     }
-    var availableURLs: [String] {
+    var availableEsploraServers: [EsploraServer] {
         switch selectedNetwork {
         case .bitcoin:
             return Constants.Config.EsploraServerURLNetwork.Bitcoin.allValues
@@ -84,9 +85,9 @@ class OnboardingViewModel: ObservableObject {
                 self.selectedNetwork = .signet
             }
             if let esploraURL = try KeyClient.live.getEsploraURL() {
-                self.selectedURL = esploraURL
+                self.selectedEsploraServer = availableEsploraServers.first(where: { $0.url == esploraURL })!
             } else {
-                self.selectedURL = availableURLs.first ?? ""
+                self.selectedEsploraServer = availableEsploraServers.first!
             }
         } catch {
             DispatchQueue.main.async {
@@ -104,10 +105,10 @@ class OnboardingViewModel: ObservableObject {
             let backupInfo = BackupInfo(mnemonic: seedPhrase)
             try KeyClient.live.saveBackupInfo(backupInfo)
             try KeyClient.live.saveNetwork(selectedNetwork.description)
-            try KeyClient.live.saveEsploraURL(selectedURL)
+            try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             LightningNodeService.shared = LightningNodeService()
             DispatchQueue.main.async {
-                self.isOnboarding = false
+                UserDefaults.standard.set(false, forKey: "isOnboarding")
             }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)

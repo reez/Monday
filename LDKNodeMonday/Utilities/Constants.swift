@@ -14,31 +14,31 @@ struct Constants {
 
         struct EsploraServerURLNetwork {
             struct Bitcoin {
-                static let blockstream = "https://blockstream.info/api"
-                static let mempoolspace = "https://mempool.space/api"
+                static let blockstream = EsploraServer(name: "Blockstream", url: "https://blockstream.info/api")
+                static let mempoolspace = EsploraServer(name: "Mempool.space", url: "https://mempool.space/api")
                 static let allValues = [
                     blockstream,
                     mempoolspace,
                 ]
             }
             struct Regtest {
-                private static let local = "http://127.0.0.1:3002"
+                static let local = EsploraServer(name: "Local", url: "http://127.0.0.1:3002")
                 static let allValues = [
                     local
                 ]
             }
             struct Signet {
-                static let bdk = "http://signet.bitcoindevkit.net"
-                static let mutiny = "https://mutinynet.com/api"
+                static let bdk = EsploraServer(name: "BDK", url: "http://signet.bitcoindevkit.net")
+                static let mutiny = EsploraServer(name: "Mutiny", url: "https://mutinynet.com/api")
                 static let allValues = [
                     mutiny,
                     bdk,
                 ]
             }
             struct Testnet {
-                static let blockstream = "http://blockstream.info/testnet/api"
-                static let kuutamo = "https://esplora.testnet.kuutamo.cloud"
-                static let mempoolspace = "https://mempool.space/testnet/api"
+                static let blockstream = EsploraServer(name: "Blockstream", url: "http://blockstream.info/testnet/api")
+                static let kuutamo = EsploraServer(name: "Kuutamo", url: "https://esplora.testnet.kuutamo.cloud")
+                static let mempoolspace = EsploraServer(name: "Mempool.space", url: "https://mempool.space/testnet/api")
                 static let allValues = [
                     blockstream,
                     kuutamo,
@@ -98,4 +98,9 @@ struct Constants {
         }
     }
 
+}
+
+struct EsploraServer: Hashable {
+    var name: String
+    var url: String
 }
