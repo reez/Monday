@@ -12,9 +12,12 @@ import SwiftUI
 struct OnboardingView: View {
     @AppStorage("isOnboarding") var isOnboarding: Bool?
     @AppStorage("isFirstTime") var isFirstTime: Bool = true
-    @ObservedObject var viewModel: OnboardingViewModel
-    @State private var showingOnboardingViewErrorAlert = false
+    
+    @State var viewModel: OnboardingViewModel
+    
+    @State private var showingNetworkSettingsSheet = false
     @State private var showingImportWalletSheet = false
+    @State private var showingOnboardingViewErrorAlert = false
 
     var body: some View {
 
@@ -23,9 +26,24 @@ struct OnboardingView: View {
                 .ignoresSafeArea()
 
             VStack {
-
-                Spacer()
-
+                
+                // Network settings
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        showingNetworkSettingsSheet.toggle()
+                    }, label: {
+                        HStack(spacing: 5) {
+                            Text(viewModel.selectedNetwork.description.capitalized)
+                            Image(systemName: "gearshape")
+                        }
+                    })
+                    .sheet(isPresented: $showingNetworkSettingsSheet) {
+                        NetworkSettingsView(viewModel: viewModel)
+                    }
+                }.padding()
+                
+                // Logo, name and description
                 VStack {
                     Image(systemName: "bolt.horizontal.fill")
                         .resizable()
@@ -40,67 +58,6 @@ struct OnboardingView: View {
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-
-                Spacer()
-
-                NavigationStack {
-                    // Default picker style
-                    // NavigationLink picker style
-                    Form {
-                        Section() {
-//                            NavigationLink(destination: EmptyView()) {
-//                                HStack {
-//                                    Text(viewModel.selectedNetwork.description)
-//                                    Spacer()
-//                                    Text(viewModel.selectedURL.description.replacingOccurrences(
-//                                        of: "https://",
-//                                        with: ""
-//                                    ).replacingOccurrences(
-//                                        of: "http://",
-//                                        with: ""
-//                                    ))
-//                                }
-//                            }
-                            
-                            Picker(
-                                "Network",
-                                selection: $viewModel.selectedNetwork
-                            ) {
-                                Text("Signet").tag(Network.signet)
-                                Text("Testnet").tag(Network.testnet)
-                            }
-                            .pickerStyle(.navigationLink)
-                            .accessibilityLabel("Select bitcoin network")
-                            .scrollContentBackground(.hidden)
-                            Picker(
-                                "Esplora server",
-                                selection: $viewModel.selectedURL
-                            ) {
-                                ForEach(viewModel.availableURLs, id: \.self) { url in
-                                    Text(
-                                        url.replacingOccurrences(
-                                            of: "https://",
-                                            with: ""
-                                        ).replacingOccurrences(
-                                            of: "http://",
-                                            with: ""
-                                        )
-                                    )
-                                    .tag(url)
-                                }
-                            }
-                            .pickerStyle(.navigationLink)
-                            .accessibilityLabel("Select esplora server")
-                            .scrollContentBackground(.hidden)
-                        } header: {
-                            Text("Network settings")
-                        }
-                    }
-                    .tint(.accent)
-                    .frame(maxHeight: 200)
-                    .scrollContentBackground(.hidden)
-                }
-                .padding(.horizontal, 20)
 
                 Spacer()
                 
@@ -122,7 +79,7 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(BitcoinPlain(tintColor: .accent))
                 .sheet(isPresented: $showingImportWalletSheet) {
-                    ImportWalletView()
+                    ImportWalletView(viewModel: viewModel)
                 }
 
             }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
@@ -130,8 +87,8 @@ struct OnboardingView: View {
         }.padding(.bottom, 20)
             .alert(isPresented: $showingOnboardingViewErrorAlert) {
                 Alert(
-                    title: Text(viewModel.onboardingViewError?.title ?? "Unknown"),
-                    message: Text(viewModel.onboardingViewError?.detail ?? ""),
+                    title: Text(viewModel.onboardingViewError?.title ?? "Unknown error"),
+                    message: Text(viewModel.onboardingViewError?.detail ?? "No details"),
                     dismissButton: .default(Text("OK")) {
                         viewModel.onboardingViewError = nil
                     }

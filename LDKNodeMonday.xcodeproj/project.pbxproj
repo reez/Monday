@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		65875A932CCB9809000D3E70 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 65875A922CCB9809000D3E70 /* LDKNode */; };
+		658D1E832CFF1978005BD1F3 /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D1E822CFF1978005BD1F3 /* NetworkSettingsView.swift */; };
 		659EE6952CF8D4990064ED78 /* ImportWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659EE6942CF8D4990064ED78 /* ImportWalletView.swift */; };
 		AE00550E2B479EF000100797 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00550D2B479EF000100797 /* OnboardingView.swift */; };
 		AE0055102B479F1100100797 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00550F2B479F1100100797 /* OnboardingViewModel.swift */; };
@@ -92,6 +93,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		658D1E822CFF1978005BD1F3 /* NetworkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsView.swift; sourceTree = "<group>"; };
 		659EE6942CF8D4990064ED78 /* ImportWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletView.swift; sourceTree = "<group>"; };
 		AE00550D2B479EF000100797 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AE00550F2B479F1100100797 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
@@ -301,10 +303,11 @@
 				AE00550D2B479EF000100797 /* OnboardingView.swift */,
 				AE186B8D2A1540B700338463 /* StartView.swift */,
 				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
+				659EE6942CF8D4990064ED78 /* ImportWalletView.swift */,
+				658D1E822CFF1978005BD1F3 /* NetworkSettingsView.swift */,
 				AE551D402B8ECC2D0034B61E /* Payments */,
 				AE551D412B8ECC390034B61E /* Send */,
 				AE551D422B8ECC400034B61E /* Receive */,
-				659EE6942CF8D4990064ED78 /* ImportWalletView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				AE49E8662A2537D5002623E8 /* PeerViewModel.swift in Sources */,
 				AE33D3AE2C7BD0EE00AF562B /* URL+Extensions.swift in Sources */,
 				AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */,
+				658D1E832CFF1978005BD1F3 /* NetworkSettingsView.swift in Sources */,
 				AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
 				AEA057ED2B912FEA00DB1096 /* JITInvoiceView.swift in Sources */,

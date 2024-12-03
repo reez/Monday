@@ -13,8 +13,10 @@ struct ImportWalletView: View {
     @Environment(\.dismiss) private var dismiss
     
     @AppStorage("isFirstTime") var isFirstTime: Bool = true
+    
+    @Bindable var viewModel: OnboardingViewModel
+    
     @State private var seedPhrase = ""
-    //@EnvironmentObject var viewModel: OnboardingViewModel
     
     var body: some View {
         NavigationView {
@@ -23,28 +25,37 @@ struct ImportWalletView: View {
                 Spacer()
                 
                 // Textfield for importing wallet
-                TextField("24 word seed phrase (required)",
-                          text: $seedPhrase //$viewModel.seedPhrase
-                )
-                .textFieldStyle(.roundedBorder)
-                .submitLabel(.done)
-                .padding(.horizontal, 50)
-                .padding(.vertical, 10)
-//                if viewModel.seedPhraseArray != [] {
-//                    SeedPhraseView(
-//                        words: viewModel.seedPhraseArray,
-//                        preferredWordsPerRow: 2,
-//                        usePaging: true,
-//                        wordsPerPage: 6
-//                    )
-//                }
+                
+                if viewModel.seedPhraseArray == [] {
+                    VStack(spacing: 10) {
+                        Text("Enter or paste your recovery phrase")
+                        TextField("24 word recovery phrase",
+                                  text: $viewModel.seedPhrase
+                    )
+                    .frame(width: 260, height: 40)
+                    .tint(.accentColor)
+                    .padding([.leading, .trailing], 20)
+                    .submitLabel(.done)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color.accentColor, lineWidth: 2)
+                    )
+                    }
+                } else {
+                    SeedPhraseView(
+                        words: viewModel.seedPhraseArray,
+                        preferredWordsPerRow: 2,
+                        usePaging: true,
+                        wordsPerPage: 12
+                    )
+                }
                 
                 Spacer()
                 
-                // Buttons for creating and importing wallet
+                // Button for importing wallet
 
                 Button("Import wallet") {
-                    //
+                    viewModel.saveSeed()
                 }
                 .buttonStyle(
                     BitcoinFilled(
@@ -52,7 +63,7 @@ struct ImportWalletView: View {
                         isCapsule: true
                     )
                 )
-                .disabled(seedPhrase == "" ? true : false)
+                .disabled(viewModel.seedPhraseArray == [] ? true : false)
                 .padding()
 
             }
@@ -76,7 +87,8 @@ struct ImportWalletView: View {
     }
 }
 
+#if DEBUG
 #Preview {
-    ImportWalletView()
-    //ImportWalletView(viewModel: .init())
+    ImportWalletView(viewModel: .init())
 }
+#endif
