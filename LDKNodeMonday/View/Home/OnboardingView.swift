@@ -82,7 +82,7 @@ struct OnboardingView: View {
                     ImportWalletView(viewModel: viewModel)
                 }
 
-            }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
+            }.dynamicTypeSize(...DynamicTypeSize.accessibility2) // Sets max dynamic size for all Text
 
         }.padding(.bottom, 20)
             .alert(isPresented: $showingOnboardingViewErrorAlert) {
