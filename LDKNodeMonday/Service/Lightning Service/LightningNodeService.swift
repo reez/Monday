@@ -24,7 +24,7 @@ class LightningNodeService {
         let storedNetworkString = try! keyService.getNetwork() ?? Network.signet.description
         let storedEsploraURL =
             try! keyService.getEsploraURL()
-            ?? Constants.Config.EsploraServerURLNetwork.Signet.mutiny
+        ?? Constants.Config.EsploraServerURLNetwork.Signet.lqwd
 
         self.network = Network(stringValue: storedNetworkString) ?? .signet
         self.keyService = keyService
@@ -34,7 +34,7 @@ class LightningNodeService {
         config.logDirPath = FileManager.default.getDocumentsDirectoryPath()
         config.network = self.network
         config.trustedPeers0conf = [
-            Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
+            Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId
         ]
         config.logLevel = .trace
 
