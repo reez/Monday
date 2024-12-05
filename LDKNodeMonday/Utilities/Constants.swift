@@ -50,12 +50,14 @@ struct Constants {
         struct LiquiditySourceLsps2 {
             struct Signet {
                 static let mutiny = LSP.mutiny
+                static let lqwd = LSP.lqwd
             }
         }
 
         struct RGSServerURLNetwork {
             static let bitcoin = "https://rapidsync.lightningdevkit.org/snapshot/"
             static let testnet = "https://rapidsync.lightningdevkit.org/testnet/snapshot/"
+            static let signet = "https://mutinynet.lspd.lqwd.tech"
         }
 
     }
@@ -70,6 +72,11 @@ struct Constants {
         static let olympus = LightningServiceProvider(
             address: "45.79.192.236:9735",
             nodeId: "031b301307574bbe9b9ac7b79cbe1700e31e544513eae0b5d7497483083f99e581",
+            token: ""
+        )
+        static let lqwd = LightningServiceProvider(
+            address: "192.243.215.98:27100",
+            nodeId: "0275eb44504d53b2a083852e3bffcc4e178195b9546c162590d8c282f3ed3243fc",
             token: ""
         )
     }

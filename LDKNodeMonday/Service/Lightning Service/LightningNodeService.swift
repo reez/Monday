@@ -34,7 +34,7 @@ class LightningNodeService {
         config.logDirPath = FileManager.default.getDocumentsDirectoryPath()
         config.network = self.network
         config.trustedPeers0conf = [
-            Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
+            Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId
         ]
         config.logLevel = .trace
 
@@ -53,10 +53,13 @@ class LightningNodeService {
             )
             self.networkColor = Constants.BitcoinNetworkColor.testnet.color
         case .signet:
+            nodeBuilder.setGossipSourceRgs(
+                rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
+            )
             nodeBuilder.setLiquiditySourceLsps2(
-                address: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.address,
-                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId,
-                token: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.token
+                address: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.address,
+                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId,
+                token: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.token
             )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
         case .regtest:
@@ -179,8 +182,23 @@ class LightningNodeService {
             message: message,
             expirySec: expirySec
         )
+        print("bip21UriString: \(bip21UriString)")
         return bip21UriString
     }
+    //    func receive(amountSat: UInt64, message: String, expirySec: UInt32) async throws -> String {
+    //        let bolt11Address = try ldkNode.bolt11Payment().receive(
+    //            amountMsat: amountSat,
+    //            description: message,
+    //            expirySecs: expirySec
+    //        )
+    //        print("bolt11Address: \(bolt11Address)")
+    //        return bolt11Address
+    //    }
+    //    func receive(amountSat: UInt64, message: String, expirySec: UInt32) async throws -> String {
+    //        let onchainAddress = try ldkNode.onchainPayment().newAddress()
+    //        print("onchainAddress: \(onchainAddress)")
+    //        return onchainAddress
+    //    }
 
     func receiveViaJitChannel(
         amountMsat: UInt64,
@@ -194,6 +212,7 @@ class LightningNodeService {
             expirySecs: expirySecs,
             maxLspFeeLimitMsat: maxLspFeeLimitMsat
         )
+        print("jitinvoice: \(invoice)")
         return invoice
     }
 
