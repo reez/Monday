@@ -176,13 +176,28 @@ class LightningNodeService {
     }
 
     // Generates a BIP21 URI string with an on the address and BOLT11 invoice.
+    //    func receive(amountSat: UInt64, message: String, expirySec: UInt32) async throws -> String {
+    //        let bip21UriString = try ldkNode.unifiedQrPayment().receive(
+    //            amountSats: amountSat,
+    //            message: message,
+    //            expirySec: expirySec
+    //        )
+    //        print("bip21UriString: \(bip21UriString)")
+    //        return bip21UriString
+    //    }
+    //    func receive(amountSat: UInt64, message: String, expirySec: UInt32) async throws -> String {
+    //        let bolt11Address = try ldkNode.bolt11Payment().receive(
+    //            amountMsat: amountSat,
+    //            description: message,
+    //            expirySecs: expirySec
+    //        )
+    //        print("bolt11Address: \(bolt11Address)")
+    //        return bolt11Address
+    //    }
     func receive(amountSat: UInt64, message: String, expirySec: UInt32) async throws -> String {
-        let bip21UriString = try ldkNode.unifiedQrPayment().receive(
-            amountSats: amountSat,
-            message: message,
-            expirySec: expirySec
-        )
-        return bip21UriString
+        let onchainAddress = try ldkNode.onchainPayment().newAddress()
+        print("onchainAddress: \(onchainAddress)")
+        return onchainAddress
     }
 
     func receiveViaJitChannel(
@@ -197,6 +212,7 @@ class LightningNodeService {
             expirySecs: expirySecs,
             maxLspFeeLimitMsat: maxLspFeeLimitMsat
         )
+        print("jitinvoice: \(invoice)")
         return invoice
     }
 
