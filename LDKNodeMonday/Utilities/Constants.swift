@@ -14,8 +14,14 @@ struct Constants {
 
         struct EsploraServerURLNetwork {
             struct Bitcoin {
-                static let blockstream = EsploraServer(name: "Blockstream", url: "https://blockstream.info/api")
-                static let mempoolspace = EsploraServer(name: "Mempool.space", url: "https://mempool.space/api")
+                static let blockstream = EsploraServer(
+                    name: "Blockstream",
+                    url: "https://blockstream.info/api"
+                )
+                static let mempoolspace = EsploraServer(
+                    name: "Mempool.space",
+                    url: "https://mempool.space/api"
+                )
                 static let allValues = [
                     blockstream,
                     mempoolspace,
@@ -36,9 +42,18 @@ struct Constants {
                 ]
             }
             struct Testnet {
-                static let blockstream = EsploraServer(name: "Blockstream", url: "http://blockstream.info/testnet/api")
-                static let kuutamo = EsploraServer(name: "Kuutamo", url: "https://esplora.testnet.kuutamo.cloud")
-                static let mempoolspace = EsploraServer(name: "Mempool.space", url: "https://mempool.space/testnet/api")
+                static let blockstream = EsploraServer(
+                    name: "Blockstream",
+                    url: "http://blockstream.info/testnet/api"
+                )
+                static let kuutamo = EsploraServer(
+                    name: "Kuutamo",
+                    url: "https://esplora.testnet.kuutamo.cloud"
+                )
+                static let mempoolspace = EsploraServer(
+                    name: "Mempool.space",
+                    url: "https://mempool.space/testnet/api"
+                )
                 static let allValues = [
                     blockstream,
                     kuutamo,

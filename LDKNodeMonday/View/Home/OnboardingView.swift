@@ -12,9 +12,9 @@ import SwiftUI
 struct OnboardingView: View {
     @AppStorage("isOnboarding") var isOnboarding: Bool?
     @AppStorage("isFirstTime") var isFirstTime: Bool = true
-    
+
     @State var viewModel: OnboardingViewModel
-    
+
     @State private var showingNetworkSettingsSheet = false
     @State private var showingImportWalletSheet = false
     @State private var showingOnboardingViewErrorAlert = false
@@ -26,25 +26,28 @@ struct OnboardingView: View {
                 .ignoresSafeArea()
 
             VStack {
-                
+
                 // Network settings
                 HStack {
                     Spacer()
-                    Button(action: {
-                        showingNetworkSettingsSheet.toggle()
-                    }, label: {
-                        HStack(spacing: 5) {
-                            Text(viewModel.selectedNetwork.description.capitalized)
-                            Image(systemName: "gearshape")
+                    Button(
+                        action: {
+                            showingNetworkSettingsSheet.toggle()
+                        },
+                        label: {
+                            HStack(spacing: 5) {
+                                Text(viewModel.selectedNetwork.description.capitalized)
+                                Image(systemName: "gearshape")
+                            }
                         }
-                    })
+                    )
                     .sheet(isPresented: $showingNetworkSettingsSheet) {
                         NetworkSettingsView(viewModel: viewModel)
                     }
                 }
                 .fontWeight(.medium)
                 .padding()
-                
+
                 // Logo, name and description
                 VStack {
                     Image(systemName: "bolt.horizontal.fill")
@@ -54,7 +57,7 @@ struct OnboardingView: View {
                         .frame(width: 150, height: 150, alignment: .center)
                         .padding(40)
                     Text("Monday Wallet")
-                        .font(.largeTitle .weight(.semibold))
+                        .font(.largeTitle.weight(.semibold))
                     Text("An example bitcoin wallet\npowered by LDK Node")
                         .font(.body)
                         .multilineTextAlignment(.center)
@@ -62,7 +65,7 @@ struct OnboardingView: View {
                 }
 
                 Spacer()
-                
+
                 // Buttons for creating and importing wallet
 
                 Button("Create wallet") {
@@ -84,7 +87,7 @@ struct OnboardingView: View {
                     ImportWalletView(viewModel: viewModel)
                 }
 
-            }.dynamicTypeSize(...DynamicTypeSize.accessibility2) // Sets max dynamic size for all Text
+            }.dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
 
         }.padding(.bottom, 20)
             .alert(isPresented: $showingOnboardingViewErrorAlert) {

@@ -5,30 +5,30 @@
 //  Created by Daniel Nordh on 03/12/2024.
 //
 
-import SwiftUI
 import LDKNode
+import SwiftUI
 
 struct NetworkSettingsView: View {
     @Environment(\.dismiss) private var dismiss
-    
+
     @Bindable var viewModel: OnboardingViewModel
-    
+
     var body: some View {
-        
+
         NavigationView {
             Form {
-                Section() {
+                Section {
                     Picker(
                         "Network",
                         selection: $viewModel.selectedNetwork
                     ) {
                         Text("Signet").tag(Network.signet)
                         Text("Testnet").tag(Network.testnet)
-                    } 
+                    }
                     .pickerStyle(.navigationLink)
                     .accessibilityLabel("Select bitcoin network")
                     .scrollContentBackground(.hidden)
-                    
+
                     Picker(
                         "Server",
                         selection: $viewModel.selectedEsploraServer
@@ -41,7 +41,9 @@ struct NetworkSettingsView: View {
                     .accessibilityLabel("Select esplora server")
                     .scrollContentBackground(.hidden)
                 } footer: {
-                    Text("Set your desired network and connection server.\nIf in doubt, use the default settings.")
+                    Text(
+                        "Set your desired network and connection server.\nIf in doubt, use the default settings."
+                    )
                 }
             }
             .navigationTitle("Network settings")
@@ -49,14 +51,17 @@ struct NetworkSettingsView: View {
             .scrollContentBackground(.hidden)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        dismiss()
-                    }, label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "chevron.left").fontWeight(.medium)
-                            Text("Back")
+                    Button(
+                        action: {
+                            dismiss()
+                        },
+                        label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: "chevron.left").fontWeight(.medium)
+                                Text("Back")
+                            }
                         }
-                    })
+                    )
                 }
             }
         }
@@ -67,7 +72,7 @@ struct NetworkSettingsView: View {
 }
 
 #if DEBUG
-#Preview {
-    NetworkSettingsView(viewModel: .init())
-}
+    #Preview {
+        NetworkSettingsView(viewModel: .init())
+    }
 #endif

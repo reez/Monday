@@ -11,35 +11,36 @@ import SwiftUI
 
 struct ImportWalletView: View {
     @Environment(\.dismiss) private var dismiss
-    
+
     @AppStorage("isFirstTime") var isFirstTime: Bool = true
-    
+
     @Bindable var viewModel: OnboardingViewModel
-    
+
     @State private var seedPhrase = ""
-    
+
     var body: some View {
         NavigationView {
-            VStack () {
-                
+            VStack {
+
                 Spacer()
-                
+
                 // Textfield for importing wallet
-                
+
                 if viewModel.seedPhraseArray == [] {
                     VStack(spacing: 10) {
                         Text("Enter or paste your recovery phrase")
-                        TextField("24 word recovery phrase",
-                                  text: $viewModel.seedPhrase
-                    )
-                    .frame(width: 260, height: 48)
-                    .tint(.accentColor)
-                    .padding([.leading, .trailing], 20)
-                    .submitLabel(.done)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 24)
-                            .stroke(Color.accentColor, lineWidth: 2)
-                    )
+                        TextField(
+                            "24 word recovery phrase",
+                            text: $viewModel.seedPhrase
+                        )
+                        .frame(width: 260, height: 48)
+                        .tint(.accentColor)
+                        .padding([.leading, .trailing], 20)
+                        .submitLabel(.done)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        )
                     }
                 } else {
                     SeedPhraseView(
@@ -49,9 +50,9 @@ struct ImportWalletView: View {
                         wordsPerPage: 12
                     )
                 }
-                
+
                 Spacer()
-                
+
                 // Button for importing wallet
 
                 Button("Import wallet") {
@@ -71,14 +72,17 @@ struct ImportWalletView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        dismiss()
-                    }, label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "chevron.left").fontWeight(.medium)
-                            Text("Back")
+                    Button(
+                        action: {
+                            dismiss()
+                        },
+                        label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: "chevron.left").fontWeight(.medium)
+                                Text("Back")
+                            }
                         }
-                    })
+                    )
                 }
             }
         }
@@ -88,7 +92,7 @@ struct ImportWalletView: View {
 }
 
 #if DEBUG
-#Preview {
-    ImportWalletView(viewModel: .init())
-}
+    #Preview {
+        ImportWalletView(viewModel: .init())
+    }
 #endif

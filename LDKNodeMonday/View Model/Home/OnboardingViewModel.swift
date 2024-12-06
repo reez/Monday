@@ -9,7 +9,7 @@ import LDKNode
 import SwiftUI
 
 @Observable
-class OnboardingViewModel  {
+class OnboardingViewModel {
     var networkColor = Color.gray
     var onboardingViewError: MondayError?
     var seedPhrase: String = "" {
@@ -35,7 +35,9 @@ class OnboardingViewModel  {
             }
         }
     }
-    var selectedEsploraServer: EsploraServer = Constants.Config.EsploraServerURLNetwork.Signet.mutiny {
+    var selectedEsploraServer: EsploraServer = Constants.Config.EsploraServerURLNetwork.Signet
+        .mutiny
+    {
         didSet {
             do {
                 try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
@@ -84,7 +86,9 @@ class OnboardingViewModel  {
                 self.selectedNetwork = .signet
             }
             if let esploraURL = try KeyClient.live.getEsploraURL() {
-                self.selectedEsploraServer = availableEsploraServers.first(where: { $0.url == esploraURL })!
+                self.selectedEsploraServer = availableEsploraServers.first(where: {
+                    $0.url == esploraURL
+                })!
             } else {
                 self.selectedEsploraServer = availableEsploraServers.first!
             }
