@@ -12,9 +12,9 @@ import SwiftUI
 struct ImportWalletView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @Bindable var viewModel: OnboardingViewModel
-
+    @AppStorage("isFirstTime") var isFirstTime: Bool = true
     @State private var seedPhrase = ""
+    @EnvironmentObject var viewModel: OnboardingViewModel
 
     var body: some View {
         NavigationView {

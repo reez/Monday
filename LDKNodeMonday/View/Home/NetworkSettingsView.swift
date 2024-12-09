@@ -11,7 +11,7 @@ import SwiftUI
 struct NetworkSettingsView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @Bindable var viewModel: OnboardingViewModel
+    @EnvironmentObject var viewModel: OnboardingViewModel
 
     var body: some View {
 

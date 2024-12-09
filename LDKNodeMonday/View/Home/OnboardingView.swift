@@ -11,9 +11,11 @@ import SwiftUI
 
 struct OnboardingView: View {
     @AppStorage("isOnboarding") var isOnboarding: Bool?
+    @AppStorage("isFirstTime") var isFirstTime: Bool = true
 
-    @State var viewModel: OnboardingViewModel
+    @ObservedObject var viewModel: OnboardingViewModel
 
+    @State private var showingOnboardingViewErrorAlert = false
     @State private var showingNetworkSettingsSheet = false
     @State private var showingImportWalletSheet = false
     @State private var showingOnboardingViewErrorAlert = false
@@ -41,7 +43,7 @@ struct OnboardingView: View {
                         }
                     )
                     .sheet(isPresented: $showingNetworkSettingsSheet) {
-                        NetworkSettingsView(viewModel: viewModel)
+                        NetworkSettingsView().environmentObject(viewModel)
                     }
                 }
                 .fontWeight(.medium)
@@ -83,7 +85,7 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(BitcoinPlain(tintColor: .accent))
                 .sheet(isPresented: $showingImportWalletSheet) {
-                    ImportWalletView(viewModel: viewModel)
+                    ImportWalletView().environmentObject(viewModel)
                 }
 
             }.dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text

@@ -23,7 +23,8 @@ class OnboardingViewModel {
             do {
                 let networkString = selectedNetwork.description
                 try KeyClient.live.saveNetwork(networkString)
-                self.selectedEsploraServer = availableEsploraServers.first ?? EsploraServer(name: "", url: "")
+                self.selectedEsploraServer =
+                    availableEsploraServers.first ?? EsploraServer(name: "", url: "")
                 try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
@@ -35,7 +36,7 @@ class OnboardingViewModel {
             }
         }
     }
-    var selectedEsploraServer: EsploraServer = EsploraServer.mutiny_signet
+    @Published var selectedEsploraServer: EsploraServer = EsploraServer.mutiny_signet
     {
         didSet {
             do {
@@ -83,9 +84,10 @@ class OnboardingViewModel {
                 self.selectedNetwork = Network(stringValue: networkString) ?? .signet
             }
             if let esploraURL = try KeyClient.live.getEsploraURL() {
-                self.selectedEsploraServer = availableEsploraServers.first(where: {
-                    $0.url == esploraURL
-                }) ?? EsploraServer.mutiny_signet
+                self.selectedEsploraServer =
+                    availableEsploraServers.first(where: {
+                        $0.url == esploraURL
+                    }) ?? EsploraServer.mutiny_signet
             }
         } catch {
             DispatchQueue.main.async {
