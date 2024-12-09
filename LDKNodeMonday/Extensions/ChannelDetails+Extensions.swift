@@ -53,7 +53,7 @@ extension ChannelDetails {
     }
 }
 
-extension ChannelDetails: Hashable {
+extension ChannelDetails {
     public static func == (lhs: ChannelDetails, rhs: ChannelDetails) -> Bool {
         return lhs.channelId == rhs.channelId
     }

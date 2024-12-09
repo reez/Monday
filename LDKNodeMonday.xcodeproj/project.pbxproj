@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65875A932CCB9809000D3E70 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 65875A922CCB9809000D3E70 /* LDKNode */; };
+		659EE6952CF8D4990064ED78 /* ImportWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659EE6942CF8D4990064ED78 /* ImportWalletView.swift */; };
+		65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A406622D070CBD00EA331E /* NetworkSettingsView.swift */; };
 		AE00550E2B479EF000100797 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00550D2B479EF000100797 /* OnboardingView.swift */; };
 		AE0055102B479F1100100797 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00550F2B479F1100100797 /* OnboardingViewModel.swift */; };
 		AE0055122B47A65700100797 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0055112B47A65700100797 /* Color+Extensions.swift */; };
@@ -86,11 +89,12 @@
 		AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDC29F855E700406DD9 /* String+Extensions.swift */; };
 		AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE8FDDE29F8579600406DD9 /* Date+Extensions.swift */; };
 		AEF66F522BA4B11A00FA15F9 /* PaymentKind+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF66F512BA4B11A00FA15F9 /* PaymentKind+Extensions.swift */; };
-		AEFA825E2CC15C7C0095B0BA /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AEFA825D2CC15C7C0095B0BA /* LDKNode */; };
 		AEFAF2922A433F6F001128DF /* LightningPaymentStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFAF2912A433F6F001128DF /* LightningPaymentStatus.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		659EE6942CF8D4990064ED78 /* ImportWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletView.swift; sourceTree = "<group>"; };
+		65A406622D070CBD00EA331E /* NetworkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsView.swift; sourceTree = "<group>"; };
 		AE00550D2B479EF000100797 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AE00550F2B479F1100100797 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		AE0055112B47A65700100797 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
@@ -173,7 +177,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEFA825E2CC15C7C0095B0BA /* LDKNode in Frameworks */,
+				65875A932CCB9809000D3E70 /* LDKNode in Frameworks */,
 				AE060C382C051B59006724F1 /* LDKNode in Frameworks */,
 				AE1D9BEC2B2A1FFD00620748 /* BitcoinUI in Frameworks */,
 				AEE5B7652A09B1FC001E5E59 /* CodeScanner in Frameworks */,
@@ -296,9 +300,11 @@
 		AE49E8772A253CBE002623E8 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				65A406622D070CBD00EA331E /* NetworkSettingsView.swift */,
 				AE00550D2B479EF000100797 /* OnboardingView.swift */,
 				AE186B8D2A1540B700338463 /* StartView.swift */,
 				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
+				659EE6942CF8D4990064ED78 /* ImportWalletView.swift */,
 				AE551D402B8ECC2D0034B61E /* Payments */,
 				AE551D412B8ECC390034B61E /* Send */,
 				AE551D422B8ECC400034B61E /* Receive */,
@@ -548,7 +554,7 @@
 				AE7C4A072B406D590061189D /* SimpleToast */,
 				AE060C372C051B59006724F1 /* LDKNode */,
 				AE80C2042C4AB5E4006E7193 /* LDKNode */,
-				AEFA825D2CC15C7C0095B0BA /* LDKNode */,
+				65875A922CCB9809000D3E70 /* LDKNode */,
 			);
 			productName = LDKNodeMonday;
 			productReference = AE17E8D629A402E30058C9C9 /* LDKNodeMonday.app */;
@@ -583,7 +589,7 @@
 				AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				AE1D9BEA2B2A1FFD00620748 /* XCRemoteSwiftPackageReference "BitcoinUI" */,
 				AE7C4A062B406D590061189D /* XCRemoteSwiftPackageReference "SimpleToast" */,
-				AEFA825C2CC15C7C0095B0BA /* XCRemoteSwiftPackageReference "ldk-node" */,
+				65875A912CCB9809000D3E70 /* XCRemoteSwiftPackageReference "ldk-node" */,
 			);
 			productRefGroup = AE17E8D729A402E30058C9C9 /* Products */;
 			projectDirPath = "";
@@ -630,6 +636,7 @@
 				AE49E8662A2537D5002623E8 /* PeerViewModel.swift in Sources */,
 				AE33D3AE2C7BD0EE00AF562B /* URL+Extensions.swift in Sources */,
 				AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */,
+				65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */,
 				AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
 				AEA057ED2B912FEA00DB1096 /* JITInvoiceView.swift in Sources */,
@@ -681,6 +688,7 @@
 				AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */,
 				AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */,
 				AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */,
+				659EE6952CF8D4990064ED78 /* ImportWalletView.swift in Sources */,
 				AE0BD4AC2B598C3F00B9901E /* UInt32+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -814,17 +822,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LDKNodeMonday/Preview Content\"";
-				DEVELOPMENT_TEAM = 9G6M658RKZ;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LDKNodeMonday/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Monday;
-				INFOPLIST_KEY_NSCameraUsageDescription = "“To scan QR codes.”";
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"To scan QR codes.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -846,17 +855,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LDKNodeMonday/Preview Content\"";
-				DEVELOPMENT_TEAM = 9G6M658RKZ;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LDKNodeMonday/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Monday;
-				INFOPLIST_KEY_NSCameraUsageDescription = "“To scan QR codes.”";
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"To scan QR codes.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -894,6 +904,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		65875A912CCB9809000D3E70 /* XCRemoteSwiftPackageReference "ldk-node" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lightningdevkit/ldk-node.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.4.0;
+			};
+		};
 		AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -937,6 +955,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		65875A922CCB9809000D3E70 /* LDKNode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65875A912CCB9809000D3E70 /* XCRemoteSwiftPackageReference "ldk-node" */;
+			productName = LDKNode;
+		};
 		AE01C5AF2AB3BEED00F28C7E /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */;
@@ -968,11 +991,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
-		};
-		AEFA825D2CC15C7C0095B0BA /* LDKNode */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AEFA825C2CC15C7C0095B0BA /* XCRemoteSwiftPackageReference "ldk-node" */;
-			productName = LDKNode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
