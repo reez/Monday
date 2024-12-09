@@ -12,8 +12,6 @@ import SwiftUI
 struct ImportWalletView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @AppStorage("isFirstTime") var isFirstTime: Bool = true
-
     @Bindable var viewModel: OnboardingViewModel
 
     @State private var seedPhrase = ""
