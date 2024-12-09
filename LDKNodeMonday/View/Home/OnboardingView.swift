@@ -18,7 +18,6 @@ struct OnboardingView: View {
     @State private var showingOnboardingViewErrorAlert = false
     @State private var showingNetworkSettingsSheet = false
     @State private var showingImportWalletSheet = false
-    @State private var showingOnboardingViewErrorAlert = false
 
     var body: some View {
 

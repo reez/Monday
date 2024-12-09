@@ -8,17 +8,17 @@
 import LDKNode
 import SwiftUI
 
-@Observable
-class OnboardingViewModel {
-    var networkColor = Color.gray
-    var onboardingViewError: MondayError?
-    var seedPhrase: String = "" {
+class OnboardingViewModel: ObservableObject {
+    @AppStorage("isOnboarding") var isOnboarding: Bool?
+    @Published var networkColor = Color.gray
+    @Published var onboardingViewError: MondayError?
+    @Published var seedPhrase: String = "" {
         didSet {
             updateSeedPhraseArray()
         }
     }
-    var seedPhraseArray: [String] = []
-    var selectedNetwork: Network = .signet {
+    @Published var seedPhraseArray: [String] = []
+    @Published var selectedNetwork: Network = .signet {
         didSet {
             do {
                 let networkString = selectedNetwork.description
@@ -108,7 +108,7 @@ class OnboardingViewModel {
             try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             LightningNodeService.shared = LightningNodeService()
             DispatchQueue.main.async {
-                UserDefaults.standard.set(false, forKey: "isOnboarding")
+                self.isOnboarding = false
             }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
