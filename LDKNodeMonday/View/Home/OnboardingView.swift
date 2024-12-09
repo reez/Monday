@@ -10,7 +10,7 @@ import LDKNode
 import SwiftUI
 
 struct OnboardingView: View {
-    @AppStorage("isOnboarding") var isOnboarding: Bool = true
+    @AppStorage("isOnboarding") var isOnboarding: Bool?
 
     @State var viewModel: OnboardingViewModel
 
