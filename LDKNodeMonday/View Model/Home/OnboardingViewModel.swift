@@ -23,7 +23,7 @@ class OnboardingViewModel {
             do {
                 let networkString = selectedNetwork.description
                 try KeyClient.live.saveNetwork(networkString)
-                self.selectedEsploraServer = availableEsploraServers.first!
+                self.selectedEsploraServer = availableEsploraServers.first ?? EsploraServer(name: "", url: "")
                 try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
