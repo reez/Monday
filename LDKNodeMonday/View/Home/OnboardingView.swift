@@ -122,7 +122,7 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(BitcoinPlain(tintColor: .accent))
                 .sheet(isPresented: $showingImportWalletSheet) {
-                    ImportWalletView()
+                    ImportWalletView().environmentObject(viewModel)
                 }
 
             }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
