@@ -69,18 +69,10 @@ struct ImportWalletView: View {
             .navigationTitle("Import wallet")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(
-                        action: {
-                            dismiss()
-                        },
-                        label: {
-                            HStack(spacing: 4) {
-                                Image(systemName: "chevron.left").fontWeight(.medium)
-                                Text("Back")
-                            }
-                        }
-                    )
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cancel") {
+                        dismiss()
+                    }.padding()
                 }
             }
         }
