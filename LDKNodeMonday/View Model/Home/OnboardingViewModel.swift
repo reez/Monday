@@ -35,8 +35,7 @@ class OnboardingViewModel {
             }
         }
     }
-    var selectedEsploraServer: EsploraServer = Constants.Config.EsploraServerURLNetwork.Signet
-        .mutiny
+    var selectedEsploraServer: EsploraServer = EsploraServer.mutiny_signet
     {
         didSet {
             do {
@@ -82,15 +81,11 @@ class OnboardingViewModel {
         do {
             if let networkString = try KeyClient.live.getNetwork() {
                 self.selectedNetwork = Network(stringValue: networkString) ?? .signet
-            } else {
-                self.selectedNetwork = .signet
             }
             if let esploraURL = try KeyClient.live.getEsploraURL() {
                 self.selectedEsploraServer = availableEsploraServers.first(where: {
                     $0.url == esploraURL
-                })!
-            } else {
-                self.selectedEsploraServer = availableEsploraServers.first!
+                }) ?? EsploraServer.mutiny_signet
             }
         } catch {
             DispatchQueue.main.async {
