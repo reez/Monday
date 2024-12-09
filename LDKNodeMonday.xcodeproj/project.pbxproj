@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		65875A932CCB9809000D3E70 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 65875A922CCB9809000D3E70 /* LDKNode */; };
 		659EE6952CF8D4990064ED78 /* ImportWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659EE6942CF8D4990064ED78 /* ImportWalletView.swift */; };
+		65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A406622D070CBD00EA331E /* NetworkSettingsView.swift */; };
 		AE00550E2B479EF000100797 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00550D2B479EF000100797 /* OnboardingView.swift */; };
 		AE0055102B479F1100100797 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00550F2B479F1100100797 /* OnboardingViewModel.swift */; };
 		AE0055122B47A65700100797 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0055112B47A65700100797 /* Color+Extensions.swift */; };
@@ -93,6 +94,7 @@
 
 /* Begin PBXFileReference section */
 		659EE6942CF8D4990064ED78 /* ImportWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletView.swift; sourceTree = "<group>"; };
+		65A406622D070CBD00EA331E /* NetworkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsView.swift; sourceTree = "<group>"; };
 		AE00550D2B479EF000100797 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AE00550F2B479F1100100797 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		AE0055112B47A65700100797 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 		AE49E8772A253CBE002623E8 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				65A406622D070CBD00EA331E /* NetworkSettingsView.swift */,
 				AE00550D2B479EF000100797 /* OnboardingView.swift */,
 				AE186B8D2A1540B700338463 /* StartView.swift */,
 				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
@@ -633,6 +636,7 @@
 				AE49E8662A2537D5002623E8 /* PeerViewModel.swift in Sources */,
 				AE33D3AE2C7BD0EE00AF562B /* URL+Extensions.swift in Sources */,
 				AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */,
+				65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */,
 				AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
 				AEA057ED2B912FEA00DB1096 /* JITInvoiceView.swift in Sources */,

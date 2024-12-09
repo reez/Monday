@@ -23,8 +23,9 @@ class OnboardingViewModel: ObservableObject {
             do {
                 let networkString = selectedNetwork.description
                 try KeyClient.live.saveNetwork(networkString)
-                selectedURL = availableURLs.first ?? ""
-                try KeyClient.live.saveEsploraURL(selectedURL)
+                self.selectedEsploraServer =
+                    availableEsploraServers.first ?? EsploraServer(name: "", url: "")
+                try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -35,10 +36,11 @@ class OnboardingViewModel: ObservableObject {
             }
         }
     }
-    @Published var selectedURL: String = "" {
+    @Published var selectedEsploraServer: EsploraServer = EsploraServer.mutiny_signet
+    {
         didSet {
             do {
-                try KeyClient.live.saveEsploraURL(selectedURL)
+                try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -49,7 +51,7 @@ class OnboardingViewModel: ObservableObject {
             }
         }
     }
-    var availableURLs: [String] {
+    var availableEsploraServers: [EsploraServer] {
         switch selectedNetwork {
         case .bitcoin:
             return Constants.Config.EsploraServerURLNetwork.Bitcoin.allValues
@@ -80,13 +82,12 @@ class OnboardingViewModel: ObservableObject {
         do {
             if let networkString = try KeyClient.live.getNetwork() {
                 self.selectedNetwork = Network(stringValue: networkString) ?? .signet
-            } else {
-                self.selectedNetwork = .signet
             }
             if let esploraURL = try KeyClient.live.getEsploraURL() {
-                self.selectedURL = esploraURL
-            } else {
-                self.selectedURL = availableURLs.first ?? ""
+                self.selectedEsploraServer =
+                    availableEsploraServers.first(where: {
+                        $0.url == esploraURL
+                    }) ?? EsploraServer.mutiny_signet
             }
         } catch {
             DispatchQueue.main.async {
@@ -104,7 +105,7 @@ class OnboardingViewModel: ObservableObject {
             let backupInfo = BackupInfo(mnemonic: seedPhrase)
             try KeyClient.live.saveBackupInfo(backupInfo)
             try KeyClient.live.saveNetwork(selectedNetwork.description)
-            try KeyClient.live.saveEsploraURL(selectedURL)
+            try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             LightningNodeService.shared = LightningNodeService()
             DispatchQueue.main.async {
                 self.isOnboarding = false
