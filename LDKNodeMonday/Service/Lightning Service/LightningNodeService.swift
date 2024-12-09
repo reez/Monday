@@ -24,7 +24,7 @@ class LightningNodeService {
         let storedNetworkString = try! keyService.getNetwork() ?? Network.signet.description
         let storedEsploraURL =
             try! keyService.getEsploraURL()
-            ?? EsploraServer.mutiny_signet.url
+        ?? EsploraServer.lqwd_signet.url
 
         self.network = Network(stringValue: storedNetworkString) ?? .signet
         self.keyService = keyService
@@ -34,7 +34,7 @@ class LightningNodeService {
         config.logDirPath = FileManager.default.getDocumentsDirectoryPath()
         config.network = self.network
         config.trustedPeers0conf = [
-            Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
+            Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId
         ]
         config.logLevel = .trace
 
@@ -53,10 +53,13 @@ class LightningNodeService {
             )
             self.networkColor = Constants.BitcoinNetworkColor.testnet.color
         case .signet:
+            nodeBuilder.setGossipSourceRgs(
+                rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
+            )
             nodeBuilder.setLiquiditySourceLsps2(
-                address: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.address,
-                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId,
-                token: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.token
+                address: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.address,
+                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId,
+                token: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.token
             )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
         case .regtest:

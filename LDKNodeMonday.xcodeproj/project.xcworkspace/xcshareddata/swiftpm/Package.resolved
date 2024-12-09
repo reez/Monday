@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/reez/BitcoinUI.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "22ea27e2495aac9035c39a1b09165a802d90bdde"
+        "revision" : "a92d2426526cf50858122c9c019e9b5ac138214a",
+        "version" : "1.0.8"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lightningdevkit/ldk-node.git",
       "state" : {
-        "revision" : "21566111f1c32f6f562a15711158020fa416f1d7",
-        "version" : "0.4.2"
+        "revision" : "db66cb90e5878833f367f46c4368259efde31720",
+        "version" : "0.4.0"
       }
     },
     {

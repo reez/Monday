@@ -28,6 +28,7 @@ struct Constants {
                 static let allValues = [
                     EsploraServer.mutiny_signet,
                     EsploraServer.bdk_signet,
+                    EsploraServer.lqwd_signet
                 ]
             }
             struct Testnet {
@@ -42,12 +43,14 @@ struct Constants {
         struct LiquiditySourceLsps2 {
             struct Signet {
                 static let mutiny = LSP.mutiny
+                static let lqwd = LSP.lqwd
             }
         }
 
         struct RGSServerURLNetwork {
             static let bitcoin = "https://rapidsync.lightningdevkit.org/snapshot/"
             static let testnet = "https://rapidsync.lightningdevkit.org/testnet/snapshot/"
+            static let signet = "https://mutinynet.lspd.lqwd.tech"
         }
 
     }
@@ -62,6 +65,11 @@ struct Constants {
         static let olympus = LightningServiceProvider(
             address: "45.79.192.236:9735",
             nodeId: "031b301307574bbe9b9ac7b79cbe1700e31e544513eae0b5d7497483083f99e581",
+            token: ""
+        )
+        static let lqwd = LightningServiceProvider(
+            address: "192.243.215.98:27100",
+            nodeId: "0275eb44504d53b2a083852e3bffcc4e178195b9546c162590d8c282f3ed3243fc",
             token: ""
         )
     }
@@ -107,6 +115,7 @@ struct EsploraServer: Hashable {
 
     static let mutiny_signet = EsploraServer(name: "Mutiny", url: "https://mutinynet.com/api")
     static let bdk_signet = EsploraServer(name: "BDK", url: "http://signet.bitcoindevkit.net")
+    static let lqwd_signet = EsploraServer(name: "LQWD", url: "https://mutinynet.ltbl.io/api")
 
     static let local_regtest = EsploraServer(name: "Local", url: "http://127.0.0.1:3002")
 
