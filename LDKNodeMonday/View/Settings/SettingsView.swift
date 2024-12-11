@@ -7,6 +7,7 @@
 
 import BitcoinUI
 import SwiftUI
+import LDKNode
 
 struct SettingsView: View {
     @ObservedObject var viewModel: NodeIDViewModel
@@ -20,7 +21,6 @@ struct SettingsView: View {
     @State private var showingShowSeedConfirmation = false
     @State private var showingResetAppConfirmation = false
     @State private var isViewPeersPresented = false
-    @State private var isAddChannelPresented = false
     @State private var refreshFlag = false
     @State private var isPaymentsPresented = false
 
@@ -28,80 +28,51 @@ struct SettingsView: View {
 
         NavigationView {
 
-            VStack {
-
-                VStack(spacing: 20) {
-                    HStack {
-                        Image(systemName: "circle.fill")
-                            .foregroundColor(
-                                viewModel.status?.isRunning ?? false ? .green : .secondary
-                            )
-                        Text(
-                            viewModel.status?.isRunning ?? false ? "On" : "Off"
-                        )
-                    }
-                    .font(.caption2)
-
-                    HStack {
-                        Text(viewModel.nodeID)
-                            .truncationMode(.middle)
-                            .lineLimit(1)
-                            .foregroundColor(.primary)
-                            .font(.subheadline)
-                        Button(action: {
-                            UIPasteboard.general.string = viewModel.nodeID
-                            isCopied = true
-                            showCheckmark = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                isCopied = false
-                                showCheckmark = false
-                            }
-                        }) {
-                            Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                                .font(.subheadline)
-                        }
-                        .foregroundColor(viewModel.networkColor)
-                    }
-                    if let url = viewModel.esploraURL {
-                        Text(
-                            url.replacingOccurrences(of: "https://", with: "")
-                                .replacingOccurrences(
-                                    of: "http://",
-                                    with: ""
-                                )
-                        )
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
-                        .foregroundColor(viewModel.networkColor)
-                        .fontDesign(.monospaced)
-                        .font(.caption2)
-                    }
-                }
-                .padding(.all, 40.0)
-                .fontDesign(.monospaced)
-
                 List {
 
                     Section(
-                        header: Text("Lightning".uppercased()).foregroundColor(
-                            viewModel.networkColor
-                        )
+                        header: Text("Lightning node details")
                     ) {
+                        HStack {
+                            Text("Network")
+                            Spacer()
+                            Text((viewModel.network ?? "No network").capitalized)
+                        }
+                        
+                        HStack {
+                            Text("Node Id")
+                            Spacer()
+                            Text(viewModel.nodeID)
+                                .frame(width: 200)
+                                .truncationMode(.middle)
+                                .lineLimit(1)
+                            Button {
+                                UIPasteboard.general.string = viewModel.nodeID
+                            } label: {
+                                Image(systemName: "doc.on.doc")
+                            }
+                        }
+                        
+                        HStack {
+                            Text("Status")
+                            Spacer()
+                            HStack {
+                                Text(viewModel.status?.isRunning ?? false ? "On" : "Off")
+                                Image(systemName: "circle.fill")
+                                    .foregroundColor(
+                                        viewModel.status?.isRunning ?? false ? .green : .red
+                                    )
+                            }
+                        }
+                        
+                        NavigationLink("Channels") {
+                            ChannelsListView(viewModel: .init(nodeInfoClient: .live))
+                        }
 
                         Button {
                             isViewPeersPresented = true
                         } label: {
                             Text("View Peers")
-                        }
-
-                        Button {
-                            isAddChannelPresented = true
-                        } label: {
-                            Text("Add Channel")
-                        }
-
-                        NavigationLink("Channels") {
-                            ChannelsListView(viewModel: .init(nodeInfoClient: .live))
                         }
 
                     }
@@ -160,11 +131,17 @@ struct SettingsView: View {
                     }
                     .foregroundColor(.primary)
                 }
-                //.listRowSeparator(.hidden)
+                .listRowSeparator(.hidden)
                 .listStyle(.plain)
                 .background(Color.clear)
                 .navigationTitle("Settings")
-                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Done") {
+                            dismiss()
+                        }.padding()
+                    }
+                }
                 .onAppear {
                     Task {
                         viewModel.getNodeID()
@@ -199,16 +176,6 @@ struct SettingsView: View {
                     PeersListView(viewModel: .init())
                         .presentationDetents([.medium])
                 }
-                .sheet(
-                    isPresented: $isAddChannelPresented,
-                    onDismiss: {
-                    }
-                ) {
-                    ChannelAddView(viewModel: .init())
-                        .presentationDetents([.medium, .large])
-                }
-
-            }
 
         }
 
