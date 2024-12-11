@@ -11,6 +11,7 @@ import SwiftUI
 struct ChannelsListView: View {
     @State private var refreshFlag = false
     let viewModel: ChannelsListViewModel
+    @State private var isAddChannelPresented = false
 
     var body: some View {
         ZStack {
@@ -18,9 +19,7 @@ struct ChannelsListView: View {
 
             VStack {
                 if viewModel.channels.isEmpty {
-                    Text("No Channels")
-                        .font(.system(.caption, design: .monospaced))
-                        .padding()
+                    Text("No channels")
                 } else {
                     List {
                         ForEach(
@@ -87,9 +86,21 @@ struct ChannelsListView: View {
                 }
             }
         }
-        .navigationTitle(
-            "Channels"
-        )
+        .navigationTitle("Channels")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Add") {
+                    isAddChannelPresented = true
+                }.padding()
+                    .sheet(
+                        isPresented: $isAddChannelPresented
+                    ) {
+                        ChannelAddView(viewModel: .init())
+                            .presentationDetents([.medium, .large])
+                    }
+            }
+        }
 
     }
 }
