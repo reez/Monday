@@ -66,7 +66,7 @@
 		AE7C4A0C2B40785F0061189D /* SeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7C4A0B2B40785F0061189D /* SeedView.swift */; };
 		AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */; };
 		AE7D3FAD2A4263C100EAE730 /* PaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */; };
-		AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* NodeIDView.swift */; };
+		AE80116B29A59976009B9967 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* SettingsView.swift */; };
 		AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelAddView.swift */; };
 		AE80C2002C4AB360006E7193 /* BIP21View.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80C1FF2C4AB360006E7193 /* BIP21View.swift */; };
 		AE80C2022C4AB38D006E7193 /* BIP21ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80C2012C4AB38D006E7193 /* BIP21ViewModel.swift */; };
@@ -147,7 +147,7 @@
 		AE7C4A0B2B40785F0061189D /* SeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedView.swift; sourceTree = "<group>"; };
 		AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsView.swift; sourceTree = "<group>"; };
 		AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsViewModel.swift; sourceTree = "<group>"; };
-		AE80116A29A59976009B9967 /* NodeIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDView.swift; sourceTree = "<group>"; };
+		AE80116A29A59976009B9967 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AE80116C29A59AF4009B9967 /* ChannelAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelAddView.swift; sourceTree = "<group>"; };
 		AE80C1FF2C4AB360006E7193 /* BIP21View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIP21View.swift; sourceTree = "<group>"; };
 		AE80C2012C4AB38D006E7193 /* BIP21ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIP21ViewModel.swift; sourceTree = "<group>"; };
@@ -458,20 +458,20 @@
 			isa = PBXGroup;
 			children = (
 				AE49E8772A253CBE002623E8 /* Home */,
-				AE8549FE2AC6014F00F056E6 /* Profile */,
+				AE8549FE2AC6014F00F056E6 /* Settings */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		AE8549FE2AC6014F00F056E6 /* Profile */ = {
+		AE8549FE2AC6014F00F056E6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				AE80116A29A59976009B9967 /* NodeIDView.swift */,
+				AE80116A29A59976009B9967 /* SettingsView.swift */,
 				AE551D432B8ECCAD0034B61E /* Peers */,
 				AE49E86E2A253AAE002623E8 /* Channel */,
 				AE49E87A2A2544DC002623E8 /* Danger */,
 			);
-			path = Profile;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		AE8549FF2AC601CD00F056E6 /* App */ = {
@@ -683,7 +683,7 @@
 				AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */,
 				AE551D472B8ECE7D0034B61E /* Payment.swift in Sources */,
 				AE51BEFA2B37A2A500BAE452 /* Event+Extensions.swift in Sources */,
-				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
+				AE80116B29A59976009B9967 /* SettingsView.swift in Sources */,
 				AE49E8522A253618002623E8 /* StartViewModel.swift in Sources */,
 				AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */,
 				AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */,
@@ -942,14 +942,6 @@
 			requirement = {
 				kind = exactVersion;
 				version = 2.0.0;
-			};
-		};
-		AEFA825C2CC15C7C0095B0BA /* XCRemoteSwiftPackageReference "ldk-node" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lightningdevkit/ldk-node.git";
-			requirement = {
-				kind = exactVersion;
-				version = 0.4.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

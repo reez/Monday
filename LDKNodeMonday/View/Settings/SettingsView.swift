@@ -1,5 +1,5 @@
 //
-//  NodeIDView.swift
+//  SettingsView.swift
 //  LDKNodeMonday
 //
 //  Created by Matthew Ramsden on 2/21/23.
@@ -8,7 +8,7 @@
 import BitcoinUI
 import SwiftUI
 
-struct NodeIDView: View {
+struct SettingsView: View {
     @ObservedObject var viewModel: NodeIDViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var isCopied = false
@@ -160,10 +160,11 @@ struct NodeIDView: View {
                     }
                     .foregroundColor(.primary)
                 }
-                .listRowSeparator(.hidden)
+                //.listRowSeparator(.hidden)
                 .listStyle(.plain)
                 .background(Color.clear)
-                .navigationTitle("Profile")
+                .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.inline)
                 .onAppear {
                     Task {
                         viewModel.getNodeID()
@@ -216,6 +217,6 @@ struct NodeIDView: View {
 
 #if DEBUG
     #Preview {
-        NodeIDView(viewModel: .init())
+        SettingsView(viewModel: .init())
     }
 #endif

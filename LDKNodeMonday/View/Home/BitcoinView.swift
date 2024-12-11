@@ -239,7 +239,7 @@ struct BitcoinView: View {
                     }
                 }
             ) {
-                NodeIDView(viewModel: .init())
+                SettingsView(viewModel: .init())
             }
             .alert(isPresented: $showingBitcoinViewErrorAlert) {
                 Alert(
