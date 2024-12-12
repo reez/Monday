@@ -15,11 +15,10 @@ struct ChannelsListView: View {
 
     var body: some View {
         ZStack {
-            Color(uiColor: .systemBackground)
 
             VStack {
                 if viewModel.channels.isEmpty {
-                    Text("No channels")
+                    Text("No Channels")
                 } else {
                     List {
                         ForEach(
@@ -86,19 +85,17 @@ struct ChannelsListView: View {
                 }
             }
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
         .navigationTitle("Channels")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Add") {
-                    isAddChannelPresented = true
-                }.padding()
-                    .sheet(
-                        isPresented: $isAddChannelPresented
-                    ) {
-                        ChannelAddView(viewModel: .init())
-                            .presentationDetents([.medium, .large])
-                    }
+                NavigationLink(destination: ChannelAddView(viewModel: .init())) {
+                    Text("Add")
+                        .fontWeight(.medium)
+                        .padding()
+                }
             }
         }
 

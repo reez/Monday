@@ -20,14 +20,96 @@ struct ChannelAddView: View {
 
     var body: some View {
 
-        ZStack {
-            Color(uiColor: UIColor.systemBackground)
-
             VStack {
 
-                HStack {
+                if viewModel.isProgressViewShowing {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
+                }
+                
+                Spacer()
+                
+               Text("Enter, paste or scan the required information to open a channel with another lightning node.")
+                    .font(.body)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: false)
+                    .padding(.horizontal)
+                    
+                Spacer()
 
-                    Button {
+                VStack(spacing: 20) {
+
+                    VStack(alignment: .leading) {
+                        Text("Node ID")
+                            .font(.subheadline.weight(.medium))
+                        TextField(
+                            "03a5b467d7f...4c2b099b8250c",
+                            text: $viewModel.nodeId
+                        )
+                        .frame(width: 260, height: 48)
+                        .tint(.accentColor)
+                        .padding([.leading, .trailing], 20)
+                        .keyboardType(.numbersAndPunctuation)
+                        .truncationMode(.middle)
+                        .submitLabel(.next)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        ).onChange(of: viewModel.nodeId) { oldValue, newValue in
+                            viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
+                        }
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Address")
+                            .font(.subheadline.weight(.medium))
+                        TextField(
+                            "172.18.0.2:9735",
+                            text: $viewModel.address
+                        )
+                        .frame(width: 260, height: 48)
+                        .tint(.accentColor)
+                        .padding([.leading, .trailing], 20)
+                        .keyboardType(.numbersAndPunctuation)
+                        .truncationMode(.middle)
+                        .submitLabel(.next)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        ).onChange(of: viewModel.address) { oldValue, newValue in
+                            viewModel.address = newValue.replacingOccurrences(of: " ", with: "")
+                        }
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Channel capacity")
+                            .font(.subheadline.weight(.medium))
+                        TextField(
+                            125000.formatted(),
+                            text: $viewModel.channelAmountSats
+                        )
+                        .frame(width: 260, height: 48)
+                        .tint(.accentColor)
+                        .padding([.leading, .trailing], 20)
+                        .keyboardType(.numberPad)
+                        .submitLabel(.done)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        )
+                    }
+
+                }
+                .padding(.horizontal)
+                
+                Spacer()
+                
+                HStack(spacing: 60) {
+
+                    Button("Paste", systemImage: "doc.on.clipboard") {
                         if pasteboard.hasStrings {
                             if let string = pasteboard.string {
                                 if let peer = string.parseConnectionInfo() {
@@ -55,154 +137,19 @@ struct ChannelAddView: View {
                                 )
                             }
                         }
-                    } label: {
-                        HStack {
-                            Image(systemName: "doc.on.doc")
-                                .minimumScaleFactor(0.5)
-                            Text("Paste")
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.5)
-                        }
-                        .frame(width: 100, height: 25)
                     }
-
-                    Spacer()
-
-                    Button {
+                    
+                    Button("Scan", systemImage: "qrcode.viewfinder") {
                         isShowingScanner = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "qrcode.viewfinder")
-                                .minimumScaleFactor(0.5)
-                            Text("Scan")
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.5)
-                        }
-                        .frame(width: 100, height: 25)
                     }
 
                 }
-                .buttonBorderShape(.capsule)
-                .buttonStyle(.bordered)
-                .tint(viewModel.networkColor)
-                .padding()
-                .padding(.top, 20.0)
+                .buttonStyle(.automatic)
+                .controlSize(.mini)
+                
+                Spacer()
 
-                if viewModel.isProgressViewShowing {
-                    HStack {
-                        Spacer()
-                        ProgressView()
-                        Spacer()
-                    }
-                }
-
-                VStack(alignment: .leading) {
-
-                    Text("Node ID")
-                        .minimumScaleFactor(0.75)
-                        .bold()
-
-                    ZStack {
-
-                        TextField(
-                            "03a5b467d7f...4c2b099b8250c",
-                            text: $viewModel.nodeId
-                        )
-                        .onChange(of: viewModel.nodeId) { oldValue, newValue in
-                            viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
-                        }
-                        .keyboardType(.numbersAndPunctuation)
-                        .truncationMode(.middle)
-                        .submitLabel(.next)
-                        .minimumScaleFactor(0.95)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
-
-                        if !viewModel.nodeId.isEmpty {
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    self.viewModel.nodeId = ""
-                                }) {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.secondary)
-                                }
-                                .padding(.trailing, 8)
-                            }
-                        }
-                    }
-
-                    Text("Address")
-                        .minimumScaleFactor(0.5)
-                        .bold()
-
-                    ZStack {
-                        TextField(
-                            "172.18.0.2:9735",
-                            text: $viewModel.address
-                        )
-                        .onChange(of: viewModel.nodeId) { oldValue, newValue in
-                            viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
-                        }
-                        .keyboardType(.numbersAndPunctuation)
-                        .truncationMode(.middle)
-                        .submitLabel(.next)
-                        .minimumScaleFactor(0.5)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
-
-                        if !viewModel.address.isEmpty {
-
-                            HStack {
-                                Spacer()
-                                Button {
-                                    self.viewModel.address = ""
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.secondary)
-                                }
-                                .padding(.trailing, 8)
-                            }
-
-                        }
-                    }
-
-                    Text("Sats")
-                        .minimumScaleFactor(0.5)
-                        .bold()
-
-                    ZStack {
-                        TextField(
-                            "125000",
-                            text: $viewModel.channelAmountSats
-                        )
-                        .keyboardType(.numberPad)
-                        .submitLabel(.done)
-                        .minimumScaleFactor(0.5)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
-
-                        if !viewModel.channelAmountSats.isEmpty {
-
-                            HStack {
-
-                                Spacer()
-
-                                Button {
-                                    self.viewModel.channelAmountSats = ""
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.secondary)
-                                }
-                                .padding(.trailing, 8)
-
-                            }
-                        }
-                    }
-
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 10)
-                .minimumScaleFactor(0.4)
-
-                Button {
+                Button("Open Channel") {
                     isFocused = false
                     let channelAmountSats = UInt64(viewModel.channelAmountSats) ?? UInt64(101010)
                     Task {
@@ -218,23 +165,17 @@ struct ChannelAddView: View {
                             }
                         }
                     }
-                } label: {
-                    Text("Open Channel")
-                        .bold()
-                        .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                        .frame(maxWidth: .infinity)
-                        .padding(.all, 8)
                 }
-                .buttonBorderShape(.capsule)
-                .buttonStyle(.borderedProminent)
-                .tint(viewModel.networkColor)
-                .frame(width: 300, height: 25)
-                .padding(.horizontal)
-                .padding(.bottom, 80.0)
-
-                Spacer()
+                .disabled(!viewModel.nodeId.isEmpty || !viewModel.address.isEmpty || !viewModel.channelAmountSats.isEmpty)
+                .buttonStyle(BitcoinFilled(tintColor: .accentColor , isCapsule: true))
+                    .padding(.horizontal)
+                    .padding(.bottom, 40.0)
 
             }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .navigationTitle("Add Channel")
+            .navigationBarTitleDisplayMode(.inline)
             .padding()
             .focused($isFocused)
             .onAppear {
@@ -263,9 +204,6 @@ struct ChannelAddView: View {
                     completion: handleScan
                 )
             }
-
-        }
-        .ignoresSafeArea()
 
     }
 
