@@ -30,18 +30,6 @@ struct ChannelAddView: View {
                 }
             }
 
-            Spacer()
-
-            Text(
-                "Enter, paste or scan the required information to open a channel with another lightning node."
-            )
-            .font(.body)
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: false)
-            .padding(.horizontal)
-
-            Spacer()
-
             VStack(spacing: 20) {
 
                 VStack(alignment: .leading) {
@@ -151,6 +139,16 @@ struct ChannelAddView: View {
 
             Spacer()
 
+            Text(
+                "Enter, paste or scan the required information to open a channel with another lightning node."
+            )
+            .font(.footnote)
+            .multilineTextAlignment(.leading)
+            .fixedSize(horizontal: false, vertical: false)
+            .padding(.horizontal, 30)
+
+            Spacer()
+
             Button("Open Channel") {
                 isFocused = false
                 let channelAmountSats = UInt64(viewModel.channelAmountSats) ?? UInt64(101010)
@@ -169,8 +167,8 @@ struct ChannelAddView: View {
                 }
             }
             .disabled(
-                !viewModel.nodeId.isEmpty || !viewModel.address.isEmpty
-                    || !viewModel.channelAmountSats.isEmpty
+                viewModel.nodeId.isEmpty || viewModel.address.isEmpty
+                    || viewModel.channelAmountSats.isEmpty
             )
             .buttonStyle(BitcoinFilled(tintColor: .accentColor, isCapsule: true))
             .padding(.horizontal)
