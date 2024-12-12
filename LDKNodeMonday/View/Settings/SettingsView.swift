@@ -151,7 +151,6 @@ struct SettingsView: View {
                 }
                 .foregroundColor(.primary)
             }
-            .listRowSeparator(.hidden)
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
             .navigationTitle("Settings")
@@ -160,7 +159,9 @@ struct SettingsView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         dismiss()
-                    }.padding()
+                    }
+                    .fontWeight(.medium)
+                    .padding()
                 }
             }
             .onAppear {

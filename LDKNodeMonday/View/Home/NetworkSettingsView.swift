@@ -53,7 +53,9 @@ struct NetworkSettingsView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         dismiss()
-                    }.padding()
+                    }
+                    .fontWeight(.medium)
+                    .padding()
                 }
             }
         }
