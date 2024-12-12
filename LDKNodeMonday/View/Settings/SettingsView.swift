@@ -151,40 +151,40 @@ struct SettingsView: View {
                 }
                 .foregroundColor(.primary)
             }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        dismiss()
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+                .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Done") {
+                            dismiss()
+                        }
+                        .fontWeight(.medium)
+                        .padding()
                     }
-                    .fontWeight(.medium)
-                    .padding()
                 }
-            }
-            .onAppear {
-                Task {
-                    viewModel.getNodeID()
-                    viewModel.getNetwork()
-                    viewModel.getEsploraUrl()
-                    viewModel.getColor()
-                    await viewModel.getStatus()
-                }
-            }
-            .onReceive(viewModel.$nodeIDError) { errorMessage in
-                showingNodeIDErrorAlert = errorMessage != nil
-            }
-            .alert(isPresented: $showingNodeIDErrorAlert) {
-                Alert(
-                    title: Text(viewModel.nodeIDError?.title ?? "Unknown"),
-                    message: Text(viewModel.nodeIDError?.detail ?? ""),
-                    dismissButton: .default(Text("OK")) {
-                        viewModel.nodeIDError = nil
+                .onAppear {
+                    Task {
+                        viewModel.getNodeID()
+                        viewModel.getNetwork()
+                        viewModel.getEsploraUrl()
+                        viewModel.getColor()
+                        await viewModel.getStatus()
                     }
-                )
-            }
+                }
+                .onReceive(viewModel.$nodeIDError) { errorMessage in
+                    showingNodeIDErrorAlert = errorMessage != nil
+                }
+                .alert(isPresented: $showingNodeIDErrorAlert) {
+                    Alert(
+                        title: Text(viewModel.nodeIDError?.title ?? "Unknown"),
+                        message: Text(viewModel.nodeIDError?.detail ?? ""),
+                        dismissButton: .default(Text("OK")) {
+                            viewModel.nodeIDError = nil
+                        }
+                    )
+                }
         }
 
     }

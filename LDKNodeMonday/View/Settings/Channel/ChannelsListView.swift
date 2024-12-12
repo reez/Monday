@@ -38,7 +38,9 @@ struct ChannelsListView: View {
                                             .frame(width: 40.0, height: 40.0)
                                             .foregroundColor(.accentColor)
                                         Image(systemName: "fibrechannel")
-                                            .font(.subheadline).dynamicTypeSize(...DynamicTypeSize.large)
+                                            .font(.subheadline).dynamicTypeSize(
+                                                ...DynamicTypeSize.large
+                                            )
                                             .foregroundColor(Color(uiColor: .systemBackground))
                                             .bold()
                                     }
@@ -98,19 +100,19 @@ struct ChannelsListView: View {
                 }
             }
         }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
-        .listStyle(.plain)
-        .scrollContentBackground(.hidden)
-        .navigationTitle("Channels")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: ChannelAddView(viewModel: .init())) {
-                    Text("Add")
-                        .fontWeight(.medium)
-                        .padding()
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .navigationTitle("Channels")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: ChannelAddView(viewModel: .init())) {
+                        Text("Add")
+                            .fontWeight(.medium)
+                            .padding()
+                    }
                 }
             }
-        }
 
     }
 }

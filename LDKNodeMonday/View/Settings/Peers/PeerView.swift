@@ -148,35 +148,35 @@ struct PeerView: View {
             .padding(.bottom, 40.0)
 
         }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
-        .navigationTitle("Add Peer")
-        .navigationBarTitleDisplayMode(.inline)
-        .padding()
-        .focused($isFocused)
-        .onAppear {
-            viewModel.getColor()
-        }
-        .onReceive(viewModel.$peerViewError) { errorMessage in
-            if errorMessage != nil {
-                showingPeerViewErrorAlert = true
+            .navigationTitle("Add Peer")
+            .navigationBarTitleDisplayMode(.inline)
+            .padding()
+            .focused($isFocused)
+            .onAppear {
+                viewModel.getColor()
             }
-        }
-        .alert(isPresented: $showingPeerViewErrorAlert) {
-            Alert(
-                title: Text(viewModel.peerViewError?.title ?? "Unknown"),
-                message: Text(viewModel.peerViewError?.detail ?? ""),
-                dismissButton: .default(Text("OK")) {
-                    viewModel.peerViewError = nil
+            .onReceive(viewModel.$peerViewError) { errorMessage in
+                if errorMessage != nil {
+                    showingPeerViewErrorAlert = true
                 }
-            )
-        }
-        .sheet(isPresented: $isShowingScanner) {
-            CodeScannerView(
-                codeTypes: [.qr],
-                simulatedData:
-                    "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6",
-                completion: handleScan
-            )
-        }
+            }
+            .alert(isPresented: $showingPeerViewErrorAlert) {
+                Alert(
+                    title: Text(viewModel.peerViewError?.title ?? "Unknown"),
+                    message: Text(viewModel.peerViewError?.detail ?? ""),
+                    dismissButton: .default(Text("OK")) {
+                        viewModel.peerViewError = nil
+                    }
+                )
+            }
+            .sheet(isPresented: $isShowingScanner) {
+                CodeScannerView(
+                    codeTypes: [.qr],
+                    simulatedData:
+                        "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6",
+                    completion: handleScan
+                )
+            }
 
     }
 

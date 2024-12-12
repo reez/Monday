@@ -65,50 +65,50 @@ struct ChannelDetailView: View {
             Spacer()
 
         }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
-        .navigationTitle("Channel details")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Close") {
-                    showingConfirmationAlert = true
+            .navigationTitle("Channel details")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Close") {
+                        showingConfirmationAlert = true
+                    }
+                    .fontWeight(.medium)
+                    .foregroundColor(.red)
+                    .padding()
                 }
-                .fontWeight(.medium)
-                .foregroundColor(.red)
-                .padding()
             }
-        }
-        .alert(isPresented: $showingChannelDetailViewErrorAlert) {
-            Alert(
-                title: Text(viewModel.channelDetailViewError?.title ?? "Unknown"),
-                message: Text(viewModel.channelDetailViewError?.detail ?? ""),
-                dismissButton: .default(Text("OK")) {
-                    viewModel.channelDetailViewError = nil
-                }
-            )
-        }
-        .alert(
-            "Are you sure you want to close this channel?",
-            isPresented: $showingConfirmationAlert
-        ) {
-            Button("Yes", role: .destructive) {
-                viewModel.close()
-                refreshFlag = true
-                if !showingChannelDetailViewErrorAlert {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                        self.presentationMode.wrappedValue.dismiss()
+            .alert(isPresented: $showingChannelDetailViewErrorAlert) {
+                Alert(
+                    title: Text(viewModel.channelDetailViewError?.title ?? "Unknown"),
+                    message: Text(viewModel.channelDetailViewError?.detail ?? ""),
+                    dismissButton: .default(Text("OK")) {
+                        viewModel.channelDetailViewError = nil
+                    }
+                )
+            }
+            .alert(
+                "Are you sure you want to close this channel?",
+                isPresented: $showingConfirmationAlert
+            ) {
+                Button("Yes", role: .destructive) {
+                    viewModel.close()
+                    refreshFlag = true
+                    if !showingChannelDetailViewErrorAlert {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
                     }
                 }
+                Button("No", role: .cancel) {}
             }
-            Button("No", role: .cancel) {}
-        }
-        .onReceive(viewModel.$channelDetailViewError) { errorMessage in
-            if errorMessage != nil {
-                showingChannelDetailViewErrorAlert = true
+            .onReceive(viewModel.$channelDetailViewError) { errorMessage in
+                if errorMessage != nil {
+                    showingChannelDetailViewErrorAlert = true
+                }
             }
-        }
-        .onAppear {
-            viewModel.getColor()
-        }
+            .onAppear {
+                viewModel.getColor()
+            }
 
     }
 }
