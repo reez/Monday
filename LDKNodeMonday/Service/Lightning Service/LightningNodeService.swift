@@ -24,7 +24,7 @@ class LightningNodeService {
         let storedNetworkString = try! keyService.getNetwork() ?? Network.signet.description
         let storedEsploraURL =
             try! keyService.getEsploraURL()
-        ?? EsploraServer.lqwd_signet.url
+            ?? EsploraServer.lqwd_signet.url
 
         self.network = Network(stringValue: storedNetworkString) ?? .signet
         self.keyService = keyService
