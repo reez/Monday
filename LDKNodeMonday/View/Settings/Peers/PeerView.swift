@@ -19,204 +19,164 @@ struct PeerView: View {
 
     var body: some View {
 
-        ZStack {
-            Color(uiColor: UIColor.systemBackground)
+        VStack {
 
-            VStack {
+            if viewModel.isProgressViewShowing {
+                HStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+            }
+
+            VStack(spacing: 20) {
 
                 VStack(alignment: .leading) {
-
-                    HStack {
-
-                        Button {
-                            if pasteboard.hasStrings {
-                                if let string = pasteboard.string {
-                                    if let peer = string.parseConnectionInfo() {
-                                        viewModel.nodeId = peer.nodeID
-                                        viewModel.address = peer.address
-                                    } else {
-                                        self.viewModel.peerViewError = .init(
-                                            title: "Paste Parsing Error",
-                                            detail: "Failed to parse the Pasteboard."
-                                        )
-                                    }
-                                } else {
-                                    self.viewModel.peerViewError = .init(
-                                        title: "Paste Parsing Error",
-                                        detail: "Nothing found in the Pasteboard."
-                                    )
-                                }
-                            }
-                        } label: {
-                            HStack {
-                                Image(systemName: "doc.on.doc")
-                                    .minimumScaleFactor(0.5)
-                                Text("Paste")
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.5)
-                            }
-                            .frame(width: 100, height: 25)
-                        }
-
-                        Spacer()
-
-                        Button {
-                            isShowingScanner = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "qrcode.viewfinder")
-                                    .minimumScaleFactor(0.5)
-                                Text("Scan")
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.5)
-                            }
-                            .frame(width: 100, height: 25)
-                        }
-
-                    }
-                    .buttonBorderShape(.capsule)
-                    .buttonStyle(.bordered)
-                    .tint(viewModel.networkColor)
-                    .padding(.bottom)
-
-                }
-                .padding()
-
-                if viewModel.isProgressViewShowing {
-                    HStack {
-                        Spacer()
-                        ProgressView()
-                        Spacer()
-                    }
-                }
-
-                VStack(alignment: .leading) {
-
                     Text("Node ID")
-                        .minimumScaleFactor(0.75)
-                        .bold()
-
-                    ZStack {
-                        TextField(
-                            "03a5b467d7f...4c2b099b8250c",
-                            text: $viewModel.nodeId
-                        )
-                        .truncationMode(.middle)
-                        .submitLabel(.next)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
-
-                        if !viewModel.nodeId.isEmpty {
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    self.viewModel.nodeId = ""
-                                }) {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.secondary)
-                                }
-                                .padding(.trailing, 8)
-                            }
-                        }
+                        .font(.subheadline.weight(.medium))
+                    TextField(
+                        "03a5b467d7f...4c2b099b8250c",
+                        text: $viewModel.nodeId
+                    )
+                    .frame(width: 260, height: 48)
+                    .tint(.accentColor)
+                    .padding([.leading, .trailing], 20)
+                    .keyboardType(.numbersAndPunctuation)
+                    .truncationMode(.middle)
+                    .submitLabel(.next)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 24)
+                            .stroke(Color.accentColor, lineWidth: 2)
+                    ).onChange(of: viewModel.nodeId) { oldValue, newValue in
+                        viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
                     }
+                }
 
+                VStack(alignment: .leading) {
                     Text("Address")
-                        .minimumScaleFactor(0.5)
-                        .bold()
+                        .font(.subheadline.weight(.medium))
+                    TextField(
+                        "172.18.0.2:9735",
+                        text: $viewModel.address
+                    )
+                    .frame(width: 260, height: 48)
+                    .tint(.accentColor)
+                    .padding([.leading, .trailing], 20)
+                    .keyboardType(.numbersAndPunctuation)
+                    .truncationMode(.middle)
+                    .submitLabel(.next)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 24)
+                            .stroke(Color.accentColor, lineWidth: 2)
+                    ).onChange(of: viewModel.address) { oldValue, newValue in
+                        viewModel.address = newValue.replacingOccurrences(of: " ", with: "")
+                    }
+                }
 
-                    ZStack {
+            }
+            .padding(.horizontal)
 
-                        TextField(
-                            "172.18.0.2:9735",
-                            text: $viewModel.address
-                        )
-                        .truncationMode(.middle)
-                        .submitLabel(.done)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 32))
+            Spacer()
 
-                        if !viewModel.address.isEmpty {
-                            HStack {
-                                Spacer()
-                                Button {
-                                    self.viewModel.address = ""
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.secondary)
-                                }
-                                .padding(.trailing, 8)
+            HStack(spacing: 60) {
+
+                Button("Paste", systemImage: "doc.on.clipboard") {
+                    if pasteboard.hasStrings {
+                        if let string = pasteboard.string {
+                            if let peer = string.parseConnectionInfo() {
+                                viewModel.nodeId = peer.nodeID
+                                viewModel.address = peer.address
+                            } else {
+                                self.viewModel.peerViewError = .init(
+                                    title: "Paste Parsing Error",
+                                    detail: "Failed to parse the Pasteboard."
+                                )
                             }
+                        } else {
+                            self.viewModel.peerViewError = .init(
+                                title: "Paste Parsing Error",
+                                detail: "Nothing found in the Pasteboard."
+                            )
                         }
                     }
-
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 10)
 
-                Button {
-                    self.viewModel.isProgressViewShowing = true
-                    Task {
-                        await viewModel.connect(
-                            nodeId: viewModel.nodeId,
-                            address: viewModel.address
-                        )
-                    }
-                    if showingPeerViewErrorAlert == true {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                            self.presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-
-                    if showingPeerViewErrorAlert == false {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                            self.presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-
-                } label: {
-                    Text("Connect Peer")
-                        .bold()
-                        .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                        .frame(maxWidth: .infinity)
-                        .padding(.all, 8)
+                Button("Scan", systemImage: "qrcode.viewfinder") {
+                    isShowingScanner = true
                 }
-                .buttonBorderShape(.capsule)
-                .buttonStyle(.borderedProminent)
-                .tint(viewModel.networkColor)
-                .frame(width: 300, height: 50)
-                .padding(.horizontal)
-
-                Spacer()
 
             }
-            .padding()
-            .focused($isFocused)
-            .onAppear {
-                viewModel.getColor()
-            }
-            .onReceive(viewModel.$peerViewError) { errorMessage in
-                if errorMessage != nil {
-                    showingPeerViewErrorAlert = true
+            .buttonStyle(.automatic)
+            .controlSize(.mini)
+
+            Spacer()
+
+            Text(
+                "Enter, paste or scan the required information to connect with another lightning node."
+            )
+            .font(.footnote)
+            .multilineTextAlignment(.leading)
+            .fixedSize(horizontal: false, vertical: false)
+            .padding(.horizontal, 30)
+
+            Spacer()
+
+            Button("Connect Peer") {
+                self.viewModel.isProgressViewShowing = true
+                Task {
+                    await viewModel.connect(
+                        nodeId: viewModel.nodeId,
+                        address: viewModel.address
+                    )
                 }
-            }
-            .alert(isPresented: $showingPeerViewErrorAlert) {
-                Alert(
-                    title: Text(viewModel.peerViewError?.title ?? "Unknown"),
-                    message: Text(viewModel.peerViewError?.detail ?? ""),
-                    dismissButton: .default(Text("OK")) {
-                        viewModel.peerViewError = nil
+                if showingPeerViewErrorAlert == true {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                        self.presentationMode.wrappedValue.dismiss()
                     }
-                )
+                }
+
+                if showingPeerViewErrorAlert == false {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                }
+
             }
-            .sheet(isPresented: $isShowingScanner) {
-                CodeScannerView(
-                    codeTypes: [.qr],
-                    simulatedData:
-                        "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6",
-                    completion: handleScan
-                )
-            }
+            .disabled(viewModel.nodeId.isEmpty || viewModel.address.isEmpty)
+            .buttonStyle(BitcoinFilled(tintColor: .accentColor, isCapsule: true))
+            .padding(.horizontal)
+            .padding(.bottom, 40.0)
 
         }
-        .ignoresSafeArea()
+        .navigationTitle("Add Peer")
+        .navigationBarTitleDisplayMode(.inline)
+        .padding()
+        .focused($isFocused)
+        .onAppear {
+            viewModel.getColor()
+        }
+        .onReceive(viewModel.$peerViewError) { errorMessage in
+            if errorMessage != nil {
+                showingPeerViewErrorAlert = true
+            }
+        }
+        .alert(isPresented: $showingPeerViewErrorAlert) {
+            Alert(
+                title: Text(viewModel.peerViewError?.title ?? "Unknown"),
+                message: Text(viewModel.peerViewError?.detail ?? ""),
+                dismissButton: .default(Text("OK")) {
+                    viewModel.peerViewError = nil
+                }
+            )
+        }
+        .sheet(isPresented: $isShowingScanner) {
+            CodeScannerView(
+                codeTypes: [.qr],
+                simulatedData:
+                    "LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6",
+                completion: handleScan
+            )
+        }
 
     }
 

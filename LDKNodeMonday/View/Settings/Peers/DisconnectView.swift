@@ -15,22 +15,32 @@ struct DisconnectView: View {
 
     var body: some View {
 
-        ZStack {
-            Color(uiColor: UIColor.systemBackground)
+        VStack {
 
-            VStack {
-
-                HStack {
+            List {
+                VStack(alignment: .leading) {
                     Text("Node ID")
+                        .font(.subheadline.weight(.medium))
                     Text(viewModel.nodeId.description)
+                        //.frame(width: 100)
                         .truncationMode(.middle)
                         .lineLimit(1)
+                        .font(.caption)
                         .foregroundColor(.secondary)
-
                 }
-                .font(.system(.caption, design: .monospaced))
-                .padding()
+                .padding(.top, 5)
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
+            }
+            .listStyle(.plain)
 
+            Spacer()
+
+        }
+        .navigationTitle("Peer details")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     viewModel.disconnect()
                     if showingDisconnectViewErrorAlert == false {
@@ -40,40 +50,29 @@ struct DisconnectView: View {
                         self.presentationMode.wrappedValue.dismiss()
                     }
                 } label: {
-                    Text("Disconnect Peer")
-                        .bold()
-                        .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                        .frame(maxWidth: .infinity)
-                        .padding(.all, 8)
-                }
-                .buttonBorderShape(.capsule)
-                .buttonStyle(.borderedProminent)
-                .frame(width: 300, height: 50)
-                .tint(viewModel.networkColor)
-                .padding()
-
-            }
-            .padding()
-            .alert(isPresented: $showingDisconnectViewErrorAlert) {
-                Alert(
-                    title: Text(viewModel.disconnectViewError?.title ?? "Unknown"),
-                    message: Text(viewModel.disconnectViewError?.detail ?? ""),
-                    dismissButton: .default(Text("OK")) {
-                        viewModel.disconnectViewError = nil
-                    }
-                )
-            }
-            .onReceive(viewModel.$disconnectViewError) { errorMessage in
-                if errorMessage != nil {
-                    showingDisconnectViewErrorAlert = true
+                    Text("Disconnect")
+                        .fontWeight(.medium)
+                        .padding()
                 }
             }
-            .onAppear {
-                viewModel.getColor()
-            }
-
         }
-        .ignoresSafeArea()
+        .alert(isPresented: $showingDisconnectViewErrorAlert) {
+            Alert(
+                title: Text(viewModel.disconnectViewError?.title ?? "Unknown"),
+                message: Text(viewModel.disconnectViewError?.detail ?? ""),
+                dismissButton: .default(Text("OK")) {
+                    viewModel.disconnectViewError = nil
+                }
+            )
+        }
+        .onReceive(viewModel.$disconnectViewError) { errorMessage in
+            if errorMessage != nil {
+                showingDisconnectViewErrorAlert = true
+            }
+        }
+        .onAppear {
+            viewModel.getColor()
+        }
 
     }
 
