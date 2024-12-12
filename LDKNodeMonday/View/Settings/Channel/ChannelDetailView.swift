@@ -21,107 +21,94 @@ struct ChannelDetailView: View {
 
     var body: some View {
 
-        ZStack {
-            Color(uiColor: UIColor.systemBackground)
+        VStack {
 
-            VStack {
-
-                Spacer()
-
-                Text(viewModel.channel.isOutbound ? "Outbound" : "Inbound").bold()
-                    .padding()
-                    .padding(.top, 120.0)
-
-                List(viewModel.channel.formatted(), id: \.name) { property in
-                    HStack {
+            List(viewModel.channel.formatted(), id: \.name) { property in
+                HStack {
+                    VStack(alignment: .leading) {
                         Text(property.name)
-                        Spacer()
+                            .font(.subheadline.weight(.medium))
                         Text(property.value)
+                            .font(.caption)
                             .foregroundColor(.secondary)
                             .truncationMode(.middle)
                             .lineLimit(1)
-                        if property.isCopyable {
-                            Button {
-                                UIPasteboard.general.string = property.value
-                                lastCopiedItemId = property.name
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    lastCopiedItemId = nil
-                                }
-                            } label: {
-                                HStack {
-                                    withAnimation {
-                                        Image(
-                                            systemName: lastCopiedItemId == property.name
-                                                ? "checkmark" : "doc.on.doc"
-                                        )
-                                    }
-                                }
-                                .foregroundColor(viewModel.networkColor)
-                                .padding(.leading, 8)
+
+                    }
+                    if property.isCopyable {
+                        Button {
+                            UIPasteboard.general.string = property.value
+                            lastCopiedItemId = property.name
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                lastCopiedItemId = nil
                             }
-                        }
-                    }
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
-                }
-                .font(.system(.caption2, design: .monospaced))
-                .listStyle(.plain)
-
-                Button {
-                    showingConfirmationAlert = true
-                } label: {
-                    Text("Close Channel")
-                        .bold()
-                        .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                        .frame(maxWidth: .infinity)
-                        .padding(.all, 8)
-                }
-                .buttonBorderShape(.capsule)
-                .buttonStyle(.borderedProminent)
-                .tint(viewModel.networkColor)
-                .padding(.all)
-                .padding(.bottom, 100.0)
-
-                Spacer()
-
-            }
-            .padding()
-            .padding(.vertical, 20.0)
-            .alert(isPresented: $showingChannelDetailViewErrorAlert) {
-                Alert(
-                    title: Text(viewModel.channelDetailViewError?.title ?? "Unknown"),
-                    message: Text(viewModel.channelDetailViewError?.detail ?? ""),
-                    dismissButton: .default(Text("OK")) {
-                        viewModel.channelDetailViewError = nil
-                    }
-                )
-            }
-            .alert(
-                "Are you sure you want to close this channel?",
-                isPresented: $showingConfirmationAlert
-            ) {
-                Button("Yes", role: .destructive) {
-                    viewModel.close()
-                    refreshFlag = true
-                    if !showingChannelDetailViewErrorAlert {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                            self.presentationMode.wrappedValue.dismiss()
+                        } label: {
+                            HStack {
+                                withAnimation {
+                                    Image(
+                                        systemName: lastCopiedItemId == property.name
+                                            ? "checkmark" : "doc.on.doc"
+                                    )
+                                }
+                            }
+                            .foregroundColor(.accentColor)
+                            .padding(.leading, 10)
                         }
                     }
                 }
-                Button("No", role: .cancel) {}
+                .padding(.top, 5)
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
             }
-            .onReceive(viewModel.$channelDetailViewError) { errorMessage in
-                if errorMessage != nil {
-                    showingChannelDetailViewErrorAlert = true
-                }
-            }
-            .onAppear {
-                viewModel.getColor()
-            }
+            .listStyle(.plain)
+
+            Spacer()
 
         }
-        .ignoresSafeArea()
+        .navigationTitle("Channel details")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Close") {
+                    showingConfirmationAlert = true
+                }
+                .fontWeight(.medium)
+                .foregroundColor(.red)
+                .padding()
+            }
+        }
+        .alert(isPresented: $showingChannelDetailViewErrorAlert) {
+            Alert(
+                title: Text(viewModel.channelDetailViewError?.title ?? "Unknown"),
+                message: Text(viewModel.channelDetailViewError?.detail ?? ""),
+                dismissButton: .default(Text("OK")) {
+                    viewModel.channelDetailViewError = nil
+                }
+            )
+        }
+        .alert(
+            "Are you sure you want to close this channel?",
+            isPresented: $showingConfirmationAlert
+        ) {
+            Button("Yes", role: .destructive) {
+                viewModel.close()
+                refreshFlag = true
+                if !showingChannelDetailViewErrorAlert {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                }
+            }
+            Button("No", role: .cancel) {}
+        }
+        .onReceive(viewModel.$channelDetailViewError) { errorMessage in
+            if errorMessage != nil {
+                showingChannelDetailViewErrorAlert = true
+            }
+        }
+        .onAppear {
+            viewModel.getColor()
+        }
 
     }
 }

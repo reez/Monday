@@ -33,46 +33,59 @@ struct ChannelsListView: View {
                                     refreshFlag: $refreshFlag
                                 )
                             } label: {
-                                VStack {
-                                    HStack(alignment: .center, spacing: 15) {
-                                        ZStack {
-                                            Circle()
-                                                .frame(width: 50.0, height: 50.0)
-                                                .foregroundColor(viewModel.networkColor)
-                                            Image(systemName: "person.line.dotted.person")
-                                                .font(.subheadline)
-                                                .foregroundColor(
-                                                    Color(uiColor: .systemBackground)
-                                                )
-                                                .bold()
-                                        }
-                                        VStack(alignment: .leading, spacing: 5.0) {
-                                            Text("\(channel.channelValueSats) sats ")
-                                                .font(.caption)
-                                                .bold()
-                                            if let alias = viewModel.aliases[
-                                                channel.counterpartyNodeId
-                                            ] {
-                                                Text(alias)
-                                                    .font(.caption)
-                                                    .fontWeight(.semibold)
-                                                    .foregroundColor(.secondary)
-                                            }
-                                            Text(channel.counterpartyNodeId)
-                                                .font(.caption)
-                                                .truncationMode(.middle)
-                                                .lineLimit(1)
-                                                .foregroundColor(.secondary)
-                                        }
-                                        Spacer()
+                                HStack(alignment: .center, spacing: 15) {
+                                    ZStack {
+                                        Circle()
+                                            .frame(width: 40.0, height: 40.0)
+                                            .foregroundColor(.accentColor)
+                                        Image(systemName: "fibrechannel")
+                                            .font(.subheadline)
+                                            .foregroundColor(Color(uiColor: .systemBackground))
+                                            .bold()
                                     }
-                                    .padding()
+                                    HStack(alignment: .center) {
+
+                                        VStack(alignment: .leading) {
+                                            Text("\(channel.channelValueSats) sats ")
+                                                .font(.subheadline.weight(.medium))
+                                                .frame(width: 100)
+                                                .truncationMode(.tail)
+                                                .lineLimit(1)
+                                            HStack {
+                                                if let alias = viewModel.aliases[
+                                                    channel.counterpartyNodeId
+                                                ] {
+                                                    Text(alias)
+                                                } else {
+                                                    Text(channel.counterpartyNodeId)
+                                                        .frame(width: 100)
+                                                        .truncationMode(.middle)
+                                                        .lineLimit(1)
+                                                }
+                                            }.font(.caption)
+                                                .foregroundColor(.secondary)
+
+                                        }
+
+                                        Spacer()
+
+                                        VStack(alignment: .leading) {
+                                            Text("Send \(channel.outboundCapacityMsat/1000) sats ")
+                                            //Spacer()
+                                            Text(
+                                                "Receive \(channel.inboundCapacityMsat/1000) sats "
+                                            )
+                                        }.font(.caption)
+                                            .foregroundColor(.secondary)
+
+                                    }
+                                    Spacer()
                                 }
                             }
                             .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
                         }
                     }
-                    .listStyle(.plain)
                     .refreshable {
                         await viewModel.listChannels()
                     }
