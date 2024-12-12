@@ -11,7 +11,6 @@ import SwiftUI
 struct ChannelsListView: View {
     @State private var refreshFlag = false
     let viewModel: ChannelsListViewModel
-    @State private var isAddChannelPresented = false
 
     var body: some View {
         ZStack {
