@@ -17,60 +17,51 @@ struct SeedView: View {
 
     var body: some View {
 
-        ZStack {
-            Color(uiColor: .systemBackground)
-                .ignoresSafeArea()
+        VStack(alignment: .center) {
+            SeedPhraseView(
+                words: viewModel.seed.mnemonic.components(separatedBy: " "),
+                preferredWordsPerRow: 2,
+                usePaging: true,
+                wordsPerPage: 12
+            ).padding()
 
-            VStack(alignment: .leading) {
-                SeedPhraseView(
-                    words: viewModel.seed.mnemonic.components(separatedBy: " "),
-                    preferredWordsPerRow: 2,
-                    usePaging: true,
-                    wordsPerPage: 6
-                )
-                HStack {
-                    Spacer()
-                    Button {
-                        UIPasteboard.general.string = viewModel.seed.mnemonic
-                        isCopied = true
-                        showCheckmark = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            isCopied = false
-                            showCheckmark = false
-                        }
-                    } label: {
-                        HStack {
-                            withAnimation {
-                                HStack {
-                                    Image(
-                                        systemName: showCheckmark
-                                            ? "checkmark" : "doc.on.doc"
-                                    )
-                                    Text("Copy")
-                                }
-                            }
-                        }
-                        .bold()
+            HStack {
+                //Spacer()
+                Button(
+                    "Copy Recovery Phrase",
+                    systemImage: showCheckmark
+                        ? "checkmark" : "doc.on.doc"
+                ) {
+                    UIPasteboard.general.string = viewModel.seed.mnemonic
+                    isCopied = true
+                    showCheckmark = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        isCopied = false
+                        showCheckmark = false
                     }
-                    .buttonStyle(.borderedProminent)
-                    Spacer()
                 }
-                .padding()
+                .buttonStyle(.automatic)
+                .controlSize(.mini)
+                //Spacer()
+
             }
+            .padding(.bottom, 40.0)
+        }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
+            .navigationTitle("Recovery Phrase")
+            .navigationBarTitleDisplayMode(.inline)
             .padding()
             .onAppear {
                 viewModel.getSeed()
             }
-        }
-        .alert(isPresented: $showingSeedViewErrorAlert) {
-            Alert(
-                title: Text(viewModel.seedViewError?.title ?? "Unknown"),
-                message: Text(viewModel.seedViewError?.detail ?? ""),
-                dismissButton: .default(Text("OK")) {
-                    viewModel.seedViewError = nil
-                }
-            )
-        }
+            .alert(isPresented: $showingSeedViewErrorAlert) {
+                Alert(
+                    title: Text(viewModel.seedViewError?.title ?? "Unknown"),
+                    message: Text(viewModel.seedViewError?.detail ?? ""),
+                    dismissButton: .default(Text("OK")) {
+                        viewModel.seedViewError = nil
+                    }
+                )
+            }
 
     }
 }
