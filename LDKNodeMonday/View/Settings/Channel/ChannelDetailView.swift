@@ -64,7 +64,7 @@ struct ChannelDetailView: View {
 
             Spacer()
 
-        }
+        }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
         .navigationTitle("Channel details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

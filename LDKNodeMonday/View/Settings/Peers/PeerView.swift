@@ -147,7 +147,7 @@ struct PeerView: View {
             .padding(.horizontal)
             .padding(.bottom, 40.0)
 
-        }
+        }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
         .navigationTitle("Add Peer")
         .navigationBarTitleDisplayMode(.inline)
         .padding()

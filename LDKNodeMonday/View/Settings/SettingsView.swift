@@ -150,7 +150,7 @@ struct SettingsView: View {
                     }
                 }
                 .foregroundColor(.primary)
-            }
+            }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
             .navigationTitle("Settings")

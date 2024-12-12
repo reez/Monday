@@ -174,7 +174,7 @@ struct ChannelAddView: View {
             .padding(.horizontal)
             .padding(.bottom, 40.0)
 
-        }
+        }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .navigationTitle("Add Channel")

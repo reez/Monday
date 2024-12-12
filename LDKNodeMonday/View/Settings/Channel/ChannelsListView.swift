@@ -38,7 +38,7 @@ struct ChannelsListView: View {
                                             .frame(width: 40.0, height: 40.0)
                                             .foregroundColor(.accentColor)
                                         Image(systemName: "fibrechannel")
-                                            .font(.subheadline)
+                                            .font(.subheadline).dynamicTypeSize(...DynamicTypeSize.large)
                                             .foregroundColor(Color(uiColor: .systemBackground))
                                             .bold()
                                     }
@@ -47,7 +47,7 @@ struct ChannelsListView: View {
                                         VStack(alignment: .leading) {
                                             Text("\(channel.channelValueSats) sats ")
                                                 .font(.subheadline.weight(.medium))
-                                                .frame(width: 100)
+                                                //.frame(width: 100)
                                                 .truncationMode(.tail)
                                                 .lineLimit(1)
                                             HStack {
@@ -57,7 +57,7 @@ struct ChannelsListView: View {
                                                     Text(alias)
                                                 } else {
                                                     Text(channel.counterpartyNodeId)
-                                                        .frame(width: 100)
+                                                        //.frame(width: 100)
                                                         .truncationMode(.middle)
                                                         .lineLimit(1)
                                                 }
@@ -66,6 +66,7 @@ struct ChannelsListView: View {
 
                                         }
 
+                                        /*
                                         Spacer()
 
                                         VStack(alignment: .leading) {
@@ -76,7 +77,7 @@ struct ChannelsListView: View {
                                             )
                                         }.font(.caption)
                                             .foregroundColor(.secondary)
-
+                                         */
                                     }
                                     Spacer()
                                 }
@@ -96,7 +97,7 @@ struct ChannelsListView: View {
                     viewModel.getColor()
                 }
             }
-        }
+        }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .navigationTitle("Channels")
