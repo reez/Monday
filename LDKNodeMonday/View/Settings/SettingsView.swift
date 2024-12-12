@@ -67,6 +67,18 @@ struct SettingsView: View {
                         }
                     }
 
+                    NavigationLink(
+                        destination: ChannelsListView(viewModel: .init(nodeInfoClient: .live))
+                    ) {
+                        Text("Channels")
+                            .fontWeight(.medium)
+                    }
+
+                    NavigationLink(destination: PeersListView(viewModel: .init())) {
+                        Text("Peers")
+                            .fontWeight(.medium)
+                    }
+                    
                     HStack {
                         Text("Status")
                             .fontWeight(.medium)
@@ -80,18 +92,6 @@ struct SettingsView: View {
                                     viewModel.status?.isRunning ?? false ? .green : .red
                                 )
                         }
-                    }
-
-                    NavigationLink(
-                        destination: ChannelsListView(viewModel: .init(nodeInfoClient: .live))
-                    ) {
-                        Text("Channels")
-                            .fontWeight(.medium)
-                    }
-
-                    NavigationLink(destination: PeersListView(viewModel: .init())) {
-                        Text("Peers")
-                            .fontWeight(.medium)
                     }
 
                 }
