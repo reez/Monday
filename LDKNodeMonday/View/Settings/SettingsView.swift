@@ -23,6 +23,8 @@ struct SettingsView: View {
     @State private var isViewPeersPresented = false
     @State private var refreshFlag = false
     @State private var isPaymentsPresented = false
+    
+    @State private var showGreeting = true
 
     var body: some View {
 
@@ -33,16 +35,24 @@ struct SettingsView: View {
                     header: Text("Wallet")
                 ) {
                     HStack {
+                        Image(systemName: "network")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
                         Text("Network")
-                            .fontWeight(.medium)
                         Spacer()
                         Text((viewModel.network ?? "No network").capitalized)
                             .foregroundColor(.secondary)
                     }
 
                     NavigationLink(destination: SeedView(viewModel: .init())) {
-                        Text("Backup")
-                            .fontWeight(.medium)
+                        HStack {
+                            Image(systemName: "lock")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 16, height: 16)
+                            Text("Backup")
+                        }
                     }
 
                 }
@@ -51,8 +61,11 @@ struct SettingsView: View {
                     header: Text("Lightning node")
                 ) {
                     HStack {
+                        Image(systemName: "bolt")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
                         Text("Node Id")
-                            .fontWeight(.medium)
                         Spacer()
                         Text(viewModel.nodeID)
                             .foregroundColor(.secondary)
@@ -70,27 +83,35 @@ struct SettingsView: View {
                     NavigationLink(
                         destination: ChannelsListView(viewModel: .init(nodeInfoClient: .live))
                     ) {
-                        Text("Channels")
-                            .fontWeight(.medium)
+                        HStack {
+                            Image(systemName: "fibrechannel")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 16, height: 16)
+                            Text("Channels")
+                        }
                     }
 
                     NavigationLink(destination: PeersListView(viewModel: .init())) {
-                        Text("Peers")
-                            .fontWeight(.medium)
+                        HStack {
+                            Image(systemName: "person.line.dotted.person")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 16, height: 16)
+                            Text("Peers")
+                        }
                     }
                     
                     HStack {
+                        Image(systemName: "power")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
                         Text("Status")
-                            .fontWeight(.medium)
                         Spacer()
                         HStack {
                             Text(viewModel.status?.isRunning ?? false ? "On" : "Off")
                                 .foregroundColor(.secondary)
-                                .padding(.horizontal)
-                            Image(systemName: "circle.fill")
-                                .foregroundColor(
-                                    viewModel.status?.isRunning ?? false ? .green : .red
-                                )
                         }
                     }
 
@@ -110,43 +131,61 @@ struct SettingsView: View {
                         }
                          */
 
-                    Button("Stop Node") {
-                        showingStopNodeConfirmation = true
-                    }
-                    .alert(
-                        "Are you sure you want to stop the node?",
-                        isPresented: $showingStopNodeConfirmation
-                    ) {
-                        Button("Yes", role: .destructive) { viewModel.stop() }
-                        Button("No", role: .cancel) {}
+                    HStack {
+                        Image(systemName: "exclamationmark.octagon")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
+                        Button("Stop Node") {
+                            showingStopNodeConfirmation = true
+                        }
+                        .alert(
+                            "Are you sure you want to stop the node?",
+                            isPresented: $showingStopNodeConfirmation
+                        ) {
+                            Button("Yes", role: .destructive) { viewModel.stop() }
+                            Button("No", role: .cancel) {}
+                        }
                     }
 
-                    Button("Reset Preferences") {
-                        showingResetAppConfirmation = true
-                    }
-                    .alert(
-                        "Are you sure you want to reset preferences (and delete the seed)?",
-                        isPresented: $showingResetAppConfirmation
-                    ) {
-                        Button("Yes", role: .destructive) {
-                            viewModel.onboarding()
-                            dismiss()
+                    HStack {
+                        Image(systemName: "minus.diamond")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
+                        Button("Reset Preferences") {
+                            showingResetAppConfirmation = true
                         }
-                        Button("No", role: .cancel) {}
+                        .alert(
+                            "Are you sure you want to reset preferences (and delete the seed)?",
+                            isPresented: $showingResetAppConfirmation
+                        ) {
+                            Button("Yes", role: .destructive) {
+                                viewModel.onboarding()
+                                dismiss()
+                            }
+                            Button("No", role: .cancel) {}
+                        }
                     }
 
-                    Button("Delete Seed") {
-                        showingDeleteSeedConfirmation = true
-                    }
-                    .alert(
-                        "Are you sure you want to delete the seed (and reset preferences)?",
-                        isPresented: $showingDeleteSeedConfirmation
-                    ) {
-                        Button("Yes", role: .destructive) {
-                            viewModel.delete()
-                            dismiss()
+                    HStack {
+                        Image(systemName: "delete.left")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
+                        Button("Delete Seed") {
+                            showingDeleteSeedConfirmation = true
                         }
-                        Button("No", role: .cancel) {}
+                        .alert(
+                            "Are you sure you want to delete the seed (and reset preferences)?",
+                            isPresented: $showingDeleteSeedConfirmation
+                        ) {
+                            Button("Yes", role: .destructive) {
+                                viewModel.delete()
+                                dismiss()
+                            }
+                            Button("No", role: .cancel) {}
+                        }
                     }
                 }
                 .foregroundColor(.primary)
@@ -160,8 +199,6 @@ struct SettingsView: View {
                         Button("Done") {
                             dismiss()
                         }
-                        .fontWeight(.medium)
-                        .padding()
                     }
                 }
                 .onAppear {
