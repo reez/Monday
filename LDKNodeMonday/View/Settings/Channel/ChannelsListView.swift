@@ -35,21 +35,18 @@ struct ChannelsListView: View {
                                 HStack(alignment: .center, spacing: 15) {
                                     ZStack {
                                         Circle()
-                                            .frame(width: 40.0, height: 40.0)
-                                            .foregroundColor(.accentColor)
+                                            .stroke(lineWidth: 2)
+                                                .frame(width: 40, height: 40)
                                         Image(systemName: "fibrechannel")
-                                            .font(.subheadline).dynamicTypeSize(
-                                                ...DynamicTypeSize.large
-                                            )
-                                            .foregroundColor(Color(uiColor: .systemBackground))
-                                            .bold()
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 16, height: 16)
                                     }
                                     HStack(alignment: .center) {
 
                                         VStack(alignment: .leading) {
                                             Text("\(channel.channelValueSats) sats ")
-                                                .font(.subheadline.weight(.medium))
-                                                //.frame(width: 100)
+                                                .fontWeight(.medium)
                                                 .truncationMode(.tail)
                                                 .lineLimit(1)
                                             HStack {
@@ -59,10 +56,18 @@ struct ChannelsListView: View {
                                                     Text(alias)
                                                 } else {
                                                     Text(channel.counterpartyNodeId)
-                                                        //.frame(width: 100)
                                                         .truncationMode(.middle)
                                                         .lineLimit(1)
                                                 }
+                                            }.font(.subheadline)
+                                                //.foregroundColor(.secondary)
+                                            
+                                            HStack {
+                                                Text("Send \(channel.outboundCapacityMsat/1000) sats ")
+                                                Spacer()
+                                                Text(
+                                                    "Receive \(channel.inboundCapacityMsat/1000) sats "
+                                                )
                                             }.font(.caption)
                                                 .foregroundColor(.secondary)
 
@@ -82,7 +87,7 @@ struct ChannelsListView: View {
                                          */
                                     }
                                     Spacer()
-                                }
+                                }.padding(.top, 5)
                             }
                             .listRowBackground(Color.clear)
                             .listRowSeparator(.hidden)
@@ -108,8 +113,6 @@ struct ChannelsListView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: ChannelAddView(viewModel: .init())) {
                         Text("Add")
-                            .fontWeight(.medium)
-                            .padding()
                     }
                 }
             }

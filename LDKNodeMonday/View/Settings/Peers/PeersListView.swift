@@ -27,12 +27,12 @@ struct PeersListView: View {
                                 HStack(alignment: .center, spacing: 15) {
                                     ZStack {
                                         Circle()
-                                            .frame(width: 40.0, height: 40.0)
-                                            .foregroundColor(.accentColor)
+                                            .stroke(lineWidth: 2)
+                                                .frame(width: 40, height: 40)
                                         Image(systemName: "person.line.dotted.person")
-                                            .font(.subheadline)
-                                            .foregroundColor(Color(uiColor: .systemBackground))
-                                            .bold()
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 16, height: 16)
                                     }
                                     VStack(alignment: .leading, spacing: 5.0) {
                                         Text("\(peer.nodeId) ")
@@ -70,8 +70,6 @@ struct PeersListView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: PeerView(viewModel: .init())) {
                         Text("Add")
-                            .fontWeight(.medium)
-                            .padding()
                     }
                 }
             }
