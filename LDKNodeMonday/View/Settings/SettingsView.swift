@@ -31,113 +31,63 @@ struct SettingsView: View {
         NavigationView {
             Form {
 
-                Section(
-                    header: Text("Wallet")
-                ) {
-                    HStack {
-                        Image(systemName: "network")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                        Text("Network")
-                        Spacer()
-                        Text((viewModel.network ?? "No network").capitalized)
-                            .foregroundColor(.secondary)
-                    }
+                Section {
+                    Label("Network", systemImage: "network")
+                        .badge((viewModel.network ?? "No network").capitalized)
 
                     NavigationLink(destination: SeedView(viewModel: .init())) {
-                        HStack {
-                            Image(systemName: "lock")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 16, height: 16)
-                            Text("Backup")
-                        }
+                        Label("Backup", systemImage: "lock")
                     }
 
-                }
+                } header: {
+                    Text("Wallet")
+                        .foregroundColor(.primary)
+                }.foregroundColor(.primary)
 
-                Section(
-                    header: Text("Lightning node")
-                ) {
+                Section {
                     HStack {
-                        Image(systemName: "bolt")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                        Text("Node Id")
+                        Label("ID", systemImage: "bolt")
                         Spacer()
                         Text(viewModel.nodeID)
-                            .foregroundColor(.secondary)
                             .frame(width: 150)
                             .truncationMode(.middle)
                             .lineLimit(1)
-                            .padding(.horizontal)
+                            .foregroundColor(.secondary)
                         Button {
                             UIPasteboard.general.string = viewModel.nodeID
                         } label: {
                             Image(systemName: "doc.on.doc")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                                .foregroundColor(.accentColor)
                         }
                     }
+                    
+                    Label("Status", systemImage: "power")
+                        .badge(viewModel.status?.isRunning ?? false ? "On" : "Off")
 
                     NavigationLink(
                         destination: ChannelsListView(viewModel: .init(nodeInfoClient: .live))
                     ) {
-                        HStack {
-                            Image(systemName: "fibrechannel")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 16, height: 16)
-                            Text("Channels")
-                        }
+                        Label("Channels", systemImage: "fibrechannel")
                     }
 
                     NavigationLink(destination: PeersListView(viewModel: .init())) {
-                        HStack {
-                            Image(systemName: "person.line.dotted.person")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 16, height: 16)
-                            Text("Peers")
-                        }
-                    }
-                    
-                    HStack {
-                        Image(systemName: "power")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                        Text("Status")
-                        Spacer()
-                        HStack {
-                            Text(viewModel.status?.isRunning ?? false ? "On" : "Off")
-                                .foregroundColor(.secondary)
-                        }
+                        Label("Peers", systemImage: "person.line.dotted.person")
                     }
 
-                }
+                } header: {
+                    Text("Lightning Node")
+                        .foregroundColor(.primary)
+                }.foregroundColor(.primary)
 
-                Section(header: Text("Danger Zone".uppercased()).foregroundColor(.red)) {
-                    /*
-                        Button("Show Seed") {
-                            showingShowSeedConfirmation = true
-                        }
-                        .alert(
-                            "Are you sure you want to view the seed?",
-                            isPresented: $showingShowSeedConfirmation
-                        ) {
-                            Button("Yes", role: .destructive) { isSeedPresented = true }
-                            Button("No", role: .cancel) {}
-                        }
-                         */
+                Section {
 
-                    HStack {
-                        Image(systemName: "exclamationmark.octagon")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                        Button("Stop Node") {
+                        Button {
                             showingStopNodeConfirmation = true
+                        } label: {
+                            Label("Stop Node", systemImage: "exclamationmark.octagon")
                         }
                         .alert(
                             "Are you sure you want to stop the node?",
@@ -146,15 +96,11 @@ struct SettingsView: View {
                             Button("Yes", role: .destructive) { viewModel.stop() }
                             Button("No", role: .cancel) {}
                         }
-                    }
 
-                    HStack {
-                        Image(systemName: "minus.diamond")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                        Button("Reset Preferences") {
+                        Button {
                             showingResetAppConfirmation = true
+                        } label: {
+                            Label("Reset Preferences", systemImage: "minus.diamond")
                         }
                         .alert(
                             "Are you sure you want to reset preferences (and delete the seed)?",
@@ -166,15 +112,11 @@ struct SettingsView: View {
                             }
                             Button("No", role: .cancel) {}
                         }
-                    }
 
-                    HStack {
-                        Image(systemName: "delete.left")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                        Button("Delete Seed") {
+                        Button {
                             showingDeleteSeedConfirmation = true
+                        } label: {
+                            Label("Delete Seed", systemImage: "delete.left")
                         }
                         .alert(
                             "Are you sure you want to delete the seed (and reset preferences)?",
@@ -186,10 +128,13 @@ struct SettingsView: View {
                             }
                             Button("No", role: .cancel) {}
                         }
-                    }
-                }
-                .foregroundColor(.primary)
-            }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
+                    
+                } header: {
+                    Text("Danger Zone")
+                        .foregroundColor(.red)
+                }.foregroundColor(.primary)
+                
+            }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
                 .navigationTitle("Settings")
