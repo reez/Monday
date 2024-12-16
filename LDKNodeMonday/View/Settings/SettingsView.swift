@@ -36,7 +36,7 @@ struct SettingsView: View {
                         .badge((viewModel.network ?? "No network").capitalized)
 
                     NavigationLink(destination: SeedView(viewModel: .init())) {
-                        Label("Backup", systemImage: "lock")
+                        Label("Recovery Phrase", systemImage: "lock")
                     }
 
                 } header: {
@@ -88,7 +88,7 @@ struct SettingsView: View {
                             showingStopNodeConfirmation = true
                         } label: {
                             Label("Stop Node", systemImage: "exclamationmark.octagon")
-                        }
+                        }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to stop the node?",
                             isPresented: $showingStopNodeConfirmation
@@ -101,7 +101,7 @@ struct SettingsView: View {
                             showingResetAppConfirmation = true
                         } label: {
                             Label("Reset Preferences", systemImage: "minus.diamond")
-                        }
+                        }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to reset preferences (and delete the seed)?",
                             isPresented: $showingResetAppConfirmation
@@ -117,7 +117,7 @@ struct SettingsView: View {
                             showingDeleteSeedConfirmation = true
                         } label: {
                             Label("Delete Seed", systemImage: "delete.left")
-                        }
+                        }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to delete the seed (and reset preferences)?",
                             isPresented: $showingDeleteSeedConfirmation
@@ -131,12 +131,11 @@ struct SettingsView: View {
                     
                 } header: {
                     Text("Danger Zone")
-                        .foregroundColor(.red)
                 }.foregroundColor(.primary)
                 
             }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
                 .listStyle(.plain)
-                .scrollContentBackground(.hidden)
+                //.scrollContentBackground(.hidden)
                 .navigationTitle("Settings")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
