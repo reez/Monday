@@ -30,6 +30,8 @@ struct SettingsView: View {
 
         NavigationView {
             Form {
+                
+                // Wallet
 
                 Section {
                     Label("Network", systemImage: "network")
@@ -43,6 +45,8 @@ struct SettingsView: View {
                     Text("Wallet")
                         .foregroundColor(.primary)
                 }.foregroundColor(.primary)
+                
+                // Lightning node
 
                 Section {
                     HStack {
@@ -81,13 +85,15 @@ struct SettingsView: View {
                     Text("Lightning Node")
                         .foregroundColor(.primary)
                 }.foregroundColor(.primary)
+                
+                // Danger zone
 
                 Section {
 
                         Button {
                             showingStopNodeConfirmation = true
                         } label: {
-                            Label("Stop Node", systemImage: "exclamationmark.octagon")
+                            Text("Stop Node") //, systemImage: "exclamationmark.octagon")
                         }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to stop the node?",
@@ -100,7 +106,7 @@ struct SettingsView: View {
                         Button {
                             showingResetAppConfirmation = true
                         } label: {
-                            Label("Reset Preferences", systemImage: "minus.diamond")
+                            Text("Reset Preferences") //, systemImage: "minus.diamond")
                         }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to reset preferences (and delete the seed)?",
@@ -116,7 +122,7 @@ struct SettingsView: View {
                         Button {
                             showingDeleteSeedConfirmation = true
                         } label: {
-                            Label("Delete Seed", systemImage: "delete.left")
+                            Text("Delete Seed") //, systemImage: "delete.left")
                         }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to delete the seed (and reset preferences)?",
@@ -135,7 +141,7 @@ struct SettingsView: View {
                 
             }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
                 .listStyle(.plain)
-                //.scrollContentBackground(.hidden)
+                //.scrollContentBackground(.hidden) // uncomment if we want white background
                 .navigationTitle("Settings")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
