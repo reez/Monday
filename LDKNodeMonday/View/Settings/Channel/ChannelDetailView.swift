@@ -72,7 +72,6 @@ struct ChannelDetailView: View {
                     Button("Close") {
                         showingConfirmationAlert = true
                     }
-                    .fontWeight(.medium)
                     .foregroundColor(.red)
                     .padding()
                 }

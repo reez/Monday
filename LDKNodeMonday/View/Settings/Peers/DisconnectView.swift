@@ -51,7 +51,6 @@ struct DisconnectView: View {
                     }
                 } label: {
                     Text("Disconnect")
-                        .fontWeight(.medium)
                         .padding()
                 }
             }

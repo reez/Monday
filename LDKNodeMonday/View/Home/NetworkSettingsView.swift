@@ -54,7 +54,6 @@ struct NetworkSettingsView: View {
                     Button("Done") {
                         dismiss()
                     }
-                    .fontWeight(.medium)
                     .padding()
                 }
             }
