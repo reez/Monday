@@ -152,9 +152,6 @@ struct PeerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .padding()
             .focused($isFocused)
-            .onAppear {
-                viewModel.getColor()
-            }
             .onReceive(viewModel.$peerViewError) { errorMessage in
                 if errorMessage != nil {
                     showingPeerViewErrorAlert = true

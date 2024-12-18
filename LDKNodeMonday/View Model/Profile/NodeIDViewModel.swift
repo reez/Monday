@@ -12,7 +12,6 @@ import SwiftUI
 class NodeIDViewModel: ObservableObject {
     @AppStorage("isOnboarding") var isOnboarding: Bool?
     @Published var nodeIDError: MondayError?
-    @Published var networkColor = Color.gray
     @Published var nodeID: String = ""
     @Published var network: String?
     @Published var esploraURL: String?
@@ -27,13 +26,6 @@ class NodeIDViewModel: ObservableObject {
     func getNodeID() {
         let nodeID = LightningNodeService.shared.nodeId()
         self.nodeID = nodeID
-    }
-
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
-        }
     }
 
     func stop() {

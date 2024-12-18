@@ -76,7 +76,6 @@ struct PeersListView: View {
             .onAppear {
                 Task {
                     viewModel.listPeers()
-                    viewModel.getColor()
                 }
             }
     }

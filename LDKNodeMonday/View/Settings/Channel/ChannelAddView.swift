@@ -181,9 +181,6 @@ struct ChannelAddView: View {
             .navigationBarTitleDisplayMode(.inline)
             .padding()
             .focused($isFocused)
-            .onAppear {
-                viewModel.getColor()
-            }
             .onReceive(viewModel.$channelAddViewError) { errorMessage in
                 if errorMessage != nil {
                     showingChannelAddViewErrorAlert = true

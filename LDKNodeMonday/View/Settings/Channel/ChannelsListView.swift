@@ -90,7 +90,6 @@ struct ChannelsListView: View {
             .onAppear {
                 Task {
                     await viewModel.listChannels()
-                    viewModel.getColor()
                 }
             }
         }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text

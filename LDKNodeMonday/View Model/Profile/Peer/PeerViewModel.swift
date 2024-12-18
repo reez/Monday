@@ -11,7 +11,6 @@ import SwiftUI
 class PeerViewModel: ObservableObject {
     @Published var address: String = ""
     @Published var peerViewError: MondayError?
-    @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey = ""
     @Published var isProgressViewShowing: Bool = false
 
@@ -41,13 +40,6 @@ class PeerViewModel: ObservableObject {
             }
         }
 
-    }
-
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
-        }
     }
 
 }

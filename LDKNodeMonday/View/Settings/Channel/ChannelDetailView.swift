@@ -105,9 +105,6 @@ struct ChannelDetailView: View {
                     showingChannelDetailViewErrorAlert = true
                 }
             }
-            .onAppear {
-                viewModel.getColor()
-            }
 
     }
 }

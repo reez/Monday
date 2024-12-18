@@ -156,7 +156,6 @@ struct SettingsView: View {
                         viewModel.getNodeID()
                         viewModel.getNetwork()
                         viewModel.getEsploraUrl()
-                        viewModel.getColor()
                         await viewModel.getStatus()
                     }
                 }

@@ -54,10 +54,11 @@ struct PeerDetailsView: View {
             isPresented: $showDisconnectAlert
         ) {
             Button("Yes", role: .destructive) {
-                viewModel.disconnect()
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    self.presentationMode.wrappedValue.dismiss()
+                Task {
+                    await viewModel.disconnect()
+                    await MainActor.run {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }
             Button("No", role: .cancel) {}
@@ -75,9 +76,6 @@ struct PeerDetailsView: View {
             if errorMessage != nil {
                 showErrorAlert = true
             }
-        }
-        .onAppear {
-            viewModel.getColor()
         }
 
     }
