@@ -48,7 +48,7 @@ struct ChannelAddView: View {
                     .overlay(
                         RoundedRectangle(cornerRadius: 24)
                             .stroke(Color.accentColor, lineWidth: 2)
-                    ).onChange(of: viewModel.nodeId) { oldValue, newValue in
+                    ).onChange(of: viewModel.nodeId) { _, newValue in
                         viewModel.nodeId = newValue.replacingOccurrences(of: " ", with: "")
                     }
                 }
@@ -69,7 +69,7 @@ struct ChannelAddView: View {
                     .overlay(
                         RoundedRectangle(cornerRadius: 24)
                             .stroke(Color.accentColor, lineWidth: 2)
-                    ).onChange(of: viewModel.address) { oldValue, newValue in
+                    ).onChange(of: viewModel.address) { _, newValue in
                         viewModel.address = newValue.replacingOccurrences(of: " ", with: "")
                     }
                 }
