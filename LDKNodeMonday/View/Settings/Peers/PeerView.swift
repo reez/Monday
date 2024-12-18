@@ -190,6 +190,15 @@ extension PeerView {
         case .success(let result):
             let scannedQRCode = result.string.lowercased()
             if let peer = scannedQRCode.parseConnectionInfo() {
+                guard peer.nodeID.count >= 32,  // Validate minimum length for node ID
+                    peer.address.contains(":")  // Validate address format contains port
+                else {
+                    self.viewModel.peerViewError = .init(
+                        title: "Invalid Format",
+                        detail: "The scanned QR code contains invalid peer information."
+                    )
+                    return
+                }
                 viewModel.nodeId = peer.nodeID
                 viewModel.address = peer.address
             } else {
