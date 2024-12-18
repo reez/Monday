@@ -57,6 +57,13 @@ struct SeedView: View {
                         UIPasteboard.general.string = viewModel.seed.mnemonic
                         isCopied = true
                         showCheckmark = true
+
+                        // Clear clipboard after 60 seconds
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 60) {
+                            UIPasteboard.general.string = ""
+                        }
+
+                        // Reset UI after 2 seconds
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             isCopied = false
                             showCheckmark = false
