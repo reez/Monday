@@ -5,7 +5,6 @@
 //  Created by Matthew Ramsden on 5/2/23.
 //
 
-import BitcoinUI
 import SwiftUI
 
 struct PeerDetailsView: View {
@@ -56,7 +55,7 @@ struct PeerDetailsView: View {
         ) {
             Button("Yes", role: .destructive) {
                 viewModel.disconnect()
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                     self.presentationMode.wrappedValue.dismiss()
                 }
