@@ -36,7 +36,6 @@ struct PeersListView: View {
                                     }
                                     VStack(alignment: .leading, spacing: 5.0) {
                                         Text("\(peer.nodeId) ")
-                                            .frame(width: 150)
                                             .truncationMode(.middle)
                                             .lineLimit(1)
                                             .font(.subheadline.weight(.medium))
@@ -62,7 +61,8 @@ struct PeersListView: View {
                 .listStyle(.plain)
             }
 
-        }.listStyle(.plain)
+        }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
+            .listStyle(.plain)
             .scrollContentBackground(.hidden)
             .navigationTitle("Peers")
             .navigationBarTitleDisplayMode(.inline)
