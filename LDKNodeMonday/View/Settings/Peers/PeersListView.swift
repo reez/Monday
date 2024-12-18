@@ -21,7 +21,7 @@ struct PeersListView: View {
                 List {
                     ForEach(viewModel.peers, id: \.self) { peer in
                         NavigationLink {
-                            DisconnectView(viewModel: .init(nodeId: peer.nodeId))
+                            PeerDetailsView(viewModel: .init(nodeId: peer.nodeId))
                         } label: {
                             VStack {
                                 HStack(alignment: .center, spacing: 15) {

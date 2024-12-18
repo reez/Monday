@@ -8,10 +8,11 @@
 import BitcoinUI
 import SwiftUI
 
-struct DisconnectView: View {
+struct PeerDetailsView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: DisconnectViewModel
-    @State private var showingDisconnectViewErrorAlert = false
+    @State private var showDisconnectAlert = false
+    @State private var showErrorAlert = false
 
     var body: some View {
 
@@ -42,20 +43,27 @@ struct DisconnectView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    viewModel.disconnect()
-                    if showingDisconnectViewErrorAlert == false {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
-                    if showingDisconnectViewErrorAlert == true {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
+                    self.showDisconnectAlert = true
                 } label: {
                     Text("Disconnect")
+                        .foregroundColor(.red)
                         .padding()
                 }
             }
+        }.alert(
+            "Are you sure you want to disconnect from this peer?",
+            isPresented: $showDisconnectAlert
+        ) {
+            Button("Yes", role: .destructive) {
+                viewModel.disconnect()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+            }
+            Button("No", role: .cancel) {}
         }
-        .alert(isPresented: $showingDisconnectViewErrorAlert) {
+        .alert(isPresented: $showErrorAlert) {
             Alert(
                 title: Text(viewModel.disconnectViewError?.title ?? "Unknown"),
                 message: Text(viewModel.disconnectViewError?.detail ?? ""),
@@ -66,7 +74,7 @@ struct DisconnectView: View {
         }
         .onReceive(viewModel.$disconnectViewError) { errorMessage in
             if errorMessage != nil {
-                showingDisconnectViewErrorAlert = true
+                showErrorAlert = true
             }
         }
         .onAppear {
@@ -79,7 +87,7 @@ struct DisconnectView: View {
 
 #if DEBUG
     #Preview {
-        DisconnectView(
+        PeerDetailsView(
             viewModel: .init(
                 nodeId: "03e39c737a691931dac0f9f9ee803f2ab08f7fd3bbb25ec08d9b8fdb8f51d3a8db"
             )
