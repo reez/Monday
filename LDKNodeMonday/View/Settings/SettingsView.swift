@@ -23,14 +23,14 @@ struct SettingsView: View {
     @State private var isViewPeersPresented = false
     @State private var refreshFlag = false
     @State private var isPaymentsPresented = false
-    
+
     @State private var showGreeting = true
 
     var body: some View {
 
         NavigationView {
             Form {
-                
+
                 // Wallet
 
                 Section {
@@ -45,7 +45,7 @@ struct SettingsView: View {
                     Text("Wallet")
                         .foregroundColor(.primary)
                 }.foregroundColor(.primary)
-                
+
                 // Lightning node
 
                 Section {
@@ -67,7 +67,7 @@ struct SettingsView: View {
                                 .foregroundColor(.accentColor)
                         }
                     }
-                    
+
                     Label("Status", systemImage: "power")
                         .badge(viewModel.status?.isRunning ?? false ? "On" : "Off")
 
@@ -85,16 +85,16 @@ struct SettingsView: View {
                     Text("Lightning Node")
                         .foregroundColor(.primary)
                 }.foregroundColor(.primary)
-                
+
                 // Danger zone
 
                 Section {
 
-                        Button {
-                            showingStopNodeConfirmation = true
-                        } label: {
-                            Text("Stop Node") //, systemImage: "exclamationmark.octagon")
-                        }.foregroundColor(.red)
+                    Button {
+                        showingStopNodeConfirmation = true
+                    } label: {
+                        Text("Stop Node")  //, systemImage: "exclamationmark.octagon")
+                    }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to stop the node?",
                             isPresented: $showingStopNodeConfirmation
@@ -103,11 +103,11 @@ struct SettingsView: View {
                             Button("No", role: .cancel) {}
                         }
 
-                        Button {
-                            showingResetAppConfirmation = true
-                        } label: {
-                            Text("Reset Preferences") //, systemImage: "minus.diamond")
-                        }.foregroundColor(.red)
+                    Button {
+                        showingResetAppConfirmation = true
+                    } label: {
+                        Text("Reset Preferences")  //, systemImage: "minus.diamond")
+                    }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to reset preferences (and delete the seed)?",
                             isPresented: $showingResetAppConfirmation
@@ -119,11 +119,11 @@ struct SettingsView: View {
                             Button("No", role: .cancel) {}
                         }
 
-                        Button {
-                            showingDeleteSeedConfirmation = true
-                        } label: {
-                            Text("Delete Seed") //, systemImage: "delete.left")
-                        }.foregroundColor(.red)
+                    Button {
+                        showingDeleteSeedConfirmation = true
+                    } label: {
+                        Text("Delete Seed")  //, systemImage: "delete.left")
+                    }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to delete the seed (and reset preferences)?",
                             isPresented: $showingDeleteSeedConfirmation
@@ -134,12 +134,12 @@ struct SettingsView: View {
                             }
                             Button("No", role: .cancel) {}
                         }
-                    
+
                 } header: {
                     Text("Danger Zone")
                 }.foregroundColor(.primary)
-                
-            }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
+
+            }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
                 .listStyle(.plain)
                 //.scrollContentBackground(.hidden) // uncomment if we want white background
                 .navigationTitle("Settings")

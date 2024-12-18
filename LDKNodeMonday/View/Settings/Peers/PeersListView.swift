@@ -28,7 +28,7 @@ struct PeersListView: View {
                                     ZStack {
                                         Circle()
                                             .stroke(lineWidth: 2)
-                                                .frame(width: 40, height: 40)
+                                            .frame(width: 40, height: 40)
                                         Image(systemName: "person.line.dotted.person")
                                             .resizable()
                                             .scaledToFit()
@@ -61,7 +61,7 @@ struct PeersListView: View {
                 .listStyle(.plain)
             }
 
-        }.dynamicTypeSize(...DynamicTypeSize.accessibility1) // Sets max dynamic size for all Text
+        }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
             .navigationTitle("Peers")

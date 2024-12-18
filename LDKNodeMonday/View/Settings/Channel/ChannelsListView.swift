@@ -32,24 +32,24 @@ struct ChannelsListView: View {
                                     refreshFlag: $refreshFlag
                                 )
                             } label: {
-                                
+
                                 // Circle with icon
-                                
+
                                 HStack(alignment: .center, spacing: 15) {
                                     ZStack {
                                         Circle()
                                             .stroke(lineWidth: 2)
-                                                .frame(width: 40, height: 40)
+                                            .frame(width: 40, height: 40)
                                         Image(systemName: "fibrechannel")
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: 16, height: 16)
                                     }
-                                    
+
                                     // Channel information
-                                    
+
                                     VStack(alignment: .leading) {
-                                        Text("\(channel.channelValueSats) sats ") // Value in channel
+                                        Text("\(channel.channelValueSats) sats ")  // Value in channel
                                             .fontWeight(.medium)
                                             .truncationMode(.tail)
                                             .lineLimit(1)
@@ -57,19 +57,19 @@ struct ChannelsListView: View {
                                             if let alias = viewModel.aliases[
                                                 channel.counterpartyNodeId
                                             ] {
-                                                Text(alias) // Channel alias, if present
+                                                Text(alias)  // Channel alias, if present
                                             } else {
-                                                Text(channel.counterpartyNodeId) // else, channel Id
+                                                Text(channel.counterpartyNodeId)  // else, channel Id
                                                     .truncationMode(.middle)
                                                     .lineLimit(1)
                                             }
                                         }.font(.subheadline)
-                                        
+
                                         HStack {
-                                            Text("Send \(channel.outboundCapacityMsat/1000) sats ") // Outbound capacity
+                                            Text("Send \(channel.outboundCapacityMsat/1000) sats ")  // Outbound capacity
                                             Spacer()
                                             Text(
-                                                "Receive \(channel.inboundCapacityMsat/1000) sats " // Inbound capacity
+                                                "Receive \(channel.inboundCapacityMsat/1000) sats "  // Inbound capacity
                                             )
                                         }.font(.caption)
                                             .foregroundColor(.secondary)
