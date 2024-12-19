@@ -18,8 +18,6 @@ struct SettingsView: View {
     @State private var showDeleteSeedConfirmation = false
     @State private var showResetAppConfirmation = false
 
-    @State private var showGreeting = true
-
     var body: some View {
 
         NavigationView {
@@ -73,6 +71,7 @@ struct SettingsView: View {
                                 .scaledToFit()
                                 .frame(width: 20, height: 20)
                                 .foregroundColor(showCheckmark ? .secondary : .accentColor)
+                                .accessibilityLabel(showCheckmark ? "Copied" : "Copy node ID")
                         }
                     }
 
