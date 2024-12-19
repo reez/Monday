@@ -69,7 +69,8 @@ struct PeersListView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: PeerView(viewModel: .init())) {
-                        Text("Add")
+                        Label("Add", systemImage: "plus")
+                            .labelStyle(.titleAndIcon)  // Only showing icon for some reason
                     }
                 }
             }
