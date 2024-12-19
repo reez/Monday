@@ -12,6 +12,7 @@ import SwiftUI
 struct ChannelDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: ChannelDetailViewModel
+    @State private var isClosing = false
     @Binding var refreshFlag: Bool
     @State private var showingChannelDetailViewErrorAlert = false
     @State private var showCheckmark = false
@@ -96,12 +97,12 @@ struct ChannelDetailView: View {
                 isPresented: $showingConfirmationAlert
             ) {
                 Button("Yes", role: .destructive) {
+                    isClosing = true
                     viewModel.close()
-                    refreshFlag = true
                     if !showingChannelDetailViewErrorAlert {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                            self.presentationMode.wrappedValue.dismiss()
-                        }
+                        refreshFlag = true
+                        isClosing = false
+                        self.presentationMode.wrappedValue.dismiss()
                     }
                 }
                 Button("No", role: .cancel) {}
