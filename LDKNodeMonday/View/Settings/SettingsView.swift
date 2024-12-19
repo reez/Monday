@@ -12,7 +12,6 @@ import SwiftUI
 struct SettingsView: View {
     @ObservedObject var viewModel: NodeIDViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingNodeIDErrorAlert = false
     @State private var isSeedPresented = false
@@ -59,12 +58,16 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                         Button {
                             UIPasteboard.general.string = viewModel.nodeID
+                            showCheckmark = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                showCheckmark = false
+                            }
                         } label: {
-                            Image(systemName: "doc.on.doc")
+                            Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 24, height: 24)
-                                .foregroundColor(.accentColor)
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(showCheckmark ? .secondary : .accentColor)
                         }
                     }
 
