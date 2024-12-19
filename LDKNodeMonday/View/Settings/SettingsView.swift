@@ -33,12 +33,20 @@ struct SettingsView: View {
                 // Wallet
 
                 Section {
-                    Label("Network", systemImage: "network")
-                        .badge((viewModel.network ?? "No network").capitalized)
-
                     NavigationLink(destination: SeedView(viewModel: .init())) {
                         Label("Recovery Phrase", systemImage: "lock")
                     }
+                    
+                    Label("Network", systemImage: "network")
+                        .badge((viewModel.network ?? "No network").capitalized)
+
+                    // Move to subpage 'Network Settings' once NetworkSettingsView does not depend on OnboardingViewModel
+                    Label("Server", systemImage: "server.rack")
+                        .badge(viewModel.esploraURL?.replacingOccurrences(of: "https://", with: "")
+                            .replacingOccurrences(
+                                of: "http://",
+                                with: ""
+                            ) ?? "No server")
 
                 } header: {
                     Text("Wallet")
