@@ -10,14 +10,13 @@ import SwiftUI
 
 class DisconnectViewModel: ObservableObject {
     @Published var disconnectViewError: MondayError?
-    @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey
 
     init(nodeId: PublicKey) {
         self.nodeId = nodeId
     }
 
-    func disconnect() {
+    func disconnect() async {
         do {
             try LightningNodeService.shared.disconnect(nodeId: self.nodeId)
             disconnectViewError = nil
@@ -36,13 +35,6 @@ class DisconnectViewModel: ObservableObject {
                     detail: error.localizedDescription
                 )
             }
-        }
-    }
-
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
         }
     }
 

@@ -28,7 +28,7 @@ struct Constants {
                 static let allValues = [
                     EsploraServer.mutiny_signet,
                     EsploraServer.bdk_signet,
-                    EsploraServer.lqwd_signet
+                    EsploraServer.lqwd_signet,
                 ]
             }
             struct Testnet {

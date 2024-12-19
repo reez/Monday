@@ -12,7 +12,6 @@ class ChannelAddViewModel: ObservableObject {
     @Published var address: String = ""
     @Published var channelAmountSats: String = ""
     @Published var channelAddViewError: MondayError?
-    @Published var networkColor = Color.gray
     @Published var nodeId: PublicKey = ""
     @Published var isOpenChannelFinished: Bool = false
     @Published var isProgressViewShowing: Bool = false
@@ -64,13 +63,6 @@ class ChannelAddViewModel: ObservableObject {
                     detail: error.localizedDescription
                 )
             }
-        }
-    }
-
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
         }
     }
 

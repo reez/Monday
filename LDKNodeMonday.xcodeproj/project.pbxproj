@@ -48,7 +48,7 @@
 		AE49E8642A2537B3002623E8 /* PeersListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8632A2537B3002623E8 /* PeersListViewModel.swift */; };
 		AE49E8662A2537D5002623E8 /* PeerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8652A2537D5002623E8 /* PeerViewModel.swift */; };
 		AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8672A2537FB002623E8 /* DisconnectViewModel.swift */; };
-		AE49E86C2A253A32002623E8 /* NodeIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */; };
+		AE49E86C2A253A32002623E8 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E86B2A253A32002623E8 /* SettingsViewModel.swift */; };
 		AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C15B12A1316D100AA8917 /* BitcoinView.swift */; };
 		AE51BEFA2B37A2A500BAE452 /* Event+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE51BEF92B37A2A500BAE452 /* Event+Extensions.swift */; };
 		AE51BEFD2B37A5DC00BAE452 /* SimpleToast in Frameworks */ = {isa = PBXBuildFile; productRef = AE51BEFC2B37A5DC00BAE452 /* SimpleToast */; };
@@ -66,7 +66,7 @@
 		AE7C4A0C2B40785F0061189D /* SeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7C4A0B2B40785F0061189D /* SeedView.swift */; };
 		AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */; };
 		AE7D3FAD2A4263C100EAE730 /* PaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */; };
-		AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* NodeIDView.swift */; };
+		AE80116B29A59976009B9967 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* SettingsView.swift */; };
 		AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelAddView.swift */; };
 		AE80C2002C4AB360006E7193 /* BIP21View.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80C1FF2C4AB360006E7193 /* BIP21View.swift */; };
 		AE80C2022C4AB38D006E7193 /* BIP21ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80C2012C4AB38D006E7193 /* BIP21ViewModel.swift */; };
@@ -76,7 +76,7 @@
 		AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4822A01A80A0042EA82 /* PeersListView.swift */; };
 		AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48C2A01A93B0042EA82 /* PeerView.swift */; };
 		AEBAA4922A01C34A0042EA82 /* ChannelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */; };
-		AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */; };
+		AEBAA4942A01C6BD0042EA82 /* PeerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4932A01C6BD0042EA82 /* PeerDetailsView.swift */; };
 		AEBFD8B02B8A97DB0024E3F7 /* LightningServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8AF2B8A97DB0024E3F7 /* LightningServiceProvider.swift */; };
 		AEBFD8B22B8ABF7C0024E3F7 /* AmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8B12B8ABF7C0024E3F7 /* AmountView.swift */; };
 		AEBFD8B62B8BABC00024E3F7 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */; };
@@ -131,7 +131,7 @@
 		AE49E8632A2537B3002623E8 /* PeersListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersListViewModel.swift; sourceTree = "<group>"; };
 		AE49E8652A2537D5002623E8 /* PeerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewModel.swift; sourceTree = "<group>"; };
 		AE49E8672A2537FB002623E8 /* DisconnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectViewModel.swift; sourceTree = "<group>"; };
-		AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDViewModel.swift; sourceTree = "<group>"; };
+		AE49E86B2A253A32002623E8 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		AE4C15B12A1316D100AA8917 /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
 		AE51BEF92B37A2A500BAE452 /* Event+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+Extensions.swift"; sourceTree = "<group>"; };
 		AE551D462B8ECE7D0034B61E /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
@@ -147,7 +147,7 @@
 		AE7C4A0B2B40785F0061189D /* SeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedView.swift; sourceTree = "<group>"; };
 		AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsView.swift; sourceTree = "<group>"; };
 		AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsViewModel.swift; sourceTree = "<group>"; };
-		AE80116A29A59976009B9967 /* NodeIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDView.swift; sourceTree = "<group>"; };
+		AE80116A29A59976009B9967 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AE80116C29A59AF4009B9967 /* ChannelAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelAddView.swift; sourceTree = "<group>"; };
 		AE80C1FF2C4AB360006E7193 /* BIP21View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIP21View.swift; sourceTree = "<group>"; };
 		AE80C2012C4AB38D006E7193 /* BIP21ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIP21ViewModel.swift; sourceTree = "<group>"; };
@@ -157,7 +157,7 @@
 		AEBAA4822A01A80A0042EA82 /* PeersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersListView.swift; sourceTree = "<group>"; };
 		AEBAA48C2A01A93B0042EA82 /* PeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerView.swift; sourceTree = "<group>"; };
 		AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelDetailView.swift; sourceTree = "<group>"; };
-		AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectView.swift; sourceTree = "<group>"; };
+		AEBAA4932A01C6BD0042EA82 /* PeerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerDetailsView.swift; sourceTree = "<group>"; };
 		AEBFD8AF2B8A97DB0024E3F7 /* LightningServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningServiceProvider.swift; sourceTree = "<group>"; };
 		AEBFD8B12B8ABF7C0024E3F7 /* AmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountView.swift; sourceTree = "<group>"; };
 		AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveView.swift; sourceTree = "<group>"; };
@@ -345,7 +345,7 @@
 		AE49E87B2A2544E1002623E8 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */,
+				AE49E86B2A253A32002623E8 /* SettingsViewModel.swift */,
 				AE49E8742A253AF0002623E8 /* Peer */,
 				AE49E86D2A253A9A002623E8 /* Channel */,
 				AE551D442B8ECD980034B61E /* Danger */,
@@ -386,7 +386,7 @@
 			children = (
 				AEBAA4822A01A80A0042EA82 /* PeersListView.swift */,
 				AEBAA48C2A01A93B0042EA82 /* PeerView.swift */,
-				AEBAA4932A01C6BD0042EA82 /* DisconnectView.swift */,
+				AEBAA4932A01C6BD0042EA82 /* PeerDetailsView.swift */,
 			);
 			path = Peers;
 			sourceTree = "<group>";
@@ -458,20 +458,20 @@
 			isa = PBXGroup;
 			children = (
 				AE49E8772A253CBE002623E8 /* Home */,
-				AE8549FE2AC6014F00F056E6 /* Profile */,
+				AE8549FE2AC6014F00F056E6 /* Settings */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		AE8549FE2AC6014F00F056E6 /* Profile */ = {
+		AE8549FE2AC6014F00F056E6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				AE80116A29A59976009B9967 /* NodeIDView.swift */,
+				AE80116A29A59976009B9967 /* SettingsView.swift */,
 				AE551D432B8ECCAD0034B61E /* Peers */,
 				AE49E86E2A253AAE002623E8 /* Channel */,
 				AE49E87A2A2544DC002623E8 /* Danger */,
 			);
-			path = Profile;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		AE8549FF2AC601CD00F056E6 /* App */ = {
@@ -635,7 +635,7 @@
 				AE028A2E2B9638EC00B336E7 /* FileManager+Extensions.swift in Sources */,
 				AE49E8662A2537D5002623E8 /* PeerViewModel.swift in Sources */,
 				AE33D3AE2C7BD0EE00AF562B /* URL+Extensions.swift in Sources */,
-				AEBAA4942A01C6BD0042EA82 /* DisconnectView.swift in Sources */,
+				AEBAA4942A01C6BD0042EA82 /* PeerDetailsView.swift in Sources */,
 				65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */,
 				AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
@@ -647,7 +647,7 @@
 				AE7096332B5C20480038BE56 /* PriceService.swift in Sources */,
 				AEDF76022B5C6863002DDEE1 /* Optional+Extensions.swift in Sources */,
 				AE7096382B5C208A0038BE56 /* Price.swift in Sources */,
-				AE49E86C2A253A32002623E8 /* NodeIDViewModel.swift in Sources */,
+				AE49E86C2A253A32002623E8 /* SettingsViewModel.swift in Sources */,
 				AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */,
 				AE028A242B96316B00B336E7 /* ReceiveOption.swift in Sources */,
 				AEDF76062B5C68A0002DDEE1 /* ChannelDetailsFormatted.swift in Sources */,
@@ -683,7 +683,7 @@
 				AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */,
 				AE551D472B8ECE7D0034B61E /* Payment.swift in Sources */,
 				AE51BEFA2B37A2A500BAE452 /* Event+Extensions.swift in Sources */,
-				AE80116B29A59976009B9967 /* NodeIDView.swift in Sources */,
+				AE80116B29A59976009B9967 /* SettingsView.swift in Sources */,
 				AE49E8522A253618002623E8 /* StartViewModel.swift in Sources */,
 				AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */,
 				AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */,
@@ -942,14 +942,6 @@
 			requirement = {
 				kind = exactVersion;
 				version = 2.0.0;
-			};
-		};
-		AEFA825C2CC15C7C0095B0BA /* XCRemoteSwiftPackageReference "ldk-node" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lightningdevkit/ldk-node.git";
-			requirement = {
-				kind = exactVersion;
-				version = 0.4.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

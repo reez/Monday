@@ -11,7 +11,6 @@ import SwiftUI
 
 class SeedViewModel: ObservableObject {
     @Published var seed: BackupInfo = .init(mnemonic: "mock seed words")
-    @Published var networkColor = Color.gray
     @Published var seedViewError: MondayError?
 
     func getSeed() {
@@ -30,13 +29,6 @@ class SeedViewModel: ObservableObject {
                     detail: error.localizedDescription
                 )
             }
-        }
-    }
-
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
         }
     }
 
