@@ -13,15 +13,10 @@ struct SettingsView: View {
     @ObservedObject var viewModel: SettingsViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showCheckmark = false
-    @State private var showingNodeIDErrorAlert = false
-    @State private var isSeedPresented = false
-    @State private var showingStopNodeConfirmation = false
-    @State private var showingDeleteSeedConfirmation = false
-    @State private var showingShowSeedConfirmation = false
-    @State private var showingResetAppConfirmation = false
-    @State private var isViewPeersPresented = false
-    @State private var refreshFlag = false
-    @State private var isPaymentsPresented = false
+    @State private var showNodeIDErrorAlert = false
+    @State private var showStopNodeConfirmation = false
+    @State private var showDeleteSeedConfirmation = false
+    @State private var showResetAppConfirmation = false
 
     @State private var showGreeting = true
 
@@ -102,26 +97,26 @@ struct SettingsView: View {
                 Section {
 
                     Button {
-                        showingStopNodeConfirmation = true
+                        showStopNodeConfirmation = true
                     } label: {
                         Text("Stop Node")  //, systemImage: "exclamationmark.octagon")
                     }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to stop the node?",
-                            isPresented: $showingStopNodeConfirmation
+                            isPresented: $showStopNodeConfirmation
                         ) {
                             Button("Yes", role: .destructive) { viewModel.stop() }
                             Button("No", role: .cancel) {}
                         }
 
                     Button {
-                        showingResetAppConfirmation = true
+                        showResetAppConfirmation = true
                     } label: {
                         Text("Reset Preferences")  //, systemImage: "minus.diamond")
                     }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to reset preferences (and delete the seed)?",
-                            isPresented: $showingResetAppConfirmation
+                            isPresented: $showResetAppConfirmation
                         ) {
                             Button("Yes", role: .destructive) {
                                 viewModel.onboarding()
@@ -131,13 +126,13 @@ struct SettingsView: View {
                         }
 
                     Button {
-                        showingDeleteSeedConfirmation = true
+                        showDeleteSeedConfirmation = true
                     } label: {
                         Text("Delete Seed")  //, systemImage: "delete.left")
                     }.foregroundColor(.red)
                         .alert(
                             "Are you sure you want to delete the seed (and reset preferences)?",
-                            isPresented: $showingDeleteSeedConfirmation
+                            isPresented: $showDeleteSeedConfirmation
                         ) {
                             Button("Yes", role: .destructive) {
                                 viewModel.delete()
@@ -171,9 +166,9 @@ struct SettingsView: View {
                     }
                 }
                 .onReceive(viewModel.$nodeIDError) { errorMessage in
-                    showingNodeIDErrorAlert = errorMessage != nil
+                    showNodeIDErrorAlert = errorMessage != nil
                 }
-                .alert(isPresented: $showingNodeIDErrorAlert) {
+                .alert(isPresented: $showNodeIDErrorAlert) {
                     Alert(
                         title: Text(viewModel.nodeIDError?.title ?? "Unknown"),
                         message: Text(viewModel.nodeIDError?.detail ?? ""),
