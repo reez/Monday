@@ -14,7 +14,6 @@ struct ChannelDetailView: View {
     @ObservedObject var viewModel: ChannelDetailViewModel
     @Binding var refreshFlag: Bool
     @State private var showingChannelDetailViewErrorAlert = false
-    @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var lastCopiedItemId: String? = nil
     @State private var showingConfirmationAlert = false
@@ -48,7 +47,14 @@ struct ChannelDetailView: View {
                                     Image(
                                         systemName: lastCopiedItemId == property.name
                                             ? "checkmark" : "doc.on.doc"
-                                    )
+                                    ).resizable()
+                                        .scaledToFit()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(
+                                            lastCopiedItemId == property.name
+                                                ? .secondary : .accentColor
+                                        )
+
                                 }
                             }
                             .foregroundColor(.accentColor)
