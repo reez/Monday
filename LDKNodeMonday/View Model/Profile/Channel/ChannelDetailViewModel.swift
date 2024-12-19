@@ -11,7 +11,6 @@ import SwiftUI
 class ChannelDetailViewModel: ObservableObject {
     @Published var channel: ChannelDetails
     @Published var channelDetailViewError: MondayError?
-    @Published var networkColor = Color.gray
 
     init(channel: ChannelDetails) {
         self.channel = channel
@@ -39,13 +38,6 @@ class ChannelDetailViewModel: ObservableObject {
                     detail: error.localizedDescription
                 )
             }
-        }
-    }
-
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
         }
     }
 
