@@ -31,17 +31,19 @@ struct SettingsView: View {
                     NavigationLink(destination: SeedView(viewModel: .init())) {
                         Label("Recovery Phrase", systemImage: "lock")
                     }
-                    
+
                     Label("Network", systemImage: "network")
                         .badge((viewModel.network ?? "No network").capitalized)
 
                     // Move to subpage 'Network Settings' once NetworkSettingsView does not depend on OnboardingViewModel
                     Label("Server", systemImage: "server.rack")
-                        .badge(viewModel.esploraURL?.replacingOccurrences(of: "https://", with: "")
-                            .replacingOccurrences(
-                                of: "http://",
-                                with: ""
-                            ) ?? "No server")
+                        .badge(
+                            viewModel.esploraURL?.replacingOccurrences(of: "https://", with: "")
+                                .replacingOccurrences(
+                                    of: "http://",
+                                    with: ""
+                                ) ?? "No server"
+                        )
 
                 } header: {
                     Text("Wallet")
@@ -99,23 +101,42 @@ struct SettingsView: View {
                     Button {
                         showStopNodeConfirmation = true
                     } label: {
-                        Text("Stop Node")  //, systemImage: "exclamationmark.octagon")
+                        Text("Stop Node")
                     }.foregroundColor(.red)
                         .alert(
-                            "Are you sure you want to stop the node?",
+                            "Warning!",
                             isPresented: $showStopNodeConfirmation
                         ) {
                             Button("Yes", role: .destructive) { viewModel.stop() }
                             Button("No", role: .cancel) {}
+                        } message: {
+                            Text("Are you sure you want to stop the node?")
+                        }
+
+                    Button {
+                        showDeleteSeedConfirmation = true
+                    } label: {
+                        Text("Delete Wallet")
+                    }.foregroundColor(.red)
+                        .alert("Warning!", isPresented: $showDeleteSeedConfirmation) {
+                            Button("Yes", role: .destructive) {
+                                viewModel.delete()
+                                dismiss()
+                            }
+                            Button("No", role: .cancel) {}
+                        } message: {
+                            Text(
+                                "All funds will be lost. Are you sure you want to delete the wallet?"
+                            )
                         }
 
                     Button {
                         showResetAppConfirmation = true
                     } label: {
-                        Text("Reset Preferences")  //, systemImage: "minus.diamond")
+                        Text("Full Reset")
                     }.foregroundColor(.red)
                         .alert(
-                            "Are you sure you want to reset preferences (and delete the seed)?",
+                            "Warning!",
                             isPresented: $showResetAppConfirmation
                         ) {
                             Button("Yes", role: .destructive) {
@@ -123,22 +144,10 @@ struct SettingsView: View {
                                 dismiss()
                             }
                             Button("No", role: .cancel) {}
-                        }
-
-                    Button {
-                        showDeleteSeedConfirmation = true
-                    } label: {
-                        Text("Delete Seed")  //, systemImage: "delete.left")
-                    }.foregroundColor(.red)
-                        .alert(
-                            "Are you sure you want to delete the seed (and reset preferences)?",
-                            isPresented: $showDeleteSeedConfirmation
-                        ) {
-                            Button("Yes", role: .destructive) {
-                                viewModel.delete()
-                                dismiss()
-                            }
-                            Button("No", role: .cancel) {}
+                        } message: {
+                            Text(
+                                "The wallet and all data will be lost. Are you sure you want to fully reset the app?"
+                            )
                         }
 
                 } header: {
