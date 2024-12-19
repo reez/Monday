@@ -9,7 +9,7 @@ import BitcoinUI
 import LDKNode
 import SwiftUI
 
-class NodeIDViewModel: ObservableObject {
+class SettingsViewModel: ObservableObject {
     @AppStorage("isOnboarding") var isOnboarding: Bool?
     @Published var nodeIDError: MondayError?
     @Published var nodeID: String = ""

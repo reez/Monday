@@ -48,7 +48,7 @@
 		AE49E8642A2537B3002623E8 /* PeersListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8632A2537B3002623E8 /* PeersListViewModel.swift */; };
 		AE49E8662A2537D5002623E8 /* PeerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8652A2537D5002623E8 /* PeerViewModel.swift */; };
 		AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8672A2537FB002623E8 /* DisconnectViewModel.swift */; };
-		AE49E86C2A253A32002623E8 /* NodeIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */; };
+		AE49E86C2A253A32002623E8 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E86B2A253A32002623E8 /* SettingsViewModel.swift */; };
 		AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C15B12A1316D100AA8917 /* BitcoinView.swift */; };
 		AE51BEFA2B37A2A500BAE452 /* Event+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE51BEF92B37A2A500BAE452 /* Event+Extensions.swift */; };
 		AE51BEFD2B37A5DC00BAE452 /* SimpleToast in Frameworks */ = {isa = PBXBuildFile; productRef = AE51BEFC2B37A5DC00BAE452 /* SimpleToast */; };
@@ -131,7 +131,7 @@
 		AE49E8632A2537B3002623E8 /* PeersListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersListViewModel.swift; sourceTree = "<group>"; };
 		AE49E8652A2537D5002623E8 /* PeerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewModel.swift; sourceTree = "<group>"; };
 		AE49E8672A2537FB002623E8 /* DisconnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectViewModel.swift; sourceTree = "<group>"; };
-		AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIDViewModel.swift; sourceTree = "<group>"; };
+		AE49E86B2A253A32002623E8 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		AE4C15B12A1316D100AA8917 /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
 		AE51BEF92B37A2A500BAE452 /* Event+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+Extensions.swift"; sourceTree = "<group>"; };
 		AE551D462B8ECE7D0034B61E /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
@@ -345,7 +345,7 @@
 		AE49E87B2A2544E1002623E8 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				AE49E86B2A253A32002623E8 /* NodeIDViewModel.swift */,
+				AE49E86B2A253A32002623E8 /* SettingsViewModel.swift */,
 				AE49E8742A253AF0002623E8 /* Peer */,
 				AE49E86D2A253A9A002623E8 /* Channel */,
 				AE551D442B8ECD980034B61E /* Danger */,
@@ -647,7 +647,7 @@
 				AE7096332B5C20480038BE56 /* PriceService.swift in Sources */,
 				AEDF76022B5C6863002DDEE1 /* Optional+Extensions.swift in Sources */,
 				AE7096382B5C208A0038BE56 /* Price.swift in Sources */,
-				AE49E86C2A253A32002623E8 /* NodeIDViewModel.swift in Sources */,
+				AE49E86C2A253A32002623E8 /* SettingsViewModel.swift in Sources */,
 				AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */,
 				AE028A242B96316B00B336E7 /* ReceiveOption.swift in Sources */,
 				AEDF76062B5C68A0002DDEE1 /* ChannelDetailsFormatted.swift in Sources */,

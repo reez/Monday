@@ -10,7 +10,7 @@ import LDKNode
 import SwiftUI
 
 struct SettingsView: View {
-    @ObservedObject var viewModel: NodeIDViewModel
+    @ObservedObject var viewModel: SettingsViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showCheckmark = false
     @State private var showingNodeIDErrorAlert = false
