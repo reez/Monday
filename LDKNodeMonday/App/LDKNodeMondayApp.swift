@@ -10,20 +10,28 @@ import SwiftUI
 @main
 struct LDKNodeMondayApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @AppStorage("isOnboarding") var isOnboarding: Bool = true
+    @State private var walletState: WalletState = WalletState(keyClient: KeyClient.live)
     @State private var navigationPath = NavigationPath()
 
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $navigationPath) {
-                if isOnboarding {
+                switch walletState.appNavigation {
+                case .onboarding:
                     OnboardingView(viewModel: .init())
-                } else {
-                    StartView(viewModel: .init(), navigationPath: $navigationPath)
+                case .wallet:
+                    BitcoinView(
+                        viewModel: .init(priceClient: .live),
+                        sendNavigationPath: $navigationPath
+                    )
+                default:
+                    LoadingView()
                 }
             }
-            .onChange(of: isOnboarding) { oldValue, newValue in
+            .onChange(of: walletState.appNavigation) { oldValue, newValue in
                 navigationPath = NavigationPath()
+            }.task {
+                await walletState.start()
             }
         }
     }

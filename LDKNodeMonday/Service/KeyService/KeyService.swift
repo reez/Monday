@@ -66,7 +66,7 @@ extension KeyService {
     }
 }
 
-struct KeyClient {
+public struct KeyClient {
     let saveBackupInfo: (BackupInfo) throws -> Void
     let getBackupInfo: () throws -> BackupInfo
     let deleteBackupInfo: () throws -> Void

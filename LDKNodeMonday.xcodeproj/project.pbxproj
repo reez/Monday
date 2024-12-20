@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		654A0C5F2D15B8A700E0740B /* WalletState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654A0C5E2D15B8A700E0740B /* WalletState.swift */; };
 		65875A932CCB9809000D3E70 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 65875A922CCB9809000D3E70 /* LDKNode */; };
 		659EE6952CF8D4990064ED78 /* ImportWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659EE6942CF8D4990064ED78 /* ImportWalletView.swift */; };
 		65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A406622D070CBD00EA331E /* NetworkSettingsView.swift */; };
@@ -31,7 +32,7 @@
 		AE17E8DE29A402E40058C9C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE17E8DD29A402E40058C9C9 /* Assets.xcassets */; };
 		AE17E8E129A402E40058C9C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */; };
 		AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */; };
-		AE186B8E2A1540B700338463 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE186B8D2A1540B700338463 /* StartView.swift */; };
+		AE186B8E2A1540B700338463 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE186B8D2A1540B700338463 /* LoadingView.swift */; };
 		AE1D9BEC2B2A1FFD00620748 /* BitcoinUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE1D9BEB2B2A1FFD00620748 /* BitcoinUI */; };
 		AE1D9C0B2B2A251500620748 /* ChannelDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */; };
 		AE33D3AE2C7BD0EE00AF562B /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE33D3AD2C7BD0EE00AF562B /* URL+Extensions.swift */; };
@@ -93,6 +94,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		654A0C5E2D15B8A700E0740B /* WalletState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletState.swift; sourceTree = "<group>"; };
 		659EE6942CF8D4990064ED78 /* ImportWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletView.swift; sourceTree = "<group>"; };
 		65A406622D070CBD00EA331E /* NetworkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsView.swift; sourceTree = "<group>"; };
 		AE00550D2B479EF000100797 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -115,7 +117,7 @@
 		AE17E8DD29A402E40058C9C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeService.swift; sourceTree = "<group>"; };
-		AE186B8D2A1540B700338463 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
+		AE186B8D2A1540B700338463 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChannelDetails+Extensions.swift"; sourceTree = "<group>"; };
 		AE33D3AD2C7BD0EE00AF562B /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		AE3815352B6A9705006B2952 /* LightningNodesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodesService.swift; sourceTree = "<group>"; };
@@ -302,7 +304,7 @@
 			children = (
 				65A406622D070CBD00EA331E /* NetworkSettingsView.swift */,
 				AE00550D2B479EF000100797 /* OnboardingView.swift */,
-				AE186B8D2A1540B700338463 /* StartView.swift */,
+				AE186B8D2A1540B700338463 /* LoadingView.swift */,
 				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
 				659EE6942CF8D4990064ED78 /* ImportWalletView.swift */,
 				AE551D402B8ECC2D0034B61E /* Payments */,
@@ -478,6 +480,7 @@
 			isa = PBXGroup;
 			children = (
 				AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */,
+				654A0C5E2D15B8A700E0740B /* WalletState.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -619,7 +622,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE7096352B5C205F0038BE56 /* PriceServiceError.swift in Sources */,
-				AE186B8E2A1540B700338463 /* StartView.swift in Sources */,
+				AE186B8E2A1540B700338463 /* LoadingView.swift in Sources */,
 				AEDF47F32B3FBAB900145D64 /* Notification+Extensions.swift in Sources */,
 				AE0055162B4A0E0100100797 /* Logger+Extensions.swift in Sources */,
 				AE70963C2B5C22270038BE56 /* CurrencyCode.swift in Sources */,
@@ -678,6 +681,7 @@
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
 				AE49E85A2A2536D4002623E8 /* ChannelAddViewModel.swift in Sources */,
 				AE0055142B4895B500100797 /* SeedViewModel.swift in Sources */,
+				654A0C5F2D15B8A700E0740B /* WalletState.swift in Sources */,
 				AE80C2022C4AB38D006E7193 /* BIP21ViewModel.swift in Sources */,
 				AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */,
