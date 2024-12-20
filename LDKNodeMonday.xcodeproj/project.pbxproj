@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		654A0C5F2D15B8A700E0740B /* WalletState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654A0C5E2D15B8A700E0740B /* WalletState.swift */; };
+		654A0C5F2D15B8A700E0740B /* WalletClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654A0C5E2D15B8A700E0740B /* WalletClient.swift */; };
 		65875A932CCB9809000D3E70 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 65875A922CCB9809000D3E70 /* LDKNode */; };
 		659EE6952CF8D4990064ED78 /* ImportWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659EE6942CF8D4990064ED78 /* ImportWalletView.swift */; };
 		65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A406622D070CBD00EA331E /* NetworkSettingsView.swift */; };
@@ -94,7 +94,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		654A0C5E2D15B8A700E0740B /* WalletState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletState.swift; sourceTree = "<group>"; };
+		654A0C5E2D15B8A700E0740B /* WalletClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletClient.swift; sourceTree = "<group>"; };
 		659EE6942CF8D4990064ED78 /* ImportWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletView.swift; sourceTree = "<group>"; };
 		65A406622D070CBD00EA331E /* NetworkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsView.swift; sourceTree = "<group>"; };
 		AE00550D2B479EF000100797 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -480,7 +480,7 @@
 			isa = PBXGroup;
 			children = (
 				AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */,
-				654A0C5E2D15B8A700E0740B /* WalletState.swift */,
+				654A0C5E2D15B8A700E0740B /* WalletClient.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -681,7 +681,7 @@
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
 				AE49E85A2A2536D4002623E8 /* ChannelAddViewModel.swift in Sources */,
 				AE0055142B4895B500100797 /* SeedViewModel.swift in Sources */,
-				654A0C5F2D15B8A700E0740B /* WalletState.swift in Sources */,
+				654A0C5F2D15B8A700E0740B /* WalletClient.swift in Sources */,
 				AE80C2022C4AB38D006E7193 /* BIP21ViewModel.swift in Sources */,
 				AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */,

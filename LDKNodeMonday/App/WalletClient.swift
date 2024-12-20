@@ -1,5 +1,5 @@
 //
-//  WalletState.swift
+//  WalletClient.swift
 //  LDKNodeMonday
 //
 //  Created by Daniel Nordh on 20/12/2024.
@@ -10,11 +10,11 @@ import LDKNode
 import SwiftUI
 
 @Observable
-public class WalletState {
+public class WalletClient {
 
     public var network = Network.signet
     public var server = EsploraServer.mutiny_signet
-    public var appNavigation = AppNavigation.loading
+    public var appState = AppState.loading
     public var appError: Error?
 
     private var keyClient: KeyClient
@@ -33,13 +33,13 @@ public class WalletState {
         }
 
         if backupInfo == nil {
-            self.appNavigation = .onboarding
+            self.appState = .onboarding
         } else {
             do {
                 try await LightningNodeService.shared.start()
                 LightningNodeService.shared.listenForEvents()
                 await MainActor.run {
-                    self.appNavigation = .wallet
+                    self.appState = .wallet
                 }
             } catch let error {
                 debugPrint(error)  // TODO: Show error on relevant screen
@@ -49,7 +49,7 @@ public class WalletState {
     }
 }
 
-public enum AppNavigation {
+public enum AppState {
     case onboarding
     case wallet
     case loading

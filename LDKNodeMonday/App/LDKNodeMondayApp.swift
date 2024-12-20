@@ -10,13 +10,13 @@ import SwiftUI
 @main
 struct LDKNodeMondayApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @State private var walletState: WalletState = WalletState(keyClient: KeyClient.live)
+    @State private var walletClient: WalletClient = WalletClient(keyClient: KeyClient.live)
     @State private var navigationPath = NavigationPath()
 
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $navigationPath) {
-                switch walletState.appNavigation {
+                switch walletClient.appState {
                 case .onboarding:
                     OnboardingView(viewModel: .init())
                 case .wallet:
@@ -28,10 +28,10 @@ struct LDKNodeMondayApp: App {
                     LoadingView()
                 }
             }
-            .onChange(of: walletState.appNavigation) { oldValue, newValue in
+            .onChange(of: walletClient.appState) { oldValue, newValue in
                 navigationPath = NavigationPath()
             }.task {
-                await walletState.start()
+                await walletClient.start()
             }
         }
     }
