@@ -15,7 +15,6 @@ class ChannelsListViewModel {
     var channelsListViewError: MondayError?
     var aliases = [String: String]()
     var channels: [ChannelDetails] = []
-    var networkColor = Color.gray
 
     init(nodeInfoClient: NodeInfoClient) {
         self.nodeInfoClient = nodeInfoClient
@@ -47,13 +46,6 @@ class ChannelsListViewModel {
                 title: "Unexpected error",
                 detail: error.localizedDescription
             )
-        }
-    }
-
-    func getColor() {
-        let color = LightningNodeService.shared.networkColor
-        DispatchQueue.main.async {
-            self.networkColor = color
         }
     }
 

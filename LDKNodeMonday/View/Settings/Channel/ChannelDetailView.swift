@@ -12,81 +12,77 @@ import SwiftUI
 struct ChannelDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: ChannelDetailViewModel
+    @State private var isClosing = false
     @Binding var refreshFlag: Bool
     @State private var showingChannelDetailViewErrorAlert = false
-    @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var lastCopiedItemId: String? = nil
     @State private var showingConfirmationAlert = false
 
     var body: some View {
 
-        ZStack {
-            Color(uiColor: UIColor.systemBackground)
+        VStack {
 
-            VStack {
-
-                Spacer()
-
-                Text(viewModel.channel.isOutbound ? "Outbound" : "Inbound").bold()
-                    .padding()
-                    .padding(.top, 120.0)
-
-                List(viewModel.channel.formatted(), id: \.name) { property in
-                    HStack {
+            List(viewModel.channel.formatted(), id: \.name) { property in
+                HStack {
+                    VStack(alignment: .leading) {
                         Text(property.name)
-                        Spacer()
+                            .font(.subheadline.weight(.medium))
                         Text(property.value)
+                            .font(.caption)
                             .foregroundColor(.secondary)
                             .truncationMode(.middle)
                             .lineLimit(1)
-                        if property.isCopyable {
-                            Button {
-                                UIPasteboard.general.string = property.value
-                                lastCopiedItemId = property.name
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    lastCopiedItemId = nil
-                                }
-                            } label: {
-                                HStack {
-                                    withAnimation {
-                                        Image(
-                                            systemName: lastCopiedItemId == property.name
-                                                ? "checkmark" : "doc.on.doc"
-                                        )
-                                    }
-                                }
-                                .foregroundColor(viewModel.networkColor)
-                                .padding(.leading, 8)
+
+                    }
+                    if property.isCopyable {
+                        Button {
+                            UIPasteboard.general.string = property.value
+                            lastCopiedItemId = property.name
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                lastCopiedItemId = nil
                             }
+                        } label: {
+                            HStack {
+                                withAnimation {
+                                    Image(
+                                        systemName: lastCopiedItemId == property.name
+                                            ? "checkmark" : "doc.on.doc"
+                                    ).resizable()
+                                        .scaledToFit()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(
+                                            lastCopiedItemId == property.name
+                                                ? .secondary : .accentColor
+                                        )
+
+                                }
+                            }
+                            .foregroundColor(.accentColor)
+                            .padding(.leading, 10)
                         }
                     }
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
                 }
-                .font(.system(.caption2, design: .monospaced))
-                .listStyle(.plain)
-
-                Button {
-                    showingConfirmationAlert = true
-                } label: {
-                    Text("Close Channel")
-                        .bold()
-                        .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                        .frame(maxWidth: .infinity)
-                        .padding(.all, 8)
-                }
-                .buttonBorderShape(.capsule)
-                .buttonStyle(.borderedProminent)
-                .tint(viewModel.networkColor)
-                .padding(.all)
-                .padding(.bottom, 100.0)
-
-                Spacer()
-
+                .padding(.top, 5)
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
             }
-            .padding()
-            .padding(.vertical, 20.0)
+            .listStyle(.plain)
+
+            Spacer()
+
+        }.dynamicTypeSize(...DynamicTypeSize.accessibility1)  // Sets max dynamic size for all Text
+            .navigationTitle("Channel Details")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Close") {
+                        showingConfirmationAlert = true
+                    }
+                    .foregroundColor(.red)
+                    .padding()
+                }
+            }
             .alert(isPresented: $showingChannelDetailViewErrorAlert) {
                 Alert(
                     title: Text(viewModel.channelDetailViewError?.title ?? "Unknown"),
@@ -101,12 +97,12 @@ struct ChannelDetailView: View {
                 isPresented: $showingConfirmationAlert
             ) {
                 Button("Yes", role: .destructive) {
+                    isClosing = true
                     viewModel.close()
-                    refreshFlag = true
                     if !showingChannelDetailViewErrorAlert {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                            self.presentationMode.wrappedValue.dismiss()
-                        }
+                        refreshFlag = true
+                        isClosing = false
+                        self.presentationMode.wrappedValue.dismiss()
                     }
                 }
                 Button("No", role: .cancel) {}
@@ -116,12 +112,6 @@ struct ChannelDetailView: View {
                     showingChannelDetailViewErrorAlert = true
                 }
             }
-            .onAppear {
-                viewModel.getColor()
-            }
-
-        }
-        .ignoresSafeArea()
 
     }
 }
