@@ -10,7 +10,6 @@ import LDKNode
 import SwiftUI
 
 class SettingsViewModel: ObservableObject {
-    @AppStorage("isOnboarding") var isOnboarding: Bool?
     @Published var nodeIDError: MondayError?
     @Published var nodeID: String = ""
     @Published var network: String?
@@ -53,7 +52,6 @@ class SettingsViewModel: ObservableObject {
             try KeyClient.live.deleteNetwork()
             try KeyClient.live.deleteEsplora()
             try LightningNodeService.shared.deleteDocuments()
-            self.isOnboarding = true
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
@@ -74,7 +72,6 @@ class SettingsViewModel: ObservableObject {
             try LightningNodeService.shared.stop()
             try KeyClient.live.deleteNetwork()
             try KeyClient.live.deleteEsplora()
-            self.isOnboarding = true
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {

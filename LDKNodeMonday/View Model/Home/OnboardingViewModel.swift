@@ -9,7 +9,6 @@ import LDKNode
 import SwiftUI
 
 class OnboardingViewModel: ObservableObject {
-    @AppStorage("isOnboarding") var isOnboarding: Bool?
     @Published var networkColor = Color.gray
     @Published var onboardingViewError: MondayError?
     @Published var seedPhrase: String = "" {
@@ -107,9 +106,6 @@ class OnboardingViewModel: ObservableObject {
             try KeyClient.live.saveNetwork(selectedNetwork.description)
             try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             LightningNodeService.shared = LightningNodeService()
-            DispatchQueue.main.async {
-                self.isOnboarding = false
-            }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
