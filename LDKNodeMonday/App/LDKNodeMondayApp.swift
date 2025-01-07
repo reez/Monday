@@ -18,9 +18,10 @@ struct LDKNodeMondayApp: App {
             NavigationStack(path: $navigationPath) {
                 switch walletClient.appState {
                 case .onboarding:
-                    OnboardingView(viewModel: .init())
+                    OnboardingView(walletClient: $walletClient, viewModel: .init())
                 case .wallet:
                     BitcoinView(
+                        walletClient: $walletClient,
                         viewModel: .init(priceClient: .live),
                         sendNavigationPath: $navigationPath
                     )

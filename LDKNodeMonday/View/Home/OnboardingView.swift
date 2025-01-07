@@ -10,8 +10,7 @@ import LDKNode
 import SwiftUI
 
 struct OnboardingView: View {
-    @AppStorage("isOnboarding") var isOnboarding: Bool?
-    @AppStorage("isFirstTime") var isFirstTime: Bool = true
+    @Binding var walletClient: WalletClient
 
     @ObservedObject var viewModel: OnboardingViewModel
 
@@ -36,13 +35,15 @@ struct OnboardingView: View {
                         },
                         label: {
                             HStack(spacing: 5) {
-                                Text(viewModel.selectedNetwork.description.capitalized)
+                                Text(walletClient.network.description.capitalized)
                                 Image(systemName: "gearshape")
                             }
                         }
                     )
                     .sheet(isPresented: $showingNetworkSettingsSheet) {
-                        NetworkSettingsView().environmentObject(viewModel)
+                        NavigationView {
+                            NetworkSettingsView(walletClient: $walletClient)
+                        }
                     }
                 }
                 .fontWeight(.medium)
@@ -70,7 +71,7 @@ struct OnboardingView: View {
 
                 Button("Create wallet") {
                     viewModel.saveSeed()
-                    isOnboarding = false
+                    walletClient.appState = .wallet
                 }
                 .buttonStyle(
                     BitcoinFilled(
@@ -105,6 +106,9 @@ struct OnboardingView: View {
 
 #if DEBUG
     #Preview {
-        OnboardingView(viewModel: .init())
+        OnboardingView(
+            walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
+            viewModel: .init()
+        )
     }
 #endif

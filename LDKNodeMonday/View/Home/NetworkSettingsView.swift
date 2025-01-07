@@ -10,62 +10,96 @@ import SwiftUI
 
 struct NetworkSettingsView: View {
     @Environment(\.dismiss) private var dismiss
-
-    @EnvironmentObject var viewModel: OnboardingViewModel
+    @Binding var walletClient: WalletClient
+    @State private var showRestartAlert = false
+    @State private var tempNetwork: Network?
+    @State private var tempServer: EsploraServer?
 
     var body: some View {
 
-        NavigationView {
+        VStack {
             Form {
                 Section {
                     Picker(
                         "Network",
-                        selection: $viewModel.selectedNetwork
+                        selection: Binding(
+                            get: { walletClient.network },
+                            set: { newNetwork in
+                                tempNetwork = newNetwork
+                                if walletClient.appState == .onboarding {
+                                    walletClient.network = tempNetwork!
+                                    walletClient.server = walletClient.availableEsploraServers().first ?? EsploraServer(name: "", url: "")
+                                } else {
+                                    showRestartAlert = true
+                                }
+                            }
+                        )
                     ) {
                         Text("Signet").tag(Network.signet)
                         Text("Testnet").tag(Network.testnet)
                     }
                     .pickerStyle(.navigationLink)
                     .accessibilityLabel("Select bitcoin network")
-                    .scrollContentBackground(.hidden)
 
                     Picker(
                         "Server",
-                        selection: $viewModel.selectedEsploraServer
+                        selection: Binding(
+                            get: { walletClient.server },
+                            set: { newServer in
+                                tempServer = newServer
+                                if walletClient.appState == .onboarding {
+                                    walletClient.server = tempServer!
+                                } else {
+                                    tempNetwork = walletClient.network
+                                    showRestartAlert = true
+                                }
+                            }
+                        )
                     ) {
-                        ForEach(viewModel.availableEsploraServers, id: \.self) { esploraServer in
+                        ForEach(walletClient.availableEsploraServers(), id: \.self) { esploraServer in
                             Text(esploraServer.name).tag(esploraServer)
                         }
                     }
                     .pickerStyle(.navigationLink)
                     .accessibilityLabel("Select esplora server")
-                    .scrollContentBackground(.hidden)
                 } footer: {
                     Text(
                         "Set your desired network and connection server.\nIf in doubt, use the default settings."
                     )
                 }
+                .alert("Change and restart?", isPresented: $showRestartAlert) {
+                    Button("Cancel", role: .cancel) {}
+                    Button("Restart") {
+                        if tempNetwork != nil {
+                            Task {
+                                await walletClient.restart(
+                                    newNetwork: tempNetwork,
+                                    newServer: tempServer
+                                )
+                            }
+                        }
+                    }
+                } message: {
+                    Text("Changing network settings requires a restart of your node.")
+                }
             }
             .navigationTitle("Network settings")
             .navigationBarTitleDisplayMode(.inline)
-            .scrollContentBackground(.hidden)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         dismiss()
                     }
-                    .padding()
                 }
-            }
+            }.tint(.accentColor)
         }
-        .padding(.bottom, 20)
-        .accentColor(.accentColor)
-        .scrollContentBackground(.hidden)
     }
 }
 
 #if DEBUG
     #Preview {
-        NetworkSettingsView(viewModel: .init())
+        NetworkSettingsView(
+            walletClient: .constant(WalletClient(keyClient: KeyClient.mock))
+        )
     }
 #endif

@@ -10,6 +10,7 @@ import LDKNode
 import SwiftUI
 
 struct SettingsView: View {
+    @Binding var walletClient: WalletClient
     @ObservedObject var viewModel: SettingsViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showCheckmark = false
@@ -30,18 +31,13 @@ struct SettingsView: View {
                         Label("Recovery Phrase", systemImage: "lock")
                     }
 
-                    Label("Network", systemImage: "network")
-                        .badge((viewModel.network ?? "No network").capitalized)
-
-                    // Move to subpage 'Network Settings' once NetworkSettingsView does not depend on OnboardingViewModel
-                    Label("Server", systemImage: "server.rack")
-                        .badge(
-                            viewModel.esploraURL?.replacingOccurrences(of: "https://", with: "")
-                                .replacingOccurrences(
-                                    of: "http://",
-                                    with: ""
-                                ) ?? "No server"
-                        )
+                    NavigationLink(
+                        destination: NetworkSettingsView(walletClient: $walletClient)
+                            .environmentObject(viewModel)
+                    ) {
+                        Label("Network", systemImage: "network")
+                            .badge((viewModel.network ?? "No network").capitalized)
+                    }
 
                 } header: {
                     Text("Wallet")
@@ -192,6 +188,9 @@ struct SettingsView: View {
 
 #if DEBUG
     #Preview {
-        SettingsView(viewModel: .init())
+        SettingsView(
+            walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
+            viewModel: .init()
+        )
     }
 #endif

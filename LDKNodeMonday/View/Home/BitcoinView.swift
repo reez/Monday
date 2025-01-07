@@ -10,6 +10,7 @@ import SimpleToast
 import SwiftUI
 
 struct BitcoinView: View {
+    @Binding var walletClient: WalletClient
     @Environment(\.colorScheme) var colorScheme
     @State private var isCopied = false
     @State private var showCheckmark = false
@@ -239,7 +240,7 @@ struct BitcoinView: View {
                     }
                 }
             ) {
-                SettingsView(viewModel: .init())
+                SettingsView(walletClient: $walletClient, viewModel: .init())
             }
             .alert(isPresented: $showingBitcoinViewErrorAlert) {
                 Alert(
@@ -346,6 +347,10 @@ enum NavigationDestination: Hashable {
 
 #if DEBUG
     #Preview {
-        BitcoinView(viewModel: .init(priceClient: .mock), sendNavigationPath: .constant(.init()))
+        BitcoinView(
+            walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
+            viewModel: .init(priceClient: .mock),
+            sendNavigationPath: .constant(.init())
+        )
     }
 #endif

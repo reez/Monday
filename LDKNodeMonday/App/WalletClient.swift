@@ -18,13 +18,13 @@ public class WalletClient {
     public var appError: Error?
 
     private var keyClient: KeyClient
+    private var backupInfo: BackupInfo?
 
     public init(keyClient: KeyClient) {
         self.keyClient = keyClient
     }
 
     public func start() async {
-        var backupInfo: BackupInfo?
         do {
             backupInfo = try KeyClient.live.getBackupInfo()
         } catch let error {
@@ -45,6 +45,56 @@ public class WalletClient {
                 debugPrint(error)  // TODO: Show error on relevant screen
                 self.appError = error
             }
+        }
+    }
+
+    public func restart(newNetwork: Network?, newServer: EsploraServer?) async {
+        do {
+            let newNetwork = newNetwork != nil ? newNetwork! : self.network
+            let newServer =
+                newServer != nil
+                ? newServer! : availableEsploraServers().first ?? EsploraServer(name: "", url: "")
+            try KeyClient.live.saveNetwork(newNetwork.description)
+            try KeyClient.live.saveEsploraURL(newServer.url)
+
+            self.network = newNetwork
+            self.server = newServer
+
+            do {
+                self.appState = .loading
+                try? LightningNodeService.shared.stop()
+                LightningNodeService.init() // Needed to set new Network and Server
+                try await LightningNodeService.shared.start()
+                LightningNodeService.shared.listenForEvents()
+                await MainActor.run {
+                    self.appState = .wallet
+                }
+            } catch let error {
+                debugPrint(error)  // TODO: Show error on relevant screen
+                self.appError = error
+            }
+        } catch {
+            /*
+            DispatchQueue.main.async {
+                self.onboardingViewError = .init(
+                    title: "Error Selecting Network",
+                    detail: error.localizedDescription
+                )
+            }
+            */
+        }
+    }
+
+    public func availableEsploraServers() -> [EsploraServer] {
+        switch network {
+        case .bitcoin:
+            return Constants.Config.EsploraServerURLNetwork.Bitcoin.allValues
+        case .testnet:
+            return Constants.Config.EsploraServerURLNetwork.Testnet.allValues
+        case .regtest:
+            return Constants.Config.EsploraServerURLNetwork.Regtest.allValues
+        case .signet:
+            return Constants.Config.EsploraServerURLNetwork.Signet.allValues
         }
     }
 }
