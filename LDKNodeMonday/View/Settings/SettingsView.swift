@@ -36,7 +36,7 @@ struct SettingsView: View {
                             .environmentObject(viewModel)
                     ) {
                         Label("Network", systemImage: "network")
-                            .badge((viewModel.network ?? "No network").capitalized)
+                            .badge(walletClient.network.description.capitalized)
                     }
 
                 } header: {

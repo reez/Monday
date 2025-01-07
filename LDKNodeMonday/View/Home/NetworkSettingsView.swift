@@ -30,6 +30,8 @@ struct NetworkSettingsView: View {
                                     walletClient.network = tempNetwork!
                                     walletClient.server = walletClient.availableEsploraServers().first ?? EsploraServer(name: "", url: "")
                                 } else {
+                                    walletClient.network = tempNetwork!
+                                    walletClient.server = walletClient.availableEsploraServers().first ?? EsploraServer(name: "", url: "")
                                     showRestartAlert = true
                                 }
                             }
@@ -70,7 +72,7 @@ struct NetworkSettingsView: View {
                 .alert("Change and restart?", isPresented: $showRestartAlert) {
                     Button("Cancel", role: .cancel) {}
                     Button("Restart") {
-                        if tempNetwork != nil {
+                        if tempNetwork != nil || tempServer != nil {
                             Task {
                                 await walletClient.restart(
                                     newNetwork: tempNetwork,
