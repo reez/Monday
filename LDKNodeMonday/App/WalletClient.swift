@@ -63,7 +63,7 @@ public class WalletClient {
             do {
                 self.appState = .loading
                 try? LightningNodeService.shared.stop()
-                LightningNodeService.init() // Needed to set new Network and Server
+                LightningNodeService.reset()
                 try await LightningNodeService.shared.start()
                 LightningNodeService.shared.listenForEvents()
                 await MainActor.run {

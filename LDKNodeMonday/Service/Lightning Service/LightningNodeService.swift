@@ -11,7 +11,18 @@ import SwiftUI
 import os
 
 class LightningNodeService {
-    static var shared: LightningNodeService = LightningNodeService()
+    private static var _shared: LightningNodeService?
+    static var shared: LightningNodeService {
+        get {
+            if _shared == nil {
+                _shared = LightningNodeService()
+            }
+            return _shared!
+        }
+        set {
+            _shared = newValue
+        }
+    }
     private let ldkNode: Node
     private let keyService: KeyClient
     var networkColor = Color.black
@@ -30,8 +41,12 @@ class LightningNodeService {
         self.keyService = keyService
 
         var config = defaultConfig()
-        config.storageDirPath = FileManager.default.getDocumentsDirectoryPath().appending("/\(network.description)/")
-        config.logDirPath = FileManager.default.getDocumentsDirectoryPath().appending("/\(network.description)/")
+        config.storageDirPath = FileManager.default.getDocumentsDirectoryPath().appending(
+            "/\(network.description)/"
+        )
+        config.logDirPath = FileManager.default.getDocumentsDirectoryPath().appending(
+            "/\(network.description)/"
+        )
         config.network = self.network
         config.trustedPeers0conf = [
             Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId
@@ -95,6 +110,10 @@ class LightningNodeService {
 
     func stop() throws {
         try ldkNode.stop()
+    }
+
+    static func reset() {
+        _shared = nil
     }
 
     func nodeId() -> String {
