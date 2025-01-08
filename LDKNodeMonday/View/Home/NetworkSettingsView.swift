@@ -28,10 +28,14 @@ struct NetworkSettingsView: View {
                                 tempNetwork = newNetwork
                                 if walletClient.appState == .onboarding {
                                     walletClient.network = tempNetwork!
-                                    walletClient.server = walletClient.availableEsploraServers().first ?? EsploraServer(name: "", url: "")
+                                    walletClient.server =
+                                        walletClient.availableEsploraServers().first
+                                        ?? EsploraServer(name: "", url: "")
                                 } else {
                                     walletClient.network = tempNetwork!
-                                    walletClient.server = walletClient.availableEsploraServers().first ?? EsploraServer(name: "", url: "")
+                                    walletClient.server =
+                                        walletClient.availableEsploraServers().first
+                                        ?? EsploraServer(name: "", url: "")
                                     showRestartAlert = true
                                 }
                             }
@@ -58,7 +62,8 @@ struct NetworkSettingsView: View {
                             }
                         )
                     ) {
-                        ForEach(walletClient.availableEsploraServers(), id: \.self) { esploraServer in
+                        ForEach(walletClient.availableEsploraServers(), id: \.self) {
+                            esploraServer in
                             Text(esploraServer.name).tag(esploraServer)
                         }
                     }
