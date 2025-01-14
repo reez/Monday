@@ -35,7 +35,7 @@ class LightningNodeService {
         let storedNetworkString = try! keyService.getNetwork() ?? Network.signet.description
         let storedEsploraURL =
             try! keyService.getEsploraURL()
-            ?? EsploraServer.lqwd_signet.url
+        ?? EsploraServer.mutiny_signet.url
 
         self.network = Network(stringValue: storedNetworkString) ?? .signet
         self.keyService = keyService
@@ -72,9 +72,9 @@ class LightningNodeService {
                 rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
             )
             nodeBuilder.setLiquiditySourceLsps2(
-                address: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.address,
-                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId,
-                token: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.token
+                address: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.address,
+                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId,
+                token: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.token
             )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
         case .regtest:
