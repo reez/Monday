@@ -50,7 +50,7 @@ struct Constants {
         struct RGSServerURLNetwork {
             static let bitcoin = "https://rapidsync.lightningdevkit.org/snapshot/"
             static let testnet = "https://rapidsync.lightningdevkit.org/testnet/snapshot/"
-            static let signet = "https://rgs.mutinynet.com/"
+            static let signet = "https://rgs.mutinynet.com/snapshot"
         }
 
     }
