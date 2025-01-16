@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		655574802D398A750064F859 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555747F2D398A750064F859 /* LoadingView.swift */; };
+		655574822D3994E10064F859 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655574812D3994E10064F859 /* ErrorView.swift */; };
 		65875A932CCB9809000D3E70 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 65875A922CCB9809000D3E70 /* LDKNode */; };
 		659EE6952CF8D4990064ED78 /* ImportWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659EE6942CF8D4990064ED78 /* ImportWalletView.swift */; };
 		65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A406622D070CBD00EA331E /* NetworkSettingsView.swift */; };
@@ -93,6 +94,7 @@
 
 /* Begin PBXFileReference section */
 		6555747F2D398A750064F859 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		655574812D3994E10064F859 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		659EE6942CF8D4990064ED78 /* ImportWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletView.swift; sourceTree = "<group>"; };
 		65A406622D070CBD00EA331E /* NetworkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsView.swift; sourceTree = "<group>"; };
 		AE00550D2B479EF000100797 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
 				659EE6942CF8D4990064ED78 /* ImportWalletView.swift */,
 				6555747F2D398A750064F859 /* LoadingView.swift */,
+				655574812D3994E10064F859 /* ErrorView.swift */,
 				AE551D402B8ECC2D0034B61E /* Payments */,
 				AE551D412B8ECC390034B61E /* Send */,
 				AE551D422B8ECC400034B61E /* Receive */,
@@ -622,6 +625,7 @@
 				AE80C2002C4AB360006E7193 /* BIP21View.swift in Sources */,
 				AE01C5B22AB3BF3C00F28C7E /* KeyService.swift in Sources */,
 				AE49E8642A2537B3002623E8 /* PeersListViewModel.swift in Sources */,
+				655574822D3994E10064F859 /* ErrorView.swift in Sources */,
 				AE49E8542A253647002623E8 /* BitcoinViewModel.swift in Sources */,
 				AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */,
 				AEBAA4922A01C34A0042EA82 /* ChannelDetailView.swift in Sources */,

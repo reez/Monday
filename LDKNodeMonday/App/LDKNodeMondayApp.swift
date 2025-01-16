@@ -11,6 +11,7 @@ import SwiftUI
 struct LDKNodeMondayApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     @State private var appState = AppState.loading
     @State private var appError: Error?
     @State private var navigationPath = NavigationPath()
@@ -27,7 +28,7 @@ struct LDKNodeMondayApp: App {
                         sendNavigationPath: $navigationPath
                     )
                 case .error:
-                    LoadingView()  // TODO: Replace with error view
+                    ErrorView(error: self.appError)
                 default:
                     LoadingView()
                 }
@@ -56,14 +57,18 @@ struct LDKNodeMondayApp: App {
 
         if backupInfo != nil {
             do {
-                try await LightningNodeService.shared.start()  // TODO: Start could take parameters from backupInfo (seed, network, url, lsp)
+                // TODO: .start could take parameters from backupInfo (seed, network, url, lsp)
+                try await LightningNodeService.shared.start()
                 LightningNodeService.shared.listenForEvents()
                 await MainActor.run {
                     self.appState = .wallet
                 }
             } catch let error {
                 debugPrint(error)
-                self.appError = error
+                await MainActor.run {
+                    self.appError = error
+                    self.appState = .error
+                }
             }
         } else {
             await MainActor.run {
