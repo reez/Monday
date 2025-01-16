@@ -28,14 +28,20 @@ class LightningNodeService {
 
         self.network = Network(stringValue: storedNetworkString) ?? .signet
         self.keyService = keyService
+        
+        let documentsPath = FileManager.default.getDocumentsDirectoryPath()
+        let networkPath = URL(fileURLWithPath: documentsPath)
+            .appendingPathComponent(network.description)
+            .path
+
+        try? FileManager.default.createDirectory(
+            atPath: networkPath,
+            withIntermediateDirectories: true
+        )
 
         var config = defaultConfig()
-        config.storageDirPath = FileManager.default.getDocumentsDirectoryPath().appending(
-            "/\(network.description)/"
-        )
-        config.logDirPath = FileManager.default.getDocumentsDirectoryPath().appending(
-            "/\(network.description)/"
-        )
+        config.storageDirPath = networkPath
+        config.logDirPath = networkPath
         config.network = self.network
         config.trustedPeers0conf = [
             Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId
