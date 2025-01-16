@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		655574802D398A750064F859 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555747F2D398A750064F859 /* LoadingView.swift */; };
 		65875A932CCB9809000D3E70 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 65875A922CCB9809000D3E70 /* LDKNode */; };
 		659EE6952CF8D4990064ED78 /* ImportWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659EE6942CF8D4990064ED78 /* ImportWalletView.swift */; };
 		65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A406622D070CBD00EA331E /* NetworkSettingsView.swift */; };
@@ -93,6 +94,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6555747F2D398A750064F859 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		659EE6942CF8D4990064ED78 /* ImportWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletView.swift; sourceTree = "<group>"; };
 		65A406622D070CBD00EA331E /* NetworkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsView.swift; sourceTree = "<group>"; };
 		AE00550D2B479EF000100797 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 				AE186B8D2A1540B700338463 /* StartView.swift */,
 				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
 				659EE6942CF8D4990064ED78 /* ImportWalletView.swift */,
+				6555747F2D398A750064F859 /* LoadingView.swift */,
 				AE551D402B8ECC2D0034B61E /* Payments */,
 				AE551D412B8ECC390034B61E /* Send */,
 				AE551D422B8ECC400034B61E /* Receive */,
@@ -682,6 +685,7 @@
 				AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */,
 				AE551D472B8ECE7D0034B61E /* Payment.swift in Sources */,
+				655574802D398A750064F859 /* LoadingView.swift in Sources */,
 				AE51BEFA2B37A2A500BAE452 /* Event+Extensions.swift in Sources */,
 				AE80116B29A59976009B9967 /* SettingsView.swift in Sources */,
 				AE49E8522A253618002623E8 /* StartViewModel.swift in Sources */,
