@@ -30,8 +30,10 @@ class LightningNodeService {
         self.keyService = keyService
 
         var config = defaultConfig()
-        config.storageDirPath = FileManager.default.getDocumentsDirectoryPath()
-        config.logDirPath = FileManager.default.getDocumentsDirectoryPath()
+        config.storageDirPath = FileManager.default.getDocumentsDirectoryPath().appending(
+            "/\(network.description)/")
+        config.logDirPath = FileManager.default.getDocumentsDirectoryPath().appending(
+            "/\(network.description)/")
         config.network = self.network
         config.trustedPeers0conf = [
             Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId
