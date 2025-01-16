@@ -40,6 +40,7 @@ public class WalletClient {
                 LightningNodeService.shared.listenForEvents()
                 await MainActor.run {
                     self.appState = .wallet
+                    self.network = LightningNodeService.shared.network
                 }
             } catch let error {
                 debugPrint(error)  // TODO: Show error on relevant screen
@@ -57,8 +58,10 @@ public class WalletClient {
             try KeyClient.live.saveNetwork(newNetwork.description)
             try KeyClient.live.saveEsploraURL(newServer.url)
 
-            self.network = newNetwork
-            self.server = newServer
+            await MainActor.run {
+                self.network = newNetwork
+                self.server = newServer
+            }
 
             do {
                 self.appState = .loading
