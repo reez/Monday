@@ -14,7 +14,7 @@ class JITInvoiceViewModel: ObservableObject {
     @Published var invoice: Bolt11Invoice = ""
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
-    @Published var amountMsat: String = "121000"
+    @Published var amountMsat: String = "10100"
 
     func receivePaymentViaJitChannel(
         amountMsat: UInt64,
