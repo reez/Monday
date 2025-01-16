@@ -33,15 +33,16 @@ class LightningNodeService {
         let networkPath = URL(fileURLWithPath: documentsPath)
             .appendingPathComponent(network.description)
             .path
+        let logPath = networkPath + "/logs"
 
         try? FileManager.default.createDirectory(
-            atPath: networkPath,
+            atPath: logPath,
             withIntermediateDirectories: true
         )
 
         var config = defaultConfig()
         config.storageDirPath = networkPath
-        config.logDirPath = networkPath
+        config.logDirPath = logPath
         config.network = self.network
         config.trustedPeers0conf = [
             Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId
