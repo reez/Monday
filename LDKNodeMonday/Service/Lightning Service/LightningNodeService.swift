@@ -31,9 +31,11 @@ class LightningNodeService {
 
         var config = defaultConfig()
         config.storageDirPath = FileManager.default.getDocumentsDirectoryPath().appending(
-            "/\(network.description)/")
+            "/\(network.description)/"
+        )
         config.logDirPath = FileManager.default.getDocumentsDirectoryPath().appending(
-            "/\(network.description)/")
+            "/\(network.description)/"
+        )
         config.network = self.network
         config.trustedPeers0conf = [
             Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId
