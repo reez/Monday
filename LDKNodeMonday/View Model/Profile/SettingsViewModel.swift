@@ -10,7 +10,7 @@ import LDKNode
 import SwiftUI
 
 class SettingsViewModel: ObservableObject {
-    @AppStorage("isOnboarding") var isOnboarding: Bool?
+    @Binding var appState: AppState
     @Published var nodeIDError: MondayError?
     @Published var nodeID: String = ""
     @Published var network: String?
@@ -19,7 +19,8 @@ class SettingsViewModel: ObservableObject {
     @Published var isStatusFinished: Bool = false
     let keyClient: KeyClient
 
-    init(keyClient: KeyClient = .live) {
+    init(appState: Binding<AppState>, keyClient: KeyClient = .live) {
+        _appState = appState
         self.keyClient = keyClient
     }
 
@@ -47,47 +48,33 @@ class SettingsViewModel: ObservableObject {
     }
 
     func delete() {
-        do {
-            try LightningNodeService.shared.stop()
-            try LightningNodeService.shared.deleteWallet()
-            try KeyClient.live.deleteNetwork()
-            try KeyClient.live.deleteEsplora()
-            try LightningNodeService.shared.deleteDocuments()
-            self.isOnboarding = true
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
+        if network != nil {
+            do {
+                DispatchQueue.main.async {
+                    self.appState = .loading
+                }
+                try LightningNodeService.shared.stop()
+                try LightningNodeService.shared.deleteDocuments(network: network!)
+                try LightningNodeService.shared.deleteWallet()
+                try KeyClient.live.deleteNetwork()
+                try KeyClient.live.deleteEsplora()
+                DispatchQueue.main.async {
+                    self.appState = .onboarding
+                }
+            } catch let error as NodeError {
+                let errorString = handleNodeError(error)
+                DispatchQueue.main.async {
+                    self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.appState = .error
+                }
             }
-        } catch {
-            DispatchQueue.main.async {
-                self.nodeIDError = .init(
-                    title: "Unexpected error",
-                    detail: error.localizedDescription
-                )
-            }
+        } else {
+            debugPrint("No Network found, so not deleting")
         }
-    }
 
-    func onboarding() {
-        do {
-            try LightningNodeService.shared.stop()
-            try KeyClient.live.deleteNetwork()
-            try KeyClient.live.deleteEsplora()
-            self.isOnboarding = true
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.nodeIDError = .init(
-                    title: "Unexpected error",
-                    detail: error.localizedDescription
-                )
-            }
-        }
     }
 
     func getNetwork() {
