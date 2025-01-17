@@ -266,25 +266,7 @@ extension LightningNodeService {
 }
 
 extension LightningNodeService {
-    func deleteDocuments(network: String) throws {
-
-        let documentsPath = FileManager.default.getDocumentsDirectoryPath()
-        let networkURL = URL(fileURLWithPath: documentsPath)
-            .appendingPathComponent(network.description)
-
-        guard FileManager.default.fileExists(atPath: networkURL.path()) else {
-            debugPrint("No files or folders to delete in: \(networkURL.path())")
-            return
-        }
-
-        let contents = try FileManager.default.contentsOfDirectory(
-            at: networkURL,
-            includingPropertiesForKeys: nil,
-            options: []
-        )
-
-        for fileURL in contents {
-            try FileManager.default.removeItem(at: fileURL)
-        }
+    func deleteDocuments() throws {
+        try FileManager.default.deleteAllContentsInDocumentsDirectory()
     }
 }

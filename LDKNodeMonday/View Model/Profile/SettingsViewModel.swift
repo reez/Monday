@@ -48,33 +48,30 @@ class SettingsViewModel: ObservableObject {
     }
 
     func delete() {
-        if network != nil {
-            do {
-                DispatchQueue.main.async {
-                    self.appState = .loading
-                }
+        do {
+            if LightningNodeService.shared.status().isRunning {
                 try LightningNodeService.shared.stop()
-                try LightningNodeService.shared.deleteDocuments(network: network!)
-                try LightningNodeService.shared.deleteWallet()
-                try KeyClient.live.deleteNetwork()
-                try KeyClient.live.deleteEsplora()
-                DispatchQueue.main.async {
-                    self.appState = .onboarding
-                }
-            } catch let error as NodeError {
-                let errorString = handleNodeError(error)
+            }
+            try LightningNodeService.shared.deleteDocuments()
+            try LightningNodeService.shared.deleteWallet()
+            try KeyClient.live.deleteNetwork()
+            try KeyClient.live.deleteEsplora()
+            
+            DispatchQueue.main.async {
+                self.appState = .onboarding
+            }
+        } catch let error {
+            if let nodeError = error as? NodeError {
+                let errorString = handleNodeError(nodeError)
                 DispatchQueue.main.async {
                     self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
                 }
-            } catch {
+            } else {
                 DispatchQueue.main.async {
-                    self.appState = .error
+                    self.nodeIDError = .init(title: "Error", detail: error.localizedDescription)
                 }
             }
-        } else {
-            debugPrint("No Network found, so not deleting")
         }
-
     }
 
     func getNetwork() {
