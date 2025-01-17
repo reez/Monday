@@ -909,7 +909,7 @@
 			repositoryURL = "https://github.com/lightningdevkit/ldk-node.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.4.0;
+				version = 0.4.2;
 			};
 		};
 		AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
@@ -933,7 +933,7 @@
 			repositoryURL = "https://github.com/sanzaru/SimpleToast.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.8.1;
+				version = 0.10.1;
 			};
 		};
 		AEE5B7632A09B1FC001E5E59 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
@@ -941,7 +941,7 @@
 			repositoryURL = "https://github.com/twostraws/CodeScanner";
 			requirement = {
 				kind = exactVersion;
-				version = 2.0.0;
+				version = 2.5.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
