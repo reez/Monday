@@ -270,3 +270,137 @@ extension LightningNodeService {
         try FileManager.default.deleteAllContentsInDocumentsDirectory()
     }
 }
+
+struct LightningNodeClient {
+    let start: () async throws -> Void
+    let stop: () throws -> Void
+    let nodeId: () -> String
+    let newAddress: () async throws -> String
+    let spendableOnchainBalanceSats: () async -> UInt64
+    let totalOnchainBalanceSats: () async -> UInt64
+    let totalLightningBalanceSats: () async -> UInt64
+    let lightningBalances: () async -> [LightningBalance]
+    let pendingBalancesFromChannelClosures: () async -> [PendingSweepBalance]
+    let connect: (PublicKey, String, Bool) async throws -> Void
+    let disconnect: (PublicKey) throws -> Void
+    let connectOpenChannel: (PublicKey, String, UInt64, UInt64?, ChannelConfig?, Bool) async throws -> UserChannelId
+    let closeChannel: (ChannelId, PublicKey) throws -> Void
+    let send: (String) async throws -> QrPaymentResult
+    let receive: (UInt64, String, UInt32) async throws -> String
+    let receiveViaJitChannel: (UInt64, String, UInt32, UInt64?) async throws -> Bolt11Invoice
+    let listPeers: () -> [PeerDetails]
+    let listChannels: () -> [ChannelDetails]
+    let listPayments: () -> [PaymentDetails]
+    let status: () -> NodeStatus
+    let deleteWallet: () throws -> Void
+    let getBackupInfo: () throws -> BackupInfo
+    let deleteDocuments: () throws -> Void
+    let getNetwork: () -> Network
+    let getNetworkColor: () -> Color
+}
+
+extension LightningNodeClient {
+    static let live = Self(
+        start: { try await LightningNodeService.shared.start() },
+        stop: { try LightningNodeService.shared.stop() },
+        nodeId: { LightningNodeService.shared.nodeId() },
+        newAddress: { try await LightningNodeService.shared.newAddress() },
+        spendableOnchainBalanceSats: { await LightningNodeService.shared.spendableOnchainBalanceSats() },
+        totalOnchainBalanceSats: { await LightningNodeService.shared.totalOnchainBalanceSats() },
+        totalLightningBalanceSats: { await LightningNodeService.shared.totalLightningBalanceSats() },
+        lightningBalances: { await LightningNodeService.shared.lightningBalances() },
+        pendingBalancesFromChannelClosures: { await LightningNodeService.shared.pendingBalancesFromChannelClosures() },
+        connect: { nodeId, address, persist in
+            try await LightningNodeService.shared.connect(nodeId: nodeId, address: address, persist: persist)
+        },
+        disconnect: { nodeId in try LightningNodeService.shared.disconnect(nodeId: nodeId) },
+        connectOpenChannel: { nodeId, address, amount, pushMsat, config, announce in
+            try await LightningNodeService.shared.connectOpenChannel(
+                nodeId: nodeId,
+                address: address,
+                channelAmountSats: amount,
+                pushToCounterpartyMsat: pushMsat,
+                channelConfig: config,
+                announceChannel: announce
+            )
+        },
+        closeChannel: { channelId, nodeId in
+            try LightningNodeService.shared.closeChannel(
+                userChannelId: channelId,
+                counterpartyNodeId: nodeId
+            )
+        },
+        send: { uriStr in try await LightningNodeService.shared.send(uriStr: uriStr) },
+        receive: { amount, message, expiry in
+            try await LightningNodeService.shared.receive(
+                amountSat: amount,
+                message: message,
+                expirySec: expiry
+            )
+        },
+        receiveViaJitChannel: { amount, description, expiry, maxFee in
+            try await LightningNodeService.shared.receiveViaJitChannel(
+                amountMsat: amount,
+                description: description,
+                expirySecs: expiry,
+                maxLspFeeLimitMsat: maxFee
+            )
+        },
+        listPeers: { LightningNodeService.shared.listPeers() },
+        listChannels: { LightningNodeService.shared.listChannels() },
+        listPayments: { LightningNodeService.shared.listPayments() },
+        status: { LightningNodeService.shared.status() },
+        deleteWallet: { try LightningNodeService.shared.deleteWallet() },
+        getBackupInfo: { try LightningNodeService.shared.getBackupInfo() },
+        deleteDocuments: { try LightningNodeService.shared.deleteDocuments() },
+        getNetwork: { LightningNodeService.shared.network },
+        getNetworkColor: { LightningNodeService.shared.networkColor }
+    )
+}
+
+#if DEBUG
+extension LightningNodeClient {
+    static let mock = Self(
+        start: { },
+        stop: { },
+        nodeId: { "038474837483784378437843784378437843784378" },
+        newAddress: { "tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx" },
+        spendableOnchainBalanceSats: { 100_000 },
+        totalOnchainBalanceSats: { 150_000 },
+        totalLightningBalanceSats: { 50_000 },
+        lightningBalances: { [] },
+        pendingBalancesFromChannelClosures: { [] },
+        connect: { _, _, _ in },
+        disconnect: { _ in },
+        connectOpenChannel: { _, _, _, _, _, _ in UserChannelId("abcdef") },
+        closeChannel: { _, _ in },
+        send: { _ in QrPaymentResult.onchain(txid: "txid") },
+        receive: { _, _, _ in "lightning:lnbc1..." },
+        receiveViaJitChannel: { _, _, _, _ in Bolt11Invoice("lnbc1...") },
+        listPeers: { [] },
+        listChannels: { [] },
+        listPayments: { [] },
+        status: {
+            NodeStatus(
+                isRunning: true,
+                isListening: true,
+                currentBestBlock: BestBlock(
+                    blockHash: BlockHash("000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"),
+                    height: 123456
+                ),
+                latestLightningWalletSyncTimestamp: UInt64(Date().timeIntervalSince1970),
+                latestOnchainWalletSyncTimestamp: UInt64(Date().timeIntervalSince1970),
+                latestFeeRateCacheUpdateTimestamp: UInt64(Date().timeIntervalSince1970),
+                latestRgsSnapshotTimestamp: UInt64(Date().timeIntervalSince1970),
+                latestNodeAnnouncementBroadcastTimestamp: UInt64(Date().timeIntervalSince1970),
+                latestChannelMonitorArchivalHeight: 123456
+            )
+        },
+        deleteWallet: { },
+        getBackupInfo: { BackupInfo(mnemonic: "test test test") },
+        deleteDocuments: { },
+        getNetwork: { .signet },
+        getNetworkColor: { .orange }
+    )
+}
+#endif
