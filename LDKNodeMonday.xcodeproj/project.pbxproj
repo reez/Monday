@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		655574802D398A750064F859 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555747F2D398A750064F859 /* LoadingView.swift */; };
+		655574822D3994E10064F859 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655574812D3994E10064F859 /* ErrorView.swift */; };
 		65875A932CCB9809000D3E70 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 65875A922CCB9809000D3E70 /* LDKNode */; };
 		659EE6952CF8D4990064ED78 /* ImportWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659EE6942CF8D4990064ED78 /* ImportWalletView.swift */; };
 		65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A406622D070CBD00EA331E /* NetworkSettingsView.swift */; };
@@ -31,7 +33,6 @@
 		AE17E8DE29A402E40058C9C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE17E8DD29A402E40058C9C9 /* Assets.xcassets */; };
 		AE17E8E129A402E40058C9C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */; };
 		AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */; };
-		AE186B8E2A1540B700338463 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE186B8D2A1540B700338463 /* StartView.swift */; };
 		AE1D9BEC2B2A1FFD00620748 /* BitcoinUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE1D9BEB2B2A1FFD00620748 /* BitcoinUI */; };
 		AE1D9C0B2B2A251500620748 /* ChannelDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */; };
 		AE33D3AE2C7BD0EE00AF562B /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE33D3AD2C7BD0EE00AF562B /* URL+Extensions.swift */; };
@@ -40,7 +41,6 @@
 		AE38153B2B6A979E006B2952 /* LightningNodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE38153A2B6A979E006B2952 /* LightningNodeInfo.swift */; };
 		AE4536152C83508E0047D1B2 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4536142C83508E0047D1B2 /* AddressView.swift */; };
 		AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84B2A24F96F002623E8 /* Constants.swift */; };
-		AE49E8522A253618002623E8 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8512A253618002623E8 /* StartViewModel.swift */; };
 		AE49E8542A253647002623E8 /* BitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8532A253647002623E8 /* BitcoinViewModel.swift */; };
 		AE49E8582A2536B4002623E8 /* ChannelsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8572A2536B4002623E8 /* ChannelsListViewModel.swift */; };
 		AE49E85A2A2536D4002623E8 /* ChannelAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8592A2536D4002623E8 /* ChannelAddViewModel.swift */; };
@@ -93,6 +93,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6555747F2D398A750064F859 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		655574812D3994E10064F859 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		659EE6942CF8D4990064ED78 /* ImportWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletView.swift; sourceTree = "<group>"; };
 		65A406622D070CBD00EA331E /* NetworkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsView.swift; sourceTree = "<group>"; };
 		AE00550D2B479EF000100797 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -115,7 +117,6 @@
 		AE17E8DD29A402E40058C9C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE17E8E029A402E40058C9C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE17E90C29A42D430058C9C9 /* LightningNodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeService.swift; sourceTree = "<group>"; };
-		AE186B8D2A1540B700338463 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		AE1D9C0A2B2A251500620748 /* ChannelDetails+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChannelDetails+Extensions.swift"; sourceTree = "<group>"; };
 		AE33D3AD2C7BD0EE00AF562B /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		AE3815352B6A9705006B2952 /* LightningNodesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodesService.swift; sourceTree = "<group>"; };
@@ -123,7 +124,6 @@
 		AE38153A2B6A979E006B2952 /* LightningNodeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeInfo.swift; sourceTree = "<group>"; };
 		AE4536142C83508E0047D1B2 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
 		AE49E84B2A24F96F002623E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		AE49E8512A253618002623E8 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
 		AE49E8532A253647002623E8 /* BitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinViewModel.swift; sourceTree = "<group>"; };
 		AE49E8572A2536B4002623E8 /* ChannelsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListViewModel.swift; sourceTree = "<group>"; };
 		AE49E8592A2536D4002623E8 /* ChannelAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelAddViewModel.swift; sourceTree = "<group>"; };
@@ -302,9 +302,10 @@
 			children = (
 				65A406622D070CBD00EA331E /* NetworkSettingsView.swift */,
 				AE00550D2B479EF000100797 /* OnboardingView.swift */,
-				AE186B8D2A1540B700338463 /* StartView.swift */,
 				AE4C15B12A1316D100AA8917 /* BitcoinView.swift */,
 				659EE6942CF8D4990064ED78 /* ImportWalletView.swift */,
+				6555747F2D398A750064F859 /* LoadingView.swift */,
+				655574812D3994E10064F859 /* ErrorView.swift */,
 				AE551D402B8ECC2D0034B61E /* Payments */,
 				AE551D412B8ECC390034B61E /* Send */,
 				AE551D422B8ECC400034B61E /* Receive */,
@@ -316,7 +317,6 @@
 			isa = PBXGroup;
 			children = (
 				AE00550F2B479F1100100797 /* OnboardingViewModel.swift */,
-				AE49E8512A253618002623E8 /* StartViewModel.swift */,
 				AE49E8532A253647002623E8 /* BitcoinViewModel.swift */,
 				AE551D452B8ECE180034B61E /* Payments */,
 				AE43F27A2C7E529C00406326 /* Send */,
@@ -619,13 +619,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE7096352B5C205F0038BE56 /* PriceServiceError.swift in Sources */,
-				AE186B8E2A1540B700338463 /* StartView.swift in Sources */,
 				AEDF47F32B3FBAB900145D64 /* Notification+Extensions.swift in Sources */,
 				AE0055162B4A0E0100100797 /* Logger+Extensions.swift in Sources */,
 				AE70963C2B5C22270038BE56 /* CurrencyCode.swift in Sources */,
 				AE80C2002C4AB360006E7193 /* BIP21View.swift in Sources */,
 				AE01C5B22AB3BF3C00F28C7E /* KeyService.swift in Sources */,
 				AE49E8642A2537B3002623E8 /* PeersListViewModel.swift in Sources */,
+				655574822D3994E10064F859 /* ErrorView.swift in Sources */,
 				AE49E8542A253647002623E8 /* BitcoinViewModel.swift in Sources */,
 				AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */,
 				AEBAA4922A01C34A0042EA82 /* ChannelDetailView.swift in Sources */,
@@ -682,9 +682,9 @@
 				AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */,
 				AE551D472B8ECE7D0034B61E /* Payment.swift in Sources */,
+				655574802D398A750064F859 /* LoadingView.swift in Sources */,
 				AE51BEFA2B37A2A500BAE452 /* Event+Extensions.swift in Sources */,
 				AE80116B29A59976009B9967 /* SettingsView.swift in Sources */,
-				AE49E8522A253618002623E8 /* StartViewModel.swift in Sources */,
 				AE4C15B22A1316D100AA8917 /* BitcoinView.swift in Sources */,
 				AEE5B76A2A09C722001E5E59 /* Peer.swift in Sources */,
 				AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */,

@@ -9,6 +9,7 @@ import LDKNode
 import SwiftUI
 
 class BitcoinViewModel: ObservableObject {
+    @Binding var appState: AppState
     @Published var bitcoinViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var status: NodeStatus?
@@ -33,7 +34,8 @@ class BitcoinViewModel: ObservableObject {
         return totalUSD
     }
 
-    init(priceClient: PriceClient) {
+    init(appState: Binding<AppState>, priceClient: PriceClient) {
+        _appState = appState
         self.priceClient = priceClient
     }
 

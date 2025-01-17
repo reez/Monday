@@ -10,7 +10,7 @@ import LDKNode
 import SwiftUI
 
 class SettingsViewModel: ObservableObject {
-    @AppStorage("isOnboarding") var isOnboarding: Bool?
+    @Binding var appState: AppState
     @Published var nodeIDError: MondayError?
     @Published var nodeID: String = ""
     @Published var network: String?
@@ -19,7 +19,8 @@ class SettingsViewModel: ObservableObject {
     @Published var isStatusFinished: Bool = false
     let keyClient: KeyClient
 
-    init(keyClient: KeyClient = .live) {
+    init(appState: Binding<AppState>, keyClient: KeyClient = .live) {
+        _appState = appState
         self.keyClient = keyClient
     }
 
@@ -48,44 +49,27 @@ class SettingsViewModel: ObservableObject {
 
     func delete() {
         do {
-            try LightningNodeService.shared.stop()
-            try LightningNodeService.shared.deleteWallet()
-            try KeyClient.live.deleteNetwork()
-            try KeyClient.live.deleteEsplora()
+            if LightningNodeService.shared.status().isRunning {
+                try LightningNodeService.shared.stop()
+            }
             try LightningNodeService.shared.deleteDocuments()
-            self.isOnboarding = true
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
+            try LightningNodeService.shared.deleteWallet()
+            try self.keyClient.deleteNetwork()
+            try self.keyClient.deleteEsplora()
+            
             DispatchQueue.main.async {
-                self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
+                self.appState = .onboarding
             }
-        } catch {
-            DispatchQueue.main.async {
-                self.nodeIDError = .init(
-                    title: "Unexpected error",
-                    detail: error.localizedDescription
-                )
-            }
-        }
-    }
-
-    func onboarding() {
-        do {
-            try LightningNodeService.shared.stop()
-            try KeyClient.live.deleteNetwork()
-            try KeyClient.live.deleteEsplora()
-            self.isOnboarding = true
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.nodeIDError = .init(
-                    title: "Unexpected error",
-                    detail: error.localizedDescription
-                )
+        } catch let error {
+            if let nodeError = error as? NodeError {
+                let errorString = handleNodeError(nodeError)
+                DispatchQueue.main.async {
+                    self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.nodeIDError = .init(title: "Error", detail: error.localizedDescription)
+                }
             }
         }
     }

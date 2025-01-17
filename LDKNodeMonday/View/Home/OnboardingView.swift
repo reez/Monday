@@ -10,8 +10,6 @@ import LDKNode
 import SwiftUI
 
 struct OnboardingView: View {
-    @AppStorage("isOnboarding") var isOnboarding: Bool?
-    @AppStorage("isFirstTime") var isFirstTime: Bool = true
 
     @ObservedObject var viewModel: OnboardingViewModel
 
@@ -70,7 +68,6 @@ struct OnboardingView: View {
 
                 Button("Create wallet") {
                     viewModel.saveSeed()
-                    isOnboarding = false
                 }
                 .buttonStyle(
                     BitcoinFilled(
@@ -105,6 +102,6 @@ struct OnboardingView: View {
 
 #if DEBUG
     #Preview {
-        OnboardingView(viewModel: .init())
+        OnboardingView(viewModel: .init(appState: .constant(.onboarding)))
     }
 #endif

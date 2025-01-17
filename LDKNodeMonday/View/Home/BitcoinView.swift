@@ -239,7 +239,7 @@ struct BitcoinView: View {
                     }
                 }
             ) {
-                SettingsView(viewModel: .init())
+                SettingsView(viewModel: .init(appState: viewModel.$appState))
             }
             .alert(isPresented: $showingBitcoinViewErrorAlert) {
                 Alert(
@@ -346,6 +346,9 @@ enum NavigationDestination: Hashable {
 
 #if DEBUG
     #Preview {
-        BitcoinView(viewModel: .init(priceClient: .mock), sendNavigationPath: .constant(.init()))
+        BitcoinView(
+            viewModel: .init(appState: .constant(.onboarding), priceClient: .mock),
+            sendNavigationPath: .constant(.init())
+        )
     }
 #endif
