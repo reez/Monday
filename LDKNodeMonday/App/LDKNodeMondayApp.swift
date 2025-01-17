@@ -45,15 +45,7 @@ struct LDKNodeMondayApp: App {
     func start() async {
         var backupInfo: BackupInfo?
 
-        do {
-            backupInfo = try KeyClient.live.getBackupInfo()
-        } catch let error {
-            debugPrint(error)  // TODO: Show error on relevant screen, unless this is thrown if no seed has been saved
-            await MainActor.run {
-                self.appError = error
-                self.appState = .error
-            }
-        }
+        backupInfo = try? KeyClient.live.getBackupInfo()
 
         if backupInfo != nil {
             do {

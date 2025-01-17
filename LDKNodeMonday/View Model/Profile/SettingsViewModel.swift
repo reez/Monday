@@ -54,8 +54,8 @@ class SettingsViewModel: ObservableObject {
             }
             try LightningNodeService.shared.deleteDocuments()
             try LightningNodeService.shared.deleteWallet()
-            try KeyClient.live.deleteNetwork()
-            try KeyClient.live.deleteEsplora()
+            try self.keyClient.deleteNetwork()
+            try self.keyClient.deleteEsplora()
             
             DispatchQueue.main.async {
                 self.appState = .onboarding
