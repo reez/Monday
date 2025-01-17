@@ -32,7 +32,7 @@ class LightningNodeService {
         }
 
         self.keyService = keyService
-        
+
         let documentsPath = FileManager.default.getDocumentsDirectoryPath()
         let networkPath = URL(fileURLWithPath: documentsPath)
             .appendingPathComponent(network.description)
