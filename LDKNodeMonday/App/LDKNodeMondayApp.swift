@@ -24,7 +24,7 @@ struct LDKNodeMondayApp: App {
                     OnboardingView(viewModel: .init(appState: $appState))
                 case .wallet:
                     BitcoinView(
-                        viewModel: .init(priceClient: .live),
+                        viewModel: .init(appState: $appState, priceClient: .live),
                         sendNavigationPath: $navigationPath
                     )
                 case .error:
