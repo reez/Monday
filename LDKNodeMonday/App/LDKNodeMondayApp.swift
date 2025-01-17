@@ -12,6 +12,7 @@ struct LDKNodeMondayApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
+    private let lightningClient: LightningNodeClient = .live
     @State private var appState = AppState.loading
     @State private var appError: Error?
     @State private var navigationPath = NavigationPath()
@@ -21,10 +22,16 @@ struct LDKNodeMondayApp: App {
             NavigationStack(path: $navigationPath) {
                 switch appState {
                 case .onboarding:
-                    OnboardingView(viewModel: .init(appState: $appState))
+                    OnboardingView(
+                        viewModel: .init(appState: $appState, lightningClient: lightningClient)
+                    )
                 case .wallet:
                     BitcoinView(
-                        viewModel: .init(appState: $appState, priceClient: .live),
+                        viewModel: .init(
+                            appState: $appState,
+                            priceClient: .live,
+                            lightningClient: lightningClient
+                        ),
                         sendNavigationPath: $navigationPath
                     )
                 case .error:
@@ -50,8 +57,8 @@ struct LDKNodeMondayApp: App {
         if backupInfo != nil {
             do {
                 // TODO: .start could take parameters from backupInfo (seed, network, url, lsp)
-                try await LightningNodeService.shared.start()
-                LightningNodeService.shared.listenForEvents()
+                try await lightningClient.start()
+                lightningClient.listenForEvents()
                 await MainActor.run {
                     self.appState = .wallet
                 }
@@ -72,7 +79,7 @@ struct LDKNodeMondayApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
-        try? LightningNodeService.shared.stop()
+        try? LightningNodeClient.live.stop()
     }
 }
 

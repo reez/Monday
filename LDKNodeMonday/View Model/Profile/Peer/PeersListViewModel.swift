@@ -10,9 +10,13 @@ import SwiftUI
 
 class PeersListViewModel: ObservableObject {
     @Published var peers: [PeerDetails] = []
+    let lightningClient: LightningNodeClient
 
-    func listPeers() {
-        self.peers = LightningNodeService.shared.listPeers()
+    init(lightningClient: LightningNodeClient) {
+        self.lightningClient = lightningClient
     }
 
+    func listPeers() {
+        self.peers = lightningClient.listPeers()
+    }
 }

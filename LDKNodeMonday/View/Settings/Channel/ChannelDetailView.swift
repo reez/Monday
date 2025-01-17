@@ -156,7 +156,8 @@ struct ChannelDetailView: View {
                         forceCloseAvoidanceMaxFeeSatoshis: UInt64(21),
                         acceptUnderpayingHtlcs: false
                     )
-                )
+                ),
+                lightningClient: .mock
             ),
             refreshFlag: .constant(false)
         )

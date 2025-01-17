@@ -16,12 +16,18 @@ class BIP21ViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var amountSat: String = "0"
 
+    private let lightningClient: LightningNodeClient
+
+    init(lightningClient: LightningNodeClient) {
+        self.lightningClient = lightningClient
+    }
+
     func receivePayment(amountSat: UInt64, message: String, expirySecs: UInt32) async {
         do {
-            let unified = try await LightningNodeService.shared.receive(
-                amountSat: amountSat,
-                message: message,
-                expirySec: expirySecs
+            let unified = try await lightningClient.receive(
+                amountSat,
+                message,
+                expirySecs
             )
 
             DispatchQueue.main.async {
@@ -43,10 +49,9 @@ class BIP21ViewModel: ObservableObject {
     }
 
     func getColor() {
-        let color = LightningNodeService.shared.networkColor
+        let color = lightningClient.getNetworkColor()
         DispatchQueue.main.async {
             self.networkColor = color
         }
     }
-
 }

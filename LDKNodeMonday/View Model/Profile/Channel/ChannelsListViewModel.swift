@@ -12,20 +12,30 @@ import SwiftUI
 @MainActor
 class ChannelsListViewModel {
     let nodeInfoClient: NodeInfoClient
+    let lightningClient: LightningNodeClient
+    private let keyClient: KeyClient
     var channelsListViewError: MondayError?
     var aliases = [String: String]()
     var channels: [ChannelDetails] = []
 
-    init(nodeInfoClient: NodeInfoClient) {
+    init(
+        nodeInfoClient: NodeInfoClient,
+        keyClient: KeyClient = .live,
+        lightningClient: LightningNodeClient
+    ) {
         self.nodeInfoClient = nodeInfoClient
+        self.keyClient = keyClient
+        self.lightningClient = lightningClient
     }
 
     func listChannels() async {
-        self.channels = LightningNodeService.shared.listChannels()
+        self.channels = lightningClient.listChannels()
 
         // Open Issue https://github.com/lightningdevkit/ldk-node/issues/234
         // Temporary: if mainnet then get alias, ignore if other networks
-        if LightningNodeService.shared.network == Network.bitcoin {
+        if let networkString = try? keyClient.getNetwork(),
+            networkString == Network.bitcoin.description
+        {
             for channel in channels {
                 await fetchAlias(for: channel.counterpartyNodeId)
             }

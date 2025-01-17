@@ -10,6 +10,8 @@ import SwiftUI
 
 class OnboardingViewModel: ObservableObject {
     @Binding var appState: AppState
+    private let lightningClient: LightningNodeClient
+    private let keyClient: KeyClient
     @Published var networkColor = Color.gray
     @Published var onboardingViewError: MondayError?
     @Published var seedPhrase: String = "" {
@@ -22,10 +24,10 @@ class OnboardingViewModel: ObservableObject {
         didSet {
             do {
                 let networkString = selectedNetwork.description
-                try KeyClient.live.saveNetwork(networkString)
+                try keyClient.saveNetwork(networkString)
                 self.selectedEsploraServer =
                     availableEsploraServers.first ?? EsploraServer(name: "", url: "")
-                try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
+                try keyClient.saveEsploraURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -40,7 +42,7 @@ class OnboardingViewModel: ObservableObject {
     {
         didSet {
             do {
-                try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
+                try keyClient.saveEsploraURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -77,14 +79,20 @@ class OnboardingViewModel: ObservableObject {
         }
     }
 
-    init(appState: Binding<AppState>) {
+    init(
+        appState: Binding<AppState>,
+        lightningClient: LightningNodeClient,
+        keyClient: KeyClient = .live
+    ) {
         _appState = appState
+        self.lightningClient = lightningClient
+        self.keyClient = keyClient
 
         do {
-            if let networkString = try KeyClient.live.getNetwork() {
+            if let networkString = try keyClient.getNetwork() {
                 self.selectedNetwork = Network(stringValue: networkString) ?? .signet
             }
-            if let esploraURL = try KeyClient.live.getEsploraURL() {
+            if let esploraURL = try keyClient.getEsploraURL() {
                 self.selectedEsploraServer =
                     availableEsploraServers.first(where: {
                         $0.url == esploraURL
@@ -98,16 +106,14 @@ class OnboardingViewModel: ObservableObject {
                 )
             }
         }
-
     }
 
     func saveSeed() {
         do {
             let backupInfo = BackupInfo(mnemonic: seedPhrase)
-            try KeyClient.live.saveBackupInfo(backupInfo)
-            try KeyClient.live.saveNetwork(selectedNetwork.description)
-            try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
-            LightningNodeService.shared = LightningNodeService()
+            try keyClient.saveBackupInfo(backupInfo)
+            try keyClient.saveNetwork(selectedNetwork.description)
+            try keyClient.saveEsploraURL(selectedEsploraServer.url)
             DispatchQueue.main.async {
                 self.appState = .wallet
             }
@@ -130,7 +136,7 @@ class OnboardingViewModel: ObservableObject {
     }
 
     func getColor() {
-        let color = LightningNodeService.shared.networkColor
+        let color = lightningClient.getNetworkColor()
         DispatchQueue.main.async {
             self.networkColor = color
         }

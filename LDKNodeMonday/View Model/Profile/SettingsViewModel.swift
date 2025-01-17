@@ -17,21 +17,36 @@ class SettingsViewModel: ObservableObject {
     @Published var esploraURL: String?
     @Published var status: NodeStatus?
     @Published var isStatusFinished: Bool = false
+
+    let lightningClient: LightningNodeClient
     let keyClient: KeyClient
 
-    init(appState: Binding<AppState>, keyClient: KeyClient = .live) {
+    init(
+        appState: Binding<AppState>,
+        keyClient: KeyClient = .live,
+        lightningClient: LightningNodeClient
+    ) {
         _appState = appState
         self.keyClient = keyClient
+        self.lightningClient = lightningClient
+
+        // Call these immediately to populate data, wasnt immediately doing it otherwise?
+        getNodeID()
+        getNetwork()
+        getEsploraUrl()
+        Task {
+            await getStatus()
+        }
     }
 
     func getNodeID() {
-        let nodeID = LightningNodeService.shared.nodeId()
+        let nodeID = lightningClient.nodeId()
         self.nodeID = nodeID
     }
 
     func stop() {
         do {
-            try LightningNodeService.shared.stop()
+            try lightningClient.stop()
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
@@ -49,11 +64,11 @@ class SettingsViewModel: ObservableObject {
 
     func delete() {
         do {
-            if LightningNodeService.shared.status().isRunning {
-                try LightningNodeService.shared.stop()
+            if lightningClient.status().isRunning {
+                try lightningClient.stop()
             }
-            try LightningNodeService.shared.deleteDocuments()
-            try LightningNodeService.shared.deleteWallet()
+            try lightningClient.deleteDocuments()
+            try lightningClient.deleteWallet()
             try self.keyClient.deleteNetwork()
             try self.keyClient.deleteEsplora()
 
@@ -111,11 +126,10 @@ class SettingsViewModel: ObservableObject {
     }
 
     func getStatus() async {
-        let status = LightningNodeService.shared.status()
+        let status = lightningClient.status()
         DispatchQueue.main.async {
             self.status = status
             self.isStatusFinished = true
         }
     }
-
 }

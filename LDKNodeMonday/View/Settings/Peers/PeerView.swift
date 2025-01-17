@@ -208,6 +208,6 @@ extension PeerView {
 
 #if DEBUG
     #Preview {
-        PeerView(viewModel: .init())
+        PeerView(viewModel: .init(lightningClient: .mock))
     }
 #endif
