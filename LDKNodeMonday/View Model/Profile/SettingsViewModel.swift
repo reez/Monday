@@ -91,7 +91,10 @@ class SettingsViewModel: ObservableObject {
 
     func getNetwork() {
         do {
-            self.network = try keyClient.getNetwork()
+            let network = try keyClient.getNetwork()
+            DispatchQueue.main.async {
+                self.network = network
+            }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
@@ -109,7 +112,10 @@ class SettingsViewModel: ObservableObject {
 
     func getEsploraUrl() {
         do {
-            self.esploraURL = try keyClient.getEsploraURL()
+            let url = try keyClient.getEsploraURL()
+            DispatchQueue.main.async {
+                self.esploraURL = url
+            }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
@@ -128,8 +134,10 @@ class SettingsViewModel: ObservableObject {
     func getStatus() async {
         let status = lightningClient.status()
         await MainActor.run {
+            print("SettingsViewModel - Setting status on main thread")
             self.status = status
             self.isStatusFinished = true
+            print("SettingsViewModel - Status set: \(String(describing: self.status))")
         }
     }
 }
