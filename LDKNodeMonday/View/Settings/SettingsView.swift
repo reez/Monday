@@ -125,27 +125,7 @@ struct SettingsView: View {
                             Button("No", role: .cancel) {}
                         } message: {
                             Text(
-                                "All funds will be lost. Are you sure you want to delete the wallet?"
-                            )
-                        }
-
-                    Button {
-                        showResetAppConfirmation = true
-                    } label: {
-                        Text("Full Reset")
-                    }.foregroundColor(.red)
-                        .alert(
-                            "Warning!",
-                            isPresented: $showResetAppConfirmation
-                        ) {
-                            Button("Yes", role: .destructive) {
-                                viewModel.onboarding()
-                                dismiss()
-                            }
-                            Button("No", role: .cancel) {}
-                        } message: {
-                            Text(
-                                "The wallet and all data will be lost. Are you sure you want to fully reset the app?"
+                                "All funds will be lost.\nAre you sure you want to delete the wallet?"
                             )
                         }
 
@@ -192,6 +172,6 @@ struct SettingsView: View {
 
 #if DEBUG
     #Preview {
-        SettingsView(viewModel: .init())
+        SettingsView(viewModel: .init(appState: .constant(.onboarding)))
     }
 #endif

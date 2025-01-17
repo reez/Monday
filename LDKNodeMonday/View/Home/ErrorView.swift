@@ -13,7 +13,7 @@ struct ErrorView: View {
 
     var body: some View {
         Spacer()
-        Text(error != nil ? error!.localizedDescription : "Unknown error")
+        Text(error?.localizedDescription ?? "Unknown error")
         Spacer()
     }
 }
