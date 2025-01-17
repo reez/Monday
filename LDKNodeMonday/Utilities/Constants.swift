@@ -100,7 +100,7 @@ struct Constants {
 
 }
 
-struct EsploraServer: Hashable {
+struct EsploraServer: Hashable, Codable {
     var name: String
     var url: String
 

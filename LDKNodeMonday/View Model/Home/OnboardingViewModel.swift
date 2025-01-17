@@ -21,11 +21,10 @@ class OnboardingViewModel: ObservableObject {
     @Published var selectedNetwork: Network = .signet {
         didSet {
             do {
-                let networkString = selectedNetwork.description
-                try KeyClient.live.saveNetwork(networkString)
+                try KeyClient.live.saveNetwork(selectedNetwork)
                 self.selectedEsploraServer =
                     availableEsploraServers.first ?? EsploraServer(name: "", url: "")
-                try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
+                try KeyClient.live.saveServer(selectedEsploraServer)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -40,7 +39,7 @@ class OnboardingViewModel: ObservableObject {
     {
         didSet {
             do {
-                try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
+                try KeyClient.live.saveServer(selectedEsploraServer)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -103,10 +102,8 @@ class OnboardingViewModel: ObservableObject {
 
     func saveSeed() {
         do {
-            let backupInfo = BackupInfo(mnemonic: seedPhrase)
+            let backupInfo = BackupInfo(mnemonic: seedPhrase, network: selectedNetwork, server: selectedEsploraServer)
             try KeyClient.live.saveBackupInfo(backupInfo)
-            try KeyClient.live.saveNetwork(selectedNetwork.description)
-            try KeyClient.live.saveEsploraURL(selectedEsploraServer.url)
             LightningNodeService.shared = LightningNodeService()
             DispatchQueue.main.async {
                 self.appState = .wallet
