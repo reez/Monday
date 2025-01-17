@@ -127,7 +127,7 @@ class SettingsViewModel: ObservableObject {
 
     func getStatus() async {
         let status = lightningClient.status()
-        DispatchQueue.main.async {
+        await MainActor.run {
             self.status = status
             self.isStatusFinished = true
         }

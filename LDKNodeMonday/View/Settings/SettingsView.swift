@@ -84,7 +84,7 @@ struct SettingsFormView: View {
 }
 
 private struct WalletSection: View {
-    let viewModel: SettingsViewModel
+    @ObservedObject var viewModel: SettingsViewModel
 
     var body: some View {
         Section {
@@ -110,7 +110,7 @@ private struct WalletSection: View {
 }
 
 private struct LightningNodeSection: View {
-    let viewModel: SettingsViewModel
+    @ObservedObject var viewModel: SettingsViewModel
     @Binding var showCheckmark: Bool
 
     var body: some View {
@@ -146,7 +146,7 @@ private struct LightningNodeSection: View {
 }
 
 private struct NodeIDRow: View {
-    let viewModel: SettingsViewModel
+    @ObservedObject var viewModel: SettingsViewModel
     @Binding var showCheckmark: Bool
 
     var body: some View {
@@ -177,7 +177,7 @@ private struct NodeIDRow: View {
 }
 
 private struct DangerZoneSection: View {
-    let viewModel: SettingsViewModel
+    @ObservedObject var viewModel: SettingsViewModel
     @Binding var showStopNodeConfirmation: Bool
     @Binding var showDeleteSeedConfirmation: Bool
     let dismiss: DismissAction
