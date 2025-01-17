@@ -43,9 +43,6 @@ struct AddressView: View {
         .background(
             GeometryReader { geometry in
                 Color.clear
-                    .onAppear {
-                        print("View frame: \(geometry.frame(in: .global))")
-                    }
             }
         )
 

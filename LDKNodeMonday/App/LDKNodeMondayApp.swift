@@ -17,6 +17,10 @@ struct LDKNodeMondayApp: App {
     @State private var appError: Error?
     @State private var navigationPath = NavigationPath()
 
+    init() {
+        AppDelegate.shared.lightningClient = lightningClient
+    }
+
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $navigationPath) {
@@ -63,7 +67,6 @@ struct LDKNodeMondayApp: App {
                     self.appState = .wallet
                 }
             } catch let error {
-                debugPrint(error)
                 await MainActor.run {
                     self.appError = error
                     self.appState = .error
@@ -78,8 +81,11 @@ struct LDKNodeMondayApp: App {
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    static let shared = AppDelegate()
+    var lightningClient: LightningNodeClient?
+
     func applicationWillTerminate(_ application: UIApplication) {
-        try? LightningNodeClient.live.stop()
+        try? lightningClient?.stop()
     }
 }
 

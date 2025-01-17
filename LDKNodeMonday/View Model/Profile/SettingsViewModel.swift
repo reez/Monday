@@ -134,10 +134,8 @@ class SettingsViewModel: ObservableObject {
     func getStatus() async {
         let status = lightningClient.status()
         await MainActor.run {
-            print("SettingsViewModel - Setting status on main thread")
             self.status = status
             self.isStatusFinished = true
-            print("SettingsViewModel - Status set: \(String(describing: self.status))")
         }
     }
 }
