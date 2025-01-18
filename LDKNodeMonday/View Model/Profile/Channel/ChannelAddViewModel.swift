@@ -15,6 +15,8 @@ class ChannelAddViewModel: ObservableObject {
     @Published var nodeId: PublicKey = ""
     @Published var isOpenChannelFinished: Bool = false
     @Published var isProgressViewShowing: Bool = false
+    private let lightningClient: LightningNodeClient
+
     private let channelConfig = ChannelConfig(
         forwardingFeeProportionalMillionths: UInt32(0),
         forwardingFeeBaseMsat: UInt32(1000),
@@ -23,6 +25,10 @@ class ChannelAddViewModel: ObservableObject {
         forceCloseAvoidanceMaxFeeSatoshis: UInt64(1000),
         acceptUnderpayingHtlcs: false
     )
+
+    init(lightningClient: LightningNodeClient) {
+        self.lightningClient = lightningClient
+    }
 
     func openChannel(
         nodeId: PublicKey,
@@ -34,12 +40,13 @@ class ChannelAddViewModel: ObservableObject {
             self.isProgressViewShowing = true
         }
         do {
-            try await LightningNodeService.shared.connectOpenChannel(
-                nodeId: nodeId,
-                address: address,
-                channelAmountSats: channelAmountSats,
-                pushToCounterpartyMsat: pushToCounterpartyMsat,
-                channelConfig: channelConfig
+            try await lightningClient.connectOpenChannel(
+                nodeId,
+                address,
+                channelAmountSats,
+                pushToCounterpartyMsat,
+                channelConfig,
+                false
             )
             DispatchQueue.main.async {
                 self.channelAddViewError = nil
@@ -65,5 +72,4 @@ class ChannelAddViewModel: ObservableObject {
             }
         }
     }
-
 }

@@ -11,9 +11,13 @@ import SwiftUI
 
 class PaymentsViewModel: ObservableObject {
     @Published var payments: [PaymentDetails] = []
+    private let lightningClient: LightningNodeClient
 
-    func listPayments() {
-        self.payments = LightningNodeService.shared.listPayments()
+    init(lightningClient: LightningNodeClient) {
+        self.lightningClient = lightningClient
     }
 
+    func listPayments() {
+        self.payments = lightningClient.listPayments()
+    }
 }

@@ -16,6 +16,12 @@ class JITInvoiceViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var amountMsat: String = "121000"
 
+    private let lightningClient: LightningNodeClient
+
+    init(lightningClient: LightningNodeClient) {
+        self.lightningClient = lightningClient
+    }
+
     func receivePaymentViaJitChannel(
         amountMsat: UInt64,
         description: String,
@@ -23,11 +29,11 @@ class JITInvoiceViewModel: ObservableObject {
         maxLspFeeLimitMsat: UInt64?
     ) async {
         do {
-            let invoice = try await LightningNodeService.shared.receiveViaJitChannel(
-                amountMsat: amountMsat,
-                description: description,
-                expirySecs: expirySecs,
-                maxLspFeeLimitMsat: maxLspFeeLimitMsat
+            let invoice = try await lightningClient.receiveViaJitChannel(
+                amountMsat,
+                description,
+                expirySecs,
+                maxLspFeeLimitMsat
             )
             DispatchQueue.main.async {
                 self.invoice = invoice
@@ -48,10 +54,9 @@ class JITInvoiceViewModel: ObservableObject {
     }
 
     func getColor() {
-        let color = LightningNodeService.shared.networkColor
+        let color = lightningClient.getNetworkColor()
         DispatchQueue.main.async {
             self.networkColor = color
         }
     }
-
 }

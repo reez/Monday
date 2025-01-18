@@ -226,6 +226,6 @@ func parseUnifiedQR(_ unifiedQR: String) -> UnifiedQRComponents? {
 
 #if DEBUG
     #Preview {
-        BIP21View(viewModel: .init())
+        BIP21View(viewModel: .init(lightningClient: .mock))
     }
 #endif

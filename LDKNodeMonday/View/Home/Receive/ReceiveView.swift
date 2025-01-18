@@ -9,6 +9,7 @@ import BitcoinUI
 import SwiftUI
 
 struct ReceiveView: View {
+    let lightningClient: LightningNodeClient
     @State private var selectedOption: ReceiveOption = .bip21
 
     var body: some View {
@@ -31,9 +32,9 @@ struct ReceiveView: View {
 
             switch selectedOption {
             case .bolt11JIT:
-                JITInvoiceView(viewModel: .init())
+                JITInvoiceView(viewModel: .init(lightningClient: lightningClient))
             case .bip21:
-                BIP21View(viewModel: .init())
+                BIP21View(viewModel: .init(lightningClient: lightningClient))
             }
 
         }

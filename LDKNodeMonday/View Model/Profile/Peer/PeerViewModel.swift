@@ -14,15 +14,21 @@ class PeerViewModel: ObservableObject {
     @Published var nodeId: PublicKey = ""
     @Published var isProgressViewShowing: Bool = false
 
+    private let lightningClient: LightningNodeClient
+
+    init(lightningClient: LightningNodeClient) {
+        self.lightningClient = lightningClient
+    }
+
     func connect(
         nodeId: PublicKey,
         address: String
     ) async {
         do {
-            try await LightningNodeService.shared.connect(
-                nodeId: nodeId,
-                address: address,
-                persist: true
+            try await lightningClient.connect(
+                nodeId,
+                address,
+                true
             )
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
@@ -39,7 +45,5 @@ class PeerViewModel: ObservableObject {
                 self.isProgressViewShowing = false
             }
         }
-
     }
-
 }

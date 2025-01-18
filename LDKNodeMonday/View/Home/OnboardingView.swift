@@ -102,6 +102,6 @@ struct OnboardingView: View {
 
 #if DEBUG
     #Preview {
-        OnboardingView(viewModel: .init(appState: .constant(.onboarding)))
+        OnboardingView(viewModel: .init(appState: .constant(.onboarding), lightningClient: .mock))
     }
 #endif

@@ -15,10 +15,15 @@ import SwiftUI
 class AmountViewModel {
     var networkColor = Color.gray
     var amountConfirmationViewError: MondayError?
+    private let lightningClient: LightningNodeClient
+
+    init(lightningClient: LightningNodeClient) {
+        self.lightningClient = lightningClient
+    }
 
     func send(uriStr: String) async throws -> QrPaymentResult {
         do {
-            let qrPaymentResult = try await LightningNodeService.shared.send(uriStr: uriStr)
+            let qrPaymentResult = try await lightningClient.send(uriStr)
             return qrPaymentResult
         } catch let error as NodeError {
             NotificationCenter.default.post(name: .ldkErrorReceived, object: error)
@@ -42,10 +47,9 @@ class AmountViewModel {
     }
 
     func getColor() {
-        let color = LightningNodeService.shared.networkColor
+        let color = lightningClient.getNetworkColor()
         DispatchQueue.main.async {
             self.networkColor = color
         }
     }
-
 }
