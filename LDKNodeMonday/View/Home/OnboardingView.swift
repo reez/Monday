@@ -40,7 +40,7 @@ struct OnboardingView: View {
                         }
                     )
                     .sheet(isPresented: $showingNetworkSettingsSheet) {
-                        NetworkSettingsView().environmentObject(viewModel)
+                        NetworkSettingsView().environmentObject(NetworkSettingsViewModel.init())
                     }
                 }
                 .fontWeight(.medium)
