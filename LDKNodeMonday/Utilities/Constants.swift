@@ -132,3 +132,20 @@ struct EsploraServer: Hashable {
         url: "https://mempool.space/testnet/api"
     )
 }
+
+extension EsploraServer {
+    init?(URLString: String) {
+        switch URLString {
+        case "https://blockstream.info/api": self = .blockstream_bitcoin
+        case "https://mempool.space/api": self = .mempoolspace_bitcoin
+        case "https://mutinynet.com/api": self = .mutiny_signet
+        case "http://signet.bitcoindevkit.net": self = .bdk_signet
+        case "https://mutinynet.ltbl.io/api": self = .lqwd_signet
+        case "http://127.0.0.1:3002": self = .local_regtest
+        case "http://blockstream.info/testnet/api": self = .blockstream_testnet
+        case "https://esplora.testnet.kuutamo.cloud": self = .kuutamo_testnet
+        case "https://mempool.space/testnet/api": self = .mempoolspace_testnet
+        default: return nil
+        }
+    }
+}

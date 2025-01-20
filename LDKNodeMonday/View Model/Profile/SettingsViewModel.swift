@@ -69,7 +69,6 @@ class SettingsViewModel: ObservableObject {
             }
             try lightningClient.deleteDocuments()
             try lightningClient.deleteWallet()
-            try self.keyClient.deleteEsplora()
 
             DispatchQueue.main.async {
                 self.appState = .onboarding

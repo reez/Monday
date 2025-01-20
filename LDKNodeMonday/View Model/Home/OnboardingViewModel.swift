@@ -110,10 +110,8 @@ class OnboardingViewModel: ObservableObject {
 
     func saveSeed() {
         do {
-            let backupInfo = BackupInfo(mnemonic: seedPhrase, networkString: selectedNetwork.description)
+            let backupInfo = BackupInfo(mnemonic: seedPhrase, networkString: selectedNetwork.description, serverURL: selectedEsploraServer.url)
             try keyClient.saveBackupInfo(backupInfo)
-            try keyClient.saveNetwork(selectedNetwork.description)
-            try keyClient.saveEsploraURL(selectedEsploraServer.url)
             DispatchQueue.main.async {
                 self.appState = .wallet
             }
