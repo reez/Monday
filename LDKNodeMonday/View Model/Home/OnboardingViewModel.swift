@@ -23,11 +23,9 @@ class OnboardingViewModel: ObservableObject {
     @Published var selectedNetwork: Network = .signet {
         didSet {
             do {
-                let networkString = selectedNetwork.description
-                try keyClient.saveNetwork(networkString)
                 self.selectedEsploraServer =
-                    availableEsploraServers.first ?? EsploraServer(name: "", url: "")
-                try keyClient.saveEsploraURL(selectedEsploraServer.url)
+                availableEsploraServers.first! // all networks have at least one server option
+                try keyClient.saveNetwork(selectedNetwork.description)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
