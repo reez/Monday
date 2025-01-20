@@ -98,6 +98,6 @@ struct SeedView: View {
 
 #if DEBUG
     #Preview {
-        SeedView(viewModel: .init())
+        SeedView(viewModel: .init(lightningClient: .mock))
     }
 #endif

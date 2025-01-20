@@ -12,10 +12,15 @@ import SwiftUI
 class SeedViewModel: ObservableObject {
     @Published var seed: BackupInfo = .init(mnemonic: "mock seed words")
     @Published var seedViewError: MondayError?
+    private let lightningClient: LightningNodeClient
+
+    init(lightningClient: LightningNodeClient) {
+        self.lightningClient = lightningClient
+    }
 
     func getSeed() {
         do {
-            let seed = try LightningNodeService.shared.getBackupInfo()
+            let seed = try lightningClient.getBackupInfo()
             self.seed = seed
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
@@ -31,5 +36,4 @@ class SeedViewModel: ObservableObject {
             }
         }
     }
-
 }

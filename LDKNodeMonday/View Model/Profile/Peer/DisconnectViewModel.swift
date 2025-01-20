@@ -11,14 +11,19 @@ import SwiftUI
 class DisconnectViewModel: ObservableObject {
     @Published var disconnectViewError: MondayError?
     @Published var nodeId: PublicKey
+    private let lightningClient: LightningNodeClient
 
-    init(nodeId: PublicKey) {
+    init(
+        nodeId: PublicKey,
+        lightningClient: LightningNodeClient
+    ) {
         self.nodeId = nodeId
+        self.lightningClient = lightningClient
     }
 
     func disconnect() async {
         do {
-            try LightningNodeService.shared.disconnect(nodeId: self.nodeId)
+            try lightningClient.disconnect(self.nodeId)
             disconnectViewError = nil
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
@@ -37,5 +42,4 @@ class DisconnectViewModel: ObservableObject {
             }
         }
     }
-
 }

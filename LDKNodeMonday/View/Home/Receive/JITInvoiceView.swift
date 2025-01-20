@@ -146,6 +146,6 @@ struct JITInvoiceView: View {
 
 #if DEBUG
     #Preview {
-        JITInvoiceView(viewModel: .init())
+        JITInvoiceView(viewModel: .init(lightningClient: .mock))
     }
 #endif

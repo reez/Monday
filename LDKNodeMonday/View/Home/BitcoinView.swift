@@ -239,7 +239,12 @@ struct BitcoinView: View {
                     }
                 }
             ) {
-                SettingsView(viewModel: .init(appState: viewModel.$appState))
+                SettingsView(
+                    viewModel: .init(
+                        appState: viewModel.$appState,
+                        lightningClient: viewModel.lightningClient
+                    )
+                )
             }
             .alert(isPresented: $showingBitcoinViewErrorAlert) {
                 Alert(
@@ -285,7 +290,7 @@ struct BitcoinView: View {
                     }
                 }
             ) {
-                ReceiveView()
+                ReceiveView(lightningClient: viewModel.lightningClient)
                     .presentationDetents([.large])
             }
             .sheet(
@@ -300,7 +305,7 @@ struct BitcoinView: View {
                     }
                 }
             ) {
-                PaymentsView(viewModel: .init())
+                PaymentsView(viewModel: .init(lightningClient: viewModel.lightningClient))
                     .presentationDetents([.medium, .large])
             }
 
@@ -314,7 +319,7 @@ struct BitcoinView: View {
                 )
             case .amount(let address, let amount, let payment):
                 AmountView(
-                    viewModel: .init(),
+                    viewModel: .init(lightningClient: viewModel.lightningClient),
                     address: address,
                     numpadAmount: amount,
                     payment: payment,
@@ -347,7 +352,11 @@ enum NavigationDestination: Hashable {
 #if DEBUG
     #Preview {
         BitcoinView(
-            viewModel: .init(appState: .constant(.onboarding), priceClient: .mock),
+            viewModel: .init(
+                appState: .constant(.onboarding),
+                priceClient: .mock,
+                lightningClient: .mock
+            ),
             sendNavigationPath: .constant(.init())
         )
     }

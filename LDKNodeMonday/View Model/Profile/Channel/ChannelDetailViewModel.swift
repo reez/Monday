@@ -11,16 +11,21 @@ import SwiftUI
 class ChannelDetailViewModel: ObservableObject {
     @Published var channel: ChannelDetails
     @Published var channelDetailViewError: MondayError?
+    private let lightningClient: LightningNodeClient
 
-    init(channel: ChannelDetails) {
+    init(
+        channel: ChannelDetails,
+        lightningClient: LightningNodeClient
+    ) {
         self.channel = channel
+        self.lightningClient = lightningClient
     }
 
     func close() {
         do {
-            try LightningNodeService.shared.closeChannel(
-                userChannelId: self.channel.userChannelId,
-                counterpartyNodeId: self.channel.counterpartyNodeId
+            try lightningClient.closeChannel(
+                self.channel.userChannelId,
+                self.channel.counterpartyNodeId
             )
             channelDetailViewError = nil
         } catch let error as NodeError {
@@ -40,5 +45,4 @@ class ChannelDetailViewModel: ObservableObject {
             }
         }
     }
-
 }

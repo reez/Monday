@@ -237,6 +237,6 @@ extension ChannelAddView {
 
 #if DEBUG
     #Preview {
-        ChannelAddView(viewModel: .init())
+        ChannelAddView(viewModel: .init(lightningClient: .mock))
     }
 #endif

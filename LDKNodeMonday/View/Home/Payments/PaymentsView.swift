@@ -52,6 +52,6 @@ struct PaymentsView: View {
 
 #if DEBUG
     #Preview {
-        PaymentsView(viewModel: .init())
+        PaymentsView(viewModel: .init(lightningClient: .mock))
     }
 #endif
