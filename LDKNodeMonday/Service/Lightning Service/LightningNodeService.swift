@@ -258,7 +258,7 @@ extension LightningNodeService {
 }
 
 extension LightningNodeService {
-    func save(mnemonic: Mnemonic, networkString: String) throws {
+    func save(mnemonic: Mnemonic) throws {
         let backupInfo = BackupInfo(mnemonic: mnemonic, networkString: self.network.description, serverURL: self.server.url)
         try keyService.saveBackupInfo(backupInfo)
     }
