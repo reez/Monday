@@ -71,8 +71,8 @@ struct KeyClient {
 
     let saveNetwork: (String) throws -> Void
     let getNetwork: () throws -> String?
-    let saveEsploraURL: (String) throws -> Void
-    let getEsploraURL: () throws -> String?
+    let saveServerURL: (String) throws -> Void
+    let getServerURL: () throws -> String?
 
     private init(
         saveBackupInfo: @escaping (BackupInfo) throws -> Void,
@@ -80,16 +80,16 @@ struct KeyClient {
         deleteBackupInfo: @escaping () throws -> Void,
         saveNetwork: @escaping (String) throws -> Void,
         getNetwork: @escaping () throws -> String?,
-        saveEsploraURL: @escaping (String) throws -> Void,
-        getEsploraURL: @escaping () throws -> String?
+        saveServerURL: @escaping (String) throws -> Void,
+        getServerURL: @escaping () throws -> String?
     ) {
         self.saveBackupInfo = saveBackupInfo
         self.getBackupInfo = getBackupInfo
         self.deleteBackupInfo = deleteBackupInfo
         self.saveNetwork = saveNetwork
         self.getNetwork = getNetwork
-        self.saveEsploraURL = saveEsploraURL
-        self.getEsploraURL = getEsploraURL
+        self.saveServerURL = saveServerURL
+        self.getServerURL = getServerURL
     }
 }
 
@@ -100,8 +100,8 @@ extension KeyClient {
         deleteBackupInfo: { try KeyService().deleteBackupInfo() },
         saveNetwork: { network in try KeyService().saveNetwork(networkString: network) },
         getNetwork: { try KeyService().getNetwork() },
-        saveEsploraURL: { url in try KeyService().saveServerURL(url: url) },
-        getEsploraURL: { try KeyService().getServerURL() }
+        saveServerURL: { url in try KeyService().saveServerURL(url: url) },
+        getServerURL: { try KeyService().getServerURL() }
     )
 }
 
@@ -113,8 +113,8 @@ extension KeyClient {
             deleteBackupInfo: {},
             saveNetwork: { _ in },
             getNetwork: { nil },
-            saveEsploraURL: { _ in },
-            getEsploraURL: { nil }
+            saveServerURL: { _ in },
+            getServerURL: { nil }
         )
     }
 #endif

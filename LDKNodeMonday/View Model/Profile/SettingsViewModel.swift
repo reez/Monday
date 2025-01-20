@@ -33,7 +33,7 @@ class SettingsViewModel: ObservableObject {
         // Call these immediately to populate data, wasnt immediately doing it otherwise?
         getNodeID()
         getNetwork()
-        getEsploraUrl()
+        getServerUrl()
         Task {
             await getStatus()
         }
@@ -108,9 +108,9 @@ class SettingsViewModel: ObservableObject {
         }
     }
 
-    func getEsploraUrl() {
+    func getServerUrl() {
         do {
-            let url = try keyClient.getEsploraURL()
+            let url = try keyClient.getServerURL()
             DispatchQueue.main.async {
                 self.esploraURL = url
             }

@@ -40,7 +40,7 @@ class OnboardingViewModel: ObservableObject {
     {
         didSet {
             do {
-                try keyClient.saveEsploraURL(selectedEsploraServer.url)
+                try keyClient.saveServerURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -90,7 +90,7 @@ class OnboardingViewModel: ObservableObject {
             if let networkString = try keyClient.getNetwork() {
                 self.selectedNetwork = Network(stringValue: networkString) ?? .signet
             }
-            if let esploraURL = try keyClient.getEsploraURL() {
+            if let esploraURL = try keyClient.getServerURL() {
                 self.selectedEsploraServer =
                     availableEsploraServers.first(where: {
                         $0.url == esploraURL
