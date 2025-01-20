@@ -13,20 +13,10 @@ class NetworkSettingsViewModel: ObservableObject {
     @Published var selectedNetwork: Network = .signet {
         didSet {
             do {
-                let networkString = selectedNetwork.description
-                try keyClient.saveNetwork(networkString)
-                self.selectedEsploraServer =
-                    availableEsploraServers.first ?? EsploraServer(name: "", url: "")
-                try keyClient.saveEsploraURL(selectedEsploraServer.url)
+                self.selectedEsploraServer = availableEsploraServers.first!  // all networks have at least one server option
+                try keyClient.saveNetwork(selectedNetwork.description)
             } catch {
-                DispatchQueue.main.async {
-                    /*
-                    self.onboardingViewError = .init(
-                        title: "Error Selecting Network",
-                        detail: error.localizedDescription
-                    )
-                     */
-                }
+                debugPrint("Error selecting network")
             }
         }
     }
@@ -34,16 +24,9 @@ class NetworkSettingsViewModel: ObservableObject {
     {
         didSet {
             do {
-                try keyClient.saveEsploraURL(selectedEsploraServer.url)
+                try keyClient.saveServerURL(selectedEsploraServer.url)
             } catch {
-                DispatchQueue.main.async {
-                    /*
-                    self.onboardingViewError = .init(
-                        title: "Error Selecting Esplora",
-                        detail: error.localizedDescription
-                    )
-                     */
-                }
+                debugPrint("Error selecting server")
             }
         }
     }
@@ -66,24 +49,12 @@ class NetworkSettingsViewModel: ObservableObject {
         self.keyClient = keyClient
 
         do {
-            if let networkString = try keyClient.getNetwork() {
-                self.selectedNetwork = Network(stringValue: networkString) ?? .signet
-            }
-            if let esploraURL = try keyClient.getEsploraURL() {
-                self.selectedEsploraServer =
-                    availableEsploraServers.first(where: {
-                        $0.url == esploraURL
-                    }) ?? EsploraServer.mutiny_signet
-            }
+            let backupInfo = try keyClient.getBackupInfo()
+            self.selectedNetwork = Network(stringValue: backupInfo.networkString) ?? .signet
+            self.selectedEsploraServer = EsploraServer(URLString: backupInfo.serverURL)
+            ?? .mutiny_signet
         } catch {
-            /*
-            DispatchQueue.main.async {
-                self.onboardingViewError = .init(
-                    title: "Error Getting Network/Esplora",
-                    detail: error.localizedDescription
-                )
-            }
-            */
+            debugPrint("Error getting network/server")
         }
     }
 }
