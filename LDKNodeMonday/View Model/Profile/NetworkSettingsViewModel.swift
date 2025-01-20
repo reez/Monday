@@ -51,8 +51,9 @@ class NetworkSettingsViewModel: ObservableObject {
         do {
             let backupInfo = try keyClient.getBackupInfo()
             self.selectedNetwork = Network(stringValue: backupInfo.networkString) ?? .signet
-            self.selectedEsploraServer = EsploraServer(URLString: backupInfo.serverURL)
-            ?? .mutiny_signet
+            self.selectedEsploraServer =
+                EsploraServer(URLString: backupInfo.serverURL)
+                ?? .mutiny_signet
         } catch {
             debugPrint("Error getting network/server")
         }

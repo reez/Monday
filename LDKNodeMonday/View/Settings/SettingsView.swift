@@ -94,6 +94,16 @@ private struct WalletSection: View {
                 Label("Recovery Phrase", systemImage: "lock")
             }
 
+            NavigationLink(
+                destination: NetworkSettingsView().environmentObject(
+                    NetworkSettingsViewModel.init()
+                )
+            ) {
+                Label("Network", systemImage: "network")
+                    .badge((viewModel.network ?? "No network").capitalized)
+            }
+
+            /*
             Label("Network", systemImage: "network")
                 .badge((viewModel.network ?? "No network").capitalized)
 
@@ -102,6 +112,7 @@ private struct WalletSection: View {
                     viewModel.esploraURL?.replacingOccurrences(of: "https://", with: "")
                         .replacingOccurrences(of: "http://", with: "") ?? "No server"
                 )
+            */
         } header: {
             Text("Wallet").foregroundColor(.primary)
         }

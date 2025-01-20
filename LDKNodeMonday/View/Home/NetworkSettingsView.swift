@@ -15,7 +15,7 @@ struct NetworkSettingsView: View {
 
     var body: some View {
 
-        NavigationView {
+        VStack {
             Form {
                 Section {
                     Picker(
@@ -27,7 +27,6 @@ struct NetworkSettingsView: View {
                     }
                     .pickerStyle(.navigationLink)
                     .accessibilityLabel("Select bitcoin network")
-                    .scrollContentBackground(.hidden)
 
                     Picker(
                         "Server",
@@ -39,7 +38,6 @@ struct NetworkSettingsView: View {
                     }
                     .pickerStyle(.navigationLink)
                     .accessibilityLabel("Select esplora server")
-                    .scrollContentBackground(.hidden)
                 } footer: {
                     Text(
                         "Set your desired network and connection server.\nIf in doubt, use the default settings."
@@ -48,19 +46,15 @@ struct NetworkSettingsView: View {
             }
             .navigationTitle("Network settings")
             .navigationBarTitleDisplayMode(.inline)
-            .scrollContentBackground(.hidden)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         dismiss()
                     }
-                    .padding()
                 }
             }
         }
-        .padding(.bottom, 20)
-        .accentColor(.accentColor)
-        .scrollContentBackground(.hidden)
+        .tint(.accentColor)
     }
 }
 
