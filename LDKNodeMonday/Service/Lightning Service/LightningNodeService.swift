@@ -21,7 +21,8 @@ class LightningNodeService {
         keyService: KeyClient = .live
     ) {
 
-        let storedNetworkString = try! keyService.getNetwork() ?? Network.signet.description
+        let backupInfo = try? KeyClient.live.getBackupInfo()
+        let storedNetworkString = backupInfo?.networkString ?? Network.signet.description
         let storedEsploraURL =
             try! keyService.getEsploraURL()
             ?? EsploraServer.lqwd_signet.url
@@ -82,7 +83,7 @@ class LightningNodeService {
             let backupInfo = try keyService.getBackupInfo()
             if backupInfo.mnemonic == "" {
                 let newMnemonic = generateEntropyMnemonic()
-                let backupInfo = BackupInfo(mnemonic: newMnemonic)
+                let backupInfo = BackupInfo(mnemonic: newMnemonic, networkString: storedNetworkString)
                 try? keyService.saveBackupInfo(backupInfo)
                 mnemonic = newMnemonic
             } else {
@@ -90,7 +91,7 @@ class LightningNodeService {
             }
         } catch {
             let newMnemonic = generateEntropyMnemonic()
-            let backupInfo = BackupInfo(mnemonic: newMnemonic)
+            let backupInfo = BackupInfo(mnemonic: newMnemonic, networkString: storedNetworkString)
             try? keyService.saveBackupInfo(backupInfo)
             mnemonic = newMnemonic
         }
@@ -259,8 +260,8 @@ extension LightningNodeService {
 }
 
 extension LightningNodeService {
-    func save(mnemonic: Mnemonic) throws {
-        let backupInfo = BackupInfo(mnemonic: mnemonic)
+    func save(mnemonic: Mnemonic, networkString: String) throws {
+        let backupInfo = BackupInfo(mnemonic: mnemonic, networkString: self.network.description)
         try keyService.saveBackupInfo(backupInfo)
     }
 }
@@ -412,7 +413,7 @@ extension LightningNodeClient {
                 )
             },
             deleteWallet: {},
-            getBackupInfo: { BackupInfo(mnemonic: "test test test") },
+            getBackupInfo: { BackupInfo(mnemonic: "test test test", networkString: Network.signet.description) },
             deleteDocuments: {},
             getNetwork: { .signet },
             getNetworkColor: { .orange },

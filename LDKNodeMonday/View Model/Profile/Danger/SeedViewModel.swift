@@ -10,7 +10,7 @@ import LDKNode
 import SwiftUI
 
 class SeedViewModel: ObservableObject {
-    @Published var seed: BackupInfo = .init(mnemonic: "mock seed words")
+    @Published var seed: BackupInfo = .init(mnemonic: "mock seed words", networkString: Network.signet.description)
     @Published var seedViewError: MondayError?
     private let lightningClient: LightningNodeClient
 

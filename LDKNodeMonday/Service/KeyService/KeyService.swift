@@ -41,16 +41,15 @@ private struct KeyService {
 }
 
 extension KeyService {
-    func saveNetwork(network: String) throws {
-        keychain[string: "SelectedNetwork"] = network
+    func saveNetwork(networkString: String) throws {
+        let currentBackupInfo = try self.getBackupInfo()
+        let newBackupInfo = BackupInfo(mnemonic: currentBackupInfo.mnemonic, networkString: networkString)
+        try self.saveBackupInfo(backupInfo: newBackupInfo)
     }
 
     func getNetwork() throws -> String? {
-        return keychain[string: "SelectedNetwork"]
-    }
-
-    func deleteNetwork() throws {
-        try keychain.remove("SelectedNetwork")
+        let backupInfo = try self.getBackupInfo()
+        return backupInfo.networkString
     }
 
     func saveEsploraURL(url: String) throws {
@@ -75,7 +74,6 @@ struct KeyClient {
     let getNetwork: () throws -> String?
     let saveEsploraURL: (String) throws -> Void
     let getEsploraURL: () throws -> String?
-    let deleteNetwork: () throws -> Void
     let deleteEsplora: () throws -> Void
 
     private init(
@@ -86,7 +84,6 @@ struct KeyClient {
         getNetwork: @escaping () throws -> String?,
         saveEsploraURL: @escaping (String) throws -> Void,
         getEsploraURL: @escaping () throws -> String?,
-        deleteNetwork: @escaping () throws -> Void,
         deleteEsplora: @escaping () throws -> Void
     ) {
         self.saveBackupInfo = saveBackupInfo
@@ -96,7 +93,6 @@ struct KeyClient {
         self.getNetwork = getNetwork
         self.saveEsploraURL = saveEsploraURL
         self.getEsploraURL = getEsploraURL
-        self.deleteNetwork = deleteNetwork
         self.deleteEsplora = deleteEsplora
     }
 }
@@ -106,11 +102,10 @@ extension KeyClient {
         saveBackupInfo: { backupInfo in try KeyService().saveBackupInfo(backupInfo: backupInfo) },
         getBackupInfo: { try KeyService().getBackupInfo() },
         deleteBackupInfo: { try KeyService().deleteBackupInfo() },
-        saveNetwork: { network in try KeyService().saveNetwork(network: network) },
+        saveNetwork: { network in try KeyService().saveNetwork(networkString: network) },
         getNetwork: { try KeyService().getNetwork() },
         saveEsploraURL: { url in try KeyService().saveEsploraURL(url: url) },
         getEsploraURL: { try KeyService().getEsploraURL() },
-        deleteNetwork: { try KeyService().deleteNetwork() },
         deleteEsplora: { try KeyService().deleteEsploraURL() }
     )
 }
@@ -125,7 +120,6 @@ extension KeyClient {
             getNetwork: { nil },
             saveEsploraURL: { _ in },
             getEsploraURL: { nil },
-            deleteNetwork: {},
             deleteEsplora: {}
         )
     }

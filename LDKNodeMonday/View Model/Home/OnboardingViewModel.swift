@@ -110,7 +110,7 @@ class OnboardingViewModel: ObservableObject {
 
     func saveSeed() {
         do {
-            let backupInfo = BackupInfo(mnemonic: seedPhrase)
+            let backupInfo = BackupInfo(mnemonic: seedPhrase, networkString: selectedNetwork.description)
             try keyClient.saveBackupInfo(backupInfo)
             try keyClient.saveNetwork(selectedNetwork.description)
             try keyClient.saveEsploraURL(selectedEsploraServer.url)
