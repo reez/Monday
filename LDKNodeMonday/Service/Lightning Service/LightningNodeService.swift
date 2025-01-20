@@ -16,17 +16,16 @@ class LightningNodeService {
     private let keyService: KeyClient
     var networkColor = Color.black
     var network: Network
+    var server: EsploraServer
 
     init(
         keyService: KeyClient = .live
     ) {
 
-        let storedNetworkString = try! keyService.getNetwork() ?? Network.signet.description
-        let storedEsploraURL =
-            try! keyService.getEsploraURL()
-            ?? EsploraServer.lqwd_signet.url
+        let backupInfo = try? KeyClient.live.getBackupInfo()
+        self.network = Network(stringValue: backupInfo?.networkString ?? Network.signet.description) ?? .signet
+        self.server = EsploraServer(URLString: backupInfo?.serverURL ?? EsploraServer.mutiny_signet.url) ?? .mutiny_signet
 
-        self.network = Network(stringValue: storedNetworkString) ?? .signet
         self.keyService = keyService
 
         let documentsPath = FileManager.default.getDocumentsDirectoryPath()
@@ -50,7 +49,7 @@ class LightningNodeService {
         config.logLevel = .trace
 
         let nodeBuilder = Builder.fromConfig(config: config)
-        nodeBuilder.setChainSourceEsplora(serverUrl: storedEsploraURL, config: nil)
+        nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: nil)
 
         switch self.network {
         case .bitcoin:
@@ -82,7 +81,7 @@ class LightningNodeService {
             let backupInfo = try keyService.getBackupInfo()
             if backupInfo.mnemonic == "" {
                 let newMnemonic = generateEntropyMnemonic()
-                let backupInfo = BackupInfo(mnemonic: newMnemonic)
+                let backupInfo = BackupInfo(mnemonic: newMnemonic, networkString: self.network.description, serverURL: self.server.url)
                 try? keyService.saveBackupInfo(backupInfo)
                 mnemonic = newMnemonic
             } else {
@@ -90,7 +89,7 @@ class LightningNodeService {
             }
         } catch {
             let newMnemonic = generateEntropyMnemonic()
-            let backupInfo = BackupInfo(mnemonic: newMnemonic)
+            let backupInfo = BackupInfo(mnemonic: newMnemonic, networkString: self.network.description, serverURL: self.server.url)
             try? keyService.saveBackupInfo(backupInfo)
             mnemonic = newMnemonic
         }
@@ -260,7 +259,7 @@ extension LightningNodeService {
 
 extension LightningNodeService {
     func save(mnemonic: Mnemonic) throws {
-        let backupInfo = BackupInfo(mnemonic: mnemonic)
+        let backupInfo = BackupInfo(mnemonic: mnemonic, networkString: self.network.description, serverURL: self.server.url)
         try keyService.saveBackupInfo(backupInfo)
     }
 }
@@ -412,7 +411,7 @@ extension LightningNodeClient {
                 )
             },
             deleteWallet: {},
-            getBackupInfo: { BackupInfo(mnemonic: "test test test") },
+            getBackupInfo: { BackupInfo(mnemonic: "test test test", networkString: Network.signet.description, serverURL: EsploraServer.mutiny_signet.url) },
             deleteDocuments: {},
             getNetwork: { .signet },
             getNetworkColor: { .orange },

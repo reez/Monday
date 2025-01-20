@@ -33,7 +33,7 @@ class SettingsViewModel: ObservableObject {
         // Call these immediately to populate data, wasnt immediately doing it otherwise?
         getNodeID()
         getNetwork()
-        getEsploraUrl()
+        getServerUrl()
         Task {
             await getStatus()
         }
@@ -69,8 +69,6 @@ class SettingsViewModel: ObservableObject {
             }
             try lightningClient.deleteDocuments()
             try lightningClient.deleteWallet()
-            try self.keyClient.deleteNetwork()
-            try self.keyClient.deleteEsplora()
 
             DispatchQueue.main.async {
                 self.appState = .onboarding
@@ -110,9 +108,9 @@ class SettingsViewModel: ObservableObject {
         }
     }
 
-    func getEsploraUrl() {
+    func getServerUrl() {
         do {
-            let url = try keyClient.getEsploraURL()
+            let url = try keyClient.getServerURL()
             DispatchQueue.main.async {
                 self.esploraURL = url
             }
