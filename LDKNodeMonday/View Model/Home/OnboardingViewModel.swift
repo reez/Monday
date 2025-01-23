@@ -25,7 +25,9 @@ class OnboardingViewModel: ObservableObject {
             do {
                 guard let server = availableEsploraServers.first else {
                     // This should never happen, but if it does:
-                    fatalError("Configuration error: No Esplora servers available for \(selectedNetwork)")
+                    fatalError(
+                        "Configuration error: No Esplora servers available for \(selectedNetwork)"
+                    )
                 }
                 self.selectedEsploraServer = server
                 try keyClient.saveNetwork(selectedNetwork.description)

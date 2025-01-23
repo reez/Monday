@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
 import LDKNode
+import SwiftUI
 
 struct Constants {
 
@@ -144,9 +144,9 @@ extension EsploraServer {
         local_regtest.url: .local_regtest,
         blockstream_testnet.url: .blockstream_testnet,
         kuutamo_testnet.url: .kuutamo_testnet,
-        mempoolspace_testnet.url: .mempoolspace_testnet
+        mempoolspace_testnet.url: .mempoolspace_testnet,
     ]
-    
+
     init?(URLString: String) {
         switch URLString {
         case "https://blockstream.info/api": self = .blockstream_bitcoin
