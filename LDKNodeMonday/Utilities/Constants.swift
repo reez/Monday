@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import LDKNode
 
 struct Constants {
 
@@ -100,7 +101,7 @@ struct Constants {
 
 }
 
-struct EsploraServer: Hashable {
+public struct EsploraServer: Hashable {
     var name: String
     var url: String
 
@@ -159,5 +160,18 @@ extension EsploraServer {
         case "https://mempool.space/testnet/api": self = .mempoolspace_testnet
         default: return nil
         }
+    }
+}
+
+public func availableServers(network: Network) -> [EsploraServer] {
+    switch network {
+    case .bitcoin:
+        return Constants.Config.EsploraServerURLNetwork.Bitcoin.allValues
+    case .testnet:
+        return Constants.Config.EsploraServerURLNetwork.Testnet.allValues
+    case .regtest:
+        return Constants.Config.EsploraServerURLNetwork.Regtest.allValues
+    case .signet:
+        return Constants.Config.EsploraServerURLNetwork.Signet.allValues
     }
 }
