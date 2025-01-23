@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LDKNode
 import SwiftUI
 
 struct Constants {
@@ -100,7 +101,7 @@ struct Constants {
 
 }
 
-struct EsploraServer: Hashable {
+public struct EsploraServer: Hashable {
     var name: String
     var url: String
 
@@ -131,4 +132,46 @@ struct EsploraServer: Hashable {
         name: "Mempool.space",
         url: "https://mempool.space/testnet/api"
     )
+}
+
+extension EsploraServer {
+    private static let urlToServer: [String: EsploraServer] = [
+        blockstream_bitcoin.url: .blockstream_bitcoin,
+        mempoolspace_bitcoin.url: .mempoolspace_bitcoin,
+        mutiny_signet.url: .mutiny_signet,
+        bdk_signet.url: .bdk_signet,
+        lqwd_signet.url: .lqwd_signet,
+        local_regtest.url: .local_regtest,
+        blockstream_testnet.url: .blockstream_testnet,
+        kuutamo_testnet.url: .kuutamo_testnet,
+        mempoolspace_testnet.url: .mempoolspace_testnet,
+    ]
+
+    init?(URLString: String) {
+        switch URLString {
+        case "https://blockstream.info/api": self = .blockstream_bitcoin
+        case "https://mempool.space/api": self = .mempoolspace_bitcoin
+        case "https://mutinynet.com/api": self = .mutiny_signet
+        case "http://signet.bitcoindevkit.net": self = .bdk_signet
+        case "https://mutinynet.ltbl.io/api": self = .lqwd_signet
+        case "http://127.0.0.1:3002": self = .local_regtest
+        case "http://blockstream.info/testnet/api": self = .blockstream_testnet
+        case "https://esplora.testnet.kuutamo.cloud": self = .kuutamo_testnet
+        case "https://mempool.space/testnet/api": self = .mempoolspace_testnet
+        default: return nil
+        }
+    }
+}
+
+public func availableServers(network: Network) -> [EsploraServer] {
+    switch network {
+    case .bitcoin:
+        return Constants.Config.EsploraServerURLNetwork.Bitcoin.allValues
+    case .testnet:
+        return Constants.Config.EsploraServerURLNetwork.Testnet.allValues
+    case .regtest:
+        return Constants.Config.EsploraServerURLNetwork.Regtest.allValues
+    case .signet:
+        return Constants.Config.EsploraServerURLNetwork.Signet.allValues
+    }
 }

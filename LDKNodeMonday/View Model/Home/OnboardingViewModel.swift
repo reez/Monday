@@ -23,11 +23,14 @@ class OnboardingViewModel: ObservableObject {
     @Published var selectedNetwork: Network = .signet {
         didSet {
             do {
-                let networkString = selectedNetwork.description
-                try keyClient.saveNetwork(networkString)
-                self.selectedEsploraServer =
-                    availableEsploraServers.first ?? EsploraServer(name: "", url: "")
-                try keyClient.saveEsploraURL(selectedEsploraServer.url)
+                guard let server = availableEsploraServers.first else {
+                    // This should never happen, but if it does:
+                    fatalError(
+                        "Configuration error: No Esplora servers available for \(selectedNetwork)"
+                    )
+                }
+                self.selectedEsploraServer = server
+                try keyClient.saveNetwork(selectedNetwork.description)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -42,7 +45,7 @@ class OnboardingViewModel: ObservableObject {
     {
         didSet {
             do {
-                try keyClient.saveEsploraURL(selectedEsploraServer.url)
+                try keyClient.saveServerURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -92,7 +95,7 @@ class OnboardingViewModel: ObservableObject {
             if let networkString = try keyClient.getNetwork() {
                 self.selectedNetwork = Network(stringValue: networkString) ?? .signet
             }
-            if let esploraURL = try keyClient.getEsploraURL() {
+            if let esploraURL = try keyClient.getServerURL() {
                 self.selectedEsploraServer =
                     availableEsploraServers.first(where: {
                         $0.url == esploraURL
@@ -110,10 +113,12 @@ class OnboardingViewModel: ObservableObject {
 
     func saveSeed() {
         do {
-            let backupInfo = BackupInfo(mnemonic: seedPhrase)
+            let backupInfo = BackupInfo(
+                mnemonic: seedPhrase,
+                networkString: selectedNetwork.description,
+                serverURL: selectedEsploraServer.url
+            )
             try keyClient.saveBackupInfo(backupInfo)
-            try keyClient.saveNetwork(selectedNetwork.description)
-            try keyClient.saveEsploraURL(selectedEsploraServer.url)
             DispatchQueue.main.async {
                 self.appState = .wallet
             }

@@ -6,12 +6,17 @@
 //
 
 import Foundation
+import LDKNode
 
 struct BackupInfo: Codable, Equatable {
     var mnemonic: String
+    var networkString: String
+    var serverURL: String
 
-    init(mnemonic: String) {
+    init(mnemonic: String, networkString: String, serverURL: String) {
         self.mnemonic = mnemonic
+        self.networkString = networkString
+        self.serverURL = serverURL
     }
 
     static func == (lhs: BackupInfo, rhs: BackupInfo) -> Bool {
@@ -20,5 +25,9 @@ struct BackupInfo: Codable, Equatable {
 }
 
 #if DEBUG
-    let mockBackupInfo = BackupInfo(mnemonic: "")
+    let mockBackupInfo = BackupInfo(
+        mnemonic: "",
+        networkString: Network.signet.description,
+        serverURL: EsploraServer.mutiny_signet.url
+    )
 #endif

@@ -39,7 +39,7 @@ struct SettingsView: View {
                 Task {
                     viewModel.getNodeID()
                     viewModel.getNetwork()
-                    viewModel.getEsploraUrl()
+                    viewModel.getServerUrl()
                     await viewModel.getStatus()
                 }
             }
