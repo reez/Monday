@@ -24,7 +24,7 @@ class OnboardingViewModel: ObservableObject {
         didSet {
             do {
                 self.selectedEsploraServer =
-                availableEsploraServers.first! // all networks have at least one server option
+                    availableEsploraServers.first!  // all networks have at least one server option
                 try keyClient.saveNetwork(selectedNetwork.description)
             } catch {
                 DispatchQueue.main.async {
@@ -108,7 +108,11 @@ class OnboardingViewModel: ObservableObject {
 
     func saveSeed() {
         do {
-            let backupInfo = BackupInfo(mnemonic: seedPhrase, networkString: selectedNetwork.description, serverURL: selectedEsploraServer.url)
+            let backupInfo = BackupInfo(
+                mnemonic: seedPhrase,
+                networkString: selectedNetwork.description,
+                serverURL: selectedEsploraServer.url
+            )
             try keyClient.saveBackupInfo(backupInfo)
             DispatchQueue.main.async {
                 self.appState = .wallet

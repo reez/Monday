@@ -43,7 +43,11 @@ private struct KeyService {
 extension KeyService {
     func saveNetwork(networkString: String) throws {
         let currentBackupInfo = try self.getBackupInfo()
-        let newBackupInfo = BackupInfo(mnemonic: currentBackupInfo.mnemonic, networkString: networkString, serverURL: currentBackupInfo.serverURL)
+        let newBackupInfo = BackupInfo(
+            mnemonic: currentBackupInfo.mnemonic,
+            networkString: networkString,
+            serverURL: currentBackupInfo.serverURL
+        )
         try self.saveBackupInfo(backupInfo: newBackupInfo)
     }
 
@@ -54,7 +58,11 @@ extension KeyService {
 
     func saveServerURL(url: String) throws {
         let currentBackupInfo = try self.getBackupInfo()
-        let newBackupInfo = BackupInfo(mnemonic: currentBackupInfo.mnemonic, networkString: currentBackupInfo.networkString, serverURL: url)
+        let newBackupInfo = BackupInfo(
+            mnemonic: currentBackupInfo.mnemonic,
+            networkString: currentBackupInfo.networkString,
+            serverURL: url
+        )
         try self.saveBackupInfo(backupInfo: newBackupInfo)
     }
 
