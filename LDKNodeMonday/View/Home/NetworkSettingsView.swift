@@ -9,9 +9,13 @@ import LDKNode
 import SwiftUI
 
 struct NetworkSettingsView: View {
+    let lightningClient: LightningNodeClient
     @Environment(\.dismiss) private var dismiss
-
     @EnvironmentObject var viewModel: NetworkSettingsViewModel
+
+    @State private var showRestartAlert = false
+    @State private var tempNetwork: Network?
+    @State private var tempServer: EsploraServer?
 
     var body: some View {
 
@@ -20,7 +24,17 @@ struct NetworkSettingsView: View {
                 Section {
                     Picker(
                         "Network",
-                        selection: $viewModel.selectedNetwork
+                        selection: Binding(
+                            get: { viewModel.selectedNetwork },
+                            set: { newNetwork in
+                                if viewModel.appState == .onboarding {
+                                    viewModel.selectedNetwork = newNetwork
+                                } else {
+                                    tempNetwork = newNetwork
+                                    showRestartAlert = true
+                                }
+                            }
+                        )
                     ) {
                         Text("Signet").tag(Network.signet)
                         Text("Testnet").tag(Network.testnet)
@@ -30,9 +44,23 @@ struct NetworkSettingsView: View {
 
                     Picker(
                         "Server",
-                        selection: $viewModel.selectedEsploraServer
+                        selection: Binding(
+                            get: { viewModel.selectedEsploraServer },
+                            set: { newServer in
+                                if viewModel.appState == .onboarding {
+                                    viewModel.selectedEsploraServer = newServer
+                                } else {
+                                    tempServer = newServer
+                                    tempNetwork = viewModel.selectedNetwork
+                                    showRestartAlert = true
+                                }
+                            }
+                        )
                     ) {
-                        ForEach(viewModel.availableEsploraServers, id: \.self) { esploraServer in
+                        ForEach(
+                            availableServers(network: viewModel.selectedNetwork),
+                            id: \.self
+                        ) { esploraServer in
                             Text(esploraServer.name).tag(esploraServer)
                         }
                     }
@@ -42,6 +70,49 @@ struct NetworkSettingsView: View {
                     Text(
                         "Set your desired network and connection server.\nIf in doubt, use the default settings."
                     )
+                }
+                .alert("Change and restart?", isPresented: $showRestartAlert) {
+                    Button("Cancel", role: .cancel) {}
+                    Button("Restart") {
+                        if tempNetwork != nil || tempServer != nil {
+                            Task {
+                                // TODO: Where should restart live? Needs to set AppState, and save BackupInfo)
+                                do {
+                                    let newNetwork =
+                                        tempNetwork != nil
+                                        ? tempNetwork! : viewModel.selectedNetwork
+                                    let newServer =
+                                        tempServer != nil
+                                        ? tempServer! : availableServers(network: newNetwork).first!
+
+                                    try KeyClient.live.saveNetwork(newNetwork.description)
+                                    try KeyClient.live.saveServerURL(newServer.url)
+
+                                    do {
+                                        //self.appState = .loading
+                                        try await lightningClient.restart()
+//                                        await MainActor.run {
+//                                            self.appState = .wallet
+//                                        }
+                                    } catch let error {
+                                        debugPrint(error)  // TODO: Show error on relevant screen
+                                        //self.appError = error
+                                    }
+                                } catch {
+                                    /*
+                                         DispatchQueue.main.async {
+                                             self.onboardingViewError = .init(
+                                                 title: "Error Selecting Network",
+                                                 detail: error.localizedDescription
+                                             )
+                                         }
+                                         */
+                                }
+                            }
+                        }
+                    }
+                } message: {
+                    Text("Changing network settings requires a restart of your node.")
                 }
             }
             .navigationTitle("Network settings")
@@ -60,6 +131,6 @@ struct NetworkSettingsView: View {
 
 #if DEBUG
     #Preview {
-        NetworkSettingsView(viewModel: .init())
+        NetworkSettingsView(lightningClient: .mock, viewModel: .init())
     }
 #endif

@@ -10,10 +10,12 @@ import SwiftUI
 
 class NetworkSettingsViewModel: ObservableObject {
     private let keyClient: KeyClient
+    @Binding var appState: AppState
+    @State private var showRestartAlert = false
     @Published var selectedNetwork: Network = .signet {
         didSet {
             do {
-                self.selectedEsploraServer = availableEsploraServers.first!  // all networks have at least one server option
+                self.selectedEsploraServer = availableServers(network: self.selectedNetwork).first!  // all networks have at least one server option
                 try keyClient.saveNetwork(selectedNetwork.description)
             } catch {
                 debugPrint("Error selecting network")
@@ -30,23 +32,13 @@ class NetworkSettingsViewModel: ObservableObject {
             }
         }
     }
-    var availableEsploraServers: [EsploraServer] {
-        switch selectedNetwork {
-        case .bitcoin:
-            return Constants.Config.EsploraServerURLNetwork.Bitcoin.allValues
-        case .testnet:
-            return Constants.Config.EsploraServerURLNetwork.Testnet.allValues
-        case .regtest:
-            return Constants.Config.EsploraServerURLNetwork.Regtest.allValues
-        case .signet:
-            return Constants.Config.EsploraServerURLNetwork.Signet.allValues
-        }
-    }
 
     init(
-        keyClient: KeyClient = .live
+        keyClient: KeyClient = .live,
+        appState: Binding<AppState>
     ) {
         self.keyClient = keyClient
+        self._appState = appState
 
         do {
             let backupInfo = try keyClient.getBackupInfo()
@@ -57,5 +49,18 @@ class NetworkSettingsViewModel: ObservableObject {
         } catch {
             debugPrint("Error getting network/server")
         }
+    }
+}
+
+public func availableServers(network: Network) -> [EsploraServer] {
+    switch network {
+    case .bitcoin:
+        return Constants.Config.EsploraServerURLNetwork.Bitcoin.allValues
+    case .testnet:
+        return Constants.Config.EsploraServerURLNetwork.Testnet.allValues
+    case .regtest:
+        return Constants.Config.EsploraServerURLNetwork.Regtest.allValues
+    case .signet:
+        return Constants.Config.EsploraServerURLNetwork.Signet.allValues
     }
 }

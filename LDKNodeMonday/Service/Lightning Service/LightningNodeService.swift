@@ -11,7 +11,18 @@ import SwiftUI
 import os
 
 class LightningNodeService {
-    static var shared: LightningNodeService = LightningNodeService()
+    private static var _shared: LightningNodeService?
+    static var shared: LightningNodeService {
+        get {
+            if _shared == nil {
+                _shared = LightningNodeService()
+            }
+            return _shared ?? LightningNodeService()
+        }
+        set {
+            _shared = newValue
+        }
+    }
     private let ldkNode: Node
     private let keyService: KeyClient
     var networkColor = Color.black
@@ -116,6 +127,18 @@ class LightningNodeService {
 
     func stop() throws {
         try ldkNode.stop()
+    }
+
+    func restart() async {
+        do {
+            //self.appState = .loading
+            try? self.stop()
+            LightningNodeService._shared = nil
+            try await LightningNodeService.shared.start()
+            LightningNodeService.shared.listenForEvents()
+        } catch let error {
+            debugPrint(error)  // TODO: Show error on relevant screen
+        }
     }
 
     func nodeId() -> String {
@@ -288,6 +311,7 @@ extension LightningNodeService {
 struct LightningNodeClient {
     let start: () async throws -> Void
     let stop: () throws -> Void
+    let restart: () async throws -> Void
     let nodeId: () -> String
     let newAddress: () async throws -> String
     let spendableOnchainBalanceSats: () async -> UInt64
@@ -319,6 +343,7 @@ extension LightningNodeClient {
     static let live = Self(
         start: { try await LightningNodeService.shared.start() },
         stop: { try LightningNodeService.shared.stop() },
+        restart: { await LightningNodeService.shared.restart() },
         nodeId: { LightningNodeService.shared.nodeId() },
         newAddress: { try await LightningNodeService.shared.newAddress() },
         spendableOnchainBalanceSats: {
@@ -390,6 +415,7 @@ extension LightningNodeClient {
         static let mock = Self(
             start: {},
             stop: {},
+            restart: {},
             nodeId: { "038474837483784378437843784378437843784378" },
             newAddress: { "tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx" },
             spendableOnchainBalanceSats: { 100_000 },

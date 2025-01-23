@@ -41,7 +41,9 @@ struct OnboardingView: View {
                     )
                     .sheet(isPresented: $showingNetworkSettingsSheet) {
                         NavigationView {
-                            NetworkSettingsView().environmentObject(NetworkSettingsViewModel.init())
+                            NetworkSettingsView(lightningClient: viewModel.lightningClient).environmentObject(
+                                NetworkSettingsViewModel.init(appState: viewModel.$appState)
+                            )
                         }
                     }
                 }

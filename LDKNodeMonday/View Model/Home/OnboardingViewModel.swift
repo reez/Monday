@@ -10,7 +10,7 @@ import SwiftUI
 
 class OnboardingViewModel: ObservableObject {
     @Binding var appState: AppState
-    private let lightningClient: LightningNodeClient
+    let lightningClient: LightningNodeClient
     private let keyClient: KeyClient
     @Published var networkColor = Color.gray
     @Published var onboardingViewError: MondayError?
@@ -24,7 +24,7 @@ class OnboardingViewModel: ObservableObject {
         didSet {
             do {
                 self.selectedEsploraServer =
-                    availableEsploraServers.first!  // all networks have at least one server option
+                    availableServers(network: self.selectedNetwork).first!  // all networks have at least one server option
                 try keyClient.saveNetwork(selectedNetwork.description)
             } catch {
                 DispatchQueue.main.async {
@@ -49,18 +49,6 @@ class OnboardingViewModel: ObservableObject {
                     )
                 }
             }
-        }
-    }
-    var availableEsploraServers: [EsploraServer] {
-        switch selectedNetwork {
-        case .bitcoin:
-            return Constants.Config.EsploraServerURLNetwork.Bitcoin.allValues
-        case .testnet:
-            return Constants.Config.EsploraServerURLNetwork.Testnet.allValues
-        case .regtest:
-            return Constants.Config.EsploraServerURLNetwork.Regtest.allValues
-        case .signet:
-            return Constants.Config.EsploraServerURLNetwork.Signet.allValues
         }
     }
 
@@ -92,9 +80,7 @@ class OnboardingViewModel: ObservableObject {
             }
             if let esploraURL = try keyClient.getServerURL() {
                 self.selectedEsploraServer =
-                    availableEsploraServers.first(where: {
-                        $0.url == esploraURL
-                    }) ?? EsploraServer.mutiny_signet
+                    availableServers(network: self.selectedNetwork).first!
             }
         } catch {
             DispatchQueue.main.async {

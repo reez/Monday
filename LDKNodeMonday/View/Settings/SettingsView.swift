@@ -95,8 +95,8 @@ private struct WalletSection: View {
             }
 
             NavigationLink(
-                destination: NetworkSettingsView().environmentObject(
-                    NetworkSettingsViewModel.init()
+                destination: NetworkSettingsView(lightningClient: viewModel.lightningClient).environmentObject(
+                    NetworkSettingsViewModel.init(appState: viewModel.$appState)
                 )
             ) {
                 Label("Network", systemImage: "network")
