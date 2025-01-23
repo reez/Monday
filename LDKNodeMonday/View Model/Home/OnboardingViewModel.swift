@@ -23,8 +23,11 @@ class OnboardingViewModel: ObservableObject {
     @Published var selectedNetwork: Network = .signet {
         didSet {
             do {
-                self.selectedEsploraServer =
-                    availableEsploraServers.first!  // all networks have at least one server option
+                guard let server = availableEsploraServers.first else {
+                    // This should never happen, but if it does:
+                    fatalError("Configuration error: No Esplora servers available for \(selectedNetwork)")
+                }
+                self.selectedEsploraServer = server
                 try keyClient.saveNetwork(selectedNetwork.description)
             } catch {
                 DispatchQueue.main.async {
