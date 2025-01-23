@@ -52,8 +52,12 @@ extension KeyService {
     }
 
     func getNetwork() throws -> String? {
-        let backupInfo = try self.getBackupInfo()
-        return backupInfo.networkString
+        do {
+            let backupInfo = try self.getBackupInfo()
+            return backupInfo.networkString
+        } catch {
+            throw KeyServiceError.readError
+        }
     }
 
     func saveServerURL(url: String) throws {
@@ -67,8 +71,12 @@ extension KeyService {
     }
 
     func getServerURL() throws -> String? {
-        let backupInfo = try self.getBackupInfo()
-        return backupInfo.serverURL
+        do {
+            let backupInfo = try self.getBackupInfo()
+            return backupInfo.serverURL
+        } catch {
+            throw KeyServiceError.readError
+        }
     }
 }
 
