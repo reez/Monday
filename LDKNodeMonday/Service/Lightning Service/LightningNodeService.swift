@@ -29,7 +29,7 @@ class LightningNodeService {
                 fatalError("Configuration error: No Network found in BackupInfo")
             }
             self.network = network
-            guard let server = availableEsploraServers.first else {
+            guard let server = availableServers(network: network).first else {
                 // This should never happen, but if it does:
                 fatalError("Configuration error: No Esplora servers available for \(network)")
             }
