@@ -147,11 +147,6 @@ extension EsploraServer {
     ]
     
     init?(URLString: String) {
-        guard let server = Self.urlToServer[URLString] else { return nil }
-        self = server
-    }
-}
-    init?(URLString: String) {
         switch URLString {
         case "https://blockstream.info/api": self = .blockstream_bitcoin
         case "https://mempool.space/api": self = .mempoolspace_bitcoin
