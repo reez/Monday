@@ -23,7 +23,6 @@
 		AE01C5B42AB3BF8100F28C7E /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B32AB3BF8100F28C7E /* Bundle+Extensions.swift */; };
 		AE01C5B62AB3C0A200F28C7E /* BackupInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */; };
 		AE01C5B82AB3C0C400F28C7E /* KeyServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B72AB3C0C400F28C7E /* KeyServiceError.swift */; };
-		AE028A242B96316B00B336E7 /* ReceiveOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A232B96316B00B336E7 /* ReceiveOption.swift */; };
 		AE028A2A2B96328600B336E7 /* JITInvoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A292B96328600B336E7 /* JITInvoiceViewModel.swift */; };
 		AE028A2C2B96381200B336E7 /* LightningServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A2B2B96381200B336E7 /* LightningServiceError.swift */; };
 		AE028A2E2B9638EC00B336E7 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A2D2B9638EC00B336E7 /* FileManager+Extensions.swift */; };
@@ -79,7 +78,6 @@
 		AEBAA4942A01C6BD0042EA82 /* PeerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4932A01C6BD0042EA82 /* PeerDetailsView.swift */; };
 		AEBFD8B02B8A97DB0024E3F7 /* LightningServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8AF2B8A97DB0024E3F7 /* LightningServiceProvider.swift */; };
 		AEBFD8B22B8ABF7C0024E3F7 /* AmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8B12B8ABF7C0024E3F7 /* AmountView.swift */; };
-		AEBFD8B62B8BABC00024E3F7 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */; };
 		AEDF47F12B3FADF900145D64 /* EventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDF47F02B3FADF900145D64 /* EventService.swift */; };
 		AEDF47F32B3FBAB900145D64 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDF47F22B3FBAB900145D64 /* Notification+Extensions.swift */; };
 		AEDF76022B5C6863002DDEE1 /* Optional+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDF76012B5C6863002DDEE1 /* Optional+Extensions.swift */; };
@@ -107,7 +105,6 @@
 		AE01C5B32AB3BF8100F28C7E /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupInfo.swift; sourceTree = "<group>"; };
 		AE01C5B72AB3C0C400F28C7E /* KeyServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyServiceError.swift; sourceTree = "<group>"; };
-		AE028A232B96316B00B336E7 /* ReceiveOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveOption.swift; sourceTree = "<group>"; };
 		AE028A292B96328600B336E7 /* JITInvoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JITInvoiceViewModel.swift; sourceTree = "<group>"; };
 		AE028A2B2B96381200B336E7 /* LightningServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningServiceError.swift; sourceTree = "<group>"; };
 		AE028A2D2B9638EC00B336E7 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
@@ -160,7 +157,6 @@
 		AEBAA4932A01C6BD0042EA82 /* PeerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerDetailsView.swift; sourceTree = "<group>"; };
 		AEBFD8AF2B8A97DB0024E3F7 /* LightningServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningServiceProvider.swift; sourceTree = "<group>"; };
 		AEBFD8B12B8ABF7C0024E3F7 /* AmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountView.swift; sourceTree = "<group>"; };
-		AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveView.swift; sourceTree = "<group>"; };
 		AEDF47F02B3FADF900145D64 /* EventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventService.swift; sourceTree = "<group>"; };
 		AEDF47F22B3FBAB900145D64 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		AEDF76012B5C6863002DDEE1 /* Optional+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extensions.swift"; sourceTree = "<group>"; };
@@ -374,7 +370,6 @@
 		AE551D422B8ECC400034B61E /* Receive */ = {
 			isa = PBXGroup;
 			children = (
-				AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */,
 				AE80C1FF2C4AB360006E7193 /* BIP21View.swift */,
 				AEA057EC2B912FEA00DB1096 /* JITInvoiceView.swift */,
 			);
@@ -440,7 +435,6 @@
 				AE551D462B8ECE7D0034B61E /* Payment.swift */,
 				AEE5B7692A09C722001E5E59 /* Peer.swift */,
 				AE7096372B5C208A0038BE56 /* Price.swift */,
-				AE028A232B96316B00B336E7 /* ReceiveOption.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -649,7 +643,6 @@
 				AE7096382B5C208A0038BE56 /* Price.swift in Sources */,
 				AE49E86C2A253A32002623E8 /* SettingsViewModel.swift in Sources */,
 				AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */,
-				AE028A242B96316B00B336E7 /* ReceiveOption.swift in Sources */,
 				AEDF76062B5C68A0002DDEE1 /* ChannelDetailsFormatted.swift in Sources */,
 				AE01C5B82AB3C0C400F28C7E /* KeyServiceError.swift in Sources */,
 				AE551D492B8ECEB00034B61E /* AmountViewModel.swift in Sources */,
@@ -663,7 +656,6 @@
 				AE3815362B6A9705006B2952 /* LightningNodesService.swift in Sources */,
 				AEE8FDDF29F8579600406DD9 /* Date+Extensions.swift in Sources */,
 				AE01C5B62AB3C0A200F28C7E /* BackupInfo.swift in Sources */,
-				AEBFD8B62B8BABC00024E3F7 /* ReceiveView.swift in Sources */,
 				AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */,
 				AE49E85C2A2536FB002623E8 /* ChannelDetailViewModel.swift in Sources */,
 				AEDF47F12B3FADF900145D64 /* EventService.swift in Sources */,

@@ -11,13 +11,14 @@ import SwiftUI
 
 struct BitcoinView: View {
     @Environment(\.colorScheme) var colorScheme
+    @State private var isBIP21SheetPresented = false
     @State private var isCopied = false
-    @State private var showCheckmark = false
-    @State private var showingBitcoinViewErrorAlert = false
-    @State private var isReceiveSheetPresented = false
+    @State private var isJITSheetPresented = false
     @State private var isPaymentsPresented = false
-    @State private var showToast = false
+    @State private var showingBitcoinViewErrorAlert = false
+    @State private var showCheckmark = false
     @State private var showingNodeIDView = false
+    @State private var showToast = false
     @StateObject var viewModel: BitcoinViewModel
     @StateObject private var eventService = EventService()
     @Binding var sendNavigationPath: NavigationPath
@@ -162,13 +163,52 @@ struct BitcoinView: View {
                 .padding()
 
                 HStack {
+                    Menu {
+                        Button {
+                            isBIP21SheetPresented = true
+                        } label: {
+                            Label("BIP21", systemImage: "bitcoinsign")
+                        }
 
-                    Button(action: {
-                        isReceiveSheetPresented = true
-                    }) {
+                        Button {
+                            isJITSheetPresented = true
+                        } label: {
+                            Label("JIT", systemImage: "bolt.fill")
+                        }
+                    } label: {
                         Image(systemName: "qrcode")
                             .font(.title)
                             .foregroundColor(.primary)
+                    }
+                    .sheet(
+                        isPresented: $isBIP21SheetPresented,
+                        onDismiss: {
+                            Task {
+                                await viewModel.getTotalOnchainBalanceSats()
+                                await viewModel.getTotalLightningBalanceSats()
+                                await viewModel.getPrices()
+                                await viewModel.getSpendableOnchainBalanceSats()
+                                await viewModel.getStatus()
+                            }
+                        }
+                    ) {
+                        BIP21View(viewModel: .init(lightningClient: viewModel.lightningClient))
+                            .presentationDetents([.large])
+                    }
+                    .sheet(
+                        isPresented: $isJITSheetPresented,
+                        onDismiss: {
+                            Task {
+                                await viewModel.getTotalOnchainBalanceSats()
+                                await viewModel.getTotalLightningBalanceSats()
+                                await viewModel.getPrices()
+                                await viewModel.getSpendableOnchainBalanceSats()
+                                await viewModel.getStatus()
+                            }
+                        }
+                    ) {
+                        JITInvoiceView(viewModel: .init(lightningClient: viewModel.lightningClient))
+                            .presentationDetents([.large])
                     }
 
                     Spacer()
@@ -277,21 +317,6 @@ struct BitcoinView: View {
                     )
                     .foregroundColor(Color.primary)
                     .font(.caption2)
-            }
-            .sheet(
-                isPresented: $isReceiveSheetPresented,
-                onDismiss: {
-                    Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
-                        await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
-                        await viewModel.getStatus()
-                    }
-                }
-            ) {
-                ReceiveView(lightningClient: viewModel.lightningClient)
-                    .presentationDetents([.large])
             }
             .sheet(
                 isPresented: $isPaymentsPresented,
