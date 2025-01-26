@@ -16,6 +16,7 @@ struct OnboardingView: View {
     @State private var showingOnboardingViewErrorAlert = false
     @State private var showingNetworkSettingsSheet = false
     @State private var showingImportWalletSheet = false
+    @State private var animateContent = false
 
     var body: some View {
 
@@ -28,23 +29,20 @@ struct OnboardingView: View {
                 // Network settings
                 HStack {
                     Spacer()
-                    Button(
-                        action: {
-                            showingNetworkSettingsSheet.toggle()
-                        },
-                        label: {
-                            HStack(spacing: 5) {
-                                Text(viewModel.selectedNetwork.description.capitalized)
-                                Image(systemName: "gearshape")
-                            }
+                    Button(action: { showingNetworkSettingsSheet.toggle() }) {
+                        HStack(spacing: 5) {
+                            Text(viewModel.selectedNetwork.description.capitalized)
+                                .opacity(animateContent ? 1 : 0)
+                                .offset(x: animateContent ? 0 : 100)
+                            Image(systemName: "gearshape")
+                                .opacity(animateContent ? 1 : 0)
+                                .offset(x: animateContent ? 0 : 100)
                         }
-                    )
-                    .sheet(isPresented: $showingNetworkSettingsSheet) {
-                        NetworkSettingsView().environmentObject(viewModel)
                     }
                 }
                 .fontWeight(.medium)
                 .padding()
+                .animation(.easeOut(duration: 0.5).delay(0.6), value: animateContent)
 
                 // Logo, name and description
                 VStack {
@@ -54,32 +52,48 @@ struct OnboardingView: View {
                         .foregroundColor(.accent)
                         .frame(width: 150, height: 150, alignment: .center)
                         .padding(40)
-                    Text("Monday Wallet")
-                        .font(.largeTitle.weight(.semibold))
-                    Text("An example bitcoin wallet\npowered by LDK Node")
-                        .font(.body)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
+                        .scaleEffect(animateContent ? 1 : 0)
+                        .opacity(animateContent ? 1 : 0)
+                        .animation(
+                            .spring(response: 0.6, dampingFraction: 0.5),
+                            value: animateContent
+                        )
+                    Group {
+                        Text("Monday Wallet")
+                            .font(.largeTitle.weight(.semibold))
+                        Text("An example bitcoin wallet\npowered by LDK Node")
+                            .font(.body)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .opacity(animateContent ? 1 : 0)
+                    .offset(y: animateContent ? 0 : 20)
+                    .animation(.easeOut(duration: 0.5).delay(0.3), value: animateContent)
                 }
 
                 Spacer()
 
                 // Buttons for creating and importing wallet
 
-                Button("Create wallet") {
-                    viewModel.saveSeed()
-                }
-                .buttonStyle(
-                    BitcoinFilled(
-                        tintColor: .accent,
-                        isCapsule: true
+                Group {
+                    Button("Create wallet") {
+                        viewModel.saveSeed()
+                    }
+                    .buttonStyle(
+                        BitcoinFilled(
+                            tintColor: .accent,
+                            isCapsule: true
+                        )
                     )
-                )
 
-                Button("Import wallet") {
-                    showingImportWalletSheet.toggle()
+                    Button("Import wallet") {
+                        showingImportWalletSheet.toggle()
+                    }
+                    .buttonStyle(BitcoinPlain(tintColor: .accent))
                 }
-                .buttonStyle(BitcoinPlain(tintColor: .accent))
+                .opacity(animateContent ? 1 : 0)
+                .offset(y: animateContent ? 0 : 30)
+                .animation(.easeOut(duration: 0.5).delay(0.6), value: animateContent)
                 .sheet(isPresented: $showingImportWalletSheet) {
                     ImportWalletView().environmentObject(viewModel)
                 }
@@ -95,6 +109,11 @@ struct OnboardingView: View {
                         viewModel.onboardingViewError = nil
                     }
                 )
+            }
+            .onAppear {
+                withAnimation {
+                    animateContent = true
+                }
             }
 
     }
