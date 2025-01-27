@@ -909,7 +909,7 @@
 			repositoryURL = "https://github.com/lightningdevkit/ldk-node.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.4.2;
+				version = 0.4.3;
 			};
 		};
 		AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
