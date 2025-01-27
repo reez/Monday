@@ -140,7 +140,9 @@ class LightningNodeService {
     }
 
     func restart() async throws {
-        try self.stop()
+        if LightningNodeService.shared.status().isRunning {
+            try LightningNodeService.shared.stop()
+        }
         LightningNodeService._shared = nil
         try await LightningNodeService.shared.start()
     }
