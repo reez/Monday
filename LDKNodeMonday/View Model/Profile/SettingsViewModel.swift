@@ -62,31 +62,6 @@ class SettingsViewModel: ObservableObject {
         }
     }
 
-    func delete() { //TODO: Move logic to walletClient
-        do {
-            if lightningClient.status().isRunning {
-                try lightningClient.stop()
-            }
-            try lightningClient.deleteDocuments()
-            try lightningClient.deleteWallet()
-
-            DispatchQueue.main.async {
-                self.walletClient.appState = .onboarding
-            }
-        } catch let error {
-            if let nodeError = error as? NodeError {
-                let errorString = handleNodeError(nodeError)
-                DispatchQueue.main.async {
-                    self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.nodeIDError = .init(title: "Error", detail: error.localizedDescription)
-                }
-            }
-        }
-    }
-
     func getNetwork() {
         do {
             let network = try keyClient.getNetwork()

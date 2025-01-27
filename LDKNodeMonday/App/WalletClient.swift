@@ -11,7 +11,7 @@ import SwiftUI
 
 @Observable
 public class WalletClient {
-    
+
     public var keyClient: KeyClient
     public var lightningClient: LightningNodeClient
     public var network = Network.signet
@@ -47,7 +47,7 @@ public class WalletClient {
             }
         }
     }
-    
+
     func stop() {
         try? self.lightningClient.stop()
     }
@@ -66,6 +66,25 @@ public class WalletClient {
             }
         } catch let error {
             debugPrint(error)
+            await MainActor.run {
+                self.appError = error
+                self.appState = .error
+            }
+        }
+    }
+
+    func delete() async {  //TODO: Move logic to walletClient
+        do {
+            if lightningClient.status().isRunning {
+                try lightningClient.stop()
+            }
+            try lightningClient.deleteDocuments()
+            try lightningClient.deleteWallet()
+
+            await MainActor.run {
+                self.appState = .onboarding
+            }
+        } catch let error {
             await MainActor.run {
                 self.appError = error
                 self.appState = .error

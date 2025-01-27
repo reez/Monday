@@ -216,8 +216,10 @@ private struct DangerZoneSection: View {
             .foregroundColor(.red)
             .alert("Warning!", isPresented: $showDeleteSeedConfirmation) {
                 Button("Yes", role: .destructive) {
-                    viewModel.delete()
-                    dismiss()
+                    Task {
+                        await viewModel.walletClient.delete()
+                        dismiss()
+                    }
                 }
                 Button("No", role: .cancel) {}
             } message: {
@@ -232,6 +234,11 @@ private struct DangerZoneSection: View {
 
 #if DEBUG
     #Preview {
-        SettingsView(viewModel: .init(walletClient: .constant(WalletClient(keyClient: KeyClient.mock)), lightningClient: .mock))
+        SettingsView(
+            viewModel: .init(
+                walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
+                lightningClient: .mock
+            )
+        )
     }
 #endif
