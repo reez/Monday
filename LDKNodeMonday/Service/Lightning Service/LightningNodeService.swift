@@ -469,7 +469,7 @@ extension LightningNodeClient {
             },
             deleteDocuments: {},
             getNetwork: { .signet },
-            getServer: {.mutiny_signet },
+            getServer: { .mutiny_signet },
             getNetworkColor: { .orange },
             listenForEvents: {}
         )
