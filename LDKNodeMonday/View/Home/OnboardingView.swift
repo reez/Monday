@@ -42,7 +42,7 @@ struct OnboardingView: View {
                     .sheet(isPresented: $showingNetworkSettingsSheet) {
                         NavigationView {
                             NetworkSettingsView().environmentObject(
-                                NetworkSettingsViewModel.init(walletClient: viewModel.$walletClient)
+                                viewModel.networkSettingsViewModel
                             )
                         }
                     }
@@ -71,7 +71,9 @@ struct OnboardingView: View {
                 // Buttons for creating and importing wallet
 
                 Button("Create wallet") {
-                    viewModel.saveSeed()
+                    Task {
+                        await viewModel.saveSeed()
+                    }
                 }
                 .buttonStyle(
                     BitcoinFilled(
@@ -107,7 +109,12 @@ struct OnboardingView: View {
 #if DEBUG
     #Preview {
         OnboardingView(
-            viewModel: .init(walletClient: .constant(WalletClient(keyClient: KeyClient.mock)))
+            viewModel: .init(
+                walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
+                networkSettingsViewModel: .init(
+                    walletClient: .constant(WalletClient(keyClient: KeyClient.mock))
+                )
+            )
         )
     }
 #endif

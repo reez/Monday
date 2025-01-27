@@ -26,7 +26,12 @@ struct LDKNodeMondayApp: App {
                 switch walletClient.appState {
                 case .onboarding:
                     OnboardingView(
-                        viewModel: .init(walletClient: $walletClient)
+                        viewModel: .init(
+                            walletClient: $walletClient,
+                            networkSettingsViewModel: NetworkSettingsViewModel.init(
+                                walletClient: $walletClient
+                            )
+                        )
                     )
                 case .wallet:
                     BitcoinView(

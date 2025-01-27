@@ -10,6 +10,7 @@ import SwiftUI
 
 class OnboardingViewModel: ObservableObject {
     let lightningClient: LightningNodeClient
+    let networkSettingsViewModel: NetworkSettingsViewModel
     @Binding var walletClient: WalletClient
     @Published var onboardingViewError: MondayError?
     @Published var seedPhrase: String = "" {
@@ -68,40 +69,20 @@ class OnboardingViewModel: ObservableObject {
         }
     }
 
-    init(walletClient: Binding<WalletClient>) {
+    init(walletClient: Binding<WalletClient>, networkSettingsViewModel: NetworkSettingsViewModel) {
         _walletClient = walletClient
+        self.networkSettingsViewModel = networkSettingsViewModel
         self.lightningClient = walletClient.lightningClient.wrappedValue
         self.selectedNetwork = walletClient.network.wrappedValue
         self.selectedEsploraServer = walletClient.server.wrappedValue
     }
 
-    func saveSeed() {
-        do {
-            let backupInfo = BackupInfo(
-                mnemonic: seedPhrase == "" ? generateEntropyMnemonic() : seedPhrase,
-                networkString: selectedNetwork.description,
-                serverURL: selectedEsploraServer.url
-            )
-            try walletClient.keyClient.saveBackupInfo(backupInfo)
-            DispatchQueue.main.async {
-                self.walletClient.appState = .wallet
-            }
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
-                self.onboardingViewError = .init(
-                    title: errorString.title,
-                    detail: errorString.detail
-                )
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.onboardingViewError = .init(
-                    title: "Unexpected error",
-                    detail: error.localizedDescription
-                )
-            }
-        }
+    func saveSeed() async {
+        await walletClient.createWallet(
+            seedPhrase: seedPhrase,
+            network: selectedNetwork,
+            server: selectedEsploraServer
+        )
     }
 
     private func updateSeedPhraseArray() {

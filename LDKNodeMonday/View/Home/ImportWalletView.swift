@@ -54,7 +54,9 @@ struct ImportWalletView: View {
                 // Button for importing wallet
 
                 Button("Import wallet") {
-                    viewModel.saveSeed()
+                    Task {
+                        await viewModel.saveSeed()
+                    }
                 }
                 .buttonStyle(
                     BitcoinFilled(

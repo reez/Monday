@@ -15,8 +15,14 @@ class NetworkSettingsViewModel: ObservableObject {
     @Published var selectedNetwork: Network = .signet {
         didSet {
             do {
-                self.selectedEsploraServer = availableServers(network: self.selectedNetwork).first!  // all networks have at least one server option
                 try keyClient.saveNetwork(selectedNetwork.description)
+                guard let server = availableServers(network: self.selectedNetwork).first else {
+                    // This should never happen, but if it does:
+                    fatalError(
+                        "Configuration error: No Esplora servers available for \(self.selectedNetwork)"
+                    )
+                }
+                self.selectedEsploraServer = server
             } catch {
                 debugPrint("Error selecting network")
             }

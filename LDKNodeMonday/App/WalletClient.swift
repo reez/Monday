@@ -24,6 +24,23 @@ public class WalletClient {
         self.lightningClient = .live
     }
 
+    func createWallet(seedPhrase: String, network: Network, server: EsploraServer) async {
+        do {
+            let backupInfo = BackupInfo(
+                mnemonic: seedPhrase == "" ? generateEntropyMnemonic() : seedPhrase,
+                networkString: network.description,
+                serverURL: server.url
+            )
+            try keyClient.saveBackupInfo(backupInfo)
+            await self.start()
+        } catch let error {
+            await MainActor.run {
+                self.appError = error
+                self.appState = .error
+            }
+        }
+    }
+
     func start() async {
         var backupInfo: BackupInfo?
         backupInfo = try? KeyClient.live.getBackupInfo()
