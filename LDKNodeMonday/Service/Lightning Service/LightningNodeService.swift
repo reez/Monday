@@ -341,6 +341,7 @@ public struct LightningNodeClient {
     let getBackupInfo: () throws -> BackupInfo
     let deleteDocuments: () throws -> Void
     let getNetwork: () -> Network
+    let getServer: () -> EsploraServer
     let getNetworkColor: () -> Color
     let listenForEvents: () -> Void
 }
@@ -411,6 +412,7 @@ extension LightningNodeClient {
         getBackupInfo: { try LightningNodeService.shared.getBackupInfo() },
         deleteDocuments: { try LightningNodeService.shared.deleteDocuments() },
         getNetwork: { LightningNodeService.shared.network },
+        getServer: { LightningNodeService.shared.server },
         getNetworkColor: { LightningNodeService.shared.networkColor },
         listenForEvents: {}
     )
@@ -467,6 +469,7 @@ extension LightningNodeClient {
             },
             deleteDocuments: {},
             getNetwork: { .signet },
+            getServer: {.mutiny_signet },
             getNetworkColor: { .orange },
             listenForEvents: {}
         )

@@ -33,6 +33,8 @@ public class WalletClient {
                 try await lightningClient.start()
                 lightningClient.listenForEvents()
                 await MainActor.run {
+                    self.network = lightningClient.getNetwork()
+                    self.server = lightningClient.getServer()
                     self.appState = .wallet
                 }
             } catch let error {
