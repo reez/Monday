@@ -241,7 +241,7 @@ struct BitcoinView: View {
             ) {
                 SettingsView(
                     viewModel: .init(
-                        appState: viewModel.$appState,
+                        walletClient: viewModel.$walletClient,
                         lightningClient: viewModel.lightningClient
                     )
                 )
@@ -353,7 +353,7 @@ enum NavigationDestination: Hashable {
     #Preview {
         BitcoinView(
             viewModel: .init(
-                appState: .constant(.onboarding),
+                walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
                 priceClient: .mock,
                 lightningClient: .mock
             ),

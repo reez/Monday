@@ -95,8 +95,8 @@ private struct WalletSection: View {
             }
 
             NavigationLink(
-                destination: NetworkSettingsView(lightningClient: viewModel.lightningClient).environmentObject(
-                    NetworkSettingsViewModel.init(appState: viewModel.$appState)
+                destination: NetworkSettingsView().environmentObject(
+                    NetworkSettingsViewModel.init(walletClient: $viewModel.walletClient)
                 )
             ) {
                 Label("Network", systemImage: "network")
@@ -116,7 +116,7 @@ private struct WalletSection: View {
         } header: {
             Text("Wallet").foregroundColor(.primary)
         }
-        .foregroundColor(.primary)
+        //.foregroundColor(.primary)
     }
 }
 
@@ -232,6 +232,6 @@ private struct DangerZoneSection: View {
 
 #if DEBUG
     #Preview {
-        SettingsView(viewModel: .init(appState: .constant(.onboarding), lightningClient: .mock))
+        SettingsView(viewModel: .init(walletClient: .constant(WalletClient(keyClient: KeyClient.mock)), lightningClient: .mock))
     }
 #endif

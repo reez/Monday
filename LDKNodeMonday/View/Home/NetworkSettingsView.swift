@@ -9,7 +9,6 @@ import LDKNode
 import SwiftUI
 
 struct NetworkSettingsView: View {
-    let lightningClient: LightningNodeClient
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var viewModel: NetworkSettingsViewModel
 
@@ -27,7 +26,7 @@ struct NetworkSettingsView: View {
                         selection: Binding(
                             get: { viewModel.selectedNetwork },
                             set: { newNetwork in
-                                if viewModel.appState == .onboarding {
+                                if viewModel.walletClient.appState == .onboarding {
                                     viewModel.selectedNetwork = newNetwork
                                 } else {
                                     tempNetwork = newNetwork
@@ -47,7 +46,7 @@ struct NetworkSettingsView: View {
                         selection: Binding(
                             get: { viewModel.selectedEsploraServer },
                             set: { newServer in
-                                if viewModel.appState == .onboarding {
+                                if viewModel.walletClient.appState == .onboarding {
                                     viewModel.selectedEsploraServer = newServer
                                 } else {
                                     tempServer = newServer
@@ -90,10 +89,12 @@ struct NetworkSettingsView: View {
 
                                     do {
                                         //self.appState = .loading
-                                        try await lightningClient.restart()
-//                                        await MainActor.run {
-//                                            self.appState = .wallet
-//                                        }
+                                        try await viewModel.walletClient.restart(newNetwork: newNetwork, newServer: newServer)
+                                        /*
+                                        await MainActor.run {
+                                            self.appState = .wallet
+                                        }
+                                        */
                                     } catch let error {
                                         debugPrint(error)  // TODO: Show error on relevant screen
                                         //self.appError = error
@@ -131,6 +132,6 @@ struct NetworkSettingsView: View {
 
 #if DEBUG
     #Preview {
-        NetworkSettingsView(lightningClient: .mock, viewModel: .init())
+        NetworkSettingsView(viewModel: .init())
     }
 #endif

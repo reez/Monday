@@ -41,8 +41,8 @@ struct OnboardingView: View {
                     )
                     .sheet(isPresented: $showingNetworkSettingsSheet) {
                         NavigationView {
-                            NetworkSettingsView(lightningClient: viewModel.lightningClient).environmentObject(
-                                NetworkSettingsViewModel.init(appState: viewModel.$appState)
+                            NetworkSettingsView().environmentObject(
+                                NetworkSettingsViewModel.init(walletClient: viewModel.$walletClient)
                             )
                         }
                     }
@@ -106,6 +106,6 @@ struct OnboardingView: View {
 
 #if DEBUG
     #Preview {
-        OnboardingView(viewModel: .init(appState: .constant(.onboarding), lightningClient: .mock))
+        OnboardingView(viewModel: .init(walletClient: .constant(WalletClient(keyClient: KeyClient.mock))))
     }
 #endif

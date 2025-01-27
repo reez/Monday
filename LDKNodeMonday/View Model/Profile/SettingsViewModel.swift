@@ -10,7 +10,7 @@ import LDKNode
 import SwiftUI
 
 class SettingsViewModel: ObservableObject {
-    @Binding var appState: AppState
+    @Binding var walletClient: WalletClient
     @Published var nodeIDError: MondayError?
     @Published var nodeID: String = ""
     @Published var network: String?
@@ -22,11 +22,11 @@ class SettingsViewModel: ObservableObject {
     let keyClient: KeyClient
 
     init(
-        appState: Binding<AppState>,
+        walletClient: Binding<WalletClient>,
         keyClient: KeyClient = .live,
         lightningClient: LightningNodeClient
     ) {
-        _appState = appState
+        _walletClient = walletClient
         self.keyClient = keyClient
         self.lightningClient = lightningClient
 
@@ -62,7 +62,7 @@ class SettingsViewModel: ObservableObject {
         }
     }
 
-    func delete() {
+    func delete() { //TODO: Move logic to walletClient
         do {
             if lightningClient.status().isRunning {
                 try lightningClient.stop()
@@ -71,7 +71,7 @@ class SettingsViewModel: ObservableObject {
             try lightningClient.deleteWallet()
 
             DispatchQueue.main.async {
-                self.appState = .onboarding
+                self.walletClient.appState = .onboarding
             }
         } catch let error {
             if let nodeError = error as? NodeError {

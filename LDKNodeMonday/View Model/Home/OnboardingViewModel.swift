@@ -9,10 +9,8 @@ import LDKNode
 import SwiftUI
 
 class OnboardingViewModel: ObservableObject {
-    @Binding var appState: AppState
     let lightningClient: LightningNodeClient
-    private let keyClient: KeyClient
-    @Published var networkColor = Color.gray
+    @Binding var walletClient: WalletClient
     @Published var onboardingViewError: MondayError?
     @Published var seedPhrase: String = "" {
         didSet {
@@ -23,14 +21,14 @@ class OnboardingViewModel: ObservableObject {
     @Published var selectedNetwork: Network = .signet {
         didSet {
             do {
-                guard let server = availableEsploraServers.first else {
+                guard let server = availableServers(network: walletClient.network).first else {
                     // This should never happen, but if it does:
                     fatalError(
                         "Configuration error: No Esplora servers available for \(selectedNetwork)"
                     )
                 }
                 self.selectedEsploraServer = server
-                try keyClient.saveNetwork(selectedNetwork.description)
+                try walletClient.keyClient.saveNetwork(selectedNetwork.description)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -45,7 +43,7 @@ class OnboardingViewModel: ObservableObject {
     {
         didSet {
             do {
-                try keyClient.saveServerURL(selectedEsploraServer.url)
+                try walletClient.keyClient.saveServerURL(selectedEsploraServer.url)
             } catch {
                 DispatchQueue.main.async {
                     self.onboardingViewError = .init(
@@ -70,43 +68,23 @@ class OnboardingViewModel: ObservableObject {
         }
     }
 
-    init(
-        appState: Binding<AppState>,
-        lightningClient: LightningNodeClient,
-        keyClient: KeyClient = .live
-    ) {
-        _appState = appState
-        self.lightningClient = lightningClient
-        self.keyClient = keyClient
-
-        do {
-            if let networkString = try keyClient.getNetwork() {
-                self.selectedNetwork = Network(stringValue: networkString) ?? .signet
-            }
-            if let esploraURL = try keyClient.getServerURL() {
-                self.selectedEsploraServer =
-                    availableServers(network: self.selectedNetwork).first!
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.onboardingViewError = .init(
-                    title: "Error Getting Network/Esplora",
-                    detail: error.localizedDescription
-                )
-            }
-        }
+    init(walletClient: Binding<WalletClient>) {
+        _walletClient = walletClient
+        self.lightningClient = walletClient.lightningClient.wrappedValue
+        self.selectedNetwork = walletClient.network.wrappedValue
+        self.selectedEsploraServer = walletClient.server.wrappedValue
     }
 
     func saveSeed() {
         do {
             let backupInfo = BackupInfo(
-                mnemonic: seedPhrase,
+                mnemonic: seedPhrase == "" ? generateEntropyMnemonic() : seedPhrase,
                 networkString: selectedNetwork.description,
                 serverURL: selectedEsploraServer.url
             )
-            try keyClient.saveBackupInfo(backupInfo)
+            try walletClient.keyClient.saveBackupInfo(backupInfo)
             DispatchQueue.main.async {
-                self.appState = .wallet
+                self.walletClient.appState = .wallet
             }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
@@ -123,13 +101,6 @@ class OnboardingViewModel: ObservableObject {
                     detail: error.localizedDescription
                 )
             }
-        }
-    }
-
-    func getColor() {
-        let color = lightningClient.getNetworkColor()
-        DispatchQueue.main.async {
-            self.networkColor = color
         }
     }
 

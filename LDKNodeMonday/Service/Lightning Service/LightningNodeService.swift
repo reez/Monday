@@ -139,16 +139,10 @@ class LightningNodeService {
         try ldkNode.stop()
     }
 
-    func restart() async {
-        do {
-            //self.appState = .loading
-            try? self.stop()
-            LightningNodeService._shared = nil
-            try await LightningNodeService.shared.start()
-            LightningNodeService.shared.listenForEvents()
-        } catch let error {
-            debugPrint(error)  // TODO: Show error on relevant screen
-        }
+    func restart() async throws {
+        try self.stop()
+        LightningNodeService._shared = nil
+        try await LightningNodeService.shared.start()
     }
 
     func nodeId() -> String {
@@ -318,7 +312,7 @@ extension LightningNodeService {
     }
 }
 
-struct LightningNodeClient {
+public struct LightningNodeClient {
     let start: () async throws -> Void
     let stop: () throws -> Void
     let restart: () async throws -> Void
@@ -353,7 +347,7 @@ extension LightningNodeClient {
     static let live = Self(
         start: { try await LightningNodeService.shared.start() },
         stop: { try LightningNodeService.shared.stop() },
-        restart: { await LightningNodeService.shared.restart() },
+        restart: { try await LightningNodeService.shared.restart() },
         nodeId: { LightningNodeService.shared.nodeId() },
         newAddress: { try await LightningNodeService.shared.newAddress() },
         spendableOnchainBalanceSats: {
