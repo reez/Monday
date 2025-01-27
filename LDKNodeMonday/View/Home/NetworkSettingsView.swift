@@ -75,40 +75,28 @@ struct NetworkSettingsView: View {
                     Button("Restart") {
                         if tempNetwork != nil || tempServer != nil {
                             Task {
-                                // TODO: Where should restart live? Needs to set AppState, and save BackupInfo)
-                                do {
-                                    let newNetwork =
-                                        tempNetwork != nil
-                                        ? tempNetwork! : viewModel.selectedNetwork
-                                    let newServer =
-                                        tempServer != nil
-                                        ? tempServer! : availableServers(network: newNetwork).first!
+                                let newNetwork =
+                                    tempNetwork != nil
+                                    ? tempNetwork! : viewModel.selectedNetwork
+                                let newServer =
+                                    tempServer != nil
+                                    ? tempServer! : availableServers(network: newNetwork).first!
 
+                                do {
                                     try KeyClient.live.saveNetwork(newNetwork.description)
                                     try KeyClient.live.saveServerURL(newServer.url)
-
-                                    do {
-                                        //self.appState = .loading
-                                        try await viewModel.walletClient.restart(newNetwork: newNetwork, newServer: newServer)
-                                        /*
-                                        await MainActor.run {
-                                            self.appState = .wallet
-                                        }
-                                        */
-                                    } catch let error {
-                                        debugPrint(error)  // TODO: Show error on relevant screen
-                                        //self.appError = error
+                                } catch let error {
+                                    await MainActor.run {
+                                        debugPrint(error.localizedDescription)
+                                        viewModel.walletClient.appError = error
+                                        viewModel.walletClient.appState = .error
                                     }
-                                } catch {
-                                    /*
-                                         DispatchQueue.main.async {
-                                             self.onboardingViewError = .init(
-                                                 title: "Error Selecting Network",
-                                                 detail: error.localizedDescription
-                                             )
-                                         }
-                                         */
                                 }
+
+                                await viewModel.walletClient.restart(
+                                    newNetwork: newNetwork,
+                                    newServer: newServer
+                                )
                             }
                         }
                     }

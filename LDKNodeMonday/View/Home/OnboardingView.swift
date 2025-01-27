@@ -106,6 +106,8 @@ struct OnboardingView: View {
 
 #if DEBUG
     #Preview {
-        OnboardingView(viewModel: .init(walletClient: .constant(WalletClient(keyClient: KeyClient.mock))))
+        OnboardingView(
+            viewModel: .init(walletClient: .constant(WalletClient(keyClient: KeyClient.mock)))
+        )
     }
 #endif
