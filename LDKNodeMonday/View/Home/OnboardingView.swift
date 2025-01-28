@@ -34,7 +34,10 @@ struct OnboardingView: View {
                         },
                         label: {
                             HStack(spacing: 5) {
-                                Text(viewModel.selectedNetwork.description.capitalized)
+                                Text(
+                                    viewModel.networkSettingsViewModel.selectedNetwork.description
+                                        .capitalized
+                                )
                                 Image(systemName: "gearshape")
                             }
                         }
