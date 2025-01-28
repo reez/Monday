@@ -15,7 +15,8 @@ class NetworkSettingsViewModel: ObservableObject {
     @Published var selectedNetwork: Network = .signet {
         didSet {
             do {
-                try keyClient.saveNetwork(selectedNetwork.description)
+                walletClient.appState != .onboarding
+                    ? try keyClient.saveNetwork(selectedNetwork.description) : nil
                 guard let server = availableServers(network: self.selectedNetwork).first else {
                     // This should never happen, but if it does:
                     fatalError(
