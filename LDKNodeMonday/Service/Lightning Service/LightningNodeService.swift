@@ -146,6 +146,13 @@ class LightningNodeService {
         LightningNodeService._shared = nil
         try await LightningNodeService.shared.start()
     }
+    
+    func reset() throws {
+        if LightningNodeService.shared.status().isRunning {
+            try LightningNodeService.shared.stop()
+        }
+        LightningNodeService._shared = nil
+    }
 
     func nodeId() -> String {
         let nodeId = ldkNode.nodeId()
@@ -318,6 +325,7 @@ public struct LightningNodeClient {
     let start: () async throws -> Void
     let stop: () throws -> Void
     let restart: () async throws -> Void
+    let reset: () throws -> Void
     let nodeId: () -> String
     let newAddress: () async throws -> String
     let spendableOnchainBalanceSats: () async -> UInt64
@@ -351,6 +359,7 @@ extension LightningNodeClient {
         start: { try await LightningNodeService.shared.start() },
         stop: { try LightningNodeService.shared.stop() },
         restart: { try await LightningNodeService.shared.restart() },
+        reset: { try LightningNodeService.shared.reset() },
         nodeId: { LightningNodeService.shared.nodeId() },
         newAddress: { try await LightningNodeService.shared.newAddress() },
         spendableOnchainBalanceSats: {
@@ -424,6 +433,7 @@ extension LightningNodeClient {
             start: {},
             stop: {},
             restart: {},
+            reset: {},
             nodeId: { "038474837483784378437843784378437843784378" },
             newAddress: { "tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx" },
             spendableOnchainBalanceSats: { 100_000 },

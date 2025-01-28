@@ -99,6 +99,7 @@ public class WalletClient {
             }
             try lightningClient.deleteDocuments()
             try lightningClient.deleteWallet()
+            try lightningClient.reset()
 
             await MainActor.run {
                 self.appState = .onboarding
