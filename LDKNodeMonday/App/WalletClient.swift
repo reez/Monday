@@ -92,7 +92,7 @@ public class WalletClient {
         }
     }
 
-    func delete() async {  //TODO: Move logic to walletClient
+    func delete() async {
         do {
             if lightningClient.status().isRunning {
                 try lightningClient.stop()
