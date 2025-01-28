@@ -146,7 +146,7 @@ class LightningNodeService {
         LightningNodeService._shared = nil
         try await LightningNodeService.shared.start()
     }
-    
+
     func reset() throws {
         if LightningNodeService.shared.status().isRunning {
             try LightningNodeService.shared.stop()
