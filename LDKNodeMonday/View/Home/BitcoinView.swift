@@ -170,6 +170,18 @@ struct BitcoinView: View {
                         Image(systemName: "qrcode")
                             .font(.title)
                             .foregroundColor(.primary)
+                    }.contextMenu {
+                        Button {
+                            showReceiveViewWithOption = .bip21
+                        } label: {
+                            Label("Unified BIP21", systemImage: "bitcoinsign")
+                        }
+
+                        Button {
+                            showReceiveViewWithOption = .bolt11JIT
+                        } label: {
+                            Label("JIT Bolt11", systemImage: "bolt")
+                        }
                     }
 
                     Spacer()
