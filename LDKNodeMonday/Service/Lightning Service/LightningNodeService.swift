@@ -11,16 +11,21 @@ import SwiftUI
 import os
 
 class LightningNodeService {
+    private static let lock = NSLock()
     private static var _shared: LightningNodeService?
     static var shared: LightningNodeService {
         get {
+            lock.lock()
+            defer { lock.unlock() }
             if _shared == nil {
                 _shared = LightningNodeService()
             }
-            return _shared ?? LightningNodeService()
+            return _shared!
         }
         set {
+            lock.lock()
             _shared = newValue
+            lock.unlock()
         }
     }
     private let ldkNode: Node
