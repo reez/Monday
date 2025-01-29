@@ -428,7 +428,7 @@ extension LightningNodeClient {
         getNetwork: { LightningNodeService.shared.network },
         getServer: { LightningNodeService.shared.server },
         getNetworkColor: { LightningNodeService.shared.networkColor },
-        listenForEvents: {}
+        listenForEvents: { LightningNodeService.shared.listenForEvents() }
     )
 }
 
