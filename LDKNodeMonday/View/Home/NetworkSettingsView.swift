@@ -79,12 +79,12 @@ struct NetworkSettingsView: View {
                     Button("Restart") {
                         if tempNetwork != nil || tempServer != nil {
                             Task {
-                                let newNetwork =
-                                    tempNetwork != nil
-                                ? tempNetwork! : walletClient.network
-                                let newServer =
-                                    tempServer != nil
-                                    ? tempServer! : availableServers(network: newNetwork).first!
+                                let newNetwork = tempNetwork ?? walletClient.network
+                                guard let server = availableServers(network: newNetwork).first else {
+                                    // This should never happen, but if it does:
+                                    fatalError("No servers available for \(newNetwork)")
+                                }
+                                let newServer = tempServer ?? server
 
                                 do {
                                     try KeyClient.live.saveNetwork(newNetwork.description)
