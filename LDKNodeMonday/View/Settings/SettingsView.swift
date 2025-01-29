@@ -31,9 +31,8 @@ struct SettingsView: View {
                     }
 
                     NavigationLink(
-                        destination: NetworkSettingsView().environmentObject(
-                            NetworkSettingsViewModel.init(walletClient: $viewModel.walletClient)
-                        )
+                        destination: NetworkSettingsView(walletClient: $viewModel.walletClient)
+
                     ) {
                         Label("Network", systemImage: "network")
                             .badge((viewModel.network ?? "No network").capitalized)
@@ -167,9 +166,8 @@ struct SettingsView: View {
     #Preview {
         SettingsView(
             viewModel: .init(
-                walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
-                lightningClient: .mock
-            )
+                walletClient: .constant(WalletClient(keyClient: KeyClient.mock)), lightningClient: .mock)
+
         )
     }
 #endif

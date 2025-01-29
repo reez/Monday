@@ -5,13 +5,11 @@
 //  Created by Matthew Ramsden on 1/4/24.
 //
 
-import Combine
 import LDKNode
 import SwiftUI
 
 class OnboardingViewModel: ObservableObject {
     let lightningClient: LightningNodeClient
-    @Published var networkSettingsViewModel: NetworkSettingsViewModel
     @Binding var walletClient: WalletClient
     @Published var onboardingViewError: MondayError?
     @Published var seedPhrase: String = "" {
@@ -20,23 +18,17 @@ class OnboardingViewModel: ObservableObject {
         }
     }
     @Published var seedPhraseArray: [String] = []
-    private var cancellables = Set<AnyCancellable>()
 
-    init(walletClient: Binding<WalletClient>, networkSettingsViewModel: NetworkSettingsViewModel) {
+    init(walletClient: Binding<WalletClient>) {
         _walletClient = walletClient
-        self.networkSettingsViewModel = networkSettingsViewModel
         self.lightningClient = walletClient.lightningClient.wrappedValue
-
-        networkSettingsViewModel.objectWillChange.sink { [weak self] _ in
-            self?.objectWillChange.send()
-        }.store(in: &cancellables)
     }
 
     func saveSeed() async {
         await walletClient.createWallet(
             seedPhrase: seedPhrase,
-            network: networkSettingsViewModel.selectedNetwork,
-            server: networkSettingsViewModel.selectedEsploraServer
+            network: walletClient.network,
+            server: walletClient.server
         )
     }
 

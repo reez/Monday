@@ -35,7 +35,7 @@ struct OnboardingView: View {
                         label: {
                             HStack(spacing: 5) {
                                 Text(
-                                    viewModel.networkSettingsViewModel.selectedNetwork.description
+                                    viewModel.walletClient.network.description
                                         .capitalized
                                 )
                                 Image(systemName: "gearshape")
@@ -44,9 +44,7 @@ struct OnboardingView: View {
                     )
                     .sheet(isPresented: $showingNetworkSettingsSheet) {
                         NavigationView {
-                            NetworkSettingsView().environmentObject(
-                                viewModel.networkSettingsViewModel
-                            )
+                            NetworkSettingsView(walletClient: viewModel.$walletClient)
                         }
                     }
                 }
@@ -113,10 +111,7 @@ struct OnboardingView: View {
     #Preview {
         OnboardingView(
             viewModel: .init(
-                walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
-                networkSettingsViewModel: .init(
-                    walletClient: .constant(WalletClient(keyClient: KeyClient.mock))
-                )
+                walletClient: .constant(WalletClient(keyClient: KeyClient.mock))
             )
         )
     }

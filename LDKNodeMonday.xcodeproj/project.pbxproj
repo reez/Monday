@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6549DD862D3E97F4007D496B /* NetworkSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549DD852D3E97E6007D496B /* NetworkSettingsViewModel.swift */; };
 		655574802D398A750064F859 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555747F2D398A750064F859 /* LoadingView.swift */; };
 		655574822D3994E10064F859 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655574812D3994E10064F859 /* ErrorView.swift */; };
 		655C19042D42AB1500AC5F72 /* WalletClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655C19032D42AB1500AC5F72 /* WalletClient.swift */; };
@@ -95,7 +94,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6549DD852D3E97E6007D496B /* NetworkSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsViewModel.swift; sourceTree = "<group>"; };
 		6555747F2D398A750064F859 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		655574812D3994E10064F859 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		655C19032D42AB1500AC5F72 /* WalletClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletClient.swift; sourceTree = "<group>"; };
@@ -349,7 +347,6 @@
 		AE49E87B2A2544E1002623E8 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				6549DD852D3E97E6007D496B /* NetworkSettingsViewModel.swift */,
 				AE49E86B2A253A32002623E8 /* SettingsViewModel.swift */,
 				AE49E8742A253AF0002623E8 /* Peer */,
 				AE49E86D2A253A9A002623E8 /* Channel */,
@@ -635,7 +632,6 @@
 				AE49E8542A253647002623E8 /* BitcoinViewModel.swift in Sources */,
 				AE17E90D29A42D430058C9C9 /* LightningNodeService.swift in Sources */,
 				AEBAA4922A01C34A0042EA82 /* ChannelDetailView.swift in Sources */,
-				6549DD862D3E97F4007D496B /* NetworkSettingsViewModel.swift in Sources */,
 				AE38153B2B6A979E006B2952 /* LightningNodeInfo.swift in Sources */,
 				AE70963A2B5C22060038BE56 /* Double+Extensions.swift in Sources */,
 				AE3815392B6A978A006B2952 /* LightningNodeServiceError.swift in Sources */,

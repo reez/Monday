@@ -27,10 +27,7 @@ struct LDKNodeMondayApp: App {
                 case .onboarding:
                     OnboardingView(
                         viewModel: .init(
-                            walletClient: $walletClient,
-                            networkSettingsViewModel: NetworkSettingsViewModel.init(
-                                walletClient: $walletClient
-                            )
+                            walletClient: $walletClient
                         )
                     )
                 case .wallet:

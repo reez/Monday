@@ -10,8 +10,7 @@ import SwiftUI
 
 struct NetworkSettingsView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var viewModel: NetworkSettingsViewModel
-
+    @Binding var walletClient: WalletClient
     @State private var showRestartAlert = false
     @State private var tempNetwork: Network?
     @State private var tempServer: EsploraServer?
@@ -24,10 +23,15 @@ struct NetworkSettingsView: View {
                     Picker(
                         "Network",
                         selection: Binding(
-                            get: { viewModel.selectedNetwork },
+                            get: { walletClient.network },
                             set: { newNetwork in
-                                if viewModel.walletClient.appState == .onboarding {
-                                    viewModel.selectedNetwork = newNetwork
+                                if walletClient.appState == .onboarding {
+                                    walletClient.network = newNetwork
+                                    guard let server = availableServers(network: newNetwork).first else {
+                                        // This should never happen, but if it does:
+                                        fatalError("No servers available for \(newNetwork)")
+                                    }
+                                    walletClient.server = server
                                 } else {
                                     tempNetwork = newNetwork
                                     showRestartAlert = true
@@ -44,20 +48,20 @@ struct NetworkSettingsView: View {
                     Picker(
                         "Server",
                         selection: Binding(
-                            get: { viewModel.selectedEsploraServer },
+                            get: { walletClient.server },
                             set: { newServer in
-                                if viewModel.walletClient.appState == .onboarding {
-                                    viewModel.selectedEsploraServer = newServer
+                                if walletClient.appState == .onboarding {
+                                    walletClient.server = newServer
                                 } else {
                                     tempServer = newServer
-                                    tempNetwork = viewModel.selectedNetwork
+                                    tempNetwork = walletClient.network
                                     showRestartAlert = true
                                 }
                             }
                         )
                     ) {
                         ForEach(
-                            availableServers(network: viewModel.selectedNetwork),
+                            availableServers(network: walletClient.network),
                             id: \.self
                         ) { esploraServer in
                             Text(esploraServer.name).tag(esploraServer)
@@ -77,7 +81,7 @@ struct NetworkSettingsView: View {
                             Task {
                                 let newNetwork =
                                     tempNetwork != nil
-                                    ? tempNetwork! : viewModel.selectedNetwork
+                                ? tempNetwork! : walletClient.network
                                 let newServer =
                                     tempServer != nil
                                     ? tempServer! : availableServers(network: newNetwork).first!
@@ -88,12 +92,12 @@ struct NetworkSettingsView: View {
                                 } catch let error {
                                     await MainActor.run {
                                         debugPrint(error.localizedDescription)
-                                        viewModel.walletClient.appError = error
-                                        viewModel.walletClient.appState = .error
+                                        walletClient.appError = error
+                                        walletClient.appState = .error
                                     }
                                 }
 
-                                await viewModel.walletClient.restart(
+                                await walletClient.restart(
                                     newNetwork: newNetwork,
                                     newServer: newServer
                                 )
@@ -120,6 +124,6 @@ struct NetworkSettingsView: View {
 
 #if DEBUG
     #Preview {
-        NetworkSettingsView(viewModel: .init())
+        NetworkSettingsView(walletClient: .constant(WalletClient(keyClient: KeyClient.mock)))
     }
 #endif
