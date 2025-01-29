@@ -14,7 +14,6 @@ struct BitcoinView: View {
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
-    @State private var isReceiveSheetPresented = false
     @State private var showReceiveViewWithOption: ReceiveOption?
     @State private var isPaymentsPresented = false
     @State private var showToast = false
