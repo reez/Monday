@@ -13,7 +13,6 @@ struct LDKNodeMondayApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     @State private var walletClient = WalletClient(keyClient: .live)
-    @State private var appError: Error?
     @State private var navigationPath = NavigationPath()
 
     init() {
@@ -40,7 +39,7 @@ struct LDKNodeMondayApp: App {
                         sendNavigationPath: $navigationPath
                     )
                 case .error:
-                    ErrorView(error: self.appError)
+                    ErrorView(error: walletClient.appError)
                 default:
                     LoadingView()
                 }
