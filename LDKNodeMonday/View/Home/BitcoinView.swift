@@ -15,6 +15,7 @@ struct BitcoinView: View {
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
     @State private var isReceiveSheetPresented = false
+    @State private var showReceiveViewWithOption: ReceiveOption?
     @State private var isPaymentsPresented = false
     @State private var showToast = false
     @State private var showingNodeIDView = false
@@ -164,7 +165,7 @@ struct BitcoinView: View {
                 HStack {
 
                     Button(action: {
-                        isReceiveSheetPresented = true
+                        showReceiveViewWithOption = .bip21 // or .bolt11JIT
                     }) {
                         Image(systemName: "qrcode")
                             .font(.title)
@@ -279,7 +280,7 @@ struct BitcoinView: View {
                     .font(.caption2)
             }
             .sheet(
-                isPresented: $isReceiveSheetPresented,
+                item: $showReceiveViewWithOption,
                 onDismiss: {
                     Task {
                         await viewModel.getTotalOnchainBalanceSats()
@@ -289,8 +290,8 @@ struct BitcoinView: View {
                         await viewModel.getStatus()
                     }
                 }
-            ) {
-                ReceiveView(lightningClient: viewModel.lightningClient)
+            ) { receiveOption in
+                ReceiveView(lightningClient: viewModel.lightningClient, selectedOption: receiveOption)
                     .presentationDetents([.large])
             }
             .sheet(

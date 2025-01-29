@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ReceiveView: View {
     let lightningClient: LightningNodeClient
-    @State private var selectedOption: ReceiveOption = .bip21
+    @State public var selectedOption: ReceiveOption = .bip21
 
     var body: some View {
 
