@@ -27,7 +27,8 @@ struct NetworkSettingsView: View {
                             set: { newNetwork in
                                 if walletClient.appState == .onboarding {
                                     walletClient.network = newNetwork
-                                    guard let server = availableServers(network: newNetwork).first else {
+                                    guard let server = availableServers(network: newNetwork).first
+                                    else {
                                         // This should never happen, but if it does:
                                         fatalError("No servers available for \(newNetwork)")
                                     }
@@ -80,7 +81,8 @@ struct NetworkSettingsView: View {
                         if tempNetwork != nil || tempServer != nil {
                             Task {
                                 let newNetwork = tempNetwork ?? walletClient.network
-                                guard let server = availableServers(network: newNetwork).first else {
+                                guard let server = availableServers(network: newNetwork).first
+                                else {
                                     // This should never happen, but if it does:
                                     fatalError("No servers available for \(newNetwork)")
                                 }
