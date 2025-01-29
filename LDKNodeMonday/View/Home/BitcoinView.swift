@@ -165,7 +165,7 @@ struct BitcoinView: View {
                 HStack {
 
                     Button(action: {
-                        showReceiveViewWithOption = .bip21 // or .bolt11JIT
+                        showReceiveViewWithOption = .bip21  // or .bolt11JIT
                     }) {
                         Image(systemName: "qrcode")
                             .font(.title)
@@ -303,8 +303,11 @@ struct BitcoinView: View {
                     }
                 }
             ) { receiveOption in
-                ReceiveView(lightningClient: viewModel.lightningClient, selectedOption: receiveOption)
-                    .presentationDetents([.large])
+                ReceiveView(
+                    lightningClient: viewModel.lightningClient,
+                    selectedOption: receiveOption
+                )
+                .presentationDetents([.large])
             }
             .sheet(
                 isPresented: $isPaymentsPresented,
