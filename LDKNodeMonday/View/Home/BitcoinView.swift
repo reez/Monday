@@ -18,7 +18,7 @@ struct BitcoinView: View {
     @State private var isPaymentsPresented = false
     @State private var showToast = false
     @State private var showingNodeIDView = false
-    @State private var displayBalanceType = DisplayBalanceType.bitcoinUnified
+    @State private var displayBalanceType = DisplayBalanceType(rawValue: UserDefaults.standard.string(forKey: "displayBalanceType") ?? DisplayBalanceType.unifiedFiat.rawValue) ?? .unifiedFiat
     @StateObject var viewModel: BitcoinViewModel
     @StateObject private var eventService = EventService()
     @Binding var sendNavigationPath: NavigationPath
@@ -253,10 +253,30 @@ struct BalanceHeader: View {
             HStack {
                 Spacer()
                 switch displayBalanceType {
-                case .bitcoinUnified:
+                case .unifiedFiat:
                     VStack {
                         HStack(spacing: 5) {
-                            Text(viewModel.totalBalance.formattedSatoshis())
+                            Text("$\(viewModel.totalUSDValue.formatted())")
+                                .font(.system(size: 48, weight: .bold, design: .rounded))
+                                .contentTransition(.numericText())
+                                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+                                .animation(.spring(), value: viewModel.isPriceFinished)
+                        }
+                        HStack {
+                            Text(viewModel.totalOnchainBalance.formatted(.number.notation(.automatic)))
+                                .contentTransition(.numericText())
+                                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+                            Text("sats")
+                        }
+                        .lineLimit(1)
+                        .animation(.spring(), value: viewModel.isPriceFinished)
+                        .foregroundColor(.secondary)
+                    }
+                case .unifiedBTC:
+                    VStack {
+                        HStack(spacing: 5) {
+                            Text(viewModel.unifiedBalance.formatted(.number.notation(.automatic)))
+                                .font(.system(size: 48, weight: .bold, design: .rounded))
                                 .contentTransition(.numericText())
                                 .redacted(
                                     reason: viewModel.isTotalBalanceFinished
@@ -264,22 +284,18 @@ struct BalanceHeader: View {
                                 )
                             Text("sats")
                         }
-                        HStack {
-                            Text(viewModel.totalUSDValue)
-                                .contentTransition(.numericText())
-                                .fontWeight(.semibold)
-                                .fontDesign(.rounded)
-                                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
-                        }
-                        .lineLimit(1)
-                        .animation(.spring(), value: viewModel.isPriceFinished)
-                        .foregroundColor(.secondary)
+                        Text("$\(viewModel.totalUSDValue.formatted())")
+                            .contentTransition(.numericText())
+                            .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+                            .animation(.spring(), value: viewModel.isPriceFinished)
+                            .foregroundColor(.secondary)
                     }
-                case .bitcoinSeparate:
-                    VStack {
+                case .separateSats:
+                    HStack(spacing: 40) {
                         HStack(spacing: 5) {
-                            Text("Onchain")
-                            Text(viewModel.totalBalance.formattedSatoshis())
+                            Image(systemName: "bitcoinsign").imageScale(.small)
+                            Text(viewModel.totalOnchainBalance.formatted(.number.notation(.automatic)))
+                                .font(.system(size: 48, weight: .bold, design: .rounded))
                                 .contentTransition(.numericText())
                                 .redacted(
                                     reason: viewModel.isTotalBalanceFinished
@@ -288,8 +304,9 @@ struct BalanceHeader: View {
                             Text("sats")
                         }
                         HStack(spacing: 5) {
-                            Text("Lightning")
-                            Text(viewModel.totalLightningBalance.formattedSatoshis())
+                            Image(systemName: "bolt").imageScale(.small)
+                            Text(viewModel.totalLightningBalance.formatted(.number.notation(.automatic)))
+                                .font(.system(size: 48, weight: .bold, design: .rounded))
                                 .contentTransition(.numericText())
                                 .redacted(
                                     reason: viewModel.isTotalLightningBalanceFinished
@@ -298,44 +315,13 @@ struct BalanceHeader: View {
                             Text("sats")
                         }
                     }
-                case .fiat:
-                    VStack {
-                        HStack(spacing: 5) {
-                            Text(viewModel.totalUSDValue)
-                                .contentTransition(.numericText())
-                                .redacted(
-                                    reason: viewModel.isTotalBalanceFinished
-                                    ? [] : .placeholder
-                                )
-                            Text("sats")
-                        }
-                        HStack {
-                            Text(viewModel.totalBalance.formattedSatoshis())
-                                .contentTransition(.numericText())
-                                .fontWeight(.semibold)
-                                .fontDesign(.rounded)
-                                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
-                        }
-                        .lineLimit(1)
-                        .animation(.spring(), value: viewModel.isPriceFinished)
-                        .foregroundColor(.secondary)
-                    }
                 }
                 Spacer()
             }.onTapGesture {
-                displayBalanceType.next()
-            }
-            if let status = viewModel.status,
-                let timestamp = status.latestOnchainWalletSyncTimestamp
-            {
-                let date = Date(
-                    timeIntervalSince1970: TimeInterval(
-                        timestamp
-                    )
-                )
-                Text(date.formattedDate())
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
+                withAnimation {
+                    displayBalanceType.next()
+                }
+                UserDefaults.standard.set(displayBalanceType.rawValue, forKey: "displayBalanceType")
             }
         }
     }
@@ -346,21 +332,21 @@ enum NavigationDestination: Hashable {
     case amount(address: String, amount: String, payment: Payment)
 }
 
-public enum DisplayBalanceType {
-    case bitcoinUnified
-    case bitcoinSeparate
-    case fiat
+public enum DisplayBalanceType: String {
+    case unifiedFiat
+    case unifiedBTC
+    case separateSats
 }
 
 extension DisplayBalanceType {
     mutating func next() {
         switch self {
-        case .bitcoinUnified:
-            self = .bitcoinSeparate
-        case .bitcoinSeparate:
-            self = .fiat
-        case .fiat:
-            self = .bitcoinUnified
+        case .unifiedFiat:
+            self = .unifiedBTC
+        case .unifiedBTC:
+            self = .separateSats
+        case .separateSats:
+            self = .unifiedFiat
         }
     }
 }

@@ -14,8 +14,9 @@ class BitcoinViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var status: NodeStatus?
     @Published var isStatusFinished: Bool = false
+    @Published var unifiedBalance: UInt64 = 0
     @Published var spendableBalance: UInt64 = 0
-    @Published var totalBalance: UInt64 = 0
+    @Published var totalOnchainBalance: UInt64 = 0
     @Published var totalLightningBalance: UInt64 = 0
     @Published var lightningBalances: [LightningBalance] = []
     @Published var isSpendableBalanceFinished: Bool = false
@@ -28,13 +29,13 @@ class BitcoinViewModel: ObservableObject {
     var price: Double = 0.00
     var time: Int?
 
-    var satsPrice: String {
-        let usdValue = Double(totalBalance).valueInUSD(price: price)
+    var satsPrice: Double {
+        let usdValue = Double(totalOnchainBalance).valueInUSD(price: price)
         return usdValue
     }
 
-    var totalUSDValue: String {
-        let totalUSD = Double(totalBalance + totalLightningBalance).valueInUSD(price: price)
+    var totalUSDValue: Double {
+        let totalUSD = Double(totalOnchainBalance + totalLightningBalance).valueInUSD(price: price)
         return totalUSD
     }
 
@@ -55,13 +56,21 @@ class BitcoinViewModel: ObservableObject {
             self.isStatusFinished = true
         }
     }
+    
+    func getUnifiedBalanceSats() async {
+        let balance = totalOnchainBalance + totalLightningBalance
+        DispatchQueue.main.async {
+            self.unifiedBalance = balance
+        }
+    }
 
     func getTotalOnchainBalanceSats() async {
         let balance = await lightningClient.totalOnchainBalanceSats()
         DispatchQueue.main.async {
-            self.totalBalance = balance
+            self.totalOnchainBalance = balance
             self.isTotalBalanceFinished = true
         }
+        await self.getUnifiedBalanceSats()
     }
 
     func getSpendableOnchainBalanceSats() async {
@@ -78,6 +87,7 @@ class BitcoinViewModel: ObservableObject {
             self.totalLightningBalance = balance
             self.isTotalLightningBalanceFinished = true
         }
+        await self.getUnifiedBalanceSats()
     }
 
     func getPrices() async {
