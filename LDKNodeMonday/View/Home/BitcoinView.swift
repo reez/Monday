@@ -85,12 +85,34 @@ struct BitcoinView: View {
             .tint(viewModel.networkColor)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingNodeIDView = true
-                    }) {
-                        Image(systemName: "person.crop.circle.dashed.circle")
-                            .font(.title)
-                            .foregroundColor(.primary)
+                    Button(
+                        action: {
+                            showingNodeIDView = true
+                        },
+                        label: {
+                            HStack(spacing: 5) {
+                                Text(
+                                    viewModel.walletClient.network.description
+                                        .capitalized
+                                )
+                                Image(systemName: "gearshape")
+                            }
+                        }
+                    ).sheet(
+                        isPresented: $showingNodeIDView,
+                        onDismiss: {
+                            Task {
+                                await viewModel.getBalances()
+                                await viewModel.getPrices()
+                            }
+                        }
+                    ) {
+                        SettingsView(
+                            viewModel: .init(
+                                walletClient: viewModel.$walletClient,
+                                lightningClient: viewModel.walletClient.lightningClient
+                            )
+                        )
                     }
                 }
             }
@@ -117,22 +139,6 @@ struct BitcoinView: View {
                     await viewModel.getBalances()
                     await viewModel.getPrices()
                 }
-            }
-            .sheet(
-                isPresented: $showingNodeIDView,
-                onDismiss: {
-                    Task {
-                        await viewModel.getBalances()
-                        await viewModel.getPrices()
-                    }
-                }
-            ) {
-                SettingsView(
-                    viewModel: .init(
-                        walletClient: viewModel.$walletClient,
-                        lightningClient: viewModel.walletClient.lightningClient
-                    )
-                )
             }
             .alert(isPresented: $showingBitcoinViewErrorAlert) {
                 Alert(
