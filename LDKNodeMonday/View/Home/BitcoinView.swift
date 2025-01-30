@@ -18,7 +18,7 @@ struct BitcoinView: View {
     @State private var isPaymentsPresented = false
     @State private var showToast = false
     @State private var showingNodeIDView = false
-    @State private var displayBalanceType = DisplayBalanceType(rawValue: UserDefaults.standard.string(forKey: "displayBalanceType") ?? DisplayBalanceType.unifiedFiat.rawValue) ?? .unifiedFiat
+    @State private var displayBalanceType = DisplayBalanceType.userDefaults
     @StateObject var viewModel: BitcoinViewModel
     @StateObject private var eventService = EventService()
     @Binding var sendNavigationPath: NavigationPath
@@ -34,18 +34,15 @@ struct BitcoinView: View {
                 List {
 
                     BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
-                    .listRowSeparator(.hidden)
+                        .listRowSeparator(.hidden)
 
                 }
                 .listStyle(.plain)
                 .padding(.top, 220.0)
                 .padding(.horizontal, -20)
                 .refreshable {
-                    await viewModel.getTotalOnchainBalanceSats()
-                    await viewModel.getTotalLightningBalanceSats()
+                    await viewModel.getBalances()
                     await viewModel.getPrices()
-                    await viewModel.getSpendableOnchainBalanceSats()
-                    await viewModel.getStatus()
                 }
 
                 Spacer()
@@ -99,12 +96,9 @@ struct BitcoinView: View {
             }
             .onAppear {
                 Task {
-                    await viewModel.getTotalOnchainBalanceSats()
-                    await viewModel.getTotalLightningBalanceSats()
-                    await viewModel.getPrices()
                     viewModel.getColor()
-                    await viewModel.getSpendableOnchainBalanceSats()
-                    await viewModel.getStatus()
+                    await viewModel.getBalances()
+                    await viewModel.getPrices()
                 }
             }
             .onChange(
@@ -120,29 +114,23 @@ struct BitcoinView: View {
             }
             .onReceive(eventService.$lastMessage) { _ in
                 Task {
-                    await viewModel.getTotalOnchainBalanceSats()
-                    await viewModel.getTotalLightningBalanceSats()
+                    await viewModel.getBalances()
                     await viewModel.getPrices()
-                    await viewModel.getSpendableOnchainBalanceSats()
-                    await viewModel.getStatus()
                 }
             }
             .sheet(
                 isPresented: $showingNodeIDView,
                 onDismiss: {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
+                        await viewModel.getBalances()
                         await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
-                        await viewModel.getStatus()
                     }
                 }
             ) {
                 SettingsView(
                     viewModel: .init(
                         walletClient: viewModel.$walletClient,
-                        lightningClient: viewModel.lightningClient
+                        lightningClient: viewModel.walletClient.lightningClient
                     )
                 )
             }
@@ -182,31 +170,27 @@ struct BitcoinView: View {
                 isPresented: $isReceiveSheetPresented,
                 onDismiss: {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
+                        await viewModel.getBalances()
                         await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
-                        await viewModel.getStatus()
                     }
                 }
             ) {
-                ReceiveView(lightningClient: viewModel.lightningClient)
+                ReceiveView(lightningClient: viewModel.walletClient.lightningClient)
                     .presentationDetents([.large])
             }
             .sheet(
                 isPresented: $isPaymentsPresented,
                 onDismiss: {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
+                        await viewModel.getBalances()
                         await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
-                        await viewModel.getStatus()
                     }
                 }
             ) {
-                PaymentsView(viewModel: .init(lightningClient: viewModel.lightningClient))
-                    .presentationDetents([.medium, .large])
+                PaymentsView(
+                    viewModel: .init(lightningClient: viewModel.walletClient.lightningClient)
+                )
+                .presentationDetents([.medium, .large])
             }
 
         }
@@ -215,24 +199,21 @@ struct BitcoinView: View {
             case .address:
                 AddressView(
                     navigationPath: $sendNavigationPath,
-                    spendableBalance: viewModel.spendableBalance
+                    spendableBalance: viewModel.balanceDetails.spendableOnchainBalanceSats
                 )
             case .amount(let address, let amount, let payment):
                 AmountView(
-                    viewModel: .init(lightningClient: viewModel.lightningClient),
+                    viewModel: .init(lightningClient: viewModel.walletClient.lightningClient),
                     address: address,
                     numpadAmount: amount,
                     payment: payment,
-                    spendableBalance: viewModel.spendableBalance,
+                    spendableBalance: viewModel.balanceDetails.spendableOnchainBalanceSats,
                     navigationPath: $sendNavigationPath
                 )
                 .onDisappear {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
+                        await viewModel.getBalances()
                         await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
-                        await viewModel.getStatus()
                     }
                 }
 
@@ -263,7 +244,7 @@ struct BalanceHeader: View {
                                 .animation(.spring(), value: viewModel.isPriceFinished)
                         }
                         HStack {
-                            Text(viewModel.totalOnchainBalance.formatted(.number.notation(.automatic)))
+                            Text(viewModel.unifiedBalance.formatted(.number.notation(.automatic)))
                                 .contentTransition(.numericText())
                                 .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
                             Text("sats")
@@ -279,8 +260,8 @@ struct BalanceHeader: View {
                                 .font(.system(size: 48, weight: .bold, design: .rounded))
                                 .contentTransition(.numericText())
                                 .redacted(
-                                    reason: viewModel.isTotalBalanceFinished
-                                    ? [] : .placeholder
+                                    reason: viewModel.isBalanceDetailsFinished
+                                        ? [] : .placeholder
                                 )
                             Text("sats")
                         }
@@ -294,24 +275,32 @@ struct BalanceHeader: View {
                     HStack(spacing: 40) {
                         HStack(spacing: 5) {
                             Image(systemName: "bitcoinsign").imageScale(.small)
-                            Text(viewModel.totalOnchainBalance.formatted(.number.notation(.automatic)))
-                                .font(.system(size: 48, weight: .bold, design: .rounded))
-                                .contentTransition(.numericText())
-                                .redacted(
-                                    reason: viewModel.isTotalBalanceFinished
-                                        ? [] : .placeholder
+                            Text(
+                                viewModel.balanceDetails.totalOnchainBalanceSats.formatted(
+                                    .number.notation(.automatic)
                                 )
+                            )
+                            .font(.system(size: 48, weight: .bold, design: .rounded))
+                            .contentTransition(.numericText())
+                            .redacted(
+                                reason: viewModel.isBalanceDetailsFinished
+                                    ? [] : .placeholder
+                            )
                             Text("sats")
                         }
                         HStack(spacing: 5) {
                             Image(systemName: "bolt").imageScale(.small)
-                            Text(viewModel.totalLightningBalance.formatted(.number.notation(.automatic)))
-                                .font(.system(size: 48, weight: .bold, design: .rounded))
-                                .contentTransition(.numericText())
-                                .redacted(
-                                    reason: viewModel.isTotalLightningBalanceFinished
-                                        ? [] : .placeholder
+                            Text(
+                                viewModel.balanceDetails.totalLightningBalanceSats.formatted(
+                                    .number.notation(.automatic)
                                 )
+                            )
+                            .font(.system(size: 48, weight: .bold, design: .rounded))
+                            .contentTransition(.numericText())
+                            .redacted(
+                                reason: viewModel.isBalanceDetailsFinished
+                                    ? [] : .placeholder
+                            )
                             Text("sats")
                         }
                     }
@@ -351,13 +340,20 @@ extension DisplayBalanceType {
     }
 }
 
+extension DisplayBalanceType {
+    static let userDefaults: DisplayBalanceType =
+        DisplayBalanceType(
+            rawValue: UserDefaults.standard.string(forKey: "displayBalanceType")
+                ?? DisplayBalanceType.unifiedFiat.rawValue
+        ) ?? DisplayBalanceType.unifiedFiat
+}
+
 #if DEBUG
     #Preview {
         BitcoinView(
             viewModel: .init(
                 walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
-                priceClient: .mock,
-                lightningClient: .mock
+                priceClient: .mock
             ),
             sendNavigationPath: .constant(.init())
         )

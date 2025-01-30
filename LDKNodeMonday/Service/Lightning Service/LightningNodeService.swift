@@ -173,6 +173,11 @@ class LightningNodeService {
         return address
     }
 
+    func balanceDetails() async -> BalanceDetails {
+        let balanceDetails = ldkNode.listBalances()
+        return balanceDetails
+    }
+
     func spendableOnchainBalanceSats() async -> UInt64 {
         let balance = ldkNode.listBalances().spendableOnchainBalanceSats
         return balance
@@ -337,6 +342,7 @@ public struct LightningNodeClient {
     let reset: () throws -> Void
     let nodeId: () -> String
     let newAddress: () async throws -> String
+    let balanceDetails: () async -> BalanceDetails
     let spendableOnchainBalanceSats: () async -> UInt64
     let totalOnchainBalanceSats: () async -> UInt64
     let totalLightningBalanceSats: () async -> UInt64
@@ -371,6 +377,7 @@ extension LightningNodeClient {
         reset: { try LightningNodeService.shared.reset() },
         nodeId: { LightningNodeService.shared.nodeId() },
         newAddress: { try await LightningNodeService.shared.newAddress() },
+        balanceDetails: { await LightningNodeService.shared.balanceDetails() },
         spendableOnchainBalanceSats: {
             await LightningNodeService.shared.spendableOnchainBalanceSats()
         },
@@ -445,6 +452,7 @@ extension LightningNodeClient {
             reset: {},
             nodeId: { "038474837483784378437843784378437843784378" },
             newAddress: { "tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx" },
+            balanceDetails: { .mock },
             spendableOnchainBalanceSats: { 100_000 },
             totalOnchainBalanceSats: { 150_000 },
             totalLightningBalanceSats: { 50_000 },

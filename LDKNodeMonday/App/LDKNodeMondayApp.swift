@@ -33,8 +33,7 @@ struct LDKNodeMondayApp: App {
                     BitcoinView(
                         viewModel: .init(
                             walletClient: $walletClient,
-                            priceClient: .live,
-                            lightningClient: walletClient.lightningClient
+                            priceClient: .live
                         ),
                         sendNavigationPath: $navigationPath
                     )
