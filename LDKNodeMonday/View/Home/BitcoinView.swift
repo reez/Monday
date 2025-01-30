@@ -18,6 +18,7 @@ struct BitcoinView: View {
     @State private var isPaymentsPresented = false
     @State private var showToast = false
     @State private var showingNodeIDView = false
+    @State private var displayBalanceType = DisplayBalanceType.bitcoinUnified
     @StateObject var viewModel: BitcoinViewModel
     @StateObject private var eventService = EventService()
     @Binding var sendNavigationPath: NavigationPath
@@ -32,108 +33,7 @@ struct BitcoinView: View {
 
                 List {
 
-                    VStack(spacing: 20) {
-
-                        VStack {
-                            HStack(spacing: 15) {
-                                Spacer()
-                                Image(systemName: "bitcoinsign")
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Text(viewModel.totalBalance.formattedSatoshis())
-                                    .contentTransition(.numericText())
-                                    .font(.largeTitle)
-                                    .fontWeight(.semibold)
-                                    .fontDesign(.rounded)
-                                    .redacted(
-                                        reason: viewModel.isTotalBalanceFinished
-                                            ? [] : .placeholder
-                                    )
-                                Text("sats")
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Spacer()
-                            }
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
-                            .foregroundColor(.primary)
-
-                            if let status = viewModel.status,
-                                let timestamp = status.latestOnchainWalletSyncTimestamp
-                            {
-                                let date = Date(
-                                    timeIntervalSince1970: TimeInterval(
-                                        timestamp
-                                    )
-                                )
-                                Text(date.formattedDate())
-                                    .lineLimit(1)
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
-                                    .padding(.bottom, 20.0)
-                                    .minimumScaleFactor(0.5)
-                            }
-
-                        }
-
-                        VStack {
-                            HStack(spacing: 15) {
-                                Spacer()
-                                Image(systemName: "bolt")
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Text(viewModel.totalLightningBalance.formattedSatoshis())
-                                    .contentTransition(.numericText())
-                                    .font(.largeTitle)
-                                    .fontWeight(.semibold)
-                                    .fontDesign(.rounded)
-                                    .redacted(
-                                        reason: viewModel.isTotalLightningBalanceFinished
-                                            ? [] : .placeholder
-                                    )
-                                Text("sats")
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Spacer()
-                            }
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
-                            .foregroundColor(.primary)
-
-                            if let status = viewModel.status,
-                                let timestamp = status.latestOnchainWalletSyncTimestamp
-                            {
-                                let date = Date(
-                                    timeIntervalSince1970: TimeInterval(
-                                        timestamp
-                                    )
-                                )
-                                Text(date.formattedDate())
-                                    .lineLimit(1)
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
-                                    .padding(.bottom, 20.0)
-                                    .minimumScaleFactor(0.5)
-                            }
-                        }
-
-                        HStack {
-                            Spacer()
-                            Text(viewModel.totalUSDValue)
-                                .contentTransition(.numericText())
-                                .fontWeight(.semibold)
-                                .fontDesign(.rounded)
-                                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
-                            Spacer()
-                        }
-                        .lineLimit(1)
-                        .animation(.spring(), value: viewModel.isPriceFinished)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-
-                        Spacer()
-
-                    }
+                    BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
                     .listRowSeparator(.hidden)
 
                 }
@@ -344,9 +244,125 @@ struct BitcoinView: View {
 
 }
 
+struct BalanceHeader: View {
+    @Binding var displayBalanceType: DisplayBalanceType
+    @ObservedObject var viewModel: BitcoinViewModel
+
+    var body: some View {
+        VStack {
+            HStack {
+                Spacer()
+                switch displayBalanceType {
+                case .bitcoinUnified:
+                    VStack {
+                        HStack(spacing: 5) {
+                            Text(viewModel.totalBalance.formattedSatoshis())
+                                .contentTransition(.numericText())
+                                .redacted(
+                                    reason: viewModel.isTotalBalanceFinished
+                                    ? [] : .placeholder
+                                )
+                            Text("sats")
+                        }
+                        HStack {
+                            Text(viewModel.totalUSDValue)
+                                .contentTransition(.numericText())
+                                .fontWeight(.semibold)
+                                .fontDesign(.rounded)
+                                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+                        }
+                        .lineLimit(1)
+                        .animation(.spring(), value: viewModel.isPriceFinished)
+                        .foregroundColor(.secondary)
+                    }
+                case .bitcoinSeparate:
+                    VStack {
+                        HStack(spacing: 5) {
+                            Text("Onchain")
+                            Text(viewModel.totalBalance.formattedSatoshis())
+                                .contentTransition(.numericText())
+                                .redacted(
+                                    reason: viewModel.isTotalBalanceFinished
+                                        ? [] : .placeholder
+                                )
+                            Text("sats")
+                        }
+                        HStack(spacing: 5) {
+                            Text("Lightning")
+                            Text(viewModel.totalLightningBalance.formattedSatoshis())
+                                .contentTransition(.numericText())
+                                .redacted(
+                                    reason: viewModel.isTotalLightningBalanceFinished
+                                        ? [] : .placeholder
+                                )
+                            Text("sats")
+                        }
+                    }
+                case .fiat:
+                    VStack {
+                        HStack(spacing: 5) {
+                            Text(viewModel.totalUSDValue)
+                                .contentTransition(.numericText())
+                                .redacted(
+                                    reason: viewModel.isTotalBalanceFinished
+                                    ? [] : .placeholder
+                                )
+                            Text("sats")
+                        }
+                        HStack {
+                            Text(viewModel.totalBalance.formattedSatoshis())
+                                .contentTransition(.numericText())
+                                .fontWeight(.semibold)
+                                .fontDesign(.rounded)
+                                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+                        }
+                        .lineLimit(1)
+                        .animation(.spring(), value: viewModel.isPriceFinished)
+                        .foregroundColor(.secondary)
+                    }
+                }
+                Spacer()
+            }.onTapGesture {
+                displayBalanceType.next()
+            }
+            if let status = viewModel.status,
+                let timestamp = status.latestOnchainWalletSyncTimestamp
+            {
+                let date = Date(
+                    timeIntervalSince1970: TimeInterval(
+                        timestamp
+                    )
+                )
+                Text(date.formattedDate())
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+}
+
 enum NavigationDestination: Hashable {
     case address
     case amount(address: String, amount: String, payment: Payment)
+}
+
+public enum DisplayBalanceType {
+    case bitcoinUnified
+    case bitcoinSeparate
+    case fiat
+}
+
+extension DisplayBalanceType {
+    mutating func next() {
+        switch self {
+        case .bitcoinUnified:
+            self = .bitcoinSeparate
+        case .bitcoinSeparate:
+            self = .fiat
+        case .fiat:
+            self = .bitcoinUnified
+        }
+    }
 }
 
 #if DEBUG
