@@ -38,14 +38,16 @@ class LightningNodeService {
         keyService: KeyClient = .live
     ) {
 
-        let backupInfo = try? KeyClient.live.getBackupInfo()
-        if backupInfo != nil {
-            guard let network = Network(stringValue: backupInfo!.networkString) else {
+        if let backupInfo = try? KeyClient.live.getBackupInfo() {
+            guard let network = Network(stringValue: backupInfo.networkString) else {
                 // This should never happen, but if it does:
                 fatalError("Configuration error: No Network found in BackupInfo")
             }
             self.network = network
-            guard let server = availableServers(network: network).first else {
+
+            guard let server =
+                    EsploraServer(URLString: backupInfo.serverURL)
+                    ?? availableServers(network: network).first else {
                 // This should never happen, but if it does:
                 fatalError("Configuration error: No Esplora servers available for \(network)")
             }
