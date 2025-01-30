@@ -9,7 +9,6 @@ import LDKNode
 import SwiftUI
 
 class OnboardingViewModel: ObservableObject {
-    let lightningClient: LightningNodeClient
     @Binding var walletClient: WalletClient
     @Published var onboardingViewError: MondayError?
     @Published var seedPhrase: String = "" {
@@ -21,7 +20,6 @@ class OnboardingViewModel: ObservableObject {
 
     init(walletClient: Binding<WalletClient>) {
         _walletClient = walletClient
-        self.lightningClient = walletClient.lightningClient.wrappedValue
     }
 
     func saveSeed() async {
