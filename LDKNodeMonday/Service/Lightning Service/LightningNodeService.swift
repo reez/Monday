@@ -45,9 +45,11 @@ class LightningNodeService {
             }
             self.network = network
 
-            guard let server =
+            guard
+                let server =
                     EsploraServer(URLString: backupInfo.serverURL)
-                    ?? availableServers(network: network).first else {
+                    ?? availableServers(network: network).first
+            else {
                 // This should never happen, but if it does:
                 fatalError("Configuration error: No Esplora servers available for \(network)")
             }
