@@ -26,26 +26,18 @@ struct BitcoinView: View {
     var body: some View {
 
         ZStack {
-            Color(uiColor: UIColor.systemBackground)
-                .ignoresSafeArea(.all)
-
             VStack {
-
+                // List, enables pull to refresh
                 List {
-
                     BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
+                        .padding(.vertical, 40)
                         .listRowSeparator(.hidden)
-
                 }
                 .listStyle(.plain)
-                .padding(.top, 220.0)
-                .padding(.horizontal, -20)
                 .refreshable {
                     await viewModel.getBalances()
                     await viewModel.getPrices()
                 }
-
-                Spacer()
 
                 Button {
                     isPaymentsPresented = true
@@ -57,32 +49,67 @@ struct BitcoinView: View {
                 }
                 .tint(viewModel.networkColor)
                 .padding()
+                .sheet(
+                    isPresented: $isPaymentsPresented,
+                    onDismiss: {
+                        Task {
+                            await viewModel.getBalances()
+                            await viewModel.getPrices()
+                        }
+                    }
+                ) {
+                    PaymentsView(
+                        viewModel: .init(lightningClient: viewModel.walletClient.lightningClient)
+                    )
+                    //.presentationDetents([.medium, .large])
+                }
 
+                // Send & Receive buttons
                 HStack {
-
-                    Button(action: {
+                    Button("Receive") {
                         isReceiveSheetPresented = true
-                    }) {
-                        Image(systemName: "qrcode")
-                            .font(.title)
-                            .foregroundColor(.primary)
+                    }
+                    .buttonStyle(
+                        BitcoinFilled(
+                            width: 100,
+                            tintColor: .accent,
+                            isCapsule: true
+                        )
+                    )
+                    .padding()
+                    .sheet(
+                        isPresented: $isReceiveSheetPresented,
+                        onDismiss: {
+                            Task {
+                                await viewModel.getBalances()
+                                await viewModel.getPrices()
+                            }
+                        }
+                    ) {
+                        ReceiveView(lightningClient: viewModel.walletClient.lightningClient)
+                            .presentationDetents([.large])
                     }
 
                     Spacer()
 
                     NavigationLink(value: NavigationDestination.address) {
-                        Image(systemName: "qrcode.viewfinder")
-                            .font(.title)
-                            .foregroundColor(.primary)
-                    }
+                        Button("Send") {
+                            //
+                        }
+                        .allowsHitTesting(false)  // Required to enable NavigationLink to work
+                        .buttonStyle(
+                            BitcoinFilled(
+                                width: 100,
+                                tintColor: .accent,
+                                isCapsule: true
+                            )
+                        )
+                    }.padding()
 
                 }
-                .padding([.horizontal, .bottom])
+                .padding([.horizontal])
 
             }
-            .padding()
-            .padding(.bottom, 20.0)
-            .tint(viewModel.networkColor)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(
@@ -172,32 +199,6 @@ struct BitcoinView: View {
                     .foregroundColor(Color.primary)
                     .font(.caption2)
             }
-            .sheet(
-                isPresented: $isReceiveSheetPresented,
-                onDismiss: {
-                    Task {
-                        await viewModel.getBalances()
-                        await viewModel.getPrices()
-                    }
-                }
-            ) {
-                ReceiveView(lightningClient: viewModel.walletClient.lightningClient)
-                    .presentationDetents([.large])
-            }
-            .sheet(
-                isPresented: $isPaymentsPresented,
-                onDismiss: {
-                    Task {
-                        await viewModel.getBalances()
-                        await viewModel.getPrices()
-                    }
-                }
-            ) {
-                PaymentsView(
-                    viewModel: .init(lightningClient: viewModel.walletClient.lightningClient)
-                )
-                .presentationDetents([.medium, .large])
-            }
 
         }
         .navigationDestination(for: NavigationDestination.self) { destination in
@@ -261,7 +262,7 @@ struct BalanceHeader: View {
                     }
                 case .unifiedBTC:
                     VStack {
-                        HStack(spacing: 5) {
+                        HStack(alignment: .firstTextBaseline, spacing: 5) {
                             Text(viewModel.unifiedBalance.formatted(.number.notation(.automatic)))
                                 .font(.system(size: 48, weight: .bold, design: .rounded))
                                 .contentTransition(.numericText())
