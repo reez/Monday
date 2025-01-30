@@ -77,32 +77,8 @@ struct NetworkSettingsView: View {
                 .alert("Change and restart?", isPresented: $showRestartAlert) {
                     Button("Cancel", role: .cancel) {}
                     Button("Restart") {
-                        if tempNetwork != nil || tempServer != nil {
-                            Task {
-                                let newNetwork = tempNetwork ?? walletClient.network
-                                guard let server = availableServers(network: newNetwork).first
-                                else {
-                                    // This should never happen, but if it does:
-                                    fatalError("No servers available for \(newNetwork)")
-                                }
-                                let newServer = tempServer ?? server
-
-                                do {
-                                    try KeyClient.live.saveNetwork(newNetwork.description)
-                                    try KeyClient.live.saveServerURL(newServer.url)
-                                } catch let error {
-                                    await MainActor.run {
-                                        debugPrint(error.localizedDescription)
-                                        walletClient.appError = error
-                                        walletClient.appState = .error
-                                    }
-                                }
-
-                                await walletClient.restart(
-                                    newNetwork: newNetwork,
-                                    newServer: newServer
-                                )
-                            }
+                        Task {
+                            await handleRestart()
                         }
                     }
                 } message: {
@@ -120,6 +96,36 @@ struct NetworkSettingsView: View {
             }
         }
         .tint(.accentColor)
+    }
+
+    private func handleRestart() async {
+        if tempNetwork != nil || tempServer != nil {
+            Task {
+                let newNetwork = tempNetwork ?? walletClient.network
+                guard let server = availableServers(network: newNetwork).first
+                else {
+                    // This should never happen, but if it does:
+                    fatalError("No servers available for \(newNetwork)")
+                }
+                let newServer = tempServer ?? server
+
+                do {
+                    try KeyClient.live.saveNetwork(newNetwork.description)
+                    try KeyClient.live.saveServerURL(newServer.url)
+                } catch let error {
+                    await MainActor.run {
+                        debugPrint(error.localizedDescription)
+                        walletClient.appError = error
+                        walletClient.appState = .error
+                    }
+                }
+
+                await walletClient.restart(
+                    newNetwork: newNetwork,
+                    newServer: newServer
+                )
+            }
+        }
     }
 }
 
