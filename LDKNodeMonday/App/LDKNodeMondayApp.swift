@@ -12,69 +12,43 @@ struct LDKNodeMondayApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
-    private let lightningClient: LightningNodeClient = .live
-    @State private var appState = AppState.loading
-    @State private var appError: Error?
+    @State private var walletClient = WalletClient(keyClient: .live)
     @State private var navigationPath = NavigationPath()
 
     init() {
-        AppDelegate.shared.lightningClient = lightningClient
+        AppDelegate.shared.walletClient = walletClient
     }
 
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $navigationPath) {
-                switch appState {
+                switch walletClient.appState {
                 case .onboarding:
                     OnboardingView(
-                        viewModel: .init(appState: $appState, lightningClient: lightningClient)
+                        viewModel: .init(
+                            walletClient: $walletClient
+                        )
                     )
                 case .wallet:
                     BitcoinView(
                         viewModel: .init(
-                            appState: $appState,
+                            walletClient: $walletClient,
                             priceClient: .live,
-                            lightningClient: lightningClient
+                            lightningClient: walletClient.lightningClient
                         ),
                         sendNavigationPath: $navigationPath
                     )
                 case .error:
-                    ErrorView(error: self.appError)
+                    ErrorView(error: walletClient.appError)
                 default:
                     LoadingView()
                 }
             }
-            .onChange(of: appState) { oldValue, newValue in
+            .onChange(of: walletClient.appState) { oldValue, newValue in
                 navigationPath = NavigationPath()
             }
             .task {
-                await start()
-            }
-        }
-    }
-
-    func start() async {
-        var backupInfo: BackupInfo?
-
-        backupInfo = try? KeyClient.live.getBackupInfo()
-
-        if backupInfo != nil {
-            do {
-                // TODO: .start could take parameters from backupInfo (seed, network, url, lsp)
-                try await lightningClient.start()
-                lightningClient.listenForEvents()
-                await MainActor.run {
-                    self.appState = .wallet
-                }
-            } catch let error {
-                await MainActor.run {
-                    self.appError = error
-                    self.appState = .error
-                }
-            }
-        } else {
-            await MainActor.run {
-                self.appState = .onboarding
+                await walletClient.start()
             }
         }
     }
@@ -82,16 +56,9 @@ struct LDKNodeMondayApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     static let shared = AppDelegate()
-    var lightningClient: LightningNodeClient?
+    var walletClient: WalletClient?
 
     func applicationWillTerminate(_ application: UIApplication) {
-        try? lightningClient?.stop()
+        walletClient?.stop()
     }
-}
-
-public enum AppState {
-    case onboarding
-    case wallet
-    case loading
-    case error
 }

@@ -11,7 +11,23 @@ import SwiftUI
 import os
 
 class LightningNodeService {
-    static var shared: LightningNodeService = LightningNodeService()
+    private static let lock = NSLock()
+    private static var _shared: LightningNodeService?
+    static var shared: LightningNodeService {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            if _shared == nil {
+                _shared = LightningNodeService()
+            }
+            return _shared!
+        }
+        set {
+            lock.lock()
+            _shared = newValue
+            lock.unlock()
+        }
+    }
     private let ldkNode: Node
     private let keyService: KeyClient
     var networkColor = Color.black
@@ -22,14 +38,18 @@ class LightningNodeService {
         keyService: KeyClient = .live
     ) {
 
-        let backupInfo = try? KeyClient.live.getBackupInfo()
-        if backupInfo != nil {
-            guard let network = Network(stringValue: backupInfo!.networkString) else {
+        if let backupInfo = try? KeyClient.live.getBackupInfo() {
+            guard let network = Network(stringValue: backupInfo.networkString) else {
                 // This should never happen, but if it does:
                 fatalError("Configuration error: No Network found in BackupInfo")
             }
             self.network = network
-            guard let server = availableServers(network: network).first else {
+
+            guard
+                let server =
+                    EsploraServer(URLString: backupInfo.serverURL)
+                    ?? availableServers(network: network).first
+            else {
                 // This should never happen, but if it does:
                 fatalError("Configuration error: No Esplora servers available for \(network)")
             }
@@ -126,6 +146,21 @@ class LightningNodeService {
 
     func stop() throws {
         try ldkNode.stop()
+    }
+
+    func restart() async throws {
+        if LightningNodeService.shared.status().isRunning {
+            try LightningNodeService.shared.stop()
+        }
+        LightningNodeService._shared = nil
+        try await LightningNodeService.shared.start()
+    }
+
+    func reset() throws {
+        if LightningNodeService.shared.status().isRunning {
+            try LightningNodeService.shared.stop()
+        }
+        LightningNodeService._shared = nil
     }
 
     func nodeId() -> String {
@@ -295,9 +330,11 @@ extension LightningNodeService {
     }
 }
 
-struct LightningNodeClient {
+public struct LightningNodeClient {
     let start: () async throws -> Void
     let stop: () throws -> Void
+    let restart: () async throws -> Void
+    let reset: () throws -> Void
     let nodeId: () -> String
     let newAddress: () async throws -> String
     let spendableOnchainBalanceSats: () async -> UInt64
@@ -321,6 +358,7 @@ struct LightningNodeClient {
     let getBackupInfo: () throws -> BackupInfo
     let deleteDocuments: () throws -> Void
     let getNetwork: () -> Network
+    let getServer: () -> EsploraServer
     let getNetworkColor: () -> Color
     let listenForEvents: () -> Void
 }
@@ -329,6 +367,8 @@ extension LightningNodeClient {
     static let live = Self(
         start: { try await LightningNodeService.shared.start() },
         stop: { try LightningNodeService.shared.stop() },
+        restart: { try await LightningNodeService.shared.restart() },
+        reset: { try LightningNodeService.shared.reset() },
         nodeId: { LightningNodeService.shared.nodeId() },
         newAddress: { try await LightningNodeService.shared.newAddress() },
         spendableOnchainBalanceSats: {
@@ -390,8 +430,9 @@ extension LightningNodeClient {
         getBackupInfo: { try LightningNodeService.shared.getBackupInfo() },
         deleteDocuments: { try LightningNodeService.shared.deleteDocuments() },
         getNetwork: { LightningNodeService.shared.network },
+        getServer: { LightningNodeService.shared.server },
         getNetworkColor: { LightningNodeService.shared.networkColor },
-        listenForEvents: {}
+        listenForEvents: { LightningNodeService.shared.listenForEvents() }
     )
 }
 
@@ -400,6 +441,8 @@ extension LightningNodeClient {
         static let mock = Self(
             start: {},
             stop: {},
+            restart: {},
+            reset: {},
             nodeId: { "038474837483784378437843784378437843784378" },
             newAddress: { "tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx" },
             spendableOnchainBalanceSats: { 100_000 },
@@ -445,6 +488,7 @@ extension LightningNodeClient {
             },
             deleteDocuments: {},
             getNetwork: { .signet },
+            getServer: { .mutiny_signet },
             getNetworkColor: { .orange },
             listenForEvents: {}
         )

@@ -10,7 +10,7 @@ import LDKNode
 import SwiftUI
 
 class SettingsViewModel: ObservableObject {
-    @Binding var appState: AppState
+    @Binding var walletClient: WalletClient
     @Published var nodeIDError: MondayError?
     @Published var nodeID: String = ""
     @Published var network: String?
@@ -22,11 +22,11 @@ class SettingsViewModel: ObservableObject {
     let keyClient: KeyClient
 
     init(
-        appState: Binding<AppState>,
+        walletClient: Binding<WalletClient>,
         keyClient: KeyClient = .live,
         lightningClient: LightningNodeClient
     ) {
-        _appState = appState
+        _walletClient = walletClient
         self.keyClient = keyClient
         self.lightningClient = lightningClient
 
@@ -58,31 +58,6 @@ class SettingsViewModel: ObservableObject {
                     title: "Unexpected error",
                     detail: error.localizedDescription
                 )
-            }
-        }
-    }
-
-    func delete() {
-        do {
-            if lightningClient.status().isRunning {
-                try lightningClient.stop()
-            }
-            try lightningClient.deleteDocuments()
-            try lightningClient.deleteWallet()
-
-            DispatchQueue.main.async {
-                self.appState = .onboarding
-            }
-        } catch let error {
-            if let nodeError = error as? NodeError {
-                let errorString = handleNodeError(nodeError)
-                DispatchQueue.main.async {
-                    self.nodeIDError = .init(title: errorString.title, detail: errorString.detail)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.nodeIDError = .init(title: "Error", detail: error.localizedDescription)
-                }
             }
         }
     }

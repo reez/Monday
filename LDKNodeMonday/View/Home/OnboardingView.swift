@@ -29,14 +29,27 @@ struct OnboardingView: View {
                 // Network settings
                 HStack {
                     Spacer()
-                    Button(action: { showingNetworkSettingsSheet.toggle() }) {
-                        HStack(spacing: 5) {
-                            Text(viewModel.selectedNetwork.description.capitalized)
+                    Button(
+                        action: {
+                            showingNetworkSettingsSheet.toggle()
+                        },
+                        label: {
+                            HStack(spacing: 5) {
+                                Text(
+                                    viewModel.walletClient.network.description
+                                        .capitalized
+                                )
                                 .opacity(animateContent ? 1 : 0)
                                 .offset(x: animateContent ? 0 : 100)
-                            Image(systemName: "gearshape")
-                                .opacity(animateContent ? 1 : 0)
-                                .offset(x: animateContent ? 0 : 100)
+                                Image(systemName: "gearshape")
+                                    .opacity(animateContent ? 1 : 0)
+                                    .offset(x: animateContent ? 0 : 100)
+                            }
+                        }
+                    )
+                    .sheet(isPresented: $showingNetworkSettingsSheet) {
+                        NavigationView {
+                            NetworkSettingsView(walletClient: viewModel.$walletClient)
                         }
                     }
                 }
@@ -77,7 +90,9 @@ struct OnboardingView: View {
 
                 Group {
                     Button("Create wallet") {
-                        viewModel.saveSeed()
+                        Task {
+                            await viewModel.saveSeed()
+                        }
                     }
                     .buttonStyle(
                         BitcoinFilled(
@@ -90,13 +105,13 @@ struct OnboardingView: View {
                         showingImportWalletSheet.toggle()
                     }
                     .buttonStyle(BitcoinPlain(tintColor: .accent))
+                    .sheet(isPresented: $showingImportWalletSheet) {
+                        ImportWalletView().environmentObject(viewModel)
+                    }
                 }
                 .opacity(animateContent ? 1 : 0)
                 .offset(y: animateContent ? 0 : 30)
                 .animation(.easeOut(duration: 0.5).delay(0.6), value: animateContent)
-                .sheet(isPresented: $showingImportWalletSheet) {
-                    ImportWalletView().environmentObject(viewModel)
-                }
 
             }.dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
 
@@ -121,6 +136,10 @@ struct OnboardingView: View {
 
 #if DEBUG
     #Preview {
-        OnboardingView(viewModel: .init(appState: .constant(.onboarding), lightningClient: .mock))
+        OnboardingView(
+            viewModel: .init(
+                walletClient: .constant(WalletClient(keyClient: KeyClient.mock))
+            )
+        )
     }
 #endif

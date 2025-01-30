@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		655574802D398A750064F859 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555747F2D398A750064F859 /* LoadingView.swift */; };
 		655574822D3994E10064F859 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655574812D3994E10064F859 /* ErrorView.swift */; };
+		655C19042D42AB1500AC5F72 /* WalletClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655C19032D42AB1500AC5F72 /* WalletClient.swift */; };
 		65875A932CCB9809000D3E70 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 65875A922CCB9809000D3E70 /* LDKNode */; };
 		659EE6952CF8D4990064ED78 /* ImportWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659EE6942CF8D4990064ED78 /* ImportWalletView.swift */; };
 		65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A406622D070CBD00EA331E /* NetworkSettingsView.swift */; };
@@ -95,6 +96,7 @@
 /* Begin PBXFileReference section */
 		6555747F2D398A750064F859 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		655574812D3994E10064F859 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		655C19032D42AB1500AC5F72 /* WalletClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletClient.swift; sourceTree = "<group>"; };
 		659EE6942CF8D4990064ED78 /* ImportWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletView.swift; sourceTree = "<group>"; };
 		65A406622D070CBD00EA331E /* NetworkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsView.swift; sourceTree = "<group>"; };
 		AE00550D2B479EF000100797 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 			isa = PBXGroup;
 			children = (
 				AE17E8D929A402E30058C9C9 /* LDKNodeMondayApp.swift */,
+				655C19032D42AB1500AC5F72 /* WalletClient.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -678,6 +681,7 @@
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
 				AE49E85A2A2536D4002623E8 /* ChannelAddViewModel.swift in Sources */,
 				AE0055142B4895B500100797 /* SeedViewModel.swift in Sources */,
+				655C19042D42AB1500AC5F72 /* WalletClient.swift in Sources */,
 				AE80C2022C4AB38D006E7193 /* BIP21ViewModel.swift in Sources */,
 				AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */,
 				AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */,
