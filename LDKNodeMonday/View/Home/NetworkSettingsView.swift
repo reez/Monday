@@ -55,7 +55,6 @@ struct NetworkSettingsView: View {
                                     walletClient.server = newServer
                                 } else {
                                     tempServer = newServer
-                                    tempNetwork = walletClient.network
                                     showRestartAlert = true
                                 }
                             }
