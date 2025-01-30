@@ -279,35 +279,39 @@ struct BalanceHeader: View {
                     }
                 case .separateSats:
                     HStack(spacing: 40) {
-                        HStack(spacing: 5) {
-                            Image(systemName: "bitcoinsign").imageScale(.small)
+                        VStack(spacing: 5) {
                             Text(
                                 viewModel.balanceDetails.totalOnchainBalanceSats.formatted(
                                     .number.notation(.automatic)
                                 )
                             )
-                            .font(.system(size: 48, weight: .bold, design: .rounded))
+                            .font(.system(size: 24, weight: .bold, design: .rounded))
                             .contentTransition(.numericText())
                             .redacted(
                                 reason: viewModel.isBalanceDetailsFinished
                                     ? [] : .placeholder
                             )
-                            Text("sats")
+                            HStack(spacing: 5) {
+                                Image(systemName: "bitcoinsign").imageScale(.small)
+                                Text("sats")
+                            }
                         }
-                        HStack(spacing: 5) {
-                            Image(systemName: "bolt").imageScale(.small)
+                        VStack(spacing: 5) {
                             Text(
                                 viewModel.balanceDetails.totalLightningBalanceSats.formatted(
                                     .number.notation(.automatic)
                                 )
                             )
-                            .font(.system(size: 48, weight: .bold, design: .rounded))
+                            .font(.system(size: 24, weight: .bold, design: .rounded))
                             .contentTransition(.numericText())
                             .redacted(
                                 reason: viewModel.isBalanceDetailsFinished
                                     ? [] : .placeholder
                             )
-                            Text("sats")
+                            HStack(spacing: 5) {
+                                Image(systemName: "bolt").imageScale(.small)
+                                Text("sats")
+                            }
                         }
                     }
                 }
