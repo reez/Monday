@@ -195,6 +195,7 @@ struct BitcoinView: View {
 struct BalanceHeader: View {
     @Binding var displayBalanceType: DisplayBalanceType
     @ObservedObject var viewModel: BitcoinViewModel
+    @Namespace private var animation
 
     var body: some View {
         VStack {
@@ -209,11 +210,13 @@ struct BalanceHeader: View {
                                 .contentTransition(.numericText())
                                 .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
                                 .animation(.spring(), value: viewModel.isPriceFinished)
+                                .matchedGeometryEffect(id: "balance", in: animation, isSource: true)
                         }
                         HStack {
                             Text(viewModel.unifiedBalance.formatted(.number.notation(.automatic)))
                                 .contentTransition(.numericText())
                                 .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+                                .matchedGeometryEffect(id: "secondary", in: animation, isSource: true)
                             Text("sats")
                         }
                         .lineLimit(1)
@@ -230,6 +233,7 @@ struct BalanceHeader: View {
                                     reason: viewModel.isBalanceDetailsFinished
                                         ? [] : .placeholder
                                 )
+                                .matchedGeometryEffect(id: "balance", in: animation, isSource: true)
                             Text("sats")
                         }
                         Text("$\(viewModel.totalUSDValue.formatted())")
@@ -237,41 +241,36 @@ struct BalanceHeader: View {
                             .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
                             .animation(.spring(), value: viewModel.isPriceFinished)
                             .foregroundColor(.secondary)
+                            .matchedGeometryEffect(id: "secondary", in: animation, isSource: true)
                     }
                 case .separateSats:
-                    HStack(spacing: 40) {
-                        VStack(spacing: 5) {
-                            Text(
-                                viewModel.balanceDetails.totalOnchainBalanceSats.formatted(
-                                    .number.notation(.automatic)
+                    VStack {
+                        HStack(alignment: .firstTextBaseline, spacing: 5) {
+                            Text(viewModel.unifiedBalance.formatted(.number.notation(.automatic)))
+                                .font(.system(size: 48, weight: .bold, design: .rounded))
+                                .contentTransition(.numericText())
+                                .redacted(
+                                    reason: viewModel.isBalanceDetailsFinished
+                                        ? [] : .placeholder
                                 )
-                            )
-                            .font(.system(size: 24, weight: .bold, design: .rounded))
-                            .contentTransition(.numericText())
-                            .redacted(
-                                reason: viewModel.isBalanceDetailsFinished
-                                    ? [] : .placeholder
-                            )
-                            HStack(spacing: 5) {
-                                Image(systemName: "bitcoinsign").imageScale(.small)
-                                Text("sats")
-                            }
+                                .matchedGeometryEffect(id: "balance", in: animation, isSource: true)
+                            Text("sats")
                         }
-                        VStack(spacing: 5) {
-                            Text(
-                                viewModel.balanceDetails.totalLightningBalanceSats.formatted(
-                                    .number.notation(.automatic)
-                                )
-                            )
-                            .font(.system(size: 24, weight: .bold, design: .rounded))
-                            .contentTransition(.numericText())
-                            .redacted(
-                                reason: viewModel.isBalanceDetailsFinished
-                                    ? [] : .placeholder
-                            )
-                            HStack(spacing: 5) {
+                        HStack(spacing: 20) {
+                            HStack {
+                                Image(systemName: "bitcoinsign").imageScale(.small)
+                                    .foregroundColor(.secondary)
+                                Text(viewModel.balanceDetails.totalOnchainBalanceSats.formatted(.number.notation(.automatic)))
+                                    .contentTransition(.numericText())
+                                    .foregroundColor(.secondary)
+                                    .matchedGeometryEffect(id: "secondary", in: animation, isSource: true)
+                            }
+                            HStack {
                                 Image(systemName: "bolt").imageScale(.small)
-                                Text("sats")
+                                    .foregroundColor(.secondary)
+                                Text(viewModel.balanceDetails.totalLightningBalanceSats.formatted(.number.notation(.automatic)))
+                                    .contentTransition(.numericText())
+                                    .foregroundColor(.secondary)
                             }
                         }
                     }
@@ -380,6 +379,14 @@ extension DisplayBalanceType {
             rawValue: UserDefaults.standard.string(forKey: "displayBalanceType")
                 ?? DisplayBalanceType.unifiedFiat.rawValue
         ) ?? DisplayBalanceType.unifiedFiat
+}
+
+class SharedNamespace: ObservableObject {
+    let animation: Namespace.ID
+
+    init(namespace: Namespace.ID) {
+        self.animation = namespace
+    }
 }
 
 #if DEBUG
