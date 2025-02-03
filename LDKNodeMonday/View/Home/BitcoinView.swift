@@ -29,12 +29,12 @@ struct BitcoinView: View {
 
                 // List, enables pull to refresh
                 List {
-                    //Spacer()
-
                     BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
                         .padding(.top, 40)
+                        .listRowSeparator(.hidden)
                     TransactionButtons(viewModel: viewModel)
                         .padding(.horizontal, 40)
+                        .listRowSeparator(.hidden)
 
                     Button {
                         isPaymentsPresented = true
@@ -43,6 +43,7 @@ struct BitcoinView: View {
                     }
                     .tint(.accentColor)
                     .padding()
+                    .listRowSeparator(.hidden)
                     .sheet(
                         isPresented: $isPaymentsPresented,
                         onDismiss: {
@@ -67,8 +68,6 @@ struct BitcoinView: View {
                     await viewModel.getBalances()
                     await viewModel.getPrices()
                 }
-
-                //Spacer()
 
             }
             .toolbar {
