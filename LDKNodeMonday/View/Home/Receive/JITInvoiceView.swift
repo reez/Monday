@@ -44,7 +44,7 @@ struct JITInvoiceView: View {
                     let amountMsat = (UInt64(viewModel.amountMsat) ?? 0) * 1000
                     await viewModel.receivePaymentViaJitChannel(
                         amountMsat: amountMsat,
-                        description: "Monday Wallet",
+                        description: .direct(description: "Monday Wallet"),
                         expirySecs: UInt32(3600),
                         maxLspFeeLimitMsat: nil
                     )

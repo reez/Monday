@@ -24,7 +24,7 @@ class JITInvoiceViewModel: ObservableObject {
 
     func receivePaymentViaJitChannel(
         amountMsat: UInt64,
-        description: String,
+        description: Bolt11InvoiceDescription,
         expirySecs: UInt32,
         maxLspFeeLimitMsat: UInt64?
     ) async {

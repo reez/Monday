@@ -72,14 +72,26 @@ class LightningNodeService {
             withIntermediateDirectories: true
         )
 
+        // This is what `Config` looks like now, need to find out where `logDirPath` and `logLevel` are now
+
+        //        public struct Config {
+        //            public var storageDirPath: String
+        //            public var network: Network
+        //            public var listeningAddresses: [SocketAddress]?
+        //            public var nodeAlias: NodeAlias?
+        //            public var trustedPeers0conf: [PublicKey]
+        //            public var probingLiquidityLimitMultiplier: UInt64
+        //            public var anchorChannelsConfig: AnchorChannelsConfig?
+        //            public var sendingParameters: SendingParameters?
+
         var config = defaultConfig()
         config.storageDirPath = networkPath
-        config.logDirPath = logPath
+        //config.logDirPath = logPath
         config.network = self.network
         config.trustedPeers0conf = [
             Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId
         ]
-        config.logLevel = .trace
+        //config.logLevel = .trace
 
         let nodeBuilder = Builder.fromConfig(config: config)
         nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: nil)
@@ -253,7 +265,7 @@ class LightningNodeService {
 
     func receiveViaJitChannel(
         amountMsat: UInt64,
-        description: String,
+        description: Bolt11InvoiceDescription,
         expirySecs: UInt32,
         maxLspFeeLimitMsat: UInt64?
     ) async throws -> Bolt11Invoice {
@@ -349,7 +361,8 @@ public struct LightningNodeClient {
     let closeChannel: (ChannelId, PublicKey) throws -> Void
     let send: (String) async throws -> QrPaymentResult
     let receive: (UInt64, String, UInt32) async throws -> String
-    let receiveViaJitChannel: (UInt64, String, UInt32, UInt64?) async throws -> Bolt11Invoice
+    let receiveViaJitChannel:
+        (UInt64, Bolt11InvoiceDescription, UInt32, UInt64?) async throws -> Bolt11Invoice
     let listPeers: () -> [PeerDetails]
     let listChannels: () -> [ChannelDetails]
     let listPayments: () -> [PaymentDetails]

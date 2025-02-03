@@ -14,14 +14,14 @@ extension Event: CustomStringConvertible {
 
         switch self {
 
-        case .paymentSuccessful(_, let paymentHash, _):
+        case .paymentSuccessful(_, let paymentHash, _, _):
             return "Payment Successful \(paymentHash.truncated(toLength: 10))"
 
         case .paymentFailed(_, let paymentHash, let paymentFailureReason):
             return
                 "Payment Failed \(paymentFailureReason.debugDescription) \(String(describing: paymentHash?.truncated(toLength: 10)))"
 
-        case .paymentReceived(_, _, let amountMsat):
+        case .paymentReceived(_, _, let amountMsat, _):
             let formatted = amountMsat.formattedAmount()
             return "Payment Received \(formatted) sats"
 
@@ -36,11 +36,26 @@ extension Event: CustomStringConvertible {
             return
                 "Channel Closed \(debugReason) \(counterpartyNodeId?.truncated(toLength: 10) ?? "")"
 
+        case .paymentForwarded(
+            let prevChannelId,
+            let nextChannelId,
+            let prevUserChannelId,
+            let nextUserChannelId,
+            let prevNodeId,
+            let nextNodeId,
+            let totalFeeEarnedMsat,
+            let skimmedFeeMsat,
+            let claimFromOnchainTx,
+            let outboundAmountForwardedMsat
+        ):
+            return "Payment Forwarded"
+
         case .paymentClaimable(
             let paymentId,
             let paymentHash,
             let claimableAmountMsat,
-            let claimDeadline
+            let claimDeadline,
+            let customRecords
         ):
             return "Payment Claimable \(paymentHash.truncated(toLength: 10))"
 
