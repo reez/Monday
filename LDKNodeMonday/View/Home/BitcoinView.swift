@@ -30,10 +30,10 @@ struct BitcoinView: View {
                 // List, enables pull to refresh
                 List {
                     BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
-                        .padding(.top, 40)
+                        .padding(.vertical, 40)
                         .listRowSeparator(.hidden)
                     TransactionButtons(viewModel: viewModel)
-                        .padding(.horizontal, 40)
+                        .padding(.horizontal, 20)
                         .listRowSeparator(.hidden)
 
                     Button {
@@ -298,7 +298,7 @@ struct TransactionButtons: View {
             }
             .buttonStyle(
                 BitcoinFilled(
-                    width: 100,
+                    width: 120,
                     tintColor: .accent,
                     isCapsule: true
                 )
@@ -308,26 +308,29 @@ struct TransactionButtons: View {
                     .opacity(0) // This avoids the caret applied by List
             )
             .allowsHitTesting(false)  // Required to enable NavigationLink to work
-
+            
+            Spacer()
+            
             // Scan QR button
             Label("Scan QR", systemImage: "qrcode.viewfinder")
                 .font(.title)
                 .frame(height: 60, alignment: .center)
                 .labelStyle(.iconOnly)
                 .foregroundColor(.accentColor)
-                .padding()
                 .background(
                     NavigationLink("", value: NavigationDestination.address)
                         .opacity(0) // This avoids the caret applied by List
                 )
 
+            Spacer()
+            
             // Receive button
             Button("Receive") {
                 isReceiveSheetPresented = true
             }
             .buttonStyle(
                 BitcoinFilled(
-                    width: 100,
+                    width: 120,
                     tintColor: .accent,
                     isCapsule: true
                 )
