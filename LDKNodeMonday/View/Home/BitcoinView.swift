@@ -14,7 +14,6 @@ struct BitcoinView: View {
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
-    @State private var isReceiveSheetPresented = false
     @State private var isPaymentsPresented = false
     @State private var showToast = false
     @State private var showingNodeIDView = false
@@ -26,59 +25,26 @@ struct BitcoinView: View {
     var body: some View {
 
         ZStack {
-            VStack {
+            VStack(alignment: .center) {
+
                 // List, enables pull to refresh
                 List {
+                    //Spacer()
+
                     BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
-                        .padding(.vertical, 40)
-                        .listRowSeparator(.hidden)
-                }
-                .listStyle(.plain)
-                .refreshable {
-                    await viewModel.getBalances()
-                    await viewModel.getPrices()
-                }
+                        .padding(.top, 40)
+                    TransactionButtons(viewModel: viewModel)
+                        .padding(.horizontal, 40)
 
-                Button {
-                    isPaymentsPresented = true
-                } label: {
-                    HStack {
-                        Image(systemName: "bolt.fill")
-                        Text("View Payments")
+                    Button {
+                        isPaymentsPresented = true
+                    } label: {
+                        Label("Activity", systemImage: "clock")
                     }
-                }
-                .tint(viewModel.networkColor)
-                .padding()
-                .sheet(
-                    isPresented: $isPaymentsPresented,
-                    onDismiss: {
-                        Task {
-                            await viewModel.getBalances()
-                            await viewModel.getPrices()
-                        }
-                    }
-                ) {
-                    PaymentsView(
-                        viewModel: .init(lightningClient: viewModel.walletClient.lightningClient)
-                    )
-                    //.presentationDetents([.medium, .large])
-                }
-
-                // Send & Receive buttons
-                HStack {
-                    Button("Receive") {
-                        isReceiveSheetPresented = true
-                    }
-                    .buttonStyle(
-                        BitcoinFilled(
-                            width: 100,
-                            tintColor: .accent,
-                            isCapsule: true
-                        )
-                    )
+                    .tint(.accentColor)
                     .padding()
                     .sheet(
-                        isPresented: $isReceiveSheetPresented,
+                        isPresented: $isPaymentsPresented,
                         onDismiss: {
                             Task {
                                 await viewModel.getBalances()
@@ -86,28 +52,23 @@ struct BitcoinView: View {
                             }
                         }
                     ) {
-                        ReceiveView(lightningClient: viewModel.walletClient.lightningClient)
-                            .presentationDetents([.large])
-                    }
-
-                    Spacer()
-
-                    NavigationLink(value: NavigationDestination.address) {
-                        Button("Send") {
-                            //
-                        }
-                        .allowsHitTesting(false)  // Required to enable NavigationLink to work
-                        .buttonStyle(
-                            BitcoinFilled(
-                                width: 100,
-                                tintColor: .accent,
-                                isCapsule: true
+                        PaymentsView(
+                            viewModel: .init(
+                                lightningClient: viewModel.walletClient.lightningClient
                             )
                         )
-                    }.padding()
-
+                        .presentationDetents([.medium, .large])
+                    }
+                    //Spacer()
                 }
-                .padding([.horizontal])
+                .listStyle(.plain)
+                .frame(maxHeight: .infinity)
+                .refreshable {
+                    await viewModel.getBalances()
+                    await viewModel.getPrices()
+                }
+
+                //Spacer()
 
             }
             .toolbar {
@@ -323,6 +284,69 @@ struct BalanceHeader: View {
                 }
                 UserDefaults.standard.set(displayBalanceType.rawValue, forKey: "displayBalanceType")
             }
+        }
+    }
+}
+
+struct TransactionButtons: View {
+    @ObservedObject var viewModel: BitcoinViewModel
+    @State private var isReceiveSheetPresented = false
+
+    var body: some View {
+        HStack(alignment: .center) {
+            // Send button
+            Button("Send") {
+                //
+            }
+            .buttonStyle(
+                BitcoinFilled(
+                    width: 100,
+                    tintColor: .accent,
+                    isCapsule: true
+                )
+            )
+            .background(
+                NavigationLink("", value: NavigationDestination.address)
+                    .opacity(0) // This avoids the caret applied by List
+            )
+            .allowsHitTesting(false)  // Required to enable NavigationLink to work
+
+            // Scan QR button
+            Label("Scan QR", systemImage: "qrcode.viewfinder")
+                .font(.title)
+                .frame(height: 60, alignment: .center)
+                .labelStyle(.iconOnly)
+                .foregroundColor(.accentColor)
+                .padding()
+                .background(
+                    NavigationLink("", value: NavigationDestination.address)
+                        .opacity(0) // This avoids the caret applied by List
+                )
+
+            // Receive button
+            Button("Receive") {
+                isReceiveSheetPresented = true
+            }
+            .buttonStyle(
+                BitcoinFilled(
+                    width: 100,
+                    tintColor: .accent,
+                    isCapsule: true
+                )
+            )
+            .sheet(
+                isPresented: $isReceiveSheetPresented,
+                onDismiss: {
+                    Task {
+                        await viewModel.getBalances()
+                        await viewModel.getPrices()
+                    }
+                }
+            ) {
+                ReceiveView(lightningClient: viewModel.walletClient.lightningClient)
+                    .presentationDetents([.large])
+            }
+
         }
     }
 }
