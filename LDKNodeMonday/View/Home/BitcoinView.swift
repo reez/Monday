@@ -26,15 +26,15 @@ struct BitcoinView: View {
 
         ZStack {
             VStack(alignment: .center) {
+                
+                BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
+                    .padding(.vertical, 40)
+                
+                TransactionButtons(viewModel: viewModel)
+                    .padding(.horizontal, 40)
 
                 // List, enables pull to refresh
                 List {
-                    BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
-                        .padding(.vertical, 40)
-                        .listRowSeparator(.hidden)
-                    TransactionButtons(viewModel: viewModel)
-                        .padding(.horizontal, 20)
-                        .listRowSeparator(.hidden)
 
                     Button {
                         isPaymentsPresented = true
@@ -293,34 +293,31 @@ struct TransactionButtons: View {
     var body: some View {
         HStack(alignment: .center) {
             // Send button
-            Button("Send") {
-                //
+            NavigationLink(value: NavigationDestination.address) {
+                Button {
+                    // Optional button action if needed
+                } label: {
+                    Text("Send")
+                }.buttonStyle(
+                    BitcoinFilled(
+                        width: 120,
+                        tintColor: .accent,
+                        isCapsule: true
+                    )
+                ).allowsHitTesting(false)  // Required to enable NavigationLink to work
             }
-            .buttonStyle(
-                BitcoinFilled(
-                    width: 120,
-                    tintColor: .accent,
-                    isCapsule: true
-                )
-            )
-            .background(
-                NavigationLink("", value: NavigationDestination.address)
-                    .opacity(0) // This avoids the caret applied by List
-            )
-            .allowsHitTesting(false)  // Required to enable NavigationLink to work
             
             Spacer()
             
             // Scan QR button
-            Label("Scan QR", systemImage: "qrcode.viewfinder")
-                .font(.title)
-                .frame(height: 60, alignment: .center)
-                .labelStyle(.iconOnly)
-                .foregroundColor(.accentColor)
-                .background(
-                    NavigationLink("", value: NavigationDestination.address)
-                        .opacity(0) // This avoids the caret applied by List
-                )
+            NavigationLink(value: NavigationDestination.address) {
+                Label("Scan QR", systemImage: "qrcode.viewfinder")
+                    .font(.title)
+                    .frame(height: 60, alignment: .center)
+                    .labelStyle(.iconOnly)
+                    .foregroundColor(.accentColor)
+                    .padding()
+            }
 
             Spacer()
             
