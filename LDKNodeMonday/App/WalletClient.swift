@@ -16,12 +16,13 @@ public class WalletClient {
     public var lightningClient: LightningNodeClient
     public var network = Network.signet
     public var server = EsploraServer.mutiny_signet
+    public var transactions: [PaymentDetails] = []
     public var appState = AppState.loading
     public var appError: Error?
 
-    public init(keyClient: KeyClient) {
+    public init(keyClient: KeyClient, lightningClient: LightningNodeClient) {
         self.keyClient = keyClient
-        self.lightningClient = .live
+        self.lightningClient = lightningClient
     }
 
     func createWallet(seedPhrase: String, network: Network, server: EsploraServer) async {
@@ -110,6 +111,10 @@ public class WalletClient {
                 self.appState = .error
             }
         }
+    }
+
+    func updateTransactions() {
+        self.transactions = lightningClient.listPayments()
     }
 }
 
