@@ -21,3 +21,30 @@ class PaymentsViewModel: ObservableObject {
         self.payments = lightningClient.listPayments()
     }
 }
+
+let mockPayments: [PaymentDetails] = [
+    .init(
+        id: "1",
+        kind: .bolt11(hash: "hash1", preimage: nil, secret: nil),
+        amountMsat: nil,
+        direction: .inbound,
+        status: .succeeded,
+        latestUpdateTimestamp: 1_718_841_600
+    ),
+    .init(
+        id: "2",
+        kind: .bolt11(hash: "hash2", preimage: nil, secret: nil),
+        amountMsat: nil,
+        direction: .inbound,
+        status: .pending,
+        latestUpdateTimestamp: 1_718_841_600
+    ),
+    .init(
+        id: "3",
+        kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
+        amountMsat: nil,
+        direction: .inbound,
+        status: .failed,
+        latestUpdateTimestamp: 1_718_841_600
+    )
+]
