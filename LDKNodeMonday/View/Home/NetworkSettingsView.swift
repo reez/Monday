@@ -128,6 +128,8 @@ struct NetworkSettingsView: View {
 
 #if DEBUG
     #Preview {
-        NetworkSettingsView(walletClient: .constant(WalletClient(keyClient: KeyClient.mock)))
+        NetworkSettingsView(
+            walletClient: .constant(WalletClient(mode: .mock))
+        )
     }
 #endif

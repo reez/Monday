@@ -20,9 +20,15 @@ public class WalletClient {
     public var appState = AppState.loading
     public var appError: Error?
 
-    public init(keyClient: KeyClient, lightningClient: LightningNodeClient) {
-        self.keyClient = keyClient
-        self.lightningClient = lightningClient
+    public init(mode: AppMode) {
+        switch mode {
+        case .live:
+            self.keyClient = .live
+            self.lightningClient = .live
+        case .mock:
+            self.keyClient = .mock
+            self.lightningClient = .mock
+        }
     }
 
     func createWallet(seedPhrase: String, network: Network, server: EsploraServer) async {
@@ -116,6 +122,11 @@ public class WalletClient {
     func updateTransactions() {
         self.transactions = lightningClient.listPayments()
     }
+}
+
+public enum AppMode {
+    case live
+    case mock
 }
 
 public enum AppState {

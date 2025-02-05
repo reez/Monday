@@ -166,7 +166,9 @@ struct SettingsView: View {
     #Preview {
         SettingsView(
             viewModel: .init(
-                walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
+                walletClient: .constant(
+                    WalletClient(mode: .mock)
+                ),
                 lightningClient: .mock
             )
 
