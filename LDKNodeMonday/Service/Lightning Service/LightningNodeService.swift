@@ -535,3 +535,22 @@ let mockPayments: [PaymentDetails] = [
         latestUpdateTimestamp: 1_718_841_630
     ),
 ]
+
+extension BalanceDetails {
+    static let empty = BalanceDetails(
+        totalOnchainBalanceSats: 0,
+        spendableOnchainBalanceSats: 0,
+        totalAnchorChannelsReserveSats: 0,
+        totalLightningBalanceSats: 0,
+        lightningBalances: [],
+        pendingBalancesFromChannelClosures: []
+    )
+    static let mock = BalanceDetails(
+        totalOnchainBalanceSats: 150000,
+        spendableOnchainBalanceSats: 100000,
+        totalAnchorChannelsReserveSats: 0,
+        totalLightningBalanceSats: 50000,
+        lightningBalances: [],
+        pendingBalancesFromChannelClosures: []
+    )
+}
