@@ -15,7 +15,6 @@ class BitcoinViewModel: ObservableObject {
     @Published var isBalanceDetailsFinished: Bool = false
     @Published var isPriceFinished: Bool = false
     @Published var bitcoinViewError: MondayError?
-    @Published var networkColor = Color.gray
 
     let priceClient: PriceClient
     var price: Double = 0.00
@@ -76,30 +75,4 @@ class BitcoinViewModel: ObservableObject {
             }
         }
     }
-
-    func getColor() {
-        let color = walletClient.lightningClient.getNetworkColor()
-        DispatchQueue.main.async {
-            self.networkColor = color
-        }
-    }
-}
-
-extension BalanceDetails {
-    static let empty = BalanceDetails(
-        totalOnchainBalanceSats: 0,
-        spendableOnchainBalanceSats: 0,
-        totalAnchorChannelsReserveSats: 0,
-        totalLightningBalanceSats: 0,
-        lightningBalances: [],
-        pendingBalancesFromChannelClosures: []
-    )
-    static let mock = BalanceDetails(
-        totalOnchainBalanceSats: 150000,
-        spendableOnchainBalanceSats: 100000,
-        totalAnchorChannelsReserveSats: 0,
-        totalLightningBalanceSats: 50000,
-        lightningBalances: [],
-        pendingBalancesFromChannelClosures: []
-    )
 }
