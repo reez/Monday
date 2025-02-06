@@ -22,7 +22,7 @@ private struct PriceService {
     }
 }
 
-struct PriceClient {
+public struct PriceClient {
     let fetchPrice: () async throws -> Price
     private init(fetchPrice: @escaping () async throws -> Price) {
         self.fetchPrice = fetchPrice
