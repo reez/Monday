@@ -66,7 +66,6 @@
 		AE7C4A082B406D590061189D /* SimpleToast in Frameworks */ = {isa = PBXBuildFile; productRef = AE7C4A072B406D590061189D /* SimpleToast */; };
 		AE7C4A0C2B40785F0061189D /* SeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7C4A0B2B40785F0061189D /* SeedView.swift */; };
 		AE7D3FAB2A4263AE00EAE730 /* PaymentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */; };
-		AE7D3FAD2A4263C100EAE730 /* PaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */; };
 		AE80116B29A59976009B9967 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* SettingsView.swift */; };
 		AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelAddView.swift */; };
 		AE80C2002C4AB360006E7193 /* BIP21View.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80C1FF2C4AB360006E7193 /* BIP21View.swift */; };
@@ -148,7 +147,6 @@
 		AE7594802A4FAE0200EAEDA2 /* PaymentsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsListView.swift; sourceTree = "<group>"; };
 		AE7C4A0B2B40785F0061189D /* SeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedView.swift; sourceTree = "<group>"; };
 		AE7D3FAA2A4263AE00EAE730 /* PaymentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsView.swift; sourceTree = "<group>"; };
-		AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsViewModel.swift; sourceTree = "<group>"; };
 		AE80116A29A59976009B9967 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AE80116C29A59AF4009B9967 /* ChannelAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelAddView.swift; sourceTree = "<group>"; };
 		AE80C1FF2C4AB360006E7193 /* BIP21View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIP21View.swift; sourceTree = "<group>"; };
@@ -404,7 +402,6 @@
 		AE551D452B8ECE180034B61E /* Payments */ = {
 			isa = PBXGroup;
 			children = (
-				AE7D3FAC2A4263C100EAE730 /* PaymentsViewModel.swift */,
 			);
 			path = Payments;
 			sourceTree = "<group>";
@@ -673,7 +670,6 @@
 				AEBFD8B22B8ABF7C0024E3F7 /* AmountView.swift in Sources */,
 				AE4536152C83508E0047D1B2 /* AddressView.swift in Sources */,
 				AE0055182B4A21BA00100797 /* Network+Extensions.swift in Sources */,
-				AE7D3FAD2A4263C100EAE730 /* PaymentsViewModel.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
 				AE028A2A2B96328600B336E7 /* JITInvoiceViewModel.swift in Sources */,
 				AE00550E2B479EF000100797 /* OnboardingView.swift in Sources */,
