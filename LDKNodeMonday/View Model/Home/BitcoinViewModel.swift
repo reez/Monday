@@ -24,11 +24,6 @@ class BitcoinViewModel: ObservableObject {
     var price: Double = 0.00
     var time: Int?
 
-    var satsPrice: String { // TODO: Not sure how this is being used / if correct?
-        let usdValue = Double(unifiedBalance).valueInUSD(price: price)
-        return usdValue
-    }
-
     var totalUSDValue: String {
         let totalUSD = Double(unifiedBalance).valueInUSD(price: price)
         return totalUSD
