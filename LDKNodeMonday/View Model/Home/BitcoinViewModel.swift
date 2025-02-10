@@ -41,8 +41,9 @@ class BitcoinViewModel: ObservableObject {
 
     func getStatus() async {
         let status = lightningClient.status()
-        DispatchQueue.main.async {
-            self.status = status
+        let sCopy = status
+        await MainActor.run {
+            self.status = sCopy
             self.isStatusFinished = true
         }
     }
@@ -62,18 +63,18 @@ class BitcoinViewModel: ObservableObject {
     func getPrices() async {
         do {
             let price = try await priceClient.fetchPrice()
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.price = price.usd
                 self.time = price.time
                 self.isPriceFinished = true
             }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.bitcoinViewError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.bitcoinViewError = .init(
                     title: "Unexpected error",
                     detail: error.localizedDescription
