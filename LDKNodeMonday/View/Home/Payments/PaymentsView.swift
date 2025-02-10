@@ -8,50 +8,32 @@
 import SwiftUI
 
 struct PaymentsView: View {
-    @ObservedObject var viewModel: PaymentsViewModel
+    @Binding var walletClient: WalletClient
 
     var body: some View {
-
-        ZStack {
-            Color(uiColor: UIColor.systemBackground)
-
-            VStack {
-
-                HStack {
-                    Text("Payment History")
-                        .font(.title)
-                        .bold()
-                    Spacer()
-                }
-                .padding()
-                .padding(.top, 40.0)
-
+        VStack {
+            if walletClient.transactions.isEmpty {
                 Spacer()
-
-                if viewModel.payments.isEmpty {
-                    Text("No Payments")
-                        .font(.system(.caption, design: .monospaced))
-                        .padding()
-                } else {
-                    PaymentsListView(payments: viewModel.payments)
-                        .refreshable {
-                            viewModel.listPayments()
-                        }
-                }
-
+                Text("No activity yet")
+                    .font(.subheadline)
+                Spacer()
+            } else {
+                PaymentsListView(payments: walletClient.transactions)
+                    .refreshable {
+                        walletClient.updateTransactions()
+                    }
             }
-            .onAppear {
-                viewModel.listPayments()
-            }
-
         }
-
+        .onAppear {
+            walletClient.updateTransactions()
+        }
     }
-
 }
 
 #if DEBUG
     #Preview {
-        PaymentsView(viewModel: .init(lightningClient: .mock))
+        PaymentsView(
+            walletClient: .constant(WalletClient(mode: .mock))
+        )
     }
 #endif
