@@ -12,7 +12,7 @@ struct LDKNodeMondayApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
-    @State private var walletClient = WalletClient(mode: .live)
+    @State private var walletClient = WalletClient(mode: .mock)
     @State private var navigationPath = NavigationPath()
 
     init() {

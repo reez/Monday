@@ -10,13 +10,12 @@ import SimpleToast
 import SwiftUI
 
 struct BitcoinView: View {
-    @Environment(\.colorScheme) var colorScheme
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
     @State private var isPaymentsPresented = false
     @State private var showToast = false
-    @State private var showingNodeIDView = false
+    @State private var showSettingsView = false
     @State private var displayBalanceType = DisplayBalanceType.userDefaults
     @StateObject var viewModel: BitcoinViewModel
     @StateObject private var eventService = EventService()
@@ -26,55 +25,23 @@ struct BitcoinView: View {
 
         ZStack {
             VStack(alignment: .center) {
-                
+
                 BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
                     .padding(.vertical, 40)
-                
+
+                PaymentsView(
+                    walletClient: $viewModel.walletClient
+                )
+
                 TransactionButtons(viewModel: viewModel)
                     .padding(.horizontal, 40)
-
-                // List, enables pull to refresh
-                List {
-
-                    Button {
-                        isPaymentsPresented = true
-                    } label: {
-                        Label("Activity", systemImage: "clock")
-                    }
-                    .tint(.accentColor)
-                    .padding()
-                    .listRowSeparator(.hidden)
-                    .sheet(
-                        isPresented: $isPaymentsPresented,
-                        onDismiss: {
-                            Task {
-                                await viewModel.getBalances()
-                                await viewModel.getPrices()
-                            }
-                        }
-                    ) {
-                        PaymentsView(
-                            viewModel: .init(
-                                lightningClient: viewModel.walletClient.lightningClient
-                            )
-                        )
-                        .presentationDetents([.medium, .large])
-                    }
-                    //Spacer()
-                }
-                .listStyle(.plain)
-                .frame(maxHeight: .infinity)
-                .refreshable {
-                    await viewModel.getBalances()
-                    await viewModel.getPrices()
-                }
-
+                    .padding(.vertical, 10)
             }
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(
                         action: {
-                            showingNodeIDView = true
+                            showSettingsView = true
                         },
                         label: {
                             HStack(spacing: 5) {
@@ -86,11 +53,11 @@ struct BitcoinView: View {
                             }
                         }
                     ).sheet(
-                        isPresented: $showingNodeIDView,
+                        isPresented: $showSettingsView,
                         onDismiss: {
                             Task {
-                                await viewModel.getBalances()
-                                await viewModel.getPrices()
+                                //await viewModel.getBalances()
+                                //await viewModel.getPrices()
                             }
                         }
                     ) {
@@ -105,7 +72,6 @@ struct BitcoinView: View {
             }
             .onAppear {
                 Task {
-                    viewModel.getColor()
                     await viewModel.getBalances()
                     await viewModel.getPrices()
                 }
@@ -123,8 +89,8 @@ struct BitcoinView: View {
             }
             .onReceive(eventService.$lastMessage) { _ in
                 Task {
-                    await viewModel.getBalances()
-                    await viewModel.getPrices()
+                    //await viewModel.getBalances()
+                    //await viewModel.getPrices()
                 }
             }
             .alert(isPresented: $showingBitcoinViewErrorAlert) {
@@ -150,9 +116,7 @@ struct BitcoinView: View {
                         Capsule()
                             .foregroundColor(
                                 Color(
-                                    uiColor:
-                                        colorScheme == .dark
-                                        ? .secondarySystemBackground : .systemGray6
+                                    uiColor: .systemGray4
                                 )
                             )
                     )
@@ -179,8 +143,8 @@ struct BitcoinView: View {
                 )
                 .onDisappear {
                     Task {
-                        await viewModel.getBalances()
-                        await viewModel.getPrices()
+                        //await viewModel.getBalances()
+                        //await viewModel.getPrices()
                     }
                 }
 
@@ -208,15 +172,19 @@ struct BalanceHeader: View {
                             Text("$\(viewModel.totalUSDValue.formatted())")
                                 .font(.system(size: 48, weight: .bold, design: .rounded))
                                 .contentTransition(.numericText())
-                                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
-                                .animation(.spring(), value: viewModel.isPriceFinished)
+                                //.redacted(reason: viewModel.walletClient.price == 0.00 ? [] : .placeholder)
+                                .animation(.spring(), value: viewModel.walletClient.price)
                                 .matchedGeometryEffect(id: "balance", in: animation, isSource: true)
                         }
                         HStack {
                             Text(viewModel.unifiedBalance.formatted(.number.notation(.automatic)))
                                 .contentTransition(.numericText())
-                                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
-                                .matchedGeometryEffect(id: "secondary", in: animation, isSource: true)
+                                //.redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+                                .matchedGeometryEffect(
+                                    id: "secondary",
+                                    in: animation,
+                                    isSource: true
+                                )
                             Text("sats")
                         }
                         .lineLimit(1)
@@ -229,16 +197,16 @@ struct BalanceHeader: View {
                             Text(viewModel.unifiedBalance.formatted(.number.notation(.automatic)))
                                 .font(.system(size: 48, weight: .bold, design: .rounded))
                                 .contentTransition(.numericText())
-                                .redacted(
-                                    reason: viewModel.isBalanceDetailsFinished
-                                        ? [] : .placeholder
-                                )
+//                                .redacted(
+//                                    reason: viewModel.isBalanceDetailsFinished
+//                                        ? [] : .placeholder
+//                                )
                                 .matchedGeometryEffect(id: "balance", in: animation, isSource: true)
                             Text("sats")
                         }
                         Text("$\(viewModel.totalUSDValue.formatted())")
                             .contentTransition(.numericText())
-                            .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+                            //.redacted(reason: viewModel.walletClient.price == 0.00 ? [] : .placeholder)
                             .animation(.spring(), value: viewModel.isPriceFinished)
                             .foregroundColor(.secondary)
                             .matchedGeometryEffect(id: "secondary", in: animation, isSource: true)
@@ -249,10 +217,10 @@ struct BalanceHeader: View {
                             Text(viewModel.unifiedBalance.formatted(.number.notation(.automatic)))
                                 .font(.system(size: 48, weight: .bold, design: .rounded))
                                 .contentTransition(.numericText())
-                                .redacted(
-                                    reason: viewModel.isBalanceDetailsFinished
-                                        ? [] : .placeholder
-                                )
+//                                .redacted(
+//                                    reason: viewModel.isBalanceDetailsFinished
+//                                        ? [] : .placeholder
+//                                )
                                 .matchedGeometryEffect(id: "balance", in: animation, isSource: true)
                             Text("sats")
                         }
@@ -260,17 +228,29 @@ struct BalanceHeader: View {
                             HStack {
                                 Image(systemName: "bitcoinsign").imageScale(.small)
                                     .foregroundColor(.secondary)
-                                Text(viewModel.balanceDetails.totalOnchainBalanceSats.formatted(.number.notation(.automatic)))
-                                    .contentTransition(.numericText())
-                                    .foregroundColor(.secondary)
-                                    .matchedGeometryEffect(id: "secondary", in: animation, isSource: true)
+                                Text(
+                                    viewModel.balanceDetails.totalOnchainBalanceSats.formatted(
+                                        .number.notation(.automatic)
+                                    )
+                                )
+                                .contentTransition(.numericText())
+                                .foregroundColor(.secondary)
+                                .matchedGeometryEffect(
+                                    id: "secondary",
+                                    in: animation,
+                                    isSource: true
+                                )
                             }
                             HStack {
                                 Image(systemName: "bolt").imageScale(.small)
                                     .foregroundColor(.secondary)
-                                Text(viewModel.balanceDetails.totalLightningBalanceSats.formatted(.number.notation(.automatic)))
-                                    .contentTransition(.numericText())
-                                    .foregroundColor(.secondary)
+                                Text(
+                                    viewModel.balanceDetails.totalLightningBalanceSats.formatted(
+                                        .number.notation(.automatic)
+                                    )
+                                )
+                                .contentTransition(.numericText())
+                                .foregroundColor(.secondary)
                             }
                         }
                     }
@@ -292,35 +272,38 @@ struct TransactionButtons: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            // Send button
-            NavigationLink(value: NavigationDestination.address) {
-                Button {
-                    // Optional button action if needed
-                } label: {
-                    Text("Send")
-                }.buttonStyle(
-                    BitcoinFilled(
-                        width: 120,
-                        tintColor: .accent,
-                        isCapsule: true
-                    )
-                ).allowsHitTesting(false)  // Required to enable NavigationLink to work
-            }
-            
-            Spacer()
-            
-            // Scan QR button
-            NavigationLink(value: NavigationDestination.address) {
-                Label("Scan QR", systemImage: "qrcode.viewfinder")
-                    .font(.title)
-                    .frame(height: 60, alignment: .center)
-                    .labelStyle(.iconOnly)
-                    .foregroundColor(.accentColor)
-                    .padding()
+            // Only show send buttons if user has balance
+            if viewModel.walletClient.unifiedBalance > 0 {
+                // Send button
+                NavigationLink(value: NavigationDestination.address) {
+                    Button {
+                        // Optional button action if needed
+                    } label: {
+                        Text("Send")
+                    }.buttonStyle(
+                        BitcoinFilled(
+                            width: 120,
+                            tintColor: .accent,
+                            isCapsule: true
+                        )
+                    ).allowsHitTesting(false)  // Required to enable NavigationLink to work
+                }
+
+                Spacer()
+
+                // Scan QR button
+                NavigationLink(value: NavigationDestination.address) {
+                    Label("Scan QR", systemImage: "qrcode.viewfinder")
+                        .font(.title)
+                        .frame(height: 60, alignment: .center)
+                        .labelStyle(.iconOnly)
+                        .foregroundColor(.accentColor)
+                        .padding()
+                }
+
+                Spacer()
             }
 
-            Spacer()
-            
             // Receive button
             Button("Receive") {
                 isReceiveSheetPresented = true
@@ -336,8 +319,8 @@ struct TransactionButtons: View {
                 isPresented: $isReceiveSheetPresented,
                 onDismiss: {
                     Task {
-                        await viewModel.getBalances()
-                        await viewModel.getPrices()
+                        //await viewModel.getBalances()
+                        //await viewModel.getPrices()
                     }
                 }
             ) {
@@ -393,7 +376,9 @@ class SharedNamespace: ObservableObject {
     #Preview {
         BitcoinView(
             viewModel: .init(
-                walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
+                walletClient: .constant(
+                    WalletClient(mode: .mock)
+                ),
                 priceClient: .mock
             ),
             sendNavigationPath: .constant(.init())
