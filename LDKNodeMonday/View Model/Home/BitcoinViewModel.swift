@@ -38,7 +38,14 @@ class BitcoinViewModel: ObservableObject {
         self.priceClient = priceClient
         self.lightningClient = lightningClient
     }
-
+    
+    func update() async {
+        await getBalanceDetails()
+        await getPrices()
+        await getStatus()
+        getColor()
+    }
+    
     func getStatus() async {
         let status = lightningClient.status()
         let sCopy = status
