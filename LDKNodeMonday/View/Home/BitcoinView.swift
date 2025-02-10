@@ -368,7 +368,7 @@ enum NavigationDestination: Hashable {
     #Preview {
         BitcoinView(
             viewModel: .init(
-                walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
+                walletClient: .constant(WalletClient(appMode: AppMode.mock)),
                 priceClient: .mock,
                 lightningClient: .mock
             ),
