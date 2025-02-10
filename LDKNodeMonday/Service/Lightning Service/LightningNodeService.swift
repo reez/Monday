@@ -173,6 +173,11 @@ class LightningNodeService {
         return address
     }
 
+    func balanceDetails() async -> BalanceDetails {
+        let balanceDetails = ldkNode.listBalances()
+        return balanceDetails
+    }
+
     func spendableOnchainBalanceSats() async -> UInt64 {
         let balance = ldkNode.listBalances().spendableOnchainBalanceSats
         return balance
@@ -337,6 +342,7 @@ public struct LightningNodeClient {
     let reset: () throws -> Void
     let nodeId: () -> String
     let newAddress: () async throws -> String
+    let balanceDetails: () async -> BalanceDetails
     let spendableOnchainBalanceSats: () async -> UInt64
     let totalOnchainBalanceSats: () async -> UInt64
     let totalLightningBalanceSats: () async -> UInt64
@@ -371,6 +377,7 @@ extension LightningNodeClient {
         reset: { try LightningNodeService.shared.reset() },
         nodeId: { LightningNodeService.shared.nodeId() },
         newAddress: { try await LightningNodeService.shared.newAddress() },
+        balanceDetails: { await LightningNodeService.shared.balanceDetails() },
         spendableOnchainBalanceSats: {
             await LightningNodeService.shared.spendableOnchainBalanceSats()
         },
@@ -436,61 +443,114 @@ extension LightningNodeClient {
     )
 }
 
-#if DEBUG
-    extension LightningNodeClient {
-        static let mock = Self(
-            start: {},
-            stop: {},
-            restart: {},
-            reset: {},
-            nodeId: { "038474837483784378437843784378437843784378" },
-            newAddress: { "tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx" },
-            spendableOnchainBalanceSats: { 100_000 },
-            totalOnchainBalanceSats: { 150_000 },
-            totalLightningBalanceSats: { 50_000 },
-            lightningBalances: { [] },
-            pendingBalancesFromChannelClosures: { [] },
-            connect: { _, _, _ in },
-            disconnect: { _ in },
-            connectOpenChannel: { _, _, _, _, _, _ in UserChannelId("abcdef") },
-            closeChannel: { _, _ in },
-            send: { _ in QrPaymentResult.onchain(txid: "txid") },
-            receive: { _, _, _ in "lightning:lnbc1..." },
-            receiveViaJitChannel: { _, _, _, _ in Bolt11Invoice("lnbc1...") },
-            listPeers: { [] },
-            listChannels: { [] },
-            listPayments: { [] },
-            status: {
-                NodeStatus(
-                    isRunning: true,
-                    isListening: true,
-                    currentBestBlock: BestBlock(
-                        blockHash: BlockHash(
-                            "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"
-                        ),
-                        height: 123456
+extension LightningNodeClient {
+    static let mock = Self(
+        start: {},
+        stop: {},
+        restart: {},
+        reset: {},
+        nodeId: { "038474837483784378437843784378437843784378" },
+        newAddress: { "tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx" },
+        balanceDetails: { .mock },
+        spendableOnchainBalanceSats: { 100_000 },
+        totalOnchainBalanceSats: { 150_000 },
+        totalLightningBalanceSats: { 50_000 },
+        lightningBalances: { [] },
+        pendingBalancesFromChannelClosures: { [] },
+        connect: { _, _, _ in },
+        disconnect: { _ in },
+        connectOpenChannel: { _, _, _, _, _, _ in UserChannelId("abcdef") },
+        closeChannel: { _, _ in },
+        send: { _ in QrPaymentResult.onchain(txid: "txid") },
+        receive: { _, _, _ in "lightning:lnbc1..." },
+        receiveViaJitChannel: { _, _, _, _ in Bolt11Invoice("lnbc1...") },
+        listPeers: { [] },
+        listChannels: { [] },
+        listPayments: { mockPayments },
+        status: {
+            NodeStatus(
+                isRunning: true,
+                isListening: true,
+                currentBestBlock: BestBlock(
+                    blockHash: BlockHash(
+                        "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"
                     ),
-                    latestLightningWalletSyncTimestamp: UInt64(Date().timeIntervalSince1970),
-                    latestOnchainWalletSyncTimestamp: UInt64(Date().timeIntervalSince1970),
-                    latestFeeRateCacheUpdateTimestamp: UInt64(Date().timeIntervalSince1970),
-                    latestRgsSnapshotTimestamp: UInt64(Date().timeIntervalSince1970),
-                    latestNodeAnnouncementBroadcastTimestamp: UInt64(Date().timeIntervalSince1970),
-                    latestChannelMonitorArchivalHeight: 123456
-                )
-            },
-            deleteWallet: {},
-            getBackupInfo: {
-                BackupInfo(
-                    mnemonic: "test test test",
-                    networkString: Network.signet.description,
-                    serverURL: EsploraServer.mutiny_signet.url
-                )
-            },
-            deleteDocuments: {},
-            getNetwork: { .signet },
-            getServer: { .mutiny_signet },
-            getNetworkColor: { .orange },
-            listenForEvents: {}
-        )
-    }
-#endif
+                    height: 123456
+                ),
+                latestLightningWalletSyncTimestamp: UInt64(Date().timeIntervalSince1970),
+                latestOnchainWalletSyncTimestamp: UInt64(Date().timeIntervalSince1970),
+                latestFeeRateCacheUpdateTimestamp: UInt64(Date().timeIntervalSince1970),
+                latestRgsSnapshotTimestamp: UInt64(Date().timeIntervalSince1970),
+                latestNodeAnnouncementBroadcastTimestamp: UInt64(Date().timeIntervalSince1970),
+                latestChannelMonitorArchivalHeight: 123456
+            )
+        },
+        deleteWallet: {},
+        getBackupInfo: {
+            BackupInfo(
+                mnemonic: "test test test",
+                networkString: Network.signet.description,
+                serverURL: EsploraServer.mutiny_signet.url
+            )
+        },
+        deleteDocuments: {},
+        getNetwork: { .signet },
+        getServer: { .mutiny_signet },
+        getNetworkColor: { .orange },
+        listenForEvents: {}
+    )
+}
+
+let mockPayments: [PaymentDetails] = [
+    .init(
+        id: "1",
+        kind: .bolt11(hash: "hash1", preimage: nil, secret: nil),
+        amountMsat: 100_000_000,
+        direction: .inbound,
+        status: .succeeded,
+        latestUpdateTimestamp: 1_718_841_600
+    ),
+    .init(
+        id: "4",
+        kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
+        amountMsat: 210_000_000,
+        direction: .outbound,
+        status: .succeeded,
+        latestUpdateTimestamp: 1_718_841_640
+    ),
+    .init(
+        id: "2",
+        kind: .bolt11(hash: "hash2", preimage: nil, secret: nil),
+        amountMsat: 100_000_000,
+        direction: .inbound,
+        status: .pending,
+        latestUpdateTimestamp: 1_718_841_620
+    ),
+    .init(
+        id: "3",
+        kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
+        amountMsat: 100_000_000,
+        direction: .inbound,
+        status: .failed,
+        latestUpdateTimestamp: 1_718_841_630
+    ),
+]
+
+extension BalanceDetails {
+    static let empty = BalanceDetails(
+        totalOnchainBalanceSats: 0,
+        spendableOnchainBalanceSats: 0,
+        totalAnchorChannelsReserveSats: 0,
+        totalLightningBalanceSats: 0,
+        lightningBalances: [],
+        pendingBalancesFromChannelClosures: []
+    )
+    static let mock = BalanceDetails(
+        totalOnchainBalanceSats: 150000,
+        spendableOnchainBalanceSats: 100000,
+        totalAnchorChannelsReserveSats: 0,
+        totalLightningBalanceSats: 50000,
+        lightningBalances: [],
+        pendingBalancesFromChannelClosures: []
+    )
+}
