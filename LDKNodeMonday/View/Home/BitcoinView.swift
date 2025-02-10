@@ -40,13 +40,13 @@ struct BitcoinView: View {
                                 Image(systemName: "bitcoinsign")
                                     .font(.title)
                                     .fontWeight(.thin)
-                                Text(viewModel.totalBalance.formattedSatoshis())
+                                Text(viewModel.unifiedBalance.formattedSatoshis())
                                     .contentTransition(.numericText())
                                     .font(.largeTitle)
                                     .fontWeight(.semibold)
                                     .fontDesign(.rounded)
                                     .redacted(
-                                        reason: viewModel.isTotalBalanceFinished
+                                        reason: viewModel.isBalanceDetailsFinished
                                             ? [] : .placeholder
                                     )
                                 Text("sats")
@@ -82,15 +82,18 @@ struct BitcoinView: View {
                                 Image(systemName: "bolt")
                                     .font(.title)
                                     .fontWeight(.thin)
-                                Text(viewModel.totalLightningBalance.formattedSatoshis())
-                                    .contentTransition(.numericText())
-                                    .font(.largeTitle)
-                                    .fontWeight(.semibold)
-                                    .fontDesign(.rounded)
-                                    .redacted(
-                                        reason: viewModel.isTotalLightningBalanceFinished
-                                            ? [] : .placeholder
-                                    )
+                                Text(
+                                    viewModel.balanceDetails.totalLightningBalanceSats
+                                        .formattedSatoshis()
+                                )
+                                .contentTransition(.numericText())
+                                .font(.largeTitle)
+                                .fontWeight(.semibold)
+                                .fontDesign(.rounded)
+                                .redacted(
+                                    reason: viewModel.isBalanceDetailsFinished
+                                        ? [] : .placeholder
+                                )
                                 Text("sats")
                                     .font(.title)
                                     .fontWeight(.thin)
@@ -141,10 +144,8 @@ struct BitcoinView: View {
                 .padding(.top, 220.0)
                 .padding(.horizontal, -20)
                 .refreshable {
-                    await viewModel.getTotalOnchainBalanceSats()
-                    await viewModel.getTotalLightningBalanceSats()
+                    await viewModel.getBalanceDetails()
                     await viewModel.getPrices()
-                    await viewModel.getSpendableOnchainBalanceSats()
                     await viewModel.getStatus()
                 }
 
@@ -211,11 +212,9 @@ struct BitcoinView: View {
             }
             .onAppear {
                 Task {
-                    await viewModel.getTotalOnchainBalanceSats()
-                    await viewModel.getTotalLightningBalanceSats()
+                    await viewModel.getBalanceDetails()
                     await viewModel.getPrices()
                     viewModel.getColor()
-                    await viewModel.getSpendableOnchainBalanceSats()
                     await viewModel.getStatus()
                 }
             }
@@ -232,10 +231,8 @@ struct BitcoinView: View {
             }
             .onReceive(eventService.$lastMessage) { _ in
                 Task {
-                    await viewModel.getTotalOnchainBalanceSats()
-                    await viewModel.getTotalLightningBalanceSats()
+                    await viewModel.getBalanceDetails()
                     await viewModel.getPrices()
-                    await viewModel.getSpendableOnchainBalanceSats()
                     await viewModel.getStatus()
                 }
             }
@@ -243,10 +240,8 @@ struct BitcoinView: View {
                 isPresented: $showingNodeIDView,
                 onDismiss: {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
+                        await viewModel.getBalanceDetails()
                         await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
                         await viewModel.getStatus()
                     }
                 }
@@ -294,10 +289,8 @@ struct BitcoinView: View {
                 item: $showReceiveViewWithOption,
                 onDismiss: {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
+                        await viewModel.getBalanceDetails()
                         await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
                         await viewModel.getStatus()
                     }
                 }
@@ -312,10 +305,8 @@ struct BitcoinView: View {
                 isPresented: $isPaymentsPresented,
                 onDismiss: {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
+                        await viewModel.getBalanceDetails()
                         await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
                         await viewModel.getStatus()
                     }
                 }
@@ -330,7 +321,7 @@ struct BitcoinView: View {
             case .address:
                 AddressView(
                     navigationPath: $sendNavigationPath,
-                    spendableBalance: viewModel.spendableBalance
+                    spendableBalance: viewModel.balanceDetails.spendableOnchainBalanceSats
                 )
             case .amount(let address, let amount, let payment):
                 AmountView(
@@ -338,15 +329,13 @@ struct BitcoinView: View {
                     address: address,
                     numpadAmount: amount,
                     payment: payment,
-                    spendableBalance: viewModel.spendableBalance,
+                    spendableBalance: viewModel.balanceDetails.spendableOnchainBalanceSats,
                     navigationPath: $sendNavigationPath
                 )
                 .onDisappear {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
+                        await viewModel.getBalanceDetails()
                         await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
                         await viewModel.getStatus()
                     }
                 }
