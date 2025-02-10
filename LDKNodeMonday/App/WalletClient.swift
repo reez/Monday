@@ -14,20 +14,38 @@ public class WalletClient {
 
     public var keyClient: KeyClient
     public var lightningClient: LightningNodeClient
+    public var priceClient: PriceClient
     public var network = Network.signet
     public var server = EsploraServer.mutiny_signet
+    public var balanceDetails: BalanceDetails = .empty
     public var transactions: [PaymentDetails] = []
+    public var price: Double = 0.00
     public var appState = AppState.loading
     public var appError: Error?
+    
+    public var unifiedBalance: UInt64 {
+        return balanceDetails.totalOnchainBalanceSats + balanceDetails.totalLightningBalanceSats
+    }
+    
+    public var totalUSDValue: Double {
+        let totalUSD = Double(unifiedBalance).valueInUSD(price: price)
+        return totalUSD
+    }
 
     public init(mode: AppMode) {
         switch mode {
         case .live:
             self.keyClient = .live
             self.lightningClient = .live
+            self.priceClient = .live
         case .mock:
             self.keyClient = .mock
             self.lightningClient = .mock
+            self.priceClient = .mock
+        }
+        Task {
+            await updateBalances()
+            updateTransactions()
         }
     }
 
@@ -121,6 +139,22 @@ public class WalletClient {
 
     func updateTransactions() {
         self.transactions = lightningClient.listPayments()
+    }
+    
+    func updateBalances() async {
+        self.balanceDetails = await lightningClient.balanceDetails()
+    }
+    
+    func updatePrice() async {
+        do {
+            let price = try await priceClient.fetchPrice()
+            let copy = price  // To avoid issues with non-sendable object
+            await MainActor.run {
+                self.price = copy.usd
+            }
+        } catch let error {
+            self.appError = error
+        }
     }
 }
 
