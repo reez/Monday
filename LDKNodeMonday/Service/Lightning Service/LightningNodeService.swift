@@ -508,7 +508,23 @@ let mockPayments: [PaymentDetails] = [
         amountMsat: 100_000_000,
         direction: .inbound,
         status: .succeeded,
-        latestUpdateTimestamp: 1_718_841_600
+        latestUpdateTimestamp: UInt64(Date.now.timeIntervalSince1970)
+    ),
+    .init(
+        id: "5",
+        kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
+        amountMsat: 340_000_000,
+        direction: .outbound,
+        status: .succeeded,
+        latestUpdateTimestamp: UInt64(Date.now.addingTimeInterval(3 * 3600).timeIntervalSince1970)
+    ),
+    .init(
+        id: "6",
+        kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
+        amountMsat: 160_000_000,
+        direction: .inbound,
+        status: .succeeded,
+        latestUpdateTimestamp: UInt64(Date.now.addingTimeInterval(48 * 3600).timeIntervalSince1970)
     ),
     .init(
         id: "4",
