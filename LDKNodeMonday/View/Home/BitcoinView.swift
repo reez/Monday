@@ -31,7 +31,8 @@ struct BitcoinView: View {
 
                 List {
                     BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
-                    .listRowSeparator(.hidden)
+                        .frame(maxWidth: .infinity)  // centers the view horizontally
+                        .listRowSeparator(.hidden)
                 }
                 .listStyle(.plain)
                 .padding(.top, 220.0)
@@ -228,67 +229,79 @@ struct BitcoinView: View {
 struct BalanceHeader: View {
     @Binding var displayBalanceType: DisplayBalanceType
     @ObservedObject var viewModel: BitcoinViewModel
-    @Namespace private var animation
 
     var body: some View {
         VStack {
-            HStack {
-                Spacer()
-                switch displayBalanceType {
-                case .unifiedFiat:
-                    HStack(spacing: 5) {
-                        Text(viewModel.totalUSDValue)
-                            .font(.system(size: 48, weight: .bold, design: .rounded))
-                            .contentTransition(.numericText())
-                            .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
-                            .matchedGeometryEffect(id: "balance", in: animation, isSource: true)
-                    }
-                    .animation(.spring(), value: viewModel.isPriceFinished)
-                case .unifiedBTC:
-                    HStack(alignment: .firstTextBaseline, spacing: 5) {
-                        Text(viewModel.unifiedBalance.formatted(.number.notation(.automatic)))
-                            .font(.system(size: 48, weight: .bold, design: .rounded))
-                            .contentTransition(.numericText())
-                            .redacted(reason: viewModel.isBalanceDetailsFinished ? [] : .placeholder)
-                            .matchedGeometryEffect(id: "balance", in: animation, isSource: true)
-                        Text("sats")
-                            .matchedGeometryEffect(id: "units", in: animation, isSource: true)
-                    }
-                    .animation(.spring(), value: viewModel.isBalanceDetailsFinished)
-                case .onchainSats:
-                    HStack(alignment: .firstTextBaseline, spacing: 5) {
-                        Text(viewModel.balanceDetails.totalOnchainBalanceSats.formatted(.number.notation(.automatic)))
-                            .font(.system(size: 48, weight: .bold, design: .rounded))
-                            .contentTransition(.numericText())
-                            .redacted(reason: viewModel.isBalanceDetailsFinished ? [] : .placeholder)
-                            .matchedGeometryEffect(id: "balance", in: animation, isSource: true)
-                        Image(systemName: "bitcoinsign").imageScale(.small)
-                            .matchedGeometryEffect(id: "unitimage", in: animation, isSource: true)
-                        Text("sats")
-                            .matchedGeometryEffect(id: "units", in: animation, isSource: true)
-                    }
-                    .animation(.spring(), value: viewModel.isBalanceDetailsFinished)
-                case .lightningSats:
-                    HStack(alignment: .firstTextBaseline, spacing: 5) {
-                        Text(viewModel.balanceDetails.totalLightningBalanceSats.formatted(.number.notation(.automatic)))
-                            .font(.system(size: 48, weight: .bold, design: .rounded))
-                            .contentTransition(.numericText())
-                            .redacted(reason: viewModel.isBalanceDetailsFinished ? [] : .placeholder)
-                            .matchedGeometryEffect(id: "balance", in: animation, isSource: true)
-                        Image(systemName: "bolt").imageScale(.small)
-                            .matchedGeometryEffect(id: "unitimage", in: animation, isSource: true)
-                        Text("sats")
-                            .matchedGeometryEffect(id: "units", in: animation, isSource: true)
-                    }
-                    .animation(.spring(), value: viewModel.isBalanceDetailsFinished)
-                }
-                Spacer()
-            }.onTapGesture {
-                withAnimation {
-                    displayBalanceType.next()
-                }
-                UserDefaults.standard.set(displayBalanceType.rawValue, forKey: "displayBalanceType")
+            Text(balanceValue)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .font(.system(size: 48, weight: .bold, design: .rounded))
+                .contentTransition(.numericText())
+                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+            HStack(spacing: 5) {
+                Text(secondaryValue)
+                    .contentTransition(.interpolate)
+                Text(unitValue)
+                    .contentTransition(.interpolate)
             }
+            .foregroundColor(.secondary)
+            .font(.system(.headline, design: .rounded, weight: .medium))
+        }
+        .animation(.spring(), value: viewModel.isPriceFinished)
+        .onTapGesture {
+            withAnimation {
+                displayBalanceType.next()
+            }
+            UserDefaults.standard.set(displayBalanceType.rawValue, forKey: "displayBalanceType")
+        }
+    }
+
+    var balanceValue: String {
+        switch displayBalanceType {
+        case .unifiedFiat:
+            return viewModel.totalUSDValue
+        case .unifiedBTC:
+            return "₿" + viewModel.unifiedBalance.formattedSatoshis()
+        case .unifiedSats:
+            return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
+        case .onchainSats:
+            return viewModel.balanceDetails.totalOnchainBalanceSats.formatted(
+                .number.notation(.automatic)
+            )
+        case .lightningSats:
+            return viewModel.balanceDetails.totalLightningBalanceSats.formatted(
+                .number.notation(.automatic)
+            )
+        }
+    }
+
+    var secondaryValue: String {
+        switch displayBalanceType {
+        case .unifiedFiat:
+            return "₿" + viewModel.unifiedBalance.formattedSatoshis()
+        case .unifiedBTC:
+            return viewModel.totalUSDValue
+        case .unifiedSats:
+            return "Total"
+        case .onchainSats:
+            return "Onchain"
+        case .lightningSats:
+            return "Lightning"
+        }
+    }
+
+    var unitValue: String {
+        switch displayBalanceType {
+        case .unifiedFiat:
+            return ""
+        case .unifiedBTC:
+            return ""
+        case .unifiedSats:
+            return "Sats"
+        case .onchainSats:
+            return "Sats"
+        case .lightningSats:
+            return "Sats"
         }
     }
 }
@@ -301,6 +314,7 @@ enum NavigationDestination: Hashable {
 public enum DisplayBalanceType: String {
     case unifiedFiat
     case unifiedBTC
+    case unifiedSats
     case onchainSats
     case lightningSats
 }
@@ -311,6 +325,8 @@ extension DisplayBalanceType {
         case .unifiedFiat:
             self = .unifiedBTC
         case .unifiedBTC:
+            self = .unifiedSats
+        case .unifiedSats:
             self = .onchainSats
         case .onchainSats:
             self = .lightningSats
