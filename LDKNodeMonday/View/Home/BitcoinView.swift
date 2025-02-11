@@ -300,15 +300,15 @@ struct BalanceHeader: View {
         case .fiatBtc:
             return ""
         case .fiatSats:
-            return "Sats"
+            return "sats"
         case .btcFiat:
             return ""
         case .totalSats:
-            return "Sats"
+            return "sats"
         case .onchainSats:
-            return "Sats"
+            return "sats"
         case .lightningSats:
-            return "Sats"
+            return "sats"
         }
     }
 }
