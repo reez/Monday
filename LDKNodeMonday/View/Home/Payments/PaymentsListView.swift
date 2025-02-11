@@ -60,7 +60,6 @@ struct TransactionItemView: View {
 
     var body: some View {
         HStack(spacing: 15) {
-            let date = Date(timeIntervalSince1970: TimeInterval(transaction.latestUpdateTimestamp))
             ZStack {
                 Circle()
                     .fill(Color.bitcoinNeutral1)
@@ -72,7 +71,7 @@ struct TransactionItemView: View {
             VStack(alignment: .leading) {
                 Text(transaction.title)
                     .font(.system(.body, design: .rounded, weight: .medium))
-                Text(date.formatted(date: .abbreviated, time: .standard))
+                Text(transaction.formattedDate)
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.secondary)
             }
@@ -110,6 +109,33 @@ extension PaymentDetails {
         case .failed:
             return "Failed"
         }
+    }
+
+    public var formattedDate: String {
+        let calendar = Calendar.current
+        let now = Date.now
+        let date = Date(timeIntervalSince1970: TimeInterval(self.latestUpdateTimestamp))
+        let minutesSince = abs(date.timeIntervalSince(now)) / 60
+
+        // Just now
+        if minutesSince <= 2 {
+            return "Just now"
+        }
+
+        // Today, at 1.15pm
+        if calendar.isDate(date, inSameDayAs: now) {
+            return "Today, \(date.formatted(date: .omitted, time: .shortened))"
+        }
+
+        // Jun 24, at 1.15pm
+        if calendar.component(.year, from: date) == calendar.component(.year, from: now) {
+            return
+                "\(date.formatted(.dateTime.month().day())), \(date.formatted(date: .omitted, time: .shortened))"
+        }
+
+        // Jun 24, 2024 at 1.15pm
+        return
+            "\(date.formatted(.dateTime.month().day().year())), \(date.formatted(date: .omitted, time: .shortened))"
     }
 
     public var amountColor: Color {
