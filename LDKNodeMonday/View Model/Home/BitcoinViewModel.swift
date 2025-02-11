@@ -48,7 +48,7 @@ class BitcoinViewModel: ObservableObject {
 
     func getStatus() async {
         let status = lightningClient.status()
-        let sCopy = status // To avoid issues with non-sendable object
+        let sCopy = status  // To avoid issues with non-sendable object
         await MainActor.run {
             self.status = sCopy
             self.isStatusFinished = true
