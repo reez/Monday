@@ -46,18 +46,16 @@ struct PaymentsListView: View {
 
     var body: some View {
         List {
-            ForEach(sections, id: \.status) { section in
-                Section(header: Text(statusDescriptions[section.status] ?? "")) {
-                    ForEach(section.payments, id: \.id) { payment in
-                        VStack {
-                            HStack(alignment: .center, spacing: 15) {
-                                VStack(alignment: .leading, spacing: 5.0) {
-                                    PaymentDetailView(payment: payment)
-                                }
-                                Spacer()
+            Section(header: Text("Activity")) {
+                ForEach(payments, id: \.id) { payment in
+                    VStack {
+                        HStack(alignment: .center, spacing: 15) {
+                            VStack(alignment: .leading, spacing: 5.0) {
+                                PaymentDetailView(payment: payment)
                             }
-                            .padding(.all, 10.0)
+                            Spacer()
                         }
+                        .padding(.all, 10.0)
                     }
                 }
             }
