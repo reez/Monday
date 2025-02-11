@@ -343,14 +343,6 @@ extension DisplayBalanceType {
         ) ?? DisplayBalanceType.unifiedFiat
 }
 
-class SharedNamespace: ObservableObject {
-    let animation: Namespace.ID
-
-    init(namespace: Namespace.ID) {
-        self.animation = namespace
-    }
-}
-
 #if DEBUG
     #Preview {
         BitcoinView(
