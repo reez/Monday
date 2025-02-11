@@ -259,9 +259,9 @@ struct BalanceHeader: View {
 
     var balanceValue: String {
         switch displayBalanceType {
-        case .fiatBtc:
-            return viewModel.totalUSDValue
         case .fiatSats:
+            return viewModel.totalUSDValue
+        case .fiatBtc:
             return viewModel.totalUSDValue
         case .btcFiat:
             return "₿" + viewModel.unifiedBalance.formattedSatoshis()
@@ -280,10 +280,10 @@ struct BalanceHeader: View {
 
     var secondaryValue: String {
         switch displayBalanceType {
-        case .fiatBtc:
-            return "₿" + viewModel.unifiedBalance.formattedSatoshis()
         case .fiatSats:
             return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
+        case .fiatBtc:
+            return "₿" + viewModel.unifiedBalance.formattedSatoshis()
         case .btcFiat:
             return viewModel.totalUSDValue
         case .totalSats:
@@ -299,15 +299,9 @@ struct BalanceHeader: View {
         switch displayBalanceType {
         case .fiatBtc:
             return ""
-        case .fiatSats:
-            return "sats"
         case .btcFiat:
             return ""
-        case .totalSats:
-            return "sats"
-        case .onchainSats:
-            return "sats"
-        case .lightningSats:
+        default:
             return "sats"
         }
     }
@@ -319,8 +313,8 @@ enum NavigationDestination: Hashable {
 }
 
 public enum DisplayBalanceType: String {
-    case fiatBtc
     case fiatSats
+    case fiatBtc
     case btcFiat
     case totalSats
     case onchainSats
@@ -330,9 +324,9 @@ public enum DisplayBalanceType: String {
 extension DisplayBalanceType {
     mutating func next() {
         switch self {
-        case .fiatBtc:
-            self = .fiatSats
         case .fiatSats:
+            self = .fiatBtc
+        case .fiatBtc:
             self = .btcFiat
         case .btcFiat:
             self = .totalSats
@@ -341,7 +335,7 @@ extension DisplayBalanceType {
         case .onchainSats:
             self = .lightningSats
         case .lightningSats:
-            self = .fiatBtc
+            self = .fiatSats
         }
     }
 
