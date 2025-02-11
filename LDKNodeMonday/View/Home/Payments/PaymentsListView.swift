@@ -14,7 +14,9 @@ struct PaymentSection {
 }
 
 struct PaymentsListView: View {
-    let payments: [PaymentDetails]
+    @Binding var payments: [PaymentDetails]
+    @Binding var displayBalanceType: DisplayBalanceType
+    
     var sections: [PaymentSection] {
         orderedStatuses.compactMap { status -> PaymentSection? in
             guard let paymentsForStatus = groupedPayments[status] else { return nil }
@@ -26,20 +28,7 @@ struct PaymentsListView: View {
         .pending,
         .failed,
     ]
-    var statusDescriptions: [PaymentStatus: String] {
-        [
-            .succeeded: "Success",
-            .pending: "Pending",
-            .failed: "Failure",
-        ]
-    }
-    var statusColors: [PaymentStatus: Color] {
-        [
-            .succeeded: .green,
-            .pending: .yellow,
-            .failed: .red,
-        ]
-    }
+
     var groupedPayments: [PaymentStatus: [PaymentDetails]] {
         Dictionary(grouping: payments, by: { $0.status })
     }
@@ -48,7 +37,7 @@ struct PaymentsListView: View {
         List {
             Section {
                 ForEach(payments, id: \.id) { payment in
-                    TransactionItemView(transaction: payment)
+                    TransactionItemView(transaction: payment, displayBalanceType: displayBalanceType)
                         .padding(.vertical, 5)
                         .listRowSeparator(.hidden)
                 }
@@ -64,6 +53,7 @@ struct PaymentsListView: View {
 
 struct TransactionItemView: View {
     var transaction: PaymentDetails
+    var displayBalanceType: DisplayBalanceType
 
     var body: some View {
         HStack(spacing: 15) {
@@ -72,45 +62,95 @@ struct TransactionItemView: View {
                 Circle()
                     .fill(Color.bitcoinNeutral1)
                     .frame(width: 40, height: 40)
-                Image(
-                    systemName: transaction.status == .failed
-                        ? "x.circle"
-                        : transaction.status == .pending
-                            ? "clock"
-                            : transaction.direction == .inbound ? "arrow.down" : "arrow.up"
-                )
+                Image(systemName: transaction.iconName)
                 .foregroundColor(.bitcoinNeutral8)
                 .font(.subheadline)
                 .fontWeight(.bold)
             }
             VStack(alignment: .leading) {
-                Text(
-                    transaction.status == PaymentStatus.failed
-                        ? "Failed"
-                        : transaction.status == PaymentStatus.pending
-                            ? "Pending" : transaction.direction == .inbound ? "Received" : "Sent"
-                )
+                Text(transaction.title)
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                Text(date.formatted(date: .abbreviated, time: .shortened))
+                Text(date.formatted(date: .abbreviated, time: .standard))
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
             Spacer()
-            let paymentAmount = transaction.amountMsat ?? 0
-            let amount = paymentAmount.formattedAmount()
-            Text(
-                (transaction.direction == .inbound ? "+ " : "- ")
-                    + amount
-            )
-            .font(.system(size: 18, weight: .regular))
-            .foregroundColor(
-                transaction.status == .failed
-                    ? .bitcoinNeutral4
-                    : transaction.status == .pending
-                        ? .bitcoinNeutral4
-                        : transaction.direction == .inbound ? .bitcoinGreen : .bitcoinNeutral8
-            )
+            VStack(alignment: .trailing) {
+                Text(transaction.primaryAmount(displayBalanceType: displayBalanceType))
+                .font(.system(size: 18, weight: .regular))
+                .foregroundColor(transaction.amountColor)
+                Text(transaction.secondaryAmount(displayBalanceType: displayBalanceType))
+                    .font(.footnote)
+                    .foregroundColor(transaction.secondaryAmountColor)
+            }
+        }
+    }
+}
+
+extension PaymentDetails {
+    public var iconName: String {
+        switch self.status {
+        case .succeeded:
+            return self.direction == .inbound ? "arrow.down" : "arrow.up"
+        case .pending:
+            return "clock"
+        case .failed:
+            return "x.circle"
+        }
+    }
+    
+    public var title: String {
+        switch self.status {
+        case .succeeded:
+            return self.direction == .inbound ? "Received" : "Sent"
+        case .pending:
+            return "Pending"
+        case .failed:
+            return "Failed"
+        }
+    }
+    
+    public var amountColor: Color {
+        switch self.status {
+        case .succeeded:
+            return self.direction == .inbound ? .bitcoinGreen : .bitcoinNeutral8
+        case .pending:
+            return .bitcoinNeutral4
+        case .failed:
+            return .bitcoinNeutral4
+        }
+    }
+    
+    public var secondaryAmountColor: Color {
+        switch self.status {
+        case .succeeded:
+            return .secondary
+        case .pending:
+            return .bitcoinNeutral4
+        case .failed:
+            return .bitcoinNeutral4
+        }
+    }
+    
+    public func primaryAmount(displayBalanceType: DisplayBalanceType) -> String {
+        let paymentAmount = self.amountMsat ?? 0
+        let satsAmount = paymentAmount.formattedAmount()
+        let fiatAmount = Double(paymentAmount / 1000).valueInUSD(price: 26030) // TODO: expose price here
+        switch self.status {
+        default:
+            return (self.direction == .inbound ? "+ " : "- ")
+            + (displayBalanceType == .fiatSats ? fiatAmount : satsAmount)
+        }
+    }
+    
+    public func secondaryAmount(displayBalanceType: DisplayBalanceType) -> String {
+        let paymentAmount = self.amountMsat ?? 0
+        let satsAmount = paymentAmount.formattedAmount()
+        let fiatAmount = Double(paymentAmount / 1000).valueInUSD(price: 26030) // TODO: expose price here
+        switch self.status {
+        default:
+            return displayBalanceType == .fiatSats ? satsAmount : fiatAmount
         }
     }
 }
@@ -118,7 +158,8 @@ struct TransactionItemView: View {
 #if DEBUG
     #Preview {
         PaymentsListView(
-            payments: mockPayments
+            payments: .constant(mockPayments),
+            displayBalanceType: .constant(.fiatSats)
         )
     }
 #endif

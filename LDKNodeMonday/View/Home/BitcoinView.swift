@@ -192,7 +192,7 @@ struct BitcoinView: View {
                     }
                 }
             ) {
-                PaymentsView(transactions: $viewModel.transactions)
+                PaymentsView(transactions: $viewModel.transactions, displayBalanceType: $displayBalanceType)
                     .presentationDetents([.medium, .large])
             }
 
