@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import LDKNode
 
 struct PaymentsView: View {
-    @ObservedObject var viewModel: PaymentsViewModel
+    @Binding var transactions: [PaymentDetails]
 
     var body: some View {
 
@@ -28,22 +29,15 @@ struct PaymentsView: View {
 
                 Spacer()
 
-                if viewModel.payments.isEmpty {
+                if transactions.isEmpty {
                     Text("No Payments")
                         .font(.system(.caption, design: .monospaced))
                         .padding()
                 } else {
-                    PaymentsListView(payments: viewModel.payments)
-                        .refreshable {
-                            viewModel.listPayments()
-                        }
+                    PaymentsListView(payments: transactions)
                 }
 
             }
-            .onAppear {
-                viewModel.listPayments()
-            }
-
         }
 
     }
@@ -52,6 +46,6 @@ struct PaymentsView: View {
 
 #if DEBUG
     #Preview {
-        PaymentsView(viewModel: .init(lightningClient: .mock))
+        PaymentsView(transactions: .constant(mockPayments))
     }
 #endif

@@ -192,7 +192,7 @@ struct BitcoinView: View {
                     }
                 }
             ) {
-                PaymentsView(viewModel: .init(lightningClient: viewModel.lightningClient))
+                PaymentsView(transactions: $viewModel.transactions)
                     .presentationDetents([.medium, .large])
             }
 
