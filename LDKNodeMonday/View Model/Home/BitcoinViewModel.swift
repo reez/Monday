@@ -44,7 +44,7 @@ class BitcoinViewModel: ObservableObject {
         await getBalanceDetails()
         await getPrices()
         await getStatus()
-        getTransactions()
+        await getTransactions()
         getColor()
     }
 
@@ -91,8 +91,12 @@ class BitcoinViewModel: ObservableObject {
         }
     }
 
-    func getTransactions() {
-        self.transactions = lightningClient.listPayments()
+    func getTransactions() async {
+        let transactions = lightningClient.listPayments()
+        let tCopy = transactions
+        await MainActor.run {
+            self.transactions = tCopy
+        }
     }
 
     func getColor() {
