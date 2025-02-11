@@ -46,116 +46,79 @@ struct PaymentsListView: View {
 
     var body: some View {
         List {
-            Section(header: Text("Activity")) {
+            Section {
                 ForEach(payments, id: \.id) { payment in
-                    VStack {
-                        HStack(alignment: .center, spacing: 15) {
-                            VStack(alignment: .leading, spacing: 5.0) {
-                                PaymentDetailView(payment: payment)
-                            }
-                            Spacer()
-                        }
-                        .padding(.all, 10.0)
-                    }
+                    TransactionItemView(transaction: payment)
+                        .padding(.vertical, 5)
+                        .listRowSeparator(.hidden)
                 }
+            } header: {
+                Text("Activity")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
             }
         }
+        .listStyle(.plain)
     }
 }
 
-struct PaymentDetailView: View {
-    let payment: PaymentDetails
+struct TransactionItemView: View {
+    var transaction: PaymentDetails
 
     var body: some View {
-        VStack {
-            HStack(alignment: .center, spacing: 15) {
-                VStack(alignment: .leading, spacing: 5.0) {
-                    HStack {
-                        Image(systemName: payment.direction == .inbound ? "arrow.down" : "arrow.up")
-                            .font(.subheadline)
-                            .bold()
-                        let paymentAmount = payment.amountMsat ?? 0
-                        let amount = paymentAmount.formattedAmount()
-                        Text("\(amount) sats")
-                            .font(.body)
-                            .bold()
-                    }
-                    HStack {
-                        Text("Payment ID")
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.75)
-                        Text(payment.id)
-                            .truncationMode(.middle)
-                            .lineLimit(1)
-                            .foregroundColor(.secondary)
-                    }
-                    .font(.caption)
-
-                    if let preimage = payment.kind.preimageAsString {
-                        HStack {
-                            Text("Preimage")
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.75)
-                            Text(preimage)
-                                .truncationMode(.middle)
-                                .lineLimit(1)
-                                .foregroundColor(.secondary)
-                        }
-                        .font(.caption)
-                    }
-
-                    HStack(spacing: 4) {
-                        Text("Updated at")
-                        Text(
-                            Date(
-                                timeIntervalSince1970: TimeInterval(payment.latestUpdateTimestamp)
-                            ),
-                            style: .time
-                        )
-                    }
-                    .fontWeight(.light)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .minimumScaleFactor(0.75)
-
-                }
-                Spacer()
+        HStack(spacing: 15) {
+            let date = Date(timeIntervalSince1970: TimeInterval(transaction.latestUpdateTimestamp))
+            ZStack {
+                Circle()
+                    .fill(Color.bitcoinNeutral1)
+                    .frame(width: 40, height: 40)
+                Image(
+                    systemName: transaction.status == .failed
+                        ? "x.circle"
+                        : transaction.status == .pending
+                            ? "clock"
+                            : transaction.direction == .inbound ? "arrow.down" : "arrow.up"
+                )
+                .foregroundColor(.bitcoinNeutral8)
+                .font(.subheadline)
+                .fontWeight(.bold)
             }
-            .padding(.all, 10.0)
+            VStack(alignment: .leading) {
+                Text(
+                    transaction.status == PaymentStatus.failed
+                        ? "Failed"
+                        : transaction.status == PaymentStatus.pending
+                            ? "Pending" : transaction.direction == .inbound ? "Received" : "Sent"
+                )
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                Text(date.formatted(date: .abbreviated, time: .shortened))
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
+            Spacer()
+            let paymentAmount = transaction.amountMsat ?? 0
+            let amount = paymentAmount.formattedAmount()
+            Text(
+                (transaction.direction == .inbound ? "+ " : "- ")
+                    + amount
+            )
+            .font(.system(size: 18, weight: .regular))
+            .foregroundColor(
+                transaction.status == .failed
+                    ? .bitcoinNeutral4
+                    : transaction.status == .pending
+                        ? .bitcoinNeutral4
+                        : transaction.direction == .inbound ? .bitcoinGreen : .bitcoinNeutral8
+            )
         }
     }
-
 }
 
 #if DEBUG
     #Preview {
         PaymentsListView(
-            payments: [
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .succeeded,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .pending,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-                .init(
-                    id: .localizedName(of: .ascii),
-                    kind: .bolt11(hash: .localizedName(of: .ascii), preimage: nil, secret: nil),
-                    amountMsat: nil,
-                    direction: .inbound,
-                    status: .failed,
-                    latestUpdateTimestamp: 1_718_841_600
-                ),
-            ]
+            payments: mockPayments
         )
     }
 #endif
