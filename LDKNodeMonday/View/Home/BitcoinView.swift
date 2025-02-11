@@ -259,11 +259,13 @@ struct BalanceHeader: View {
 
     var balanceValue: String {
         switch displayBalanceType {
-        case .unifiedFiat:
+        case .fiatBtc:
             return viewModel.totalUSDValue
-        case .unifiedBTC:
+        case .fiatSats:
+            return viewModel.totalUSDValue
+        case .btcFiat:
             return "₿" + viewModel.unifiedBalance.formattedSatoshis()
-        case .unifiedSats:
+        case .totalSats:
             return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
         case .onchainSats:
             return viewModel.balanceDetails.totalOnchainBalanceSats.formatted(
@@ -278,11 +280,13 @@ struct BalanceHeader: View {
 
     var secondaryValue: String {
         switch displayBalanceType {
-        case .unifiedFiat:
+        case .fiatBtc:
             return "₿" + viewModel.unifiedBalance.formattedSatoshis()
-        case .unifiedBTC:
+        case .fiatSats:
+            return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
+        case .btcFiat:
             return viewModel.totalUSDValue
-        case .unifiedSats:
+        case .totalSats:
             return "Total"
         case .onchainSats:
             return "Onchain"
@@ -293,11 +297,13 @@ struct BalanceHeader: View {
 
     var unitValue: String {
         switch displayBalanceType {
-        case .unifiedFiat:
+        case .fiatBtc:
             return ""
-        case .unifiedBTC:
+        case .fiatSats:
+            return "Sats"
+        case .btcFiat:
             return ""
-        case .unifiedSats:
+        case .totalSats:
             return "Sats"
         case .onchainSats:
             return "Sats"
@@ -313,9 +319,10 @@ enum NavigationDestination: Hashable {
 }
 
 public enum DisplayBalanceType: String {
-    case unifiedFiat
-    case unifiedBTC
-    case unifiedSats
+    case fiatBtc
+    case fiatSats
+    case btcFiat
+    case totalSats
     case onchainSats
     case lightningSats
 }
@@ -323,24 +330,26 @@ public enum DisplayBalanceType: String {
 extension DisplayBalanceType {
     mutating func next() {
         switch self {
-        case .unifiedFiat:
-            self = .unifiedBTC
-        case .unifiedBTC:
-            self = .unifiedSats
-        case .unifiedSats:
+        case .fiatBtc:
+            self = .fiatSats
+        case .fiatSats:
+            self = .btcFiat
+        case .btcFiat:
+            self = .totalSats
+        case .totalSats:
             self = .onchainSats
         case .onchainSats:
             self = .lightningSats
         case .lightningSats:
-            self = .unifiedFiat
+            self = .fiatBtc
         }
     }
 
     static let userDefaults: DisplayBalanceType =
         DisplayBalanceType(
             rawValue: UserDefaults.standard.string(forKey: "displayBalanceType")
-                ?? DisplayBalanceType.unifiedFiat.rawValue
-        ) ?? DisplayBalanceType.unifiedFiat
+                ?? DisplayBalanceType.fiatBtc.rawValue
+        ) ?? DisplayBalanceType.fiatBtc
 }
 
 #if DEBUG
