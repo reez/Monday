@@ -16,7 +16,7 @@ struct PaymentSection {
 struct PaymentsListView: View {
     @Binding var payments: [PaymentDetails]
     @Binding var displayBalanceType: DisplayBalanceType
-    
+
     var sections: [PaymentSection] {
         orderedStatuses.compactMap { status -> PaymentSection? in
             guard let paymentsForStatus = groupedPayments[status] else { return nil }
@@ -37,9 +37,12 @@ struct PaymentsListView: View {
         List {
             Section {
                 ForEach(payments, id: \.id) { payment in
-                    TransactionItemView(transaction: payment, displayBalanceType: displayBalanceType)
-                        .padding(.vertical, 5)
-                        .listRowSeparator(.hidden)
+                    TransactionItemView(
+                        transaction: payment,
+                        displayBalanceType: displayBalanceType
+                    )
+                    .padding(.vertical, 5)
+                    .listRowSeparator(.hidden)
                 }
             } header: {
                 Text("Activity")
@@ -63,25 +66,23 @@ struct TransactionItemView: View {
                     .fill(Color.bitcoinNeutral1)
                     .frame(width: 40, height: 40)
                 Image(systemName: transaction.iconName)
-                .foregroundColor(.bitcoinNeutral8)
-                .font(.subheadline)
-                .fontWeight(.bold)
+                    .font(.system(.subheadline, weight: .bold))
+                    .foregroundColor(.bitcoinNeutral8)
             }
             VStack(alignment: .leading) {
                 Text(transaction.title)
-                .font(.subheadline)
-                .fontWeight(.semibold)
+                    .font(.system(.body, design: .rounded, weight: .medium))
                 Text(date.formatted(date: .abbreviated, time: .standard))
-                    .font(.footnote)
+                    .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.secondary)
             }
             Spacer()
             VStack(alignment: .trailing) {
                 Text(transaction.primaryAmount(displayBalanceType: displayBalanceType))
-                .font(.system(size: 18, weight: .regular))
-                .foregroundColor(transaction.amountColor)
+                    .font(.system(.body, design: .rounded, weight: .medium))
+                    .foregroundColor(transaction.amountColor)
                 Text(transaction.secondaryAmount(displayBalanceType: displayBalanceType))
-                    .font(.footnote)
+                    .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(transaction.secondaryAmountColor)
             }
         }
@@ -99,7 +100,7 @@ extension PaymentDetails {
             return "x.circle"
         }
     }
-    
+
     public var title: String {
         switch self.status {
         case .succeeded:
@@ -110,7 +111,7 @@ extension PaymentDetails {
             return "Failed"
         }
     }
-    
+
     public var amountColor: Color {
         switch self.status {
         case .succeeded:
@@ -121,7 +122,7 @@ extension PaymentDetails {
             return .bitcoinNeutral4
         }
     }
-    
+
     public var secondaryAmountColor: Color {
         switch self.status {
         case .succeeded:
@@ -132,22 +133,22 @@ extension PaymentDetails {
             return .bitcoinNeutral4
         }
     }
-    
+
     public func primaryAmount(displayBalanceType: DisplayBalanceType) -> String {
         let paymentAmount = self.amountMsat ?? 0
         let satsAmount = paymentAmount.formattedAmount()
-        let fiatAmount = Double(paymentAmount / 1000).valueInUSD(price: 26030) // TODO: expose price here
+        let fiatAmount = Double(paymentAmount / 1000).valueInUSD(price: 26030)  // TODO: expose price here
         switch self.status {
         default:
             return (self.direction == .inbound ? "+ " : "- ")
-            + (displayBalanceType == .fiatSats ? fiatAmount : satsAmount)
+                + (displayBalanceType == .fiatSats ? fiatAmount : satsAmount)
         }
     }
-    
+
     public func secondaryAmount(displayBalanceType: DisplayBalanceType) -> String {
         let paymentAmount = self.amountMsat ?? 0
         let satsAmount = paymentAmount.formattedAmount()
-        let fiatAmount = Double(paymentAmount / 1000).valueInUSD(price: 26030) // TODO: expose price here
+        let fiatAmount = Double(paymentAmount / 1000).valueInUSD(price: 26030)  // TODO: expose price here
         switch self.status {
         default:
             return displayBalanceType == .fiatSats ? satsAmount : fiatAmount
