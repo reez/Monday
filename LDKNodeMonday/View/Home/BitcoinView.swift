@@ -101,6 +101,7 @@ struct BitcoinView: View {
                     }
                 }
             }
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
             .onAppear {
                 Task {
                     await viewModel.update()
