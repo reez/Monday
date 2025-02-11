@@ -249,6 +249,7 @@ struct BalanceHeader: View {
             .font(.system(.headline, design: .rounded, weight: .medium))
         }
         .animation(.spring(), value: viewModel.isPriceFinished)
+        .sensoryFeedback(.increase, trigger: displayBalanceType)
         .onTapGesture {
             withAnimation {
                 displayBalanceType.next()
