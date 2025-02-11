@@ -16,6 +16,7 @@ class BitcoinViewModel: ObservableObject {
     @Published var isStatusFinished: Bool = false
     @Published var balanceDetails: BalanceDetails = .empty
     @Published var unifiedBalance: UInt64 = 0
+    @Published var transactions: [PaymentDetails] = []
     @Published var isBalanceDetailsFinished: Bool = false
     @Published var isPriceFinished: Bool = false
 
@@ -43,6 +44,7 @@ class BitcoinViewModel: ObservableObject {
         await getBalanceDetails()
         await getPrices()
         await getStatus()
+        getTransactions()
         getColor()
     }
 
@@ -87,6 +89,10 @@ class BitcoinViewModel: ObservableObject {
                 )
             }
         }
+    }
+
+    func getTransactions() {
+        self.transactions = lightningClient.listPayments()
     }
 
     func getColor() {
