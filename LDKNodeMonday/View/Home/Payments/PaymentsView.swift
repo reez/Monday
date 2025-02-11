@@ -31,6 +31,9 @@ struct PaymentsView: View {
 
 #if DEBUG
     #Preview {
-        PaymentsView(transactions: .constant(mockPayments), displayBalanceType: .constant(.fiatSats))
+        PaymentsView(
+            transactions: .constant(mockPayments),
+            displayBalanceType: .constant(.fiatSats)
+        )
     }
 #endif
