@@ -48,7 +48,7 @@ class BitcoinViewModel: ObservableObject {
 
     func getStatus() async {
         let status = lightningClient.status()
-        let sCopy = status
+        let sCopy = status // To avoid issues with non-sendable object
         await MainActor.run {
             self.status = sCopy
             self.isStatusFinished = true
@@ -58,7 +58,6 @@ class BitcoinViewModel: ObservableObject {
     func getBalanceDetails() async {
         let balanceDetails = await lightningClient.balanceDetails()
         let bdCopy = balanceDetails  // To avoid issues with non-sendable object
-
         await MainActor.run {
             self.balanceDetails = bdCopy
             self.unifiedBalance =
