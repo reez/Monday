@@ -15,7 +15,7 @@ extension UInt64 {
 
     func formattedBtc() -> String {
         if self == 0 {
-            return "0.00 000 000"
+            return "0"
         } else {
             let balanceString = String(format: "%010d", self)
 
