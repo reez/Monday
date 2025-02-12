@@ -75,9 +75,9 @@ struct TransactionItemView: View {
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.secondary)
             }
-            
+
             Spacer()
-            
+
             VStack(alignment: .trailing) {
                 Text(transaction.primaryAmount(displayBalanceType: displayBalanceType))
                     .font(.system(.body, design: .rounded, weight: .medium))
@@ -126,12 +126,19 @@ extension PaymentDetails {
         if minutesSince <= 1 {
             return "Just now"
         }
-       
+
         // X minutes ago
         if minutesSince < 60 {
             if #available(iOS 18.0, *) {
                 // This should work better localized
-                let attributedString = date.formatted(.reference(to: now, allowedFields: [.minute], maxFieldCount: 1, thresholdField: .minute))
+                let attributedString = date.formatted(
+                    .reference(
+                        to: now,
+                        allowedFields: [.minute],
+                        maxFieldCount: 1,
+                        thresholdField: .minute
+                    )
+                )
                 return String(attributedString.characters)
             } else {
                 return "\(Int(minutesSince)) minutes ago"

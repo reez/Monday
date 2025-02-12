@@ -518,7 +518,7 @@ let mockPayments: [PaymentDetails] = [
         status: .succeeded,
         latestUpdateTimestamp: UInt64(Date.now.addingTimeInterval(0.5 * 3600).timeIntervalSince1970)
     ),
-        .init(
+    .init(
         id: "3",
         kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
         amountMsat: 340_000_000,
@@ -541,7 +541,7 @@ let mockPayments: [PaymentDetails] = [
         direction: .outbound,
         status: .failed,
         latestUpdateTimestamp: 1_718_841_640
-    )
+    ),
 ]
 
 extension BalanceDetails {
