@@ -16,6 +16,7 @@ struct SettingsView: View {
     @State private var showNodeIDErrorAlert = false
     @State private var showStopNodeConfirmation = false
     @State private var showDeleteSeedConfirmation = false
+    @State private var showToggleTestData = false
 
     var body: some View {
         NavigationView {
@@ -92,6 +93,21 @@ struct SettingsView: View {
                     Text("Lightning Node").foregroundColor(.primary)
                 }
 
+                // Developer section
+                Section {
+                    Toggle(
+                        isOn: Binding(
+                            get: { viewModel.walletClient.appMode == .mock },
+                            set: { newValue in
+                                showToggleTestData = true
+                            }
+                        ),
+                        label: { Label("Use test data", systemImage: "testtube.2") }
+                    )
+                } header: {
+                    Text("Design & Develop").foregroundColor(.primary)
+                }
+
                 // Danger Zone section
                 Section {
                     Button {
@@ -157,6 +173,20 @@ struct SettingsView: View {
                         viewModel.nodeIDError = nil
                     }
                 )
+            }
+            .alert("Change and restart?", isPresented: $showToggleTestData) {
+                Button("Cancel", role: .cancel) {}
+                Button("Restart") {
+                    Task {
+                        await viewModel.walletClient.restart(
+                            newNetwork: viewModel.walletClient.network,
+                            newServer: viewModel.walletClient.server,
+                            appMode: viewModel.walletClient.appMode == .mock ? .live : .mock
+                        )
+                    }
+                }
+            } message: {
+                Text("This change requires a restart of your node.")
             }
         }
     }

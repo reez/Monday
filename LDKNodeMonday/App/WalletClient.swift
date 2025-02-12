@@ -16,10 +16,12 @@ public class WalletClient {
     public var lightningClient: LightningNodeClient
     public var network = Network.signet
     public var server = EsploraServer.mutiny_signet
+    public var appMode: AppMode
     public var appState = AppState.loading
     public var appError: Error?
 
     public init(appMode: AppMode) {
+        self.appMode = appMode
         switch appMode {
         case .live:
             self.keyClient = .live
@@ -28,7 +30,6 @@ public class WalletClient {
             self.keyClient = .mock
             self.lightningClient = .mock
         }
-
     }
 
     func createWallet(seedPhrase: String, network: Network, server: EsploraServer) async {
@@ -78,10 +79,20 @@ public class WalletClient {
         try? self.lightningClient.stop()
     }
 
-    func restart(newNetwork: Network, newServer: EsploraServer) async {
+    func restart(newNetwork: Network, newServer: EsploraServer, appMode: AppMode? = .live) async {
         do {
             await MainActor.run {
                 self.appState = .loading
+                switch appMode {
+                case .mock:
+                    self.appMode = .mock
+                    self.keyClient = .mock
+                    self.lightningClient = .mock
+                default:
+                    self.appMode = .live
+                    self.keyClient = .live
+                    self.lightningClient = .live
+                }
             }
             try await lightningClient.restart()
             lightningClient.listenForEvents()
