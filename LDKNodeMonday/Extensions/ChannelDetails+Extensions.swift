@@ -33,7 +33,7 @@ extension ChannelDetails {
             } else if let boolValue = child.value as? Bool {
                 valueString = boolValue ? "true" : "false"
             } else if let msatValue = child.value as? UInt64, label.hasSuffix("Msat") {
-                valueString = msatValue.formattedSats()
+                valueString = msatValue.mSatsAsSats.formatted(.number.notation(.automatic))
             } else if let msatValue = child.value as? UInt32, label.hasSuffix("Msat") {
                 valueString = msatValue.formattedAmount()
             } else if let numberValue = child.value as? NSNumber {

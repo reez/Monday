@@ -180,7 +180,7 @@ extension PaymentDetails {
 
     public func primaryAmount(displayBalanceType: DisplayBalanceType) -> String {
         let mSatsAmount = self.amountMsat ?? 0
-        let satsAmount = (self.amountMsat ?? 0) / 1000
+        let satsAmount = mSatsAmount / 1000
         let symbol = self.direction == .inbound ? "+ " : "- "
 
         let formattedValue: String = {
@@ -190,7 +190,7 @@ extension PaymentDetails {
             case .btcFiat:
                 return satsAmount.formattedSatoshis()
             default:
-                return mSatsAmount.formattedSats()
+                return satsAmount.formatted(.number.notation(.automatic))
             }
         }()
 
@@ -199,12 +199,12 @@ extension PaymentDetails {
 
     public func secondaryAmount(displayBalanceType: DisplayBalanceType) -> String {
         let mSatsAmount = self.amountMsat ?? 0
-        let satsAmount = (self.amountMsat ?? 0) / 1000
+        let satsAmount = mSatsAmount / 1000
 
         let formattedValue: String = {
             switch displayBalanceType {
             case .fiatSats:
-                return mSatsAmount.formattedSats()
+                return satsAmount.formatted(.number.notation(.automatic))
             case .fiatBtc:
                 return satsAmount.formattedSatoshis()
             default:
@@ -220,7 +220,7 @@ extension PaymentDetails {
     #Preview {
         PaymentsListView(
             payments: .constant(mockPayments),
-            displayBalanceType: .constant(.btcFiat)
+            displayBalanceType: .constant(.fiatSats)
         )
     }
 #endif

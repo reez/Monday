@@ -9,17 +9,8 @@ import Foundation
 
 extension UInt64 {
 
-    func formattedSats() -> String {
-        let formatter: NumberFormatter = {
-            let f = NumberFormatter()
-            f.numberStyle = .decimal
-            f.groupingSeparator = ","
-            f.groupingSize = 3
-            f.locale = Locale(identifier: "en_US")
-            return f
-        }()
-
-        return formatter.string(from: NSNumber(value: self / 1000)) ?? ""
+    var mSatsAsSats: UInt64 {
+        return self / 1000
     }
 
     func formattedSatoshis() -> String {
