@@ -68,7 +68,7 @@ struct TransactionItemView: View {
                     .fill(Color.bitcoinNeutral2)
                     .frame(width: 40, height: 40)
                 Image(systemName: transaction.iconName)
-                    .font(.system(.subheadline, weight: .bold))
+                    .font(.system(.body, weight: .bold))
                     .foregroundColor(.bitcoinNeutral8)
             }
             VStack(alignment: .leading) {
