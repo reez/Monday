@@ -180,7 +180,7 @@ extension PaymentDetails {
 
     public func primaryAmount(displayBalanceType: DisplayBalanceType) -> String {
         let mSatsAmount = self.amountMsat ?? 0
-        let satsAmount = mSatsAmount / 1000
+        let satsAmount = mSatsAmount.mSatsAsSats
         let symbol = self.direction == .inbound ? "+ " : "- "
 
         let formattedValue: String = {
@@ -199,7 +199,7 @@ extension PaymentDetails {
 
     public func secondaryAmount(displayBalanceType: DisplayBalanceType) -> String {
         let mSatsAmount = self.amountMsat ?? 0
-        let satsAmount = mSatsAmount / 1000
+        let satsAmount = mSatsAmount.mSatsAsSats
 
         let formattedValue: String = {
             switch displayBalanceType {
