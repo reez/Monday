@@ -70,6 +70,17 @@ struct TransactionItemView: View {
                 Image(systemName: transaction.iconName)
                     .font(.system(.body, weight: .bold))
                     .foregroundColor(.bitcoinNeutral8)
+                Circle()
+                    .fill(Color.white)
+                    .frame(width: 16, height: 16)
+                    .overlay(
+                        Image(systemName: transaction.kind == .onchain ? "bitcoinsign" : "bolt")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 12, height: 12)
+                            .foregroundColor(.secondary)
+                    )
+                    .offset(x: 20, y: 11)
             }
             VStack(alignment: .leading) {
                 Text(transaction.title)
