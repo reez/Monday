@@ -122,43 +122,28 @@ extension PaymentDetails {
         let date = Date(timeIntervalSince1970: TimeInterval(self.latestUpdateTimestamp))
         let minutesSince = abs(date.timeIntervalSince(now)) / 60
 
-        // Just now
-        if minutesSince <= 1 {
+        switch minutesSince {
+        case ..<1:
             return "Just now"
-        }
-
-        // X minutes ago
-        if minutesSince < 60 {
+            
+        case ..<60:
             if #available(iOS 18.0, *) {
-                // This should work better localized
-                let attributedString = date.formatted(
-                    .reference(
-                        to: now,
-                        allowedFields: [.minute],
-                        maxFieldCount: 1,
-                        thresholdField: .minute
-                    )
-                )
-                return String(attributedString.characters)
+                return String(date.formatted(.reference(to: now, allowedFields: [.minute], maxFieldCount: 1, thresholdField: .minute)).characters)
             } else {
                 return "\(Int(minutesSince)) minutes ago"
             }
-        }
 
-        // Today, at 1.15pm
-        if calendar.isDate(date, inSameDayAs: now) {
-            return "Today, \(date.formatted(date: .omitted, time: .shortened))"
-        }
+        default:
+            if calendar.isDate(date, inSameDayAs: now) {
+                return "Today at \(date.formatted(date: .omitted, time: .shortened))"
+            }
+            
+            let dateFormat: Date.FormatStyle = calendar.component(.year, from: date) == calendar.component(.year, from: now)
+                ? .dateTime.month(.abbreviated).day()
+                : .dateTime.month(.abbreviated).day().year()
 
-        // Jun 24, at 1.15pm
-        if calendar.component(.year, from: date) == calendar.component(.year, from: now) {
-            return
-                "\(date.formatted(.dateTime.month().day())), \(date.formatted(date: .omitted, time: .shortened))"
+            return date.formatted(dateFormat)
         }
-
-        // Jun 24, 2024 at 1.15pm
-        return
-            "\(date.formatted(.dateTime.month().day().year())), \(date.formatted(date: .omitted, time: .shortened))"
     }
 
     public var amountColor: Color {
