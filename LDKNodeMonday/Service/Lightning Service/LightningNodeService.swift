@@ -512,7 +512,7 @@ let mockPayments: [PaymentDetails] = [
     ),
     .init(
         id: "2",
-        kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
+        kind: .onchain,
         amountMsat: 640_000_000,
         direction: .inbound,
         status: .succeeded,
@@ -536,7 +536,7 @@ let mockPayments: [PaymentDetails] = [
     ),
     .init(
         id: "5",
-        kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
+        kind: .onchain,
         amountMsat: 210_000_000,
         direction: .outbound,
         status: .failed,
