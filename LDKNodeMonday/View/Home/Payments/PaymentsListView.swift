@@ -62,7 +62,7 @@ struct TransactionItemView: View {
         HStack(spacing: 15) {
             ZStack {
                 Circle()
-                    .fill(Color.bitcoinNeutral1)
+                    .fill(Color.bitcoinNeutral2)
                     .frame(width: 40, height: 40)
                 Image(systemName: transaction.iconName)
                     .font(.system(.subheadline, weight: .bold))
