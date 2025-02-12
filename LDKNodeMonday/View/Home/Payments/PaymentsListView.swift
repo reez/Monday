@@ -16,6 +16,7 @@ struct PaymentSection {
 struct PaymentsListView: View {
     @Binding var payments: [PaymentDetails]
     @Binding var displayBalanceType: DisplayBalanceType
+    var price: Double
 
     var sections: [PaymentSection] {
         orderedStatuses.compactMap { status -> PaymentSection? in
@@ -39,7 +40,8 @@ struct PaymentsListView: View {
                 ForEach(payments, id: \.id) { payment in
                     TransactionItemView(
                         transaction: payment,
-                        displayBalanceType: displayBalanceType
+                        displayBalanceType: displayBalanceType,
+                        price: price
                     )
                     .padding(.vertical, 5)
                     .listRowSeparator(.hidden)
@@ -57,6 +59,7 @@ struct PaymentsListView: View {
 struct TransactionItemView: View {
     var transaction: PaymentDetails
     var displayBalanceType: DisplayBalanceType
+    var price: Double
 
     var body: some View {
         HStack(spacing: 15) {
@@ -79,12 +82,19 @@ struct TransactionItemView: View {
             Spacer()
 
             VStack(alignment: .trailing) {
-                Text(transaction.primaryAmount(displayBalanceType: displayBalanceType))
-                    .font(.system(.body, design: .rounded, weight: .medium))
-                    .foregroundColor(transaction.amountColor)
-                Text(transaction.secondaryAmount(displayBalanceType: displayBalanceType))
-                    .font(.system(.subheadline, design: .rounded))
-                    .foregroundColor(transaction.secondaryAmountColor)
+                Text(
+                    transaction.primaryAmount(displayBalanceType: displayBalanceType, price: price)
+                )
+                .font(.system(.body, design: .rounded, weight: .medium))
+                .foregroundColor(transaction.amountColor)
+                Text(
+                    transaction.secondaryAmount(
+                        displayBalanceType: displayBalanceType,
+                        price: price
+                    )
+                )
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundColor(transaction.secondaryAmountColor)
             }
         }
         .lineLimit(1)
@@ -178,7 +188,7 @@ extension PaymentDetails {
         }
     }
 
-    public func primaryAmount(displayBalanceType: DisplayBalanceType) -> String {
+    public func primaryAmount(displayBalanceType: DisplayBalanceType, price: Double) -> String {
         let mSatsAmount = self.amountMsat ?? 0
         let satsAmount = mSatsAmount.mSatsAsSats
         let symbol = self.direction == .inbound ? "+ " : "- "
@@ -186,7 +196,7 @@ extension PaymentDetails {
         let formattedValue: String = {
             switch displayBalanceType {
             case .fiatSats, .fiatBtc:
-                return Double(satsAmount).formattedUSD(price: 26030)  // TODO: expose price here
+                return satsAmount.formattedUSD(price: price)
             case .btcFiat:
                 return satsAmount.formattedBtc()
             default:
@@ -197,7 +207,7 @@ extension PaymentDetails {
         return symbol + formattedValue
     }
 
-    public func secondaryAmount(displayBalanceType: DisplayBalanceType) -> String {
+    public func secondaryAmount(displayBalanceType: DisplayBalanceType, price: Double) -> String {
         let mSatsAmount = self.amountMsat ?? 0
         let satsAmount = mSatsAmount.mSatsAsSats
 
@@ -208,7 +218,7 @@ extension PaymentDetails {
             case .fiatBtc:
                 return satsAmount.formattedBtc()
             default:
-                return Double(satsAmount).formattedUSD(price: 26030)  // TODO: expose price here
+                return satsAmount.formattedUSD(price: price)
             }
         }()
 
@@ -220,7 +230,8 @@ extension PaymentDetails {
     #Preview {
         PaymentsListView(
             payments: .constant(mockPayments),
-            displayBalanceType: .constant(.fiatSats)
+            displayBalanceType: .constant(.fiatSats),
+            price: 75000.14
         )
     }
 #endif

@@ -38,4 +38,17 @@ extension UInt64 {
         }
     }
 
+    func formattedUSD(price: Double) -> String {
+        let btcAmount = Double(self) / 1_00_000_000.0
+
+        let usdValue = btcAmount * price
+
+        // Format the value based on its value
+        if usdValue == 0 {
+            return usdValue.formattedCurrency(value: 0)
+        } else {
+            return usdValue.formattedCurrency(value: usdValue)
+        }
+    }
+
 }

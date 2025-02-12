@@ -11,6 +11,7 @@ import SwiftUI
 struct PaymentsView: View {
     @Binding var transactions: [PaymentDetails]
     @Binding var displayBalanceType: DisplayBalanceType
+    var price: Double
 
     var body: some View {
         VStack {
@@ -20,10 +21,14 @@ struct PaymentsView: View {
                     .font(.subheadline)
                 Spacer()
             } else {
-                PaymentsListView(payments: $transactions, displayBalanceType: $displayBalanceType)
-                    .refreshable {
-                        // TODO: expose getTransactions() from BitcoinViewModel
-                    }
+                PaymentsListView(
+                    payments: $transactions,
+                    displayBalanceType: $displayBalanceType,
+                    price: price
+                )
+                .refreshable {
+                    // TODO: expose getTransactions() from BitcoinViewModel
+                }
             }
         }
     }
@@ -33,7 +38,8 @@ struct PaymentsView: View {
     #Preview {
         PaymentsView(
             transactions: .constant(mockPayments),
-            displayBalanceType: .constant(.fiatSats)
+            displayBalanceType: .constant(.fiatSats),
+            price: 75000.14
         )
     }
 #endif
