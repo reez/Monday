@@ -269,7 +269,7 @@ struct BalanceHeader: View {
         case .fiatBtc:
             return viewModel.totalUSDValue
         case .btcFiat:
-            return "₿" + viewModel.unifiedBalance.formattedBtc()
+            return "₿" + viewModel.unifiedBalance.formattedSatsAsBtc()
         case .totalSats:
             return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
         case .onchainSats:
@@ -288,7 +288,7 @@ struct BalanceHeader: View {
         case .fiatSats:
             return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
         case .fiatBtc:
-            return "₿" + viewModel.unifiedBalance.formattedBtc()
+            return "₿" + viewModel.unifiedBalance.formattedSatsAsBtc()
         case .btcFiat:
             return viewModel.totalUSDValue
         case .totalSats:

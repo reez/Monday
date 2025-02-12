@@ -196,9 +196,9 @@ extension PaymentDetails {
         let formattedValue: String = {
             switch displayBalanceType {
             case .fiatSats, .fiatBtc:
-                return satsAmount.formattedUSD(price: price)
+                return satsAmount.formattedSatsAsUSD(price: price)
             case .btcFiat:
-                return satsAmount.formattedBtc()
+                return satsAmount.formattedSatsAsBtc()
             default:
                 return satsAmount.formatted(.number.notation(.automatic))
             }
@@ -216,9 +216,9 @@ extension PaymentDetails {
             case .fiatSats:
                 return satsAmount.formatted(.number.notation(.automatic))
             case .fiatBtc:
-                return satsAmount.formattedBtc()
+                return satsAmount.formattedSatsAsBtc()
             default:
-                return satsAmount.formattedUSD(price: price)
+                return satsAmount.formattedSatsAsUSD(price: price)
             }
         }()
 

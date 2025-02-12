@@ -26,7 +26,7 @@ class BitcoinViewModel: ObservableObject {
     var time: Int?
 
     var totalUSDValue: String {
-        let totalUSD = unifiedBalance.formattedUSD(price: price)
+        let totalUSD = unifiedBalance.formattedSatsAsUSD(price: price)
         return totalUSD
     }
 

@@ -13,7 +13,7 @@ extension UInt64 {
         return self / 1000
     }
 
-    func formattedBtc() -> String {
+    func formattedSatsAsBtc() -> String {
         if self == 0 {
             return "0"
         } else {
@@ -38,12 +38,10 @@ extension UInt64 {
         }
     }
 
-    func formattedUSD(price: Double) -> String {
+    func formattedSatsAsUSD(price: Double) -> String {
         let btcAmount = Double(self) / 1_00_000_000.0
-
         let usdValue = btcAmount * price
 
-        // Format the value based on its value
         if usdValue == 0 {
             return usdValue.formattedCurrency(value: 0)
         } else {
