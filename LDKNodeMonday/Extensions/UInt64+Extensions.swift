@@ -10,7 +10,7 @@ import Foundation
 extension UInt64 {
 
     var mSatsAsSats: UInt64 {
-        return self / 1000
+        return self >= 1000 ? self / 1000 : 0
     }
 
     func formattedSatsAsBtc() -> String {
