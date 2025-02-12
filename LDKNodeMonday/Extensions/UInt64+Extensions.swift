@@ -13,28 +13,33 @@ extension UInt64 {
         return self >= 1000 ? self / 1000 : 0
     }
 
-    func formattedSatsAsBtc() -> String {
+    func formattedSatsAsBtc(format: BitcoinFormatting? = .truncated) -> String {
         if self == 0 {
             return "0"
         } else {
-            let balanceString = String(format: "%010d", self)
+            switch format {
+            case .satscomma:
+                let balanceString = String(format: "%010d", self)
 
-            let zero = balanceString.prefix(2)
-            let first = balanceString.dropFirst(2).prefix(2)
-            let second = balanceString.dropFirst(4).prefix(3)
-            let third = balanceString.dropFirst(7).prefix(3)
+                let zero = balanceString.prefix(2)
+                let first = balanceString.dropFirst(2).prefix(2)
+                let second = balanceString.dropFirst(4).prefix(3)
+                let third = balanceString.dropFirst(7).prefix(3)
 
-            var formattedZero = zero
+                var formattedZero = zero
 
-            if zero == "00" {
-                formattedZero = zero.dropFirst()
-            } else if zero.hasPrefix("0") {
-                formattedZero = zero.suffix(1)
+                if zero == "00" {
+                    formattedZero = zero.dropFirst()
+                } else if zero.hasPrefix("0") {
+                    formattedZero = zero.suffix(1)
+                }
+
+                return "\(formattedZero).\(first) \(second) \(third)"
+            default:
+                let btcAmount = Double(self) / 1_00_000_000.0
+                return btcAmount.formatted(.number.notation(.automatic))
             }
 
-            let formattedBalance = "\(formattedZero).\(first) \(second) \(third)"
-
-            return formattedBalance
         }
     }
 
@@ -49,4 +54,9 @@ extension UInt64 {
         }
     }
 
+}
+
+public enum BitcoinFormatting {
+    case satscomma
+    case truncated
 }
