@@ -136,21 +136,11 @@ extension PaymentDetails {
         case ..<1:
             return "Just now"
 
+        case ..<2:
+            return "1 minute ago"
+
         case ..<60:
-            if #available(iOS 18.0, *) {
-                return String(
-                    date.formatted(
-                        .reference(
-                            to: now,
-                            allowedFields: [.minute],
-                            maxFieldCount: 1,
-                            thresholdField: .minute
-                        )
-                    ).characters
-                )
-            } else {
-                return "\(Int(minutesSince)) minutes ago"
-            }
+            return "\(Int(minutesSince)) minutes ago"
 
         default:
             if calendar.isDate(date, inSameDayAs: now) {
