@@ -22,7 +22,7 @@ extension Double {
         formatter.numberStyle = .currency
         formatter.currencyCode = "USD"  // Change if supporting other fiat currencies
         formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 0
+        formatter.minimumFractionDigits = 2
 
         // Return localised
         return formatter.string(from: NSNumber(value: value)) ?? "$0"
