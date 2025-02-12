@@ -22,7 +22,7 @@ extension Event: CustomStringConvertible {
                 "Payment Failed \(paymentFailureReason.debugDescription) \(String(describing: paymentHash?.truncated(toLength: 10)))"
 
         case .paymentReceived(_, _, let amountMsat):
-            let formatted = amountMsat.formattedAmount()
+            let formatted = amountMsat.formattedSats()
             return "Payment Received \(formatted) sats"
 
         case .channelPending(_, _, _, let counterpartyNodeId, _):

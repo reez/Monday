@@ -9,19 +9,17 @@ import Foundation
 
 extension UInt64 {
 
-    func formattedAmount() -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.groupingSeparator = ","
-        formatter.groupingSize = 3
-        formatter.locale = Locale(identifier: "en_US")
+    func formattedSats() -> String {
+        let formatter: NumberFormatter = {
+            let f = NumberFormatter()
+            f.numberStyle = .decimal
+            f.groupingSeparator = ","
+            f.groupingSize = 3
+            f.locale = Locale(identifier: "en_US")
+            return f
+        }()
 
-        let satValue = self / 1000
-        if let formattedNumber = formatter.string(from: NSNumber(value: satValue)) {
-            return formattedNumber
-        } else {
-            return ""
-        }
+        return formatter.string(from: NSNumber(value: self / 1000)) ?? ""
     }
 
     func formattedSatoshis() -> String {
