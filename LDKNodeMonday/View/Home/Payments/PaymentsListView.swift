@@ -75,7 +75,9 @@ struct TransactionItemView: View {
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.secondary)
             }
+            
             Spacer()
+            
             VStack(alignment: .trailing) {
                 Text(transaction.primaryAmount(displayBalanceType: displayBalanceType))
                     .font(.system(.body, design: .rounded, weight: .medium))
@@ -85,6 +87,9 @@ struct TransactionItemView: View {
                     .foregroundColor(transaction.secondaryAmountColor)
             }
         }
+        .lineLimit(1)
+        .minimumScaleFactor(0.75)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
     }
 }
 
@@ -124,7 +129,13 @@ extension PaymentDetails {
        
         // X minutes ago
         if minutesSince < 60 {
-            return "\(Int(minutesSince)) minutes ago"
+            if #available(iOS 18.0, *) {
+                // This should work better localized
+                let attributedString = date.formatted(.reference(to: now, allowedFields: [.minute], maxFieldCount: 1, thresholdField: .minute))
+                return String(attributedString.characters)
+            } else {
+                return "\(Int(minutesSince)) minutes ago"
+            }
         }
 
         // Today, at 1.15pm
