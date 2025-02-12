@@ -48,9 +48,9 @@ extension UInt64 {
         let usdValue = btcAmount * price
 
         if usdValue == 0 {
-            return usdValue.formattedCurrency(value: 0)
+            return usdValue.formattedCurrency()
         } else {
-            return usdValue.formattedCurrency(value: usdValue)
+            return usdValue.formattedCurrency()
         }
     }
 
