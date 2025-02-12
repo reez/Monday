@@ -118,8 +118,13 @@ extension PaymentDetails {
         let minutesSince = abs(date.timeIntervalSince(now)) / 60
 
         // Just now
-        if minutesSince <= 2 {
+        if minutesSince <= 1 {
             return "Just now"
+        }
+       
+        // X minutes ago
+        if minutesSince < 60 {
+            return "\(Int(minutesSince)) minutes ago"
         }
 
         // Today, at 1.15pm
