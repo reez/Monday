@@ -125,10 +125,19 @@ extension PaymentDetails {
         switch minutesSince {
         case ..<1:
             return "Just now"
-            
+
         case ..<60:
             if #available(iOS 18.0, *) {
-                return String(date.formatted(.reference(to: now, allowedFields: [.minute], maxFieldCount: 1, thresholdField: .minute)).characters)
+                return String(
+                    date.formatted(
+                        .reference(
+                            to: now,
+                            allowedFields: [.minute],
+                            maxFieldCount: 1,
+                            thresholdField: .minute
+                        )
+                    ).characters
+                )
             } else {
                 return "\(Int(minutesSince)) minutes ago"
             }
@@ -137,8 +146,9 @@ extension PaymentDetails {
             if calendar.isDate(date, inSameDayAs: now) {
                 return "Today at \(date.formatted(date: .omitted, time: .shortened))"
             }
-            
-            let dateFormat: Date.FormatStyle = calendar.component(.year, from: date) == calendar.component(.year, from: now)
+
+            let dateFormat: Date.FormatStyle =
+                calendar.component(.year, from: date) == calendar.component(.year, from: now)
                 ? .dateTime.month(.abbreviated).day()
                 : .dateTime.month(.abbreviated).day().year()
 
@@ -169,24 +179,40 @@ extension PaymentDetails {
     }
 
     public func primaryAmount(displayBalanceType: DisplayBalanceType) -> String {
-        let paymentAmount = self.amountMsat ?? 0
-        let satsAmount = paymentAmount.formattedAmount()
-        let fiatAmount = Double(paymentAmount / 1000).valueInUSD(price: 26030)  // TODO: expose price here
-        switch self.status {
-        default:
-            return (self.direction == .inbound ? "+ " : "- ")
-                + (displayBalanceType == .fiatSats ? fiatAmount : satsAmount)
-        }
+        let mSatsAmount = self.amountMsat ?? 0
+        let satsAmount = (self.amountMsat ?? 0) / 1000
+        let symbol = self.direction == .inbound ? "+ " : "- "
+
+        let formattedValue: String = {
+            switch displayBalanceType {
+            case .fiatSats, .fiatBtc:
+                return Double(satsAmount).valueInUSD(price: 26030)  // TODO: expose price here
+            case .btcFiat:
+                return satsAmount.formattedSatoshis()
+            default:
+                return mSatsAmount.formattedAmount()
+            }
+        }()
+
+        return symbol + formattedValue
     }
 
     public func secondaryAmount(displayBalanceType: DisplayBalanceType) -> String {
-        let paymentAmount = self.amountMsat ?? 0
-        let satsAmount = paymentAmount.formattedAmount()
-        let fiatAmount = Double(paymentAmount / 1000).valueInUSD(price: 26030)  // TODO: expose price here
-        switch self.status {
-        default:
-            return displayBalanceType == .fiatSats ? satsAmount : fiatAmount
-        }
+        let mSatsAmount = self.amountMsat ?? 0
+        let satsAmount = (self.amountMsat ?? 0) / 1000
+
+        let formattedValue: String = {
+            switch displayBalanceType {
+            case .fiatSats:
+                return mSatsAmount.formattedAmount()
+            case .fiatBtc:
+                return satsAmount.formattedSatoshis()
+            default:
+                return Double(satsAmount).valueInUSD(price: 26030)  // TODO: expose price here
+            }
+        }()
+
+        return formattedValue
     }
 }
 
@@ -194,7 +220,7 @@ extension PaymentDetails {
     #Preview {
         PaymentsListView(
             payments: .constant(mockPayments),
-            displayBalanceType: .constant(.fiatSats)
+            displayBalanceType: .constant(.btcFiat)
         )
     }
 #endif
