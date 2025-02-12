@@ -13,7 +13,7 @@ extension UInt64 {
         return self / 1000
     }
 
-    func formattedSatoshis() -> String {
+    func formattedBtc() -> String {
         if self == 0 {
             return "0.00 000 000"
         } else {

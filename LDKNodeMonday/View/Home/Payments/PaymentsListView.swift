@@ -188,7 +188,7 @@ extension PaymentDetails {
             case .fiatSats, .fiatBtc:
                 return Double(satsAmount).valueInUSD(price: 26030)  // TODO: expose price here
             case .btcFiat:
-                return satsAmount.formattedSatoshis()
+                return satsAmount.formattedBtc()
             default:
                 return satsAmount.formatted(.number.notation(.automatic))
             }
@@ -206,7 +206,7 @@ extension PaymentDetails {
             case .fiatSats:
                 return satsAmount.formatted(.number.notation(.automatic))
             case .fiatBtc:
-                return satsAmount.formattedSatoshis()
+                return satsAmount.formattedBtc()
             default:
                 return Double(satsAmount).valueInUSD(price: 26030)  // TODO: expose price here
             }
