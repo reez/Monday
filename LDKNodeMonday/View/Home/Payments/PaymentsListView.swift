@@ -14,7 +14,7 @@ struct PaymentSection {
 }
 
 struct PaymentsListView: View {
-    @Binding var transactions: [PaymentDetails]
+    @Binding var payments: [PaymentDetails]
     @Binding var displayBalanceType: DisplayBalanceType
     var price: Double
 
@@ -31,13 +31,13 @@ struct PaymentsListView: View {
     ]
 
     var groupedPayments: [PaymentStatus: [PaymentDetails]] {
-        Dictionary(grouping: transactions, by: { $0.status })
+        Dictionary(grouping: payments, by: { $0.status })
     }
 
     var body: some View {
         List {
             Section {
-                if transactions.isEmpty {
+                if payments.isEmpty {
                     VStack {
                         // Empty state
                         Image(systemName: "eyes")
@@ -53,10 +53,10 @@ struct PaymentsListView: View {
                     .frame(maxWidth: .infinity, minHeight: 300)  // Ensure vertical space
                     .listRowSeparator(.hidden)
                 } else {
-                    // List transactions
-                    ForEach(transactions, id: \.id) { payment in
-                        TransactionItemView(
-                            transaction: payment,
+                    // List payments
+                    ForEach(payments, id: \.id) { payment in
+                        PaymentItemView(
+                            payment: payment,
                             displayBalanceType: displayBalanceType,
                             price: price
                         )
@@ -74,8 +74,8 @@ struct PaymentsListView: View {
     }
 }
 
-struct TransactionItemView: View {
-    var transaction: PaymentDetails
+struct PaymentItemView: View {
+    var payment: PaymentDetails
     var displayBalanceType: DisplayBalanceType
     var price: Double
 
@@ -85,14 +85,14 @@ struct TransactionItemView: View {
                 Circle()
                     .fill(Color.bitcoinNeutral2)
                     .frame(width: 40, height: 40)
-                Image(systemName: transaction.iconName)
+                Image(systemName: payment.iconName)
                     .font(.system(.body, weight: .bold))
                     .foregroundColor(.bitcoinNeutral8)
                 Circle()
                     .fill(.background)
                     .frame(width: 16, height: 16)
                     .overlay(
-                        Image(systemName: transaction.kind == .onchain ? "bitcoinsign" : "bolt")
+                        Image(systemName: payment.kind == .onchain ? "bitcoinsign" : "bolt")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 12, height: 12)
@@ -101,9 +101,9 @@ struct TransactionItemView: View {
                     .offset(x: 20, y: 11)
             }
             VStack(alignment: .leading) {
-                Text(transaction.title)
+                Text(payment.title)
                     .font(.system(.body, design: .rounded, weight: .medium))
-                Text(transaction.formattedDate)
+                Text(payment.formattedDate)
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.secondary)
             }
@@ -112,18 +112,18 @@ struct TransactionItemView: View {
 
             VStack(alignment: .trailing) {
                 Text(
-                    transaction.primaryAmount(displayBalanceType: displayBalanceType, price: price)
+                    payment.primaryAmount(displayBalanceType: displayBalanceType, price: price)
                 )
                 .font(.system(.body, design: .rounded, weight: .medium))
-                .foregroundColor(transaction.amountColor)
+                .foregroundColor(payment.amountColor)
                 Text(
-                    transaction.secondaryAmount(
+                    payment.secondaryAmount(
                         displayBalanceType: displayBalanceType,
                         price: price
                     )
                 )
                 .font(.system(.subheadline, design: .rounded))
-                .foregroundColor(transaction.secondaryAmountColor)
+                .foregroundColor(payment.secondaryAmountColor)
             }
         }
         .lineLimit(1)
@@ -248,7 +248,7 @@ extension PaymentDetails {
 #if DEBUG
     #Preview {
         PaymentsListView(
-            transactions: .constant(mockPayments),
+            payments: .constant(mockPayments),
             displayBalanceType: .constant(.fiatSats),
             price: 75000.14
         )

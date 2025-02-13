@@ -16,7 +16,7 @@ class BitcoinViewModel: ObservableObject {
     @Published var isStatusFinished: Bool = false
     @Published var balances: BalanceDetails = .empty
     @Published var unifiedBalance: UInt64 = 0
-    @Published var transactions: [PaymentDetails] = []
+    @Published var payments: [PaymentDetails] = []
     @Published var isBalancesFinished: Bool = false
     @Published var isPriceFinished: Bool = false
 
@@ -44,12 +44,12 @@ class BitcoinViewModel: ObservableObject {
         async let balancesTask: () = getBalances()
         async let pricesTask: () = getPrices()
         async let statusTask: () = getStatus()
-        async let transactionsTask: () = getTransactions()
+        async let paymentsTask: () = getPayments()
 
         await balancesTask
         await pricesTask
         await statusTask
-        await transactionsTask
+        await paymentsTask
 
         getColor()
     }
@@ -97,11 +97,11 @@ class BitcoinViewModel: ObservableObject {
         }
     }
 
-    func getTransactions() async {
-        let transactions = lightningClient.listPayments()
-        let tCopy = transactions
+    func getPayments() async {
+        let payments = lightningClient.listPayments()
+        let tCopy = payments
         await MainActor.run {
-            self.transactions = tCopy
+            self.payments = tCopy
         }
     }
 
