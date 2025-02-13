@@ -18,6 +18,7 @@ struct BitcoinView: View {
     @State private var isPaymentsPresented = false
     @State private var showToast = false
     @State private var showingNodeIDView = false
+    @State private var displayBalanceType = DisplayBalanceType.userDefaults
     @StateObject var viewModel: BitcoinViewModel
     @StateObject private var eventService = EventService()
     @Binding var sendNavigationPath: NavigationPath
@@ -25,127 +26,18 @@ struct BitcoinView: View {
     var body: some View {
 
         ZStack {
-            Color(uiColor: UIColor.systemBackground)
-                .ignoresSafeArea(.all)
 
             VStack {
 
                 List {
-
-                    VStack(spacing: 20) {
-
-                        VStack {
-                            HStack(spacing: 15) {
-                                Spacer()
-                                Image(systemName: "bitcoinsign")
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Text(viewModel.totalBalance.formattedSatoshis())
-                                    .contentTransition(.numericText())
-                                    .font(.largeTitle)
-                                    .fontWeight(.semibold)
-                                    .fontDesign(.rounded)
-                                    .redacted(
-                                        reason: viewModel.isTotalBalanceFinished
-                                            ? [] : .placeholder
-                                    )
-                                Text("sats")
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Spacer()
-                            }
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
-                            .foregroundColor(.primary)
-
-                            if let status = viewModel.status,
-                                let timestamp = status.latestOnchainWalletSyncTimestamp
-                            {
-                                let date = Date(
-                                    timeIntervalSince1970: TimeInterval(
-                                        timestamp
-                                    )
-                                )
-                                Text(date.formattedDate())
-                                    .lineLimit(1)
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
-                                    .padding(.bottom, 20.0)
-                                    .minimumScaleFactor(0.5)
-                            }
-
-                        }
-
-                        VStack {
-                            HStack(spacing: 15) {
-                                Spacer()
-                                Image(systemName: "bolt")
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Text(viewModel.totalLightningBalance.formattedSatoshis())
-                                    .contentTransition(.numericText())
-                                    .font(.largeTitle)
-                                    .fontWeight(.semibold)
-                                    .fontDesign(.rounded)
-                                    .redacted(
-                                        reason: viewModel.isTotalLightningBalanceFinished
-                                            ? [] : .placeholder
-                                    )
-                                Text("sats")
-                                    .font(.title)
-                                    .fontWeight(.thin)
-                                Spacer()
-                            }
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
-                            .foregroundColor(.primary)
-
-                            if let status = viewModel.status,
-                                let timestamp = status.latestOnchainWalletSyncTimestamp
-                            {
-                                let date = Date(
-                                    timeIntervalSince1970: TimeInterval(
-                                        timestamp
-                                    )
-                                )
-                                Text(date.formattedDate())
-                                    .lineLimit(1)
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
-                                    .padding(.bottom, 20.0)
-                                    .minimumScaleFactor(0.5)
-                            }
-                        }
-
-                        HStack {
-                            Spacer()
-                            Text(viewModel.totalUSDValue)
-                                .contentTransition(.numericText())
-                                .fontWeight(.semibold)
-                                .fontDesign(.rounded)
-                                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
-                            Spacer()
-                        }
-                        .lineLimit(1)
-                        .animation(.spring(), value: viewModel.isPriceFinished)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-
-                        Spacer()
-
-                    }
-                    .listRowSeparator(.hidden)
-
+                    BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
+                        .frame(maxWidth: .infinity)  // centers the view horizontally
+                        .listRowSeparator(.hidden)
                 }
                 .listStyle(.plain)
                 .padding(.top, 220.0)
-                .padding(.horizontal, -20)
                 .refreshable {
-                    await viewModel.getTotalOnchainBalanceSats()
-                    await viewModel.getTotalLightningBalanceSats()
-                    await viewModel.getPrices()
-                    await viewModel.getSpendableOnchainBalanceSats()
-                    await viewModel.getStatus()
+                    await viewModel.update()
                 }
 
                 Spacer()
@@ -209,14 +101,10 @@ struct BitcoinView: View {
                     }
                 }
             }
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
             .onAppear {
                 Task {
-                    await viewModel.getTotalOnchainBalanceSats()
-                    await viewModel.getTotalLightningBalanceSats()
-                    await viewModel.getPrices()
-                    viewModel.getColor()
-                    await viewModel.getSpendableOnchainBalanceSats()
-                    await viewModel.getStatus()
+                    await viewModel.update()
                 }
             }
             .onChange(
@@ -232,22 +120,14 @@ struct BitcoinView: View {
             }
             .onReceive(eventService.$lastMessage) { _ in
                 Task {
-                    await viewModel.getTotalOnchainBalanceSats()
-                    await viewModel.getTotalLightningBalanceSats()
-                    await viewModel.getPrices()
-                    await viewModel.getSpendableOnchainBalanceSats()
-                    await viewModel.getStatus()
+                    await viewModel.update()
                 }
             }
             .sheet(
                 isPresented: $showingNodeIDView,
                 onDismiss: {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
-                        await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
-                        await viewModel.getStatus()
+                        await viewModel.update()
                     }
                 }
             ) {
@@ -294,11 +174,7 @@ struct BitcoinView: View {
                 item: $showReceiveViewWithOption,
                 onDismiss: {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
-                        await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
-                        await viewModel.getStatus()
+                        await viewModel.update()
                     }
                 }
             ) { receiveOption in
@@ -312,11 +188,7 @@ struct BitcoinView: View {
                 isPresented: $isPaymentsPresented,
                 onDismiss: {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
-                        await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
-                        await viewModel.getStatus()
+                        await viewModel.update()
                     }
                 }
             ) {
@@ -330,7 +202,7 @@ struct BitcoinView: View {
             case .address:
                 AddressView(
                     navigationPath: $sendNavigationPath,
-                    spendableBalance: viewModel.spendableBalance
+                    spendableBalance: viewModel.balances.spendableOnchainBalanceSats
                 )
             case .amount(let address, let amount, let payment):
                 AmountView(
@@ -338,16 +210,12 @@ struct BitcoinView: View {
                     address: address,
                     numpadAmount: amount,
                     payment: payment,
-                    spendableBalance: viewModel.spendableBalance,
+                    spendableBalance: viewModel.balances.spendableOnchainBalanceSats,
                     navigationPath: $sendNavigationPath
                 )
                 .onDisappear {
                     Task {
-                        await viewModel.getTotalOnchainBalanceSats()
-                        await viewModel.getTotalLightningBalanceSats()
-                        await viewModel.getPrices()
-                        await viewModel.getSpendableOnchainBalanceSats()
-                        await viewModel.getStatus()
+                        await viewModel.update()
                     }
                 }
 
@@ -359,16 +227,131 @@ struct BitcoinView: View {
 
 }
 
+struct BalanceHeader: View {
+    @Binding var displayBalanceType: DisplayBalanceType
+    @ObservedObject var viewModel: BitcoinViewModel
+
+    var body: some View {
+        VStack {
+            Text(balanceValue)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .font(.system(size: 48, weight: .bold, design: .rounded))
+                .contentTransition(.numericText())
+                .redacted(reason: viewModel.isPriceFinished ? [] : .placeholder)
+            HStack(spacing: 5) {
+                Text(secondaryValue)
+                    .contentTransition(.interpolate)
+                Text(unitValue)
+                    .contentTransition(.interpolate)
+            }
+            .foregroundColor(.secondary)
+            .font(.system(.headline, design: .rounded, weight: .medium))
+        }
+        .animation(.spring(), value: viewModel.isPriceFinished)
+        .sensoryFeedback(.increase, trigger: displayBalanceType)
+        .onTapGesture {
+            withAnimation {
+                displayBalanceType.next()
+            }
+            UserDefaults.standard.set(displayBalanceType.rawValue, forKey: "displayBalanceType")
+        }
+    }
+
+    var balanceValue: String {
+        switch displayBalanceType {
+        case .fiatSats:
+            return viewModel.totalUSDValue
+        case .fiatBtc:
+            return viewModel.totalUSDValue
+        case .btcFiat:
+            return "₿" + viewModel.unifiedBalance.formattedSatoshis()
+        case .totalSats:
+            return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
+        case .onchainSats:
+            return viewModel.balances.totalOnchainBalanceSats.formatted(
+                .number.notation(.automatic)
+            )
+        case .lightningSats:
+            return viewModel.balances.totalLightningBalanceSats.formatted(
+                .number.notation(.automatic)
+            )
+        }
+    }
+
+    var secondaryValue: String {
+        switch displayBalanceType {
+        case .fiatSats:
+            return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
+        case .fiatBtc:
+            return "₿" + viewModel.unifiedBalance.formattedSatoshis()
+        case .btcFiat:
+            return viewModel.totalUSDValue
+        case .totalSats:
+            return "Total"
+        case .onchainSats:
+            return "Onchain"
+        case .lightningSats:
+            return "Lightning"
+        }
+    }
+
+    var unitValue: String {
+        switch displayBalanceType {
+        case .fiatBtc:
+            return ""
+        case .btcFiat:
+            return ""
+        default:
+            return "sats"
+        }
+    }
+}
+
 enum NavigationDestination: Hashable {
     case address
     case amount(address: String, amount: String, payment: Payment)
+}
+
+public enum DisplayBalanceType: String {
+    case fiatSats
+    case fiatBtc
+    case btcFiat
+    case totalSats
+    case onchainSats
+    case lightningSats
+}
+
+extension DisplayBalanceType {
+    mutating func next() {
+        switch self {
+        case .fiatSats:
+            self = .fiatBtc
+        case .fiatBtc:
+            self = .btcFiat
+        case .btcFiat:
+            self = .totalSats
+        case .totalSats:
+            self = .onchainSats
+        case .onchainSats:
+            self = .lightningSats
+        case .lightningSats:
+            self = .fiatSats
+        }
+    }
+
+    static let userDefaults: DisplayBalanceType =
+        DisplayBalanceType(
+            rawValue: UserDefaults.standard.string(forKey: "displayBalanceType")
+                ?? DisplayBalanceType.fiatBtc.rawValue
+        ) ?? DisplayBalanceType.fiatBtc
 }
 
 #if DEBUG
     #Preview {
         BitcoinView(
             viewModel: .init(
-                walletClient: .constant(WalletClient(keyClient: KeyClient.mock)),
+                walletClient: .constant(WalletClient(appMode: AppMode.mock)),
                 priceClient: .mock,
                 lightningClient: .mock
             ),

@@ -14,13 +14,9 @@ class BitcoinViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var status: NodeStatus?
     @Published var isStatusFinished: Bool = false
-    @Published var spendableBalance: UInt64 = 0
-    @Published var totalBalance: UInt64 = 0
-    @Published var totalLightningBalance: UInt64 = 0
-    @Published var lightningBalances: [LightningBalance] = []
-    @Published var isSpendableBalanceFinished: Bool = false
-    @Published var isTotalBalanceFinished: Bool = false
-    @Published var isTotalLightningBalanceFinished: Bool = false
+    @Published var balances: BalanceDetails = .empty
+    @Published var unifiedBalance: UInt64 = 0
+    @Published var isBalancesFinished: Bool = false
     @Published var isPriceFinished: Bool = false
 
     let lightningClient: LightningNodeClient
@@ -28,13 +24,8 @@ class BitcoinViewModel: ObservableObject {
     var price: Double = 0.00
     var time: Int?
 
-    var satsPrice: String {
-        let usdValue = Double(totalBalance).valueInUSD(price: price)
-        return usdValue
-    }
-
     var totalUSDValue: String {
-        let totalUSD = Double(totalBalance + totalLightningBalance).valueInUSD(price: price)
+        let totalUSD = Double(unifiedBalance).valueInUSD(price: price)
         return totalUSD
     }
 
@@ -48,53 +39,48 @@ class BitcoinViewModel: ObservableObject {
         self.lightningClient = lightningClient
     }
 
+    func update() async {
+        await getBalances()
+        await getPrices()
+        await getStatus()
+        getColor()
+    }
+
     func getStatus() async {
         let status = lightningClient.status()
-        DispatchQueue.main.async {
-            self.status = status
+        let sCopy = status  // To avoid issues with non-sendable object
+        await MainActor.run {
+            self.status = sCopy
             self.isStatusFinished = true
         }
     }
 
-    func getTotalOnchainBalanceSats() async {
-        let balance = await lightningClient.totalOnchainBalanceSats()
-        DispatchQueue.main.async {
-            self.totalBalance = balance
-            self.isTotalBalanceFinished = true
-        }
-    }
-
-    func getSpendableOnchainBalanceSats() async {
-        let balance = await lightningClient.spendableOnchainBalanceSats()
-        DispatchQueue.main.async {
-            self.spendableBalance = balance
-            self.isSpendableBalanceFinished = true
-        }
-    }
-
-    func getTotalLightningBalanceSats() async {
-        let balance = await lightningClient.totalLightningBalanceSats()
-        DispatchQueue.main.async {
-            self.totalLightningBalance = balance
-            self.isTotalLightningBalanceFinished = true
+    func getBalances() async {
+        let balances = await lightningClient.balances()
+        let bdCopy = balances  // To avoid issues with non-sendable object
+        await MainActor.run {
+            self.balances = bdCopy
+            self.unifiedBalance =
+                balances.totalOnchainBalanceSats + balances.totalLightningBalanceSats
+            self.isBalancesFinished = true
         }
     }
 
     func getPrices() async {
         do {
             let price = try await priceClient.fetchPrice()
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.price = price.usd
                 self.time = price.time
                 self.isPriceFinished = true
             }
         } catch let error as NodeError {
             let errorString = handleNodeError(error)
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.bitcoinViewError = .init(title: errorString.title, detail: errorString.detail)
             }
         } catch {
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.bitcoinViewError = .init(
                     title: "Unexpected error",
                     detail: error.localizedDescription
