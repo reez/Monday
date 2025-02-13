@@ -216,7 +216,7 @@ struct BitcoinView: View {
             case .address:
                 AddressView(
                     navigationPath: $sendNavigationPath,
-                    spendableBalance: viewModel.balanceDetails.spendableOnchainBalanceSats
+                    spendableBalance: viewModel.balances.spendableOnchainBalanceSats
                 )
             case .amount(let address, let amount, let payment):
                 AmountView(
@@ -224,7 +224,7 @@ struct BitcoinView: View {
                     address: address,
                     numpadAmount: amount,
                     payment: payment,
-                    spendableBalance: viewModel.balanceDetails.spendableOnchainBalanceSats,
+                    spendableBalance: viewModel.balances.spendableOnchainBalanceSats,
                     navigationPath: $sendNavigationPath
                 )
                 .onDisappear {
@@ -283,11 +283,11 @@ struct BalanceHeader: View {
         case .totalSats:
             return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
         case .onchainSats:
-            return viewModel.balanceDetails.totalOnchainBalanceSats.formatted(
+            return viewModel.balances.totalOnchainBalanceSats.formatted(
                 .number.notation(.automatic)
             )
         case .lightningSats:
-            return viewModel.balanceDetails.totalLightningBalanceSats.formatted(
+            return viewModel.balances.totalLightningBalanceSats.formatted(
                 .number.notation(.automatic)
             )
         }
