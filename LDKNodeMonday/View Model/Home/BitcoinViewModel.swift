@@ -41,10 +41,16 @@ class BitcoinViewModel: ObservableObject {
     }
 
     func update() async {
-        await getBalanceDetails()
-        await getPrices()
-        await getStatus()
-        await getTransactions()
+        async let balanceDetailsTask: () = getBalanceDetails()
+        async let pricesTask: () = getPrices()
+        async let statusTask: () = getStatus()
+        async let transactionsTask: () = getTransactions()
+
+        await balanceDetailsTask
+        await pricesTask
+        await statusTask
+        await transactionsTask
+
         getColor()
     }
 

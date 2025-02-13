@@ -17,15 +17,18 @@ extension Double {
         return numberFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
     }
 
-    func formattedCurrency(value: Double) -> String {
+    static let currencyFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
-        formatter.currencyCode = "USD"  // Change if supporting other fiat currencies
         formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 2
+        return formatter
+    }()
 
+    func formattedCurrency(code: String = "USD") -> String {
+        Self.currencyFormatter.currencyCode = code
         // Return localised
-        return formatter.string(from: NSNumber(value: value)) ?? "$0"
+        return Self.currencyFormatter.string(from: NSNumber(value: self)) ?? "0"
     }
 
 }

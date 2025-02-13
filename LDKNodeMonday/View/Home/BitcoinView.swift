@@ -192,12 +192,15 @@ struct BitcoinView: View {
                     }
                 }
             ) {
-                PaymentsView(
+                PaymentsListView(
                     transactions: $viewModel.transactions,
                     displayBalanceType: $displayBalanceType,
                     price: viewModel.price
                 )
                 .presentationDetents([.medium, .large])
+                .refreshable {
+                    // TODO: expose getTransactions() from BitcoinViewModel
+                }
             }
 
         }

@@ -6,11 +6,12 @@
 //
 
 import Foundation
+import LDKNode
 
 extension UInt64 {
 
     var mSatsAsSats: UInt64 {
-        return self >= 1000 ? self / 1000 : 0
+        return self >= 1000 ? self / UInt64(Constants.MSATS_PER_SATS) : 0
     }
 
     func formattedSatsAsBtc(format: BitcoinFormatting? = .truncated) -> String {
@@ -19,39 +20,24 @@ extension UInt64 {
         } else {
             switch format {
             case .satscomma:
-                let balanceString = String(format: "%010d", self)
-
-                let zero = balanceString.prefix(2)
-                let first = balanceString.dropFirst(2).prefix(2)
-                let second = balanceString.dropFirst(4).prefix(3)
-                let third = balanceString.dropFirst(7).prefix(3)
-
-                var formattedZero = zero
-
-                if zero == "00" {
-                    formattedZero = zero.dropFirst()
-                } else if zero.hasPrefix("0") {
-                    formattedZero = zero.suffix(1)
-                }
-
-                return "\(formattedZero).\(first) \(second) \(third)"
+                return String(
+                    format: "%d.%02d %03d %03d",
+                    self / 100_000_000,
+                    (self % 100_000_000) / 1_000_000,
+                    (self % 1_000_000) / 1_000,
+                    self % 1_000
+                )
             default:
-                let btcAmount = Double(self) / 1_00_000_000.0
+                let btcAmount = Double(self) / Constants.SATS_PER_BTC
                 return btcAmount.formatted(.number.notation(.automatic))
             }
-
         }
     }
 
     func formattedSatsAsUSD(price: Double) -> String {
-        let btcAmount = Double(self) / 1_00_000_000.0
+        let btcAmount = Double(self) / Constants.SATS_PER_BTC
         let usdValue = btcAmount * price
-
-        if usdValue == 0 {
-            return usdValue.formattedCurrency(value: 0)
-        } else {
-            return usdValue.formattedCurrency(value: usdValue)
-        }
+        return usdValue.formattedCurrency()
     }
 
 }
