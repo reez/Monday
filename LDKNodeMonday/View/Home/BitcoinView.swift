@@ -200,7 +200,7 @@ struct BitcoinView: View {
                 }
             ) {
                 PaymentsListView(
-                    transactions: $viewModel.transactions,
+                    payments: $viewModel.payments,
                     displayBalanceType: $displayBalanceType,
                     price: viewModel.price
                 )

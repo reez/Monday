@@ -10,8 +10,11 @@ import LDKNode
 
 extension UInt64 {
 
+    static let satsPerBtc: UInt64 = 1_00_000_000
+    static let msatsPerSat: UInt64 = 1_000
+
     var mSatsAsSats: UInt64 {
-        return self >= 1000 ? self / Constants.msatsPerSat : 0
+        return self >= 1000 ? self / UInt64.msatsPerSat : 0
     }
 
     func formattedSatsAsBtc(format: BitcoinFormatting? = .truncated) -> String {
@@ -28,14 +31,14 @@ extension UInt64 {
                     self % 1_000
                 )
             default:
-                let btcAmount = Double(self) / Double(Constants.satsPerBtc)
+                let btcAmount = Double(self) / Double(UInt64.satsPerBtc)
                 return btcAmount.formatted(.number.notation(.automatic))
             }
         }
     }
 
     func formattedSatsAsUSD(price: Double) -> String {
-        let btcAmount = Double(self) / Double(Constants.satsPerBtc)
+        let btcAmount = Double(self) / Double(UInt64.satsPerBtc)
         let usdValue = btcAmount * price
         return usdValue.formattedCurrency()
     }
