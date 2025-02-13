@@ -11,8 +11,8 @@ import SwiftUI
 
 struct Constants {
 
-    static let SATS_PER_BTC: Double = 1_00_000_000.0
-    static let MSATS_PER_SATS: Double = 1_000
+    static let satsPerBtc: UInt64 = 1_00_000_000
+    static let msatsPerSat: UInt64 = 1_000
 
     struct Config {
 
