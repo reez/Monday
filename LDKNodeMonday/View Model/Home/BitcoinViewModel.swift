@@ -14,10 +14,10 @@ class BitcoinViewModel: ObservableObject {
     @Published var networkColor = Color.gray
     @Published var status: NodeStatus?
     @Published var isStatusFinished: Bool = false
-    @Published var balanceDetails: BalanceDetails = .empty
+    @Published var balances: BalanceDetails = .empty
     @Published var unifiedBalance: UInt64 = 0
     @Published var transactions: [PaymentDetails] = []
-    @Published var isBalanceDetailsFinished: Bool = false
+    @Published var isBalancesFinished: Bool = false
     @Published var isPriceFinished: Bool = false
 
     let lightningClient: LightningNodeClient
@@ -41,12 +41,12 @@ class BitcoinViewModel: ObservableObject {
     }
 
     func update() async {
-        async let balanceDetailsTask: () = getBalanceDetails()
+        async let balancesTask: () = getBalances()
         async let pricesTask: () = getPrices()
         async let statusTask: () = getStatus()
         async let transactionsTask: () = getTransactions()
 
-        await balanceDetailsTask
+        await balancesTask
         await pricesTask
         await statusTask
         await transactionsTask
@@ -63,14 +63,14 @@ class BitcoinViewModel: ObservableObject {
         }
     }
 
-    func getBalanceDetails() async {
-        let balanceDetails = await lightningClient.balanceDetails()
-        let bdCopy = balanceDetails  // To avoid issues with non-sendable object
+    func getBalances() async {
+        let balances = await lightningClient.balances()
+        let bdCopy = balances  // To avoid issues with non-sendable object
         await MainActor.run {
-            self.balanceDetails = bdCopy
+            self.balances = bdCopy
             self.unifiedBalance =
-                balanceDetails.totalOnchainBalanceSats + balanceDetails.totalLightningBalanceSats
-            self.isBalanceDetailsFinished = true
+                balances.totalOnchainBalanceSats + balances.totalLightningBalanceSats
+            self.isBalancesFinished = true
         }
     }
 
