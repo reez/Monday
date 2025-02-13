@@ -102,7 +102,7 @@ struct SettingsView: View {
                                 showToggleTestData = true
                             }
                         ),
-                        label: { Label("Use test data", systemImage: "testtube.2") }
+                        label: { Label("Use mock data", systemImage: "testtube.2") }
                     )
                 } header: {
                     Text("Design & Develop").foregroundColor(.primary)
