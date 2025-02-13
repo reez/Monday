@@ -17,11 +17,18 @@ extension Double {
         return numberFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
     }
 
-    func valueInUSD(price: Double) -> String {
-        let bitcoin = self / 100_000_000.0
-        let usdValue = bitcoin * price
-        let value = usdValue.formattedPrice(currencyCode: .USD)
-        return value
+    static let currencyFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        return formatter
+    }()
+
+    func formattedCurrency(code: String = "USD") -> String {
+        Self.currencyFormatter.currencyCode = code
+        // Return localised
+        return Self.currencyFormatter.string(from: NSNumber(value: self)) ?? "0"
     }
 
 }

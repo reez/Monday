@@ -6,47 +6,46 @@
 //
 
 import Foundation
+import LDKNode
 
 extension UInt64 {
 
-    func formattedAmount() -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.groupingSeparator = ","
-        formatter.groupingSize = 3
-        formatter.locale = Locale(identifier: "en_US")
+    static let satsPerBtc: UInt64 = 1_00_000_000
+    static let msatsPerSat: UInt64 = 1_000
 
-        let satValue = self / 1000
-        if let formattedNumber = formatter.string(from: NSNumber(value: satValue)) {
-            return formattedNumber
-        } else {
-            return ""
-        }
+    var mSatsAsSats: UInt64 {
+        return self >= 1000 ? self / UInt64.msatsPerSat : 0
     }
 
-    func formattedSatoshis() -> String {
+    func formattedSatsAsBtc(format: BitcoinFormatting? = .truncated) -> String {
         if self == 0 {
-            return "0.00 000 000"
+            return "0"
         } else {
-            let balanceString = String(format: "%010d", self)
-
-            let zero = balanceString.prefix(2)
-            let first = balanceString.dropFirst(2).prefix(2)
-            let second = balanceString.dropFirst(4).prefix(3)
-            let third = balanceString.dropFirst(7).prefix(3)
-
-            var formattedZero = zero
-
-            if zero == "00" {
-                formattedZero = zero.dropFirst()
-            } else if zero.hasPrefix("0") {
-                formattedZero = zero.suffix(1)
+            switch format {
+            case .satscomma:
+                return String(
+                    format: "%d.%02d %03d %03d",
+                    self / 100_000_000,
+                    (self % 100_000_000) / 1_000_000,
+                    (self % 1_000_000) / 1_000,
+                    self % 1_000
+                )
+            default:
+                let btcAmount = Double(self) / Double(UInt64.satsPerBtc)
+                return btcAmount.formatted(.number.notation(.automatic))
             }
-
-            let formattedBalance = "\(formattedZero).\(first) \(second) \(third)"
-
-            return formattedBalance
         }
     }
 
+    func formattedSatsAsUSD(price: Double) -> String {
+        let btcAmount = Double(self) / Double(UInt64.satsPerBtc)
+        let usdValue = btcAmount * price
+        return usdValue.formattedCurrency()
+    }
+
+}
+
+public enum BitcoinFormatting {
+    case satscomma
+    case truncated
 }

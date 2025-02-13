@@ -192,8 +192,17 @@ struct BitcoinView: View {
                     }
                 }
             ) {
-                PaymentsView(viewModel: .init(lightningClient: viewModel.lightningClient))
-                    .presentationDetents([.medium, .large])
+                PaymentsListView(
+                    payments: $viewModel.payments,
+                    displayBalanceType: $displayBalanceType,
+                    price: viewModel.price
+                )
+                .presentationDetents([.medium, .large])
+                .refreshable {
+                    Task {
+                        await viewModel.update()
+                    }
+                }
             }
 
         }
@@ -265,7 +274,7 @@ struct BalanceHeader: View {
         case .fiatBtc:
             return viewModel.totalUSDValue
         case .btcFiat:
-            return "₿" + viewModel.unifiedBalance.formattedSatoshis()
+            return "₿" + viewModel.unifiedBalance.formattedSatsAsBtc()
         case .totalSats:
             return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
         case .onchainSats:
@@ -284,7 +293,7 @@ struct BalanceHeader: View {
         case .fiatSats:
             return viewModel.unifiedBalance.formatted(.number.notation(.automatic))
         case .fiatBtc:
-            return "₿" + viewModel.unifiedBalance.formattedSatoshis()
+            return "₿" + viewModel.unifiedBalance.formattedSatsAsBtc()
         case .btcFiat:
             return viewModel.totalUSDValue
         case .totalSats:

@@ -507,32 +507,40 @@ let mockPayments: [PaymentDetails] = [
         kind: .bolt11(hash: "hash1", preimage: nil, secret: nil),
         amountMsat: 100_000_000,
         direction: .inbound,
-        status: .succeeded,
-        latestUpdateTimestamp: 1_718_841_600
-    ),
-    .init(
-        id: "4",
-        kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
-        amountMsat: 210_000_000,
-        direction: .outbound,
-        status: .succeeded,
-        latestUpdateTimestamp: 1_718_841_640
+        status: .pending,
+        latestUpdateTimestamp: UInt64(Date.now.timeIntervalSince1970)
     ),
     .init(
         id: "2",
-        kind: .bolt11(hash: "hash2", preimage: nil, secret: nil),
-        amountMsat: 100_000_000,
+        kind: .onchain,
+        amountMsat: 640_000_000,
         direction: .inbound,
-        status: .pending,
-        latestUpdateTimestamp: 1_718_841_620
+        status: .succeeded,
+        latestUpdateTimestamp: UInt64(Date.now.addingTimeInterval(0.5 * 3600).timeIntervalSince1970)
     ),
     .init(
         id: "3",
         kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
-        amountMsat: 100_000_000,
+        amountMsat: 340_000_000,
+        direction: .outbound,
+        status: .succeeded,
+        latestUpdateTimestamp: UInt64(Date.now.addingTimeInterval(3 * 3600).timeIntervalSince1970)
+    ),
+    .init(
+        id: "4",
+        kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
+        amountMsat: 160_000_000,
         direction: .inbound,
+        status: .succeeded,
+        latestUpdateTimestamp: UInt64(Date.now.addingTimeInterval(48 * 3600).timeIntervalSince1970)
+    ),
+    .init(
+        id: "5",
+        kind: .onchain,
+        amountMsat: 210_000_000,
+        direction: .outbound,
         status: .failed,
-        latestUpdateTimestamp: 1_718_841_630
+        latestUpdateTimestamp: 1_718_841_640
     ),
 ]
 
