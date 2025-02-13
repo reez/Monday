@@ -206,7 +206,9 @@ struct BitcoinView: View {
                 )
                 .presentationDetents([.medium, .large])
                 .refreshable {
-                    // TODO: expose getTransactions() from BitcoinViewModel
+                    Task {
+                        await viewModel.update()
+                    }
                 }
             }
 
