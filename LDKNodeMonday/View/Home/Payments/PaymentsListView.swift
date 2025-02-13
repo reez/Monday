@@ -248,7 +248,7 @@ extension PaymentDetails {
 #if DEBUG
     #Preview {
         PaymentsListView(
-            transactions: .constant([]),
+            transactions: .constant(mockPayments),
             displayBalanceType: .constant(.fiatSats),
             price: 75000.14
         )
