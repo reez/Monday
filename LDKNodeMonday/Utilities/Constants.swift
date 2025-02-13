@@ -11,9 +11,6 @@ import SwiftUI
 
 struct Constants {
 
-    static let satsPerBtc: UInt64 = 1_00_000_000
-    static let msatsPerSat: UInt64 = 1_000
-
     struct Config {
 
         struct EsploraServerURLNetwork {
