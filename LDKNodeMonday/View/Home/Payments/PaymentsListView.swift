@@ -89,7 +89,7 @@ struct TransactionItemView: View {
                     .font(.system(.body, weight: .bold))
                     .foregroundColor(.bitcoinNeutral8)
                 Circle()
-                    .fill(Color.white)
+                    .fill(.background)
                     .frame(width: 16, height: 16)
                     .overlay(
                         Image(systemName: transaction.kind == .onchain ? "bitcoinsign" : "bolt")
