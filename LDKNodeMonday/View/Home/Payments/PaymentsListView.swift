@@ -14,7 +14,7 @@ struct PaymentSection {
 }
 
 struct PaymentsListView: View {
-    @Binding var payments: [PaymentDetails]
+    @Binding var transactions: [PaymentDetails]
     @Binding var displayBalanceType: DisplayBalanceType
     var price: Double
 
@@ -31,20 +31,38 @@ struct PaymentsListView: View {
     ]
 
     var groupedPayments: [PaymentStatus: [PaymentDetails]] {
-        Dictionary(grouping: payments, by: { $0.status })
+        Dictionary(grouping: transactions, by: { $0.status })
     }
 
     var body: some View {
         List {
             Section {
-                ForEach(payments, id: \.id) { payment in
-                    TransactionItemView(
-                        transaction: payment,
-                        displayBalanceType: displayBalanceType,
-                        price: price
-                    )
-                    .padding(.vertical, 5)
+                if transactions.isEmpty {
+                    VStack {
+                        // Empty state
+                        Image(systemName: "eyes")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 40, height: 40)
+
+                        Text("Nothing to see here, yet.\nGo get some bitcoin!")
+                            .font(.caption)
+                            .multilineTextAlignment(.center)
+                    }
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, minHeight: 300)  // Ensure vertical space
                     .listRowSeparator(.hidden)
+                } else {
+                    // List transactions
+                    ForEach(transactions, id: \.id) { payment in
+                        TransactionItemView(
+                            transaction: payment,
+                            displayBalanceType: displayBalanceType,
+                            price: price
+                        )
+                        .padding(.vertical, 5)
+                        .listRowSeparator(.hidden)
+                    }
                 }
             } header: {
                 Text("Activity")
@@ -230,7 +248,7 @@ extension PaymentDetails {
 #if DEBUG
     #Preview {
         PaymentsListView(
-            payments: .constant(mockPayments),
+            transactions: .constant([]),
             displayBalanceType: .constant(.fiatSats),
             price: 75000.14
         )
