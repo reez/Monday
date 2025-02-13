@@ -98,7 +98,7 @@ struct SettingsView: View {
                     Toggle(
                         isOn: Binding(
                             get: { viewModel.walletClient.appMode == .mock },
-                            set: { newValue in
+                            set: { _ in
                                 showToggleTestData = true
                             }
                         ),
