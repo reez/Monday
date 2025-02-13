@@ -99,9 +99,9 @@ class BitcoinViewModel: ObservableObject {
 
     func getPayments() async {
         let payments = lightningClient.listPayments()
-        let tCopy = payments
+        let pCopy = payments
         await MainActor.run {
-            self.payments = tCopy
+            self.payments = pCopy
         }
     }
 

@@ -27,7 +27,6 @@ extension Double {
 
     func formattedCurrency(code: String = "USD") -> String {
         Self.currencyFormatter.currencyCode = code
-        // Return localised
         return Self.currencyFormatter.string(from: NSNumber(value: self)) ?? "0"
     }
 
