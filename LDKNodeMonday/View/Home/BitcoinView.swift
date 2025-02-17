@@ -15,7 +15,6 @@ struct BitcoinView: View {
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
     @State private var showReceiveViewWithOption: ReceiveOption?
-    @State private var isPaymentsPresented = false
     @State private var showToast = false
     @State private var showingNodeIDView = false
     @State private var displayBalanceType = DisplayBalanceType.userDefaults
@@ -135,27 +134,6 @@ struct BitcoinView: View {
                 )
                 .presentationDetents([.large])
             }
-            .sheet(
-                isPresented: $isPaymentsPresented,
-                onDismiss: {
-                    Task {
-                        await viewModel.update()
-                    }
-                }
-            ) {
-                PaymentsListView(
-                    payments: $viewModel.payments,
-                    displayBalanceType: $displayBalanceType,
-                    price: viewModel.price
-                )
-                .presentationDetents([.medium, .large])
-                .refreshable {
-                    Task {
-                        await viewModel.update()
-                    }
-                }
-            }
-
         }
         .navigationDestination(for: NavigationDestination.self) { destination in
             switch destination {
