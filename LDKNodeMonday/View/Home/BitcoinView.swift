@@ -29,65 +29,24 @@ struct BitcoinView: View {
 
             VStack {
 
-                List {
-                    BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
-                        .frame(maxWidth: .infinity)  // centers the view horizontally
-                        .listRowSeparator(.hidden)
-                }
-                .listStyle(.plain)
-                .padding(.top, 220.0)
+                BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
+                    .padding(.vertical, 40)
+
+                TransactionButtons(viewModel: viewModel)
+                    .padding(.horizontal, 40)
+
+                PaymentsListView(
+                    payments: $viewModel.payments,
+                    displayBalanceType: $displayBalanceType,
+                    price: viewModel.price
+                )
                 .refreshable {
-                    await viewModel.update()
-                }
-
-                Spacer()
-
-                Button {
-                    isPaymentsPresented = true
-                } label: {
-                    Label("Activity", systemImage: "clock")
-                        .foregroundColor(.accentColor)
-                }
-                .tint(viewModel.networkColor)
-                .padding()
-
-                HStack {
-
-                    Button(action: {
-                        showReceiveViewWithOption = .bip21
-                    }) {
-                        Image(systemName: "qrcode")
-                            .font(.title)
-                            .foregroundColor(.primary)
-                    }.contextMenu {
-                        Button {
-                            showReceiveViewWithOption = .bip21
-                        } label: {
-                            Label("Unified BIP21", systemImage: "bitcoinsign")
-                        }
-
-                        Button {
-                            showReceiveViewWithOption = .bolt11JIT
-                        } label: {
-                            Label("JIT Bolt11", systemImage: "bolt")
-                        }
+                    Task {
+                        await viewModel.update()
                     }
-
-                    Spacer()
-
-                    NavigationLink(value: NavigationDestination.address) {
-                        Image(systemName: "qrcode.viewfinder")
-                            .font(.title)
-                            .foregroundColor(.primary)
-                    }
-
                 }
-                .padding([.horizontal, .bottom])
 
             }
-            .padding()
-            .padding(.bottom, 20.0)
-            .tint(viewModel.networkColor)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     NavigationLink(
@@ -303,6 +262,71 @@ struct BalanceHeader: View {
             return ""
         default:
             return "sats"
+        }
+    }
+}
+
+struct TransactionButtons: View {
+    @ObservedObject var viewModel: BitcoinViewModel
+    @State private var isReceiveSheetPresented = false
+
+    var body: some View {
+        HStack(alignment: .center) {
+            // Only show send buttons if user has balance
+            if viewModel.unifiedBalance > 0 {
+                // Send button
+                NavigationLink(value: NavigationDestination.address) {
+                    Button {
+                        // Optional button action if needed
+                    } label: {
+                        Text("Send")
+                    }.buttonStyle(
+                        BitcoinFilled(
+                            width: 120,
+                            tintColor: .accent,
+                            isCapsule: true
+                        )
+                    ).allowsHitTesting(false)  // Required to enable NavigationLink to work
+                }
+
+                Spacer()
+
+                // Scan QR button
+                NavigationLink(value: NavigationDestination.address) {
+                    Label("Scan QR", systemImage: "qrcode.viewfinder")
+                        .font(.title)
+                        .frame(height: 60, alignment: .center)
+                        .labelStyle(.iconOnly)
+                        .foregroundColor(.accentColor)
+                        .padding()
+                }
+
+                Spacer()
+            }
+
+            // Receive button
+            Button("Receive") {
+                isReceiveSheetPresented = true
+            }
+            .buttonStyle(
+                BitcoinFilled(
+                    width: 120,
+                    tintColor: .accent,
+                    isCapsule: true
+                )
+            )
+            .sheet(
+                isPresented: $isReceiveSheetPresented,
+                onDismiss: {
+                    Task {
+                        await viewModel.update()
+                    }
+                }
+            ) {
+                ReceiveView(lightningClient: viewModel.walletClient.lightningClient)
+                    .presentationDetents([.large])
+            }
+
         }
     }
 }
