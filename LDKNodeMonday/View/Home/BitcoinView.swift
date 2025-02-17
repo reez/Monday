@@ -31,11 +31,8 @@ struct BitcoinView: View {
                 BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
                     .padding(.vertical, 40)
 
-                // Show transaction buttons on top if user has balance
-                if viewModel.unifiedBalance != 0 {
-                    TransactionButtons(viewModel: viewModel)
-                        .padding(.horizontal, 40)
-                }
+                TransactionButtons(viewModel: viewModel)
+                    .padding(.horizontal, 40)
 
                 PaymentsListView(
                     payments: $viewModel.payments,
@@ -48,12 +45,6 @@ struct BitcoinView: View {
                     }
                 }
                 .sensoryFeedback(.increase, trigger: viewModel.isStatusFinished)
-
-                // Show receive button at bottom if user does not have a balance
-                if viewModel.unifiedBalance == 0 {
-                    TransactionButtons(viewModel: viewModel)
-                        .padding(40)
-                }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -280,37 +271,35 @@ struct TransactionButtons: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            // Only show send buttons if user has balance
-            if viewModel.unifiedBalance > 0 {
-                // Send button
-                NavigationLink(value: NavigationDestination.address) {
-                    Button {
-                        // Optional button action if needed
-                    } label: {
-                        Text("Send")
-                    }.buttonStyle(
-                        BitcoinFilled(
-                            width: 120,
-                            tintColor: .accent,
-                            isCapsule: true
-                        )
-                    ).allowsHitTesting(false) // Required to enable NavigationLink to work
-                }
 
-                Spacer()
+            // Send button
+            NavigationLink(value: NavigationDestination.address) {
+                Button {
+                    // Optional button action if needed
+                } label: {
+                    Text("Send")
+                }.buttonStyle(
+                    BitcoinFilled(
+                        width: 120,
+                        tintColor: .accent,
+                        isCapsule: true
+                    )
+                ).allowsHitTesting(false)  // Required to enable NavigationLink to work
+            }.disabled(viewModel.unifiedBalance == 0)
 
-                // Scan QR button
-                NavigationLink(value: NavigationDestination.address) {
-                    Label("Scan QR", systemImage: "qrcode.viewfinder")
-                        .font(.title)
-                        .frame(height: 60, alignment: .center)
-                        .labelStyle(.iconOnly)
-                        .foregroundColor(.accentColor)
-                        .padding()
-                }
+            Spacer()
 
-                Spacer()
-            }
+            // Scan QR button
+            NavigationLink(value: NavigationDestination.address) {
+                Label("Scan QR", systemImage: "qrcode.viewfinder")
+                    .font(.title)
+                    .frame(height: 60, alignment: .center)
+                    .labelStyle(.iconOnly)
+                    .foregroundColor(.accentColor)
+                    .padding()
+            }.disabled(viewModel.unifiedBalance == 0)
+
+            Spacer()
 
             // Receive button
             Button("Receive") {
