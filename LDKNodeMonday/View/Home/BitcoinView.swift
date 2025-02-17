@@ -100,7 +100,11 @@ struct BitcoinView: View {
                             )
                         )
                     ) {
-                        Label("Settings", systemImage: "gearshape")
+                        Label(
+                            "Settings",
+                            systemImage: viewModel.walletClient.appMode == .mock
+                                ? "testtube.2" : "gearshape"
+                        )
                     }
                 }
             }
