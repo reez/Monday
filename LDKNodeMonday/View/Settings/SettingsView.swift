@@ -178,6 +178,7 @@ struct SettingsView: View {
                             newServer: viewModel.walletClient.server,
                             appMode: viewModel.walletClient.appMode == .mock ? .live : .mock
                         )
+                        dismiss()
                     }
                 }
             } message: {

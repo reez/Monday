@@ -91,13 +91,6 @@ struct BitcoinView: View {
             .padding(.bottom, 20.0)
             .tint(viewModel.networkColor)
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    viewModel.walletClient.appMode == .mock
-                        ? Label("Mock", systemImage: "testtube.2").padding().foregroundColor(
-                            .secondary
-                        ) : nil
-                }
-
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     NavigationLink(
                         destination: SettingsView(
