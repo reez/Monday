@@ -38,20 +38,12 @@ struct PaymentsListView: View {
         List {
             Section {
                 if payments.isEmpty {
-                    VStack {
-                        // Empty state
-                        Image(systemName: "eyes")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-
-                        Text("No activity, yet.\nGo get some bitcoin!")
-                            .font(.caption)
-                            .multilineTextAlignment(.center)
-                    }
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, minHeight: 400)  // Ensure vertical space
-                    .listRowSeparator(.hidden)
+                    Text("No activity, yet.\nGo get some bitcoin!")
+                        .font(.caption)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, minHeight: 400)  // Ensure vertical space
+                        .listRowSeparator(.hidden)
                 } else {
                     // List payments
                     ForEach(payments, id: \.id) { payment in
