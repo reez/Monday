@@ -56,11 +56,14 @@ struct BitcoinView: View {
                             )
                         )
                     ) {
-                        Label(
-                            "Settings",
-                            systemImage: viewModel.walletClient.appMode == .mock
-                                ? "testtube.2" : "gearshape"
-                        )
+                        HStack {
+                            Text(
+                                viewModel.walletClient.appMode == .mock
+                                    ? "Mock data /" : ""
+                            )
+                            Text(viewModel.walletClient.network.description.capitalized)
+                            Image(systemName: "gearshape")
+                        }
                     }
                 }
             }
