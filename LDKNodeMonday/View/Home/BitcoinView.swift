@@ -47,6 +47,7 @@ struct BitcoinView: View {
                         await viewModel.update()
                     }
                 }
+                .sensoryFeedback(.success, trigger: viewModel.isStatusFinished)
 
                 // Show receive button at bottom if user does not have a balance
                 if viewModel.unifiedBalance == 0 {
