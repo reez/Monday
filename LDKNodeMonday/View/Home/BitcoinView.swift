@@ -99,12 +99,15 @@ struct BitcoinView: View {
                 }
 
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingNodeIDView = true
-                    }) {
-                        Image(systemName: "person.crop.circle.dashed.circle")
-                            .font(.title)
-                            .foregroundColor(.primary)
+                    NavigationLink(
+                        destination: SettingsView(
+                            viewModel: .init(
+                                walletClient: viewModel.$walletClient,
+                                lightningClient: viewModel.lightningClient
+                            )
+                        )
+                    ) {
+                        Label("Settings", systemImage: "gearshape")
                     }
                 }
             }
@@ -129,21 +132,6 @@ struct BitcoinView: View {
                 Task {
                     await viewModel.update()
                 }
-            }
-            .sheet(
-                isPresented: $showingNodeIDView,
-                onDismiss: {
-                    Task {
-                        await viewModel.update()
-                    }
-                }
-            ) {
-                SettingsView(
-                    viewModel: .init(
-                        walletClient: viewModel.$walletClient,
-                        lightningClient: viewModel.lightningClient
-                    )
-                )
             }
             .alert(isPresented: $showingBitcoinViewErrorAlert) {
                 Alert(
