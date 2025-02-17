@@ -74,6 +74,7 @@ struct PaymentsListView: View {
             */
         }
         .listStyle(.plain)
+        .padding(.horizontal)
     }
 }
 
