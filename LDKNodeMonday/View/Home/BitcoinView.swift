@@ -24,116 +24,99 @@ struct BitcoinView: View {
 
     var body: some View {
 
-        ZStack {
+        VStack {
+            BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
+                .padding(.vertical, 40)
 
-            VStack {
-                BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
-                    .padding(.vertical, 40)
+            TransactionButtons(viewModel: viewModel)
+                .padding(.horizontal, 40)
 
-                TransactionButtons(viewModel: viewModel)
-                    .padding(.horizontal, 40)
-
-                PaymentsListView(
-                    payments: $viewModel.payments,
-                    displayBalanceType: $displayBalanceType,
-                    price: viewModel.price
-                )
-                .refreshable {
-                    Task {
-                        await viewModel.update()
-                    }
-                }
-                .sensoryFeedback(.increase, trigger: viewModel.isStatusFinished)
-            }
-            .toolbar {
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    NavigationLink(
-                        destination: SettingsView(
-                            viewModel: .init(
-                                walletClient: viewModel.$walletClient,
-                                lightningClient: viewModel.lightningClient
-                            )
+            PaymentsListView(
+                payments: $viewModel.payments,
+                displayBalanceType: $displayBalanceType,
+                price: viewModel.price
+            )
+            .refreshable { viewModel.update() }
+            .sensoryFeedback(.increase, trigger: viewModel.isStatusFinished)
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                NavigationLink(
+                    destination: SettingsView(
+                        viewModel: .init(
+                            walletClient: viewModel.$walletClient,
+                            lightningClient: viewModel.lightningClient
                         )
-                    ) {
-                        HStack {
-                            Text(
-                                viewModel.walletClient.appMode == .mock
-                                    ? "Mock data /" : ""
-                            )
-                            Text(viewModel.walletClient.network.description.capitalized)
-                            Image(systemName: "gearshape")
-                        }
+                    )
+                ) {
+                    HStack {
+                        Text(
+                            viewModel.walletClient.appMode == .mock
+                                ? "Mock data /" : ""
+                        )
+                        Text(viewModel.walletClient.network.description.capitalized)
+                        Image(systemName: "gearshape")
                     }
                 }
             }
-            .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
-            .onAppear {
-                Task {
-                    await viewModel.update()
-                }
+        }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
+        .onAppear { viewModel.update() }
+        .onChange(
+            of: eventService.lastMessage,
+            { oldValue, newValue in
+                showToast = eventService.lastMessage != nil
             }
-            .onChange(
-                of: eventService.lastMessage,
-                { oldValue, newValue in
-                    showToast = eventService.lastMessage != nil
+        )
+        .onReceive(viewModel.$bitcoinViewError) { errorMessage in
+            if errorMessage != nil {
+                showingBitcoinViewErrorAlert = true
+            }
+        }
+        .onReceive(eventService.$lastMessage) { _ in
+            viewModel.update()
+        }
+        .alert(isPresented: $showingBitcoinViewErrorAlert) {
+            Alert(
+                title: Text(viewModel.bitcoinViewError?.title ?? "Unknown"),
+                message: Text(viewModel.bitcoinViewError?.detail ?? ""),
+                dismissButton: .default(Text("OK")) {
+                    viewModel.bitcoinViewError = nil
                 }
             )
-            .onReceive(viewModel.$bitcoinViewError) { errorMessage in
-                if errorMessage != nil {
-                    showingBitcoinViewErrorAlert = true
-                }
-            }
-            .onReceive(eventService.$lastMessage) { _ in
-                Task {
-                    await viewModel.update()
-                }
-            }
-            .alert(isPresented: $showingBitcoinViewErrorAlert) {
-                Alert(
-                    title: Text(viewModel.bitcoinViewError?.title ?? "Unknown"),
-                    message: Text(viewModel.bitcoinViewError?.detail ?? ""),
-                    dismissButton: .default(Text("OK")) {
-                        viewModel.bitcoinViewError = nil
-                    }
-                )
-            }
-            .simpleToast(
-                isPresented: $showToast,
-                options: .init(
-                    hideAfter: 5.0,
-                    animation: .spring,
-                    modifierType: .slide
-                )
-            ) {
-                Text(eventService.lastMessage ?? "")
-                    .padding()
-                    .background(
-                        Capsule()
-                            .foregroundColor(
-                                Color(
-                                    uiColor:
-                                        colorScheme == .dark
-                                        ? .secondarySystemBackground : .systemGray6
-                                )
+        }
+        .simpleToast(
+            isPresented: $showToast,
+            options: .init(
+                hideAfter: 5.0,
+                animation: .spring,
+                modifierType: .slide
+            )
+        ) {
+            Text(eventService.lastMessage ?? "")
+                .padding()
+                .background(
+                    Capsule()
+                        .foregroundColor(
+                            Color(
+                                uiColor:
+                                    colorScheme == .dark
+                                    ? .secondarySystemBackground : .systemGray6
                             )
-                    )
-                    .foregroundColor(Color.primary)
-                    .font(.caption2)
-            }
-            .sheet(
-                item: $showReceiveViewWithOption,
-                onDismiss: {
-                    Task {
-                        await viewModel.update()
-                    }
-                }
-            ) { receiveOption in
-                ReceiveView(
-                    lightningClient: viewModel.lightningClient,
-                    selectedOption: receiveOption
+                        )
                 )
-                .presentationDetents([.large])
-            }
+                .foregroundColor(Color.primary)
+                .font(.caption2)
+        }
+        .sheet(
+            item: $showReceiveViewWithOption,
+            onDismiss: { viewModel.update() }
+        ) { receiveOption in
+            ReceiveView(
+                lightningClient: viewModel.lightningClient,
+                selectedOption: receiveOption
+            )
+            .presentationDetents([.large])
         }
         .navigationDestination(for: NavigationDestination.self) { destination in
             switch destination {
@@ -152,9 +135,8 @@ struct BitcoinView: View {
                     navigationPath: $sendNavigationPath
                 )
                 .onDisappear {
-                    Task {
-                        await viewModel.update()
-                    }
+                    viewModel.update()
+
                 }
 
             }
@@ -298,7 +280,7 @@ struct TransactionButtons: View {
                 isPresented: $isReceiveSheetPresented,
                 onDismiss: {
                     Task {
-                        await viewModel.update()
+                        viewModel.update()
                     }
                 }
             ) {

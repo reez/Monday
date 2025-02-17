@@ -39,16 +39,18 @@ class BitcoinViewModel: ObservableObject {
         self.lightningClient = lightningClient
     }
 
-    func update() async {
-        async let balancesTask: () = getBalances()
-        async let pricesTask: () = getPrices()
-        async let paymentsTask: () = getPayments()
-        async let statusTask: () = getStatus()
+    func update() {
+        Task {
+            async let balancesTask: () = getBalances()
+            async let pricesTask: () = getPrices()
+            async let paymentsTask: () = getPayments()
+            async let statusTask: () = getStatus()
 
-        await balancesTask
-        await pricesTask
-        await paymentsTask
-        await statusTask
+            await balancesTask
+            await pricesTask
+            await paymentsTask
+            await statusTask
+        }
     }
 
     func getStatus() async {
