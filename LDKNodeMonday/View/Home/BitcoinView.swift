@@ -28,12 +28,14 @@ struct BitcoinView: View {
         ZStack {
 
             VStack {
-
                 BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
                     .padding(.vertical, 40)
 
-                TransactionButtons(viewModel: viewModel)
-                    .padding(.horizontal, 40)
+                // Show transaction buttons on top if user has balance
+                if viewModel.unifiedBalance != 0 {
+                    TransactionButtons(viewModel: viewModel)
+                        .padding(.horizontal, 40)
+                }
 
                 PaymentsListView(
                     payments: $viewModel.payments,
@@ -46,6 +48,11 @@ struct BitcoinView: View {
                     }
                 }
 
+                // Show receive button at bottom if user does not have a balance
+                if viewModel.unifiedBalance == 0 {
+                    TransactionButtons(viewModel: viewModel)
+                        .padding(40)
+                }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
