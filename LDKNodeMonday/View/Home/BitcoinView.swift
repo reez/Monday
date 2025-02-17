@@ -47,7 +47,7 @@ struct BitcoinView: View {
                         await viewModel.update()
                     }
                 }
-                .sensoryFeedback(.success, trigger: viewModel.isStatusFinished)
+                .sensoryFeedback(.increase, trigger: viewModel.isStatusFinished)
 
                 // Show receive button at bottom if user does not have a balance
                 if viewModel.unifiedBalance == 0 {
@@ -187,7 +187,7 @@ struct BitcoinView: View {
 
             }
 
-        }
+        }.sensoryFeedback(.increase, trigger: sendNavigationPath)
 
     }
 
@@ -316,7 +316,7 @@ struct TransactionButtons: View {
             Button("Receive") {
                 isReceiveSheetPresented = true
             }
-            .sensoryFeedback(.success, trigger: isReceiveSheetPresented)
+            .sensoryFeedback(.increase, trigger: isReceiveSheetPresented)
             .buttonStyle(
                 BitcoinFilled(
                     width: 120,
