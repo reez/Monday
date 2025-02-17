@@ -45,10 +45,8 @@ struct BitcoinView: View {
                 Button {
                     isPaymentsPresented = true
                 } label: {
-                    HStack {
-                        Image(systemName: "bolt.fill")
-                        Text("View Payments")
-                    }
+                    Label("Activity", systemImage: "clock")
+                        .foregroundColor(.accentColor)
                 }
                 .tint(viewModel.networkColor)
                 .padding()
@@ -91,13 +89,6 @@ struct BitcoinView: View {
             .padding(.bottom, 20.0)
             .tint(viewModel.networkColor)
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    viewModel.walletClient.appMode == .mock
-                        ? Label("Mock", systemImage: "testtube.2").padding().foregroundColor(
-                            .secondary
-                        ) : nil
-                }
-
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     NavigationLink(
                         destination: SettingsView(
