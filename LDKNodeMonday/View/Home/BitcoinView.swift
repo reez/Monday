@@ -294,7 +294,7 @@ struct TransactionButtons: View {
                             tintColor: .accent,
                             isCapsule: true
                         )
-                    ).allowsHitTesting(false)  // Required to enable NavigationLink to work
+                    ).allowsHitTesting(false) // Required to enable NavigationLink to work
                 }
 
                 Spacer()
@@ -316,6 +316,7 @@ struct TransactionButtons: View {
             Button("Receive") {
                 isReceiveSheetPresented = true
             }
+            .sensoryFeedback(.success, trigger: isReceiveSheetPresented)
             .buttonStyle(
                 BitcoinFilled(
                     width: 120,
