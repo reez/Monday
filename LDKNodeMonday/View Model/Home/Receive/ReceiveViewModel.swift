@@ -43,9 +43,7 @@ class ReceiveViewModel: ObservableObject {
                 )
                 let jitPaymentAddress = PaymentAddress(
                     type: .bolt11,
-                    address: jitInvoice,
-                    prefix: "lightning:",
-                    description: "Lightning - Bolt11 JIT"
+                    address: jitInvoice
                 )
 
                 var filteredAddresses =
@@ -136,30 +134,22 @@ class ReceiveViewModel: ObservableObject {
         let paymentAddresses: [PaymentAddress?] = [
             PaymentAddress(
                 type: .bip21,
-                address: unifiedQR,
-                prefix: "",
-                description: "Onchain & Lightning"
+                address: unifiedQR
             ),
             PaymentAddress(
                 type: .onchain,
-                address: onchain,
-                prefix: "bitcoin:",
-                description: "Onchain"
+                address: onchain
             ),
             bolt11.map {
                 PaymentAddress(
                     type: .bolt11,
-                    address: $0,
-                    prefix: "lightning:",
-                    description: "Lightning - Bolt11"
+                    address: $0
                 )
             },
             bolt12.map {
                 PaymentAddress(
                     type: .bolt12,
-                    address: $0,
-                    prefix: "lightning:",
-                    description: "Lightning - Bolt12"
+                    address: $0
                 )
             },
         ]
@@ -175,18 +165,33 @@ enum AddressType {
     case bolt12
 }
 
-enum AddressPrefix {
-    case bip21
-    case onchain
-    case bolt11
-    case bolt12
-}
-
 public struct PaymentAddress {
     let type: AddressType
     let address: String
-    let prefix: String
-    let description: String
+
+    var prefix: String {
+        switch self.type {
+        case .bip21:
+            return ""
+        case .onchain:
+            return "bitcoin:"
+        case .bolt11, .bolt12:
+            return "lightning:"
+        }
+    }
+    
+    var description: String {
+        switch self.type {
+        case .bip21:
+            return "Onchain & Lightning"
+        case .onchain:
+            return "Onchain"
+        case .bolt11:
+            return "Lightning - Bolt11"
+        case .bolt12:
+            return "Lightning - Bolt12"
+        }
+    }
 }
 
 extension PaymentAddress {
