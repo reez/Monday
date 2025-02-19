@@ -10,13 +10,15 @@ import Foundation
 import LDKNode
 import SwiftUI
 
-class BIP21ViewModel: ObservableObject {
+class ReceiveViewModel: ObservableObject {
+    @Published var selectedOption: ReceiveOption = .bip21
+    @Published var isLoadingQR = true
     @Published var unified: String = ""
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var amountSat: String = "0"
 
-    private let lightningClient: LightningNodeClient
+    let lightningClient: LightningNodeClient
 
     init(lightningClient: LightningNodeClient) {
         self.lightningClient = lightningClient
@@ -48,10 +50,14 @@ class BIP21ViewModel: ObservableObject {
         }
     }
 
-    func getColor() {
-        let color = lightningClient.getNetworkColor()
-        DispatchQueue.main.async {
-            self.networkColor = color
-        }
+    func generateUnifiedQR() async {
+        isLoadingQR = true
+        let amountSat = (UInt64(amountSat) ?? 0)
+        await receivePayment(
+            amountSat: amountSat,
+            message: "Monday Wallet",
+            expirySecs: UInt32(3600)
+        )
+        isLoadingQR = false
     }
 }
