@@ -10,36 +10,84 @@ import SwiftUI
 
 struct ReceiveView: View {
     @Environment(\.dismiss) private var dismiss
-    let lightningClient: LightningNodeClient
-    @State public var selectedOption: ReceiveOption = .bip21
+    @ObservedObject var viewModel: ReceiveViewModel
+    @State var showCopyDialog = false
+    @State var copied = false
 
     var body: some View {
 
         NavigationView {
             VStack {
+                if viewModel.paymentAddresses.count > 0 {
 
-                Picker("Options", selection: $selectedOption) {
-                    ForEach(ReceiveOption.allCases, id: \.self) { option in
-                        HStack(spacing: 5) {
-                            Image(systemName: option.systemImageName)
-                            Text(option.rawValue)
+                    // QR Code
+                    GeometryReader { geometry in
+                        TabView {
+                            ForEach(viewModel.paymentAddresses.compactMap { $0 }, id: \.address) {
+                                paymentAddress in
+                                QRView(paymentAddress: paymentAddress)
+                                    .padding(40)
+                            }
                         }
-                        .tag(option)
+                        .frame(height: geometry.size.width * 1.1)
+                        .tabViewStyle(.page(indexDisplayMode: .always))
+                        .indexViewStyle(.page(backgroundDisplayMode: .always))
                     }
-                }
-                .pickerStyle(.menu)
-                .tint(.primary)
 
-                Spacer()
+                    // Share Button
+                    Button {
+                        //
+                    } label: {
+                        ShareLink(
+                            item: viewModel.paymentAddresses
+                                .compactMap({ $0 })
+                                .first(where: { $0.type == .bip21 })?.address ?? "",
+                            preview: SharePreview(
+                                "Bitcoin address, BIP21 format",
+                                image: Image("AppIcon")
+                            )
+                        ) {
+                            Label("Share", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                    .buttonStyle(
+                        BitcoinFilled(
+                            tintColor: .accent,
+                            isCapsule: true
+                        )
+                    )
 
-                switch selectedOption {
-                case .bolt11JIT:
-                    JITInvoiceView(viewModel: .init(lightningClient: lightningClient))
-                case .bip21:
-                    BIP21View(viewModel: .init(lightningClient: lightningClient))
+                    // Copy Button and Confirmation Dialog
+                    Button {
+                        self.showCopyDialog = true
+                    } label: {
+                        Label(copied ? "Copied" : "Copy", systemImage: "document.on.document")
+                    }
+                    .disabled(copied)
+                    .buttonStyle(
+                        BitcoinPlain(
+                            tintColor: .accent
+                        )
+                    )
+                    .confirmationDialog(
+                        "Copy Bitcoin Address",
+                        isPresented: $showCopyDialog,
+                        titleVisibility: .visible
+                    ) {
+                        ForEach(viewModel.paymentAddresses.compactMap { $0 }, id: \.address) {
+                            paymentAddress in
+                            Button(paymentAddress.description) {
+                                UIPasteboard.general.string = paymentAddress.address
+                                self.copied = true
+                            }
+                        }
+                    }
+                } else {
+                    ProgressView()
                 }
             }
-            .navigationTitle("Receive")
+            .padding(.bottom, 20)
+            .navigationTitle("Receive Bitcoin")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -48,11 +96,13 @@ struct ReceiveView: View {
                     }
                 }
             }
-
+            .onAppear {
+                Task {
+                    await viewModel.generateUnifiedQR()
+                }
+            }
         }
-
     }
-
 }
 
 struct AmountEntryView: View {
@@ -156,8 +206,7 @@ struct InvoiceRowView: View {
 
 #if DEBUG
     #Preview {
-        AmountEntryView(
-            amount: .constant("21")
-        )
+        ReceiveView(viewModel: ReceiveViewModel(lightningClient: .mock))
+        //AmountEntryView(amount: .constant("21"))
     }
 #endif
