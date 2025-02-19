@@ -9,37 +9,47 @@ import BitcoinUI
 import SwiftUI
 
 struct ReceiveView: View {
+    @Environment(\.dismiss) private var dismiss
     let lightningClient: LightningNodeClient
     @State public var selectedOption: ReceiveOption = .bip21
 
     var body: some View {
 
-        VStack {
+        NavigationView {
+            VStack {
 
-            Picker("Options", selection: $selectedOption) {
-                ForEach(ReceiveOption.allCases, id: \.self) { option in
-                    HStack(spacing: 5) {
-                        Image(systemName: option.systemImageName)
-                        Text(option.rawValue)
+                Picker("Options", selection: $selectedOption) {
+                    ForEach(ReceiveOption.allCases, id: \.self) { option in
+                        HStack(spacing: 5) {
+                            Image(systemName: option.systemImageName)
+                            Text(option.rawValue)
+                        }
+                        .tag(option)
                     }
-                    .tag(option)
+                }
+                .pickerStyle(.menu)
+                .tint(.primary)
+
+                Spacer()
+
+                switch selectedOption {
+                case .bolt11JIT:
+                    JITInvoiceView(viewModel: .init(lightningClient: lightningClient))
+                case .bip21:
+                    BIP21View(viewModel: .init(lightningClient: lightningClient))
                 }
             }
-            .pickerStyle(.menu)
-            .tint(.primary)
-
-            Spacer()
-
-            switch selectedOption {
-            case .bolt11JIT:
-                JITInvoiceView(viewModel: .init(lightningClient: lightningClient))
-            case .bip21:
-                BIP21View(viewModel: .init(lightningClient: lightningClient))
+            .navigationTitle("Receive")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
             }
 
         }
-        .padding()
-        .padding(.vertical, 40.0)
 
     }
 
