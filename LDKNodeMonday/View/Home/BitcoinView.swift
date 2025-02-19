@@ -116,7 +116,6 @@ struct BitcoinView: View {
                 lightningClient: viewModel.lightningClient,
                 selectedOption: receiveOption
             )
-            .presentationDetents([.large])
         }
         .navigationDestination(for: NavigationDestination.self) { destination in
             switch destination {
