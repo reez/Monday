@@ -15,7 +15,6 @@ struct BitcoinView: View {
     @State private var showCheckmark = false
     @State private var showingBitcoinViewErrorAlert = false
     @State private var showReceiveViewWithOption: ReceiveOption?
-    @State private var isPaymentsPresented = false
     @State private var showToast = false
     @State private var showingNodeIDView = false
     @State private var displayBalanceType = DisplayBalanceType.userDefaults
@@ -25,193 +24,99 @@ struct BitcoinView: View {
 
     var body: some View {
 
-        ZStack {
+        VStack {
+            BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
+                .padding(.vertical, 40)
 
-            VStack {
+            TransactionButtons(viewModel: viewModel)
+                .padding(.horizontal, 40)
 
-                List {
-                    BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
-                        .frame(maxWidth: .infinity)  // centers the view horizontally
-                        .listRowSeparator(.hidden)
-                }
-                .listStyle(.plain)
-                .padding(.top, 220.0)
-                .refreshable {
-                    await viewModel.update()
-                }
-
-                Spacer()
-
-                Button {
-                    isPaymentsPresented = true
-                } label: {
+            PaymentsListView(
+                payments: $viewModel.payments,
+                displayBalanceType: $displayBalanceType,
+                price: viewModel.price
+            )
+            .refreshable { viewModel.update() }
+            .sensoryFeedback(.increase, trigger: viewModel.isStatusFinished)
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                NavigationLink(
+                    destination: SettingsView(
+                        viewModel: .init(
+                            walletClient: viewModel.$walletClient,
+                            lightningClient: viewModel.lightningClient
+                        )
+                    )
+                ) {
                     HStack {
-                        Image(systemName: "bolt.fill")
-                        Text("View Payments")
-                    }
-                }
-                .tint(viewModel.networkColor)
-                .padding()
-
-                HStack {
-
-                    Button(action: {
-                        showReceiveViewWithOption = .bip21
-                    }) {
-                        Image(systemName: "qrcode")
-                            .font(.title)
-                            .foregroundColor(.primary)
-                    }.contextMenu {
-                        Button {
-                            showReceiveViewWithOption = .bip21
-                        } label: {
-                            Label("Unified BIP21", systemImage: "bitcoinsign")
-                        }
-
-                        Button {
-                            showReceiveViewWithOption = .bolt11JIT
-                        } label: {
-                            Label("JIT Bolt11", systemImage: "bolt")
-                        }
-                    }
-
-                    Spacer()
-
-                    NavigationLink(value: NavigationDestination.address) {
-                        Image(systemName: "qrcode.viewfinder")
-                            .font(.title)
-                            .foregroundColor(.primary)
-                    }
-
-                }
-                .padding([.horizontal, .bottom])
-
-            }
-            .padding()
-            .padding(.bottom, 20.0)
-            .tint(viewModel.networkColor)
-            .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    viewModel.walletClient.appMode == .mock
-                        ? Label("Mock", systemImage: "testtube.2").padding().foregroundColor(
-                            .secondary
-                        ) : nil
-                }
-
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingNodeIDView = true
-                    }) {
-                        Image(systemName: "person.crop.circle.dashed.circle")
-                            .font(.title)
-                            .foregroundColor(.primary)
+                        Text(
+                            viewModel.walletClient.appMode == .mock
+                                ? "Mock data /" : ""
+                        )
+                        Text(viewModel.walletClient.network.description.capitalized)
+                        Image(systemName: "gearshape")
                     }
                 }
             }
-            .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
-            .onAppear {
-                Task {
-                    await viewModel.update()
-                }
+        }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
+        .onAppear { viewModel.update() }
+        .onChange(
+            of: eventService.lastMessage,
+            { oldValue, newValue in
+                showToast = eventService.lastMessage != nil
             }
-            .onChange(
-                of: eventService.lastMessage,
-                { oldValue, newValue in
-                    showToast = eventService.lastMessage != nil
+        )
+        .onReceive(viewModel.$bitcoinViewError) { errorMessage in
+            if errorMessage != nil {
+                showingBitcoinViewErrorAlert = true
+            }
+        }
+        .onReceive(eventService.$lastMessage) { _ in
+            viewModel.update()
+        }
+        .alert(isPresented: $showingBitcoinViewErrorAlert) {
+            Alert(
+                title: Text(viewModel.bitcoinViewError?.title ?? "Unknown"),
+                message: Text(viewModel.bitcoinViewError?.detail ?? ""),
+                dismissButton: .default(Text("OK")) {
+                    viewModel.bitcoinViewError = nil
                 }
             )
-            .onReceive(viewModel.$bitcoinViewError) { errorMessage in
-                if errorMessage != nil {
-                    showingBitcoinViewErrorAlert = true
-                }
-            }
-            .onReceive(eventService.$lastMessage) { _ in
-                Task {
-                    await viewModel.update()
-                }
-            }
-            .sheet(
-                isPresented: $showingNodeIDView,
-                onDismiss: {
-                    Task {
-                        await viewModel.update()
-                    }
-                }
-            ) {
-                SettingsView(
-                    viewModel: .init(
-                        walletClient: viewModel.$walletClient,
-                        lightningClient: viewModel.lightningClient
-                    )
-                )
-            }
-            .alert(isPresented: $showingBitcoinViewErrorAlert) {
-                Alert(
-                    title: Text(viewModel.bitcoinViewError?.title ?? "Unknown"),
-                    message: Text(viewModel.bitcoinViewError?.detail ?? ""),
-                    dismissButton: .default(Text("OK")) {
-                        viewModel.bitcoinViewError = nil
-                    }
-                )
-            }
-            .simpleToast(
-                isPresented: $showToast,
-                options: .init(
-                    hideAfter: 5.0,
-                    animation: .spring,
-                    modifierType: .slide
-                )
-            ) {
-                Text(eventService.lastMessage ?? "")
-                    .padding()
-                    .background(
-                        Capsule()
-                            .foregroundColor(
-                                Color(
-                                    uiColor:
-                                        colorScheme == .dark
-                                        ? .secondarySystemBackground : .systemGray6
-                                )
+        }
+        .simpleToast(
+            isPresented: $showToast,
+            options: .init(
+                hideAfter: 5.0,
+                animation: .spring,
+                modifierType: .slide
+            )
+        ) {
+            Text(eventService.lastMessage ?? "")
+                .padding()
+                .background(
+                    Capsule()
+                        .foregroundColor(
+                            Color(
+                                uiColor:
+                                    colorScheme == .dark
+                                    ? .secondarySystemBackground : .systemGray6
                             )
-                    )
-                    .foregroundColor(Color.primary)
-                    .font(.caption2)
-            }
-            .sheet(
-                item: $showReceiveViewWithOption,
-                onDismiss: {
-                    Task {
-                        await viewModel.update()
-                    }
-                }
-            ) { receiveOption in
-                ReceiveView(
-                    lightningClient: viewModel.lightningClient,
-                    selectedOption: receiveOption
+                        )
                 )
-                .presentationDetents([.large])
-            }
-            .sheet(
-                isPresented: $isPaymentsPresented,
-                onDismiss: {
-                    Task {
-                        await viewModel.update()
-                    }
-                }
-            ) {
-                PaymentsListView(
-                    payments: $viewModel.payments,
-                    displayBalanceType: $displayBalanceType,
-                    price: viewModel.price
-                )
-                .presentationDetents([.medium, .large])
-                .refreshable {
-                    Task {
-                        await viewModel.update()
-                    }
-                }
-            }
-
+                .foregroundColor(Color.primary)
+                .font(.caption2)
+        }
+        .sheet(
+            item: $showReceiveViewWithOption,
+            onDismiss: { viewModel.update() }
+        ) { receiveOption in
+            ReceiveView(
+                lightningClient: viewModel.lightningClient,
+                selectedOption: receiveOption
+            )
+            .presentationDetents([.large])
         }
         .navigationDestination(for: NavigationDestination.self) { destination in
             switch destination {
@@ -230,14 +135,13 @@ struct BitcoinView: View {
                     navigationPath: $sendNavigationPath
                 )
                 .onDisappear {
-                    Task {
-                        await viewModel.update()
-                    }
+                    viewModel.update()
+
                 }
 
             }
 
-        }
+        }.sensoryFeedback(.increase, trigger: sendNavigationPath)
 
     }
 
@@ -320,6 +224,70 @@ struct BalanceHeader: View {
             return ""
         default:
             return "sats"
+        }
+    }
+}
+
+struct TransactionButtons: View {
+    @ObservedObject var viewModel: BitcoinViewModel
+    @State private var isReceiveSheetPresented = false
+
+    var body: some View {
+        HStack(alignment: .center) {
+
+            // Send button
+            NavigationLink(value: NavigationDestination.address) {
+                Button {
+                    // Optional button action if needed
+                } label: {
+                    Text("Send")
+                }.buttonStyle(
+                    BitcoinFilled(
+                        width: 120,
+                        tintColor: .accent,
+                        isCapsule: true
+                    )
+                ).allowsHitTesting(false)  // Required to enable NavigationLink to work
+            }.disabled(viewModel.unifiedBalance == 0)
+
+            Spacer()
+
+            // Scan QR button
+            NavigationLink(value: NavigationDestination.address) {
+                Label("Scan QR", systemImage: "qrcode.viewfinder")
+                    .font(.title)
+                    .frame(height: 60, alignment: .center)
+                    .labelStyle(.iconOnly)
+                    .foregroundColor(.accentColor)
+                    .padding()
+            }.disabled(viewModel.unifiedBalance == 0)
+
+            Spacer()
+
+            // Receive button
+            Button("Receive") {
+                isReceiveSheetPresented = true
+            }
+            .sensoryFeedback(.increase, trigger: isReceiveSheetPresented)
+            .buttonStyle(
+                BitcoinFilled(
+                    width: 120,
+                    tintColor: .accent,
+                    isCapsule: true
+                )
+            )
+            .sheet(
+                isPresented: $isReceiveSheetPresented,
+                onDismiss: {
+                    Task {
+                        viewModel.update()
+                    }
+                }
+            ) {
+                ReceiveView(lightningClient: viewModel.walletClient.lightningClient)
+                    .presentationDetents([.large])
+            }
+
         }
     }
 }

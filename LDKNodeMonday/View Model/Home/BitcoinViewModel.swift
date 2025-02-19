@@ -11,7 +11,6 @@ import SwiftUI
 class BitcoinViewModel: ObservableObject {
     @Binding var walletClient: WalletClient
     @Published var bitcoinViewError: MondayError?
-    @Published var networkColor = Color.gray
     @Published var status: NodeStatus?
     @Published var isStatusFinished: Bool = false
     @Published var balances: BalanceDetails = .empty
@@ -40,18 +39,18 @@ class BitcoinViewModel: ObservableObject {
         self.lightningClient = lightningClient
     }
 
-    func update() async {
-        async let balancesTask: () = getBalances()
-        async let pricesTask: () = getPrices()
-        async let statusTask: () = getStatus()
-        async let paymentsTask: () = getPayments()
+    func update() {
+        Task {
+            async let balancesTask: () = getBalances()
+            async let pricesTask: () = getPrices()
+            async let paymentsTask: () = getPayments()
+            async let statusTask: () = getStatus()
 
-        await balancesTask
-        await pricesTask
-        await statusTask
-        await paymentsTask
-
-        getColor()
+            await balancesTask
+            await pricesTask
+            await paymentsTask
+            await statusTask
+        }
     }
 
     func getStatus() async {
@@ -102,13 +101,6 @@ class BitcoinViewModel: ObservableObject {
         let pCopy = payments
         await MainActor.run {
             self.payments = pCopy
-        }
-    }
-
-    func getColor() {
-        let color = lightningClient.getNetworkColor()
-        DispatchQueue.main.async {
-            self.networkColor = color
         }
     }
 }

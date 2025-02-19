@@ -19,7 +19,7 @@ struct SettingsView: View {
     @State private var showToggleTestData = false
 
     var body: some View {
-        NavigationView {
+        VStack {
             Form {
                 // Wallet section
                 Section {
@@ -149,11 +149,6 @@ struct SettingsView: View {
             .listStyle(.plain)
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") { dismiss() }
-                }
-            }
             .onAppear {
                 Task {
                     viewModel.getNodeID()
@@ -183,6 +178,7 @@ struct SettingsView: View {
                             newServer: viewModel.walletClient.server,
                             appMode: viewModel.walletClient.appMode == .mock ? .live : .mock
                         )
+                        dismiss()
                     }
                 }
             } message: {
