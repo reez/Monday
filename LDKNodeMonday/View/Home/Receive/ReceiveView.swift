@@ -25,8 +25,13 @@ struct ReceiveView: View {
                         TabView {
                             ForEach(viewModel.paymentAddresses.compactMap { $0 }, id: \.address) {
                                 paymentAddress in
-                                QRView(paymentAddress: paymentAddress)
-                                    .padding(40)
+                                VStack {
+                                    QRView(paymentAddress: paymentAddress)
+                                        .padding(.horizontal, 40)
+                                    Text(paymentAddress.description)
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
                             }
                         }
                         .frame(height: geometry.size.width * 1.1)
