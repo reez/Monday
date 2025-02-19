@@ -16,6 +16,10 @@ extension UInt64 {
         return self >= 1000 ? self / UInt64.msatsPerSat : 0
     }
 
+    var satsAsMsats: UInt64 {
+        return self * UInt64.msatsPerSat
+    }
+
     func formattedSatsAsBtc(format: BitcoinFormatting? = .truncated) -> String {
         if self == 0 {
             return "0"
