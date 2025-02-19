@@ -26,7 +26,6 @@
 		AE01C5B62AB3C0A200F28C7E /* BackupInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */; };
 		AE01C5B82AB3C0C400F28C7E /* KeyServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE01C5B72AB3C0C400F28C7E /* KeyServiceError.swift */; };
 		AE028A242B96316B00B336E7 /* ReceiveOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A232B96316B00B336E7 /* ReceiveOption.swift */; };
-		AE028A2A2B96328600B336E7 /* JITInvoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A292B96328600B336E7 /* JITInvoiceViewModel.swift */; };
 		AE028A2C2B96381200B336E7 /* LightningServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A2B2B96381200B336E7 /* LightningServiceError.swift */; };
 		AE028A2E2B9638EC00B336E7 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE028A2D2B9638EC00B336E7 /* FileManager+Extensions.swift */; };
 		AE060C382C051B59006724F1 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE060C372C051B59006724F1 /* LDKNode */; };
@@ -68,11 +67,9 @@
 		AE7C4A0C2B40785F0061189D /* SeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7C4A0B2B40785F0061189D /* SeedView.swift */; };
 		AE80116B29A59976009B9967 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116A29A59976009B9967 /* SettingsView.swift */; };
 		AE80116D29A59AF4009B9967 /* ChannelAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80116C29A59AF4009B9967 /* ChannelAddView.swift */; };
-		AE80C2002C4AB360006E7193 /* BIP21View.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80C1FF2C4AB360006E7193 /* BIP21View.swift */; };
 		AE80C2022C4AB38D006E7193 /* ReceiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE80C2012C4AB38D006E7193 /* ReceiveViewModel.swift */; };
 		AE80C2052C4AB5E4006E7193 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = AE80C2042C4AB5E4006E7193 /* LDKNode */; };
 		AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9422692A007D6C007E4F12 /* ChannelsListView.swift */; };
-		AEA057ED2B912FEA00DB1096 /* JITInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA057EC2B912FEA00DB1096 /* JITInvoiceView.swift */; };
 		AEBAA4832A01A80A0042EA82 /* PeersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4822A01A80A0042EA82 /* PeersListView.swift */; };
 		AEBAA48D2A01A93B0042EA82 /* PeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA48C2A01A93B0042EA82 /* PeerView.swift */; };
 		AEBAA4922A01C34A0042EA82 /* ChannelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */; };
@@ -110,7 +107,6 @@
 		AE01C5B52AB3C0A200F28C7E /* BackupInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupInfo.swift; sourceTree = "<group>"; };
 		AE01C5B72AB3C0C400F28C7E /* KeyServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyServiceError.swift; sourceTree = "<group>"; };
 		AE028A232B96316B00B336E7 /* ReceiveOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveOption.swift; sourceTree = "<group>"; };
-		AE028A292B96328600B336E7 /* JITInvoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JITInvoiceViewModel.swift; sourceTree = "<group>"; };
 		AE028A2B2B96381200B336E7 /* LightningServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningServiceError.swift; sourceTree = "<group>"; };
 		AE028A2D2B9638EC00B336E7 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		AE0BD4AB2B598C3F00B9901E /* UInt32+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt32+Extensions.swift"; sourceTree = "<group>"; };
@@ -149,11 +145,9 @@
 		AE7C4A0B2B40785F0061189D /* SeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedView.swift; sourceTree = "<group>"; };
 		AE80116A29A59976009B9967 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AE80116C29A59AF4009B9967 /* ChannelAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelAddView.swift; sourceTree = "<group>"; };
-		AE80C1FF2C4AB360006E7193 /* BIP21View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIP21View.swift; sourceTree = "<group>"; };
 		AE80C2012C4AB38D006E7193 /* ReceiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveViewModel.swift; sourceTree = "<group>"; };
 		AE8D877429B145F100F2B918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AE9422692A007D6C007E4F12 /* ChannelsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListView.swift; sourceTree = "<group>"; };
-		AEA057EC2B912FEA00DB1096 /* JITInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JITInvoiceView.swift; sourceTree = "<group>"; };
 		AEBAA4822A01A80A0042EA82 /* PeersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersListView.swift; sourceTree = "<group>"; };
 		AEBAA48C2A01A93B0042EA82 /* PeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerView.swift; sourceTree = "<group>"; };
 		AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelDetailView.swift; sourceTree = "<group>"; };
@@ -282,7 +276,6 @@
 			isa = PBXGroup;
 			children = (
 				AE80C2012C4AB38D006E7193 /* ReceiveViewModel.swift */,
-				AE028A292B96328600B336E7 /* JITInvoiceViewModel.swift */,
 			);
 			path = Receive;
 			sourceTree = "<group>";
@@ -374,8 +367,6 @@
 			children = (
 				6560EB802D65F8D400BBE772 /* QRView.swift */,
 				AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */,
-				AE80C1FF2C4AB360006E7193 /* BIP21View.swift */,
-				AEA057EC2B912FEA00DB1096 /* JITInvoiceView.swift */,
 			);
 			path = Receive;
 			sourceTree = "<group>";
@@ -614,7 +605,6 @@
 				AEDF47F32B3FBAB900145D64 /* Notification+Extensions.swift in Sources */,
 				AE0055162B4A0E0100100797 /* Logger+Extensions.swift in Sources */,
 				AE70963C2B5C22270038BE56 /* CurrencyCode.swift in Sources */,
-				AE80C2002C4AB360006E7193 /* BIP21View.swift in Sources */,
 				AE01C5B22AB3BF3C00F28C7E /* KeyService.swift in Sources */,
 				AE49E8642A2537B3002623E8 /* PeersListViewModel.swift in Sources */,
 				655574822D3994E10064F859 /* ErrorView.swift in Sources */,
@@ -631,7 +621,6 @@
 				65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */,
 				AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */,
 				AE94226A2A007D6C007E4F12 /* ChannelsListView.swift in Sources */,
-				AEA057ED2B912FEA00DB1096 /* JITInvoiceView.swift in Sources */,
 				AEF66F522BA4B11A00FA15F9 /* PaymentKind+Extensions.swift in Sources */,
 				AE0055102B479F1100100797 /* OnboardingViewModel.swift in Sources */,
 				AE1D9C0B2B2A251500620748 /* ChannelDetails+Extensions.swift in Sources */,
@@ -663,7 +652,6 @@
 				AE4536152C83508E0047D1B2 /* AddressView.swift in Sources */,
 				AE0055182B4A21BA00100797 /* Network+Extensions.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
-				AE028A2A2B96328600B336E7 /* JITInvoiceViewModel.swift in Sources */,
 				AE00550E2B479EF000100797 /* OnboardingView.swift in Sources */,
 				AEBFD8B02B8A97DB0024E3F7 /* LightningServiceProvider.swift in Sources */,
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
