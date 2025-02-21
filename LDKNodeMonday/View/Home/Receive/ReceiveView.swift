@@ -29,23 +29,24 @@ struct ReceiveView: View {
                                 VStack {
                                     // QR code
                                     QRView(paymentAddress: paymentAddress)
-                                        .padding(.horizontal, 40)
+                                        .padding(.horizontal, 60)
 
-                                    // Display addresses in QR code
+                                    // Addresses in QR code
                                     let showAddresses = paymentAddress.addressesToDisplay(
                                         addresses: viewModel.paymentAddresses
                                     )
-                                    ForEach(showAddresses, id: \.address) { address in
-                                        HStack {
-                                            Text(address.description)
-                                                .font(.caption)
-                                                .foregroundColor(.secondary)
-                                            Text(address.address)
-                                                .font(.caption)
-                                                .foregroundColor(.secondary)
-                                                .frame(width: 100)
-                                                .lineLimit(1)
-                                                .truncationMode(.middle)
+                                    HStack {
+                                        ForEach(showAddresses, id: \.address) { address in
+                                            VStack {
+                                                Text(address.description)
+                                                    .font(.caption)
+                                                    .foregroundColor(.secondary)
+                                                Text(address.address.lowercased())
+                                                    .font(.caption)
+                                                    .frame(width: 100)
+                                                    .lineLimit(1)
+                                                    .truncationMode(.middle)
+                                            }.padding(.horizontal)
                                         }
                                     }
                                 }
