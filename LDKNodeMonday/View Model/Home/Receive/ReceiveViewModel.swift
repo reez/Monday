@@ -179,7 +179,7 @@ public struct PaymentAddress {
             return "lightning:"
         }
     }
-    
+
     var description: String {
         switch self.type {
         case .bip21:
@@ -191,6 +191,22 @@ public struct PaymentAddress {
         case .bolt12:
             return "Lightning - Bolt12"
         }
+    }
+
+    func addressesToDisplay(addresses: [PaymentAddress?]) -> [PaymentAddress] {
+        return {
+            if self.type == .bip21 {
+                return
+                    addresses
+                    .compactMap { $0 }
+                    .filter { $0.type != .bip21 }
+            } else {
+                return
+                    addresses
+                    .compactMap { $0 }
+                    .filter { $0.type == self.type }
+            }
+        }()
     }
 }
 

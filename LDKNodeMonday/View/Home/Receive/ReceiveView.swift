@@ -25,16 +25,33 @@ struct ReceiveView: View {
                         TabView {
                             ForEach(viewModel.paymentAddresses.compactMap { $0 }, id: \.address) {
                                 paymentAddress in
+
                                 VStack {
+                                    // QR code
                                     QRView(paymentAddress: paymentAddress)
                                         .padding(.horizontal, 40)
-                                    Text(paymentAddress.description)
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
+
+                                    // Display addresses in QR code
+                                    let showAddresses = paymentAddress.addressesToDisplay(
+                                        addresses: viewModel.paymentAddresses
+                                    )
+                                    ForEach(showAddresses, id: \.address) { address in
+                                        HStack {
+                                            Text(address.description)
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                            Text(address.address)
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                                .frame(width: 100)
+                                                .lineLimit(1)
+                                                .truncationMode(.middle)
+                                        }
+                                    }
                                 }
                             }
                         }
-                        .frame(height: geometry.size.width * 1.1)
+                        //.frame(height: geometry.size.width * 1.1)
                         .tabViewStyle(.page(indexDisplayMode: .always))
                         .indexViewStyle(.page(backgroundDisplayMode: .always))
                     }
