@@ -196,6 +196,6 @@ public struct PaymentAddress {
 
 extension PaymentAddress {
     var qrString: String {
-        return prefix + address
+        return self.prefix + address
     }
 }
