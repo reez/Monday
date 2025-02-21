@@ -11,17 +11,21 @@ import SwiftUI
 public struct QRView: View {
     @State private var viewState = CGSize.zero
     let screenBounds = UIScreen.main.bounds
-    public var paymentAddress: PaymentAddress
+    public var paymentAddress: PaymentAddress?
 
-    public init(paymentAddress: PaymentAddress) {
+    public init(paymentAddress: PaymentAddress?) {
         self.paymentAddress = paymentAddress
     }
 
     public var body: some View {
-        Image(uiImage: generateQRCode(from: paymentAddress.qrString))
-            .interpolation(.none)
-            .resizable()
-            .scaledToFit()
+        if let address = paymentAddress {
+            Image(uiImage: generateQRCode(from: address.qrString))
+                .interpolation(.none)
+                .resizable()
+                .scaledToFit()
+        } else {
+            Text("No Address")
+        }
     }
 
     private func generateQRCode(from string: String) -> UIImage {

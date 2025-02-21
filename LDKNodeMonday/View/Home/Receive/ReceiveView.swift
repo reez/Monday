@@ -11,7 +11,7 @@ import SwiftUI
 struct ReceiveView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ReceiveViewModel
-    @State private var selectedTabIndex: Int = 0
+    @State private var selectedAddressIndex: Int = 0
     @State private var favoriteColor = 0
     @State var showCopyDialog = false
     @State var copied = false
@@ -22,14 +22,14 @@ struct ReceiveView: View {
         NavigationView {
             VStack {
                 if viewModel.paymentAddresses.count > 0 {
-                    TabView(selection: $selectedTabIndex) {
+                    TabView(selection: $selectedAddressIndex) {
                         ForEach(
                             Array(viewModel.paymentAddresses.compactMap { $0 }.enumerated()),
                             id: \.element.address
                         ) { index, paymentAddress in
                             VStack {
                                 // QR Code
-                                QRView(paymentAddress: paymentAddress)
+                                QRView(paymentAddress: currentPaymentAddress)
                                     .padding(.horizontal, 50)
 
                                 if paymentAddress.type == .bip21 {
@@ -96,7 +96,7 @@ struct ReceiveView: View {
                     //.frame(height: geometry.size.width)
                     .tabViewStyle(.page(indexDisplayMode: .always))
                     .indexViewStyle(.page(backgroundDisplayMode: .always))
-                    .onChange(of: selectedTabIndex) {
+                    .onChange(of: selectedAddressIndex) {
                         self.copied = false
                     }
 
@@ -163,8 +163,8 @@ struct ReceiveView: View {
     }
 
     var currentPaymentAddress: PaymentAddress? {
-        if viewModel.paymentAddresses.indices.contains(selectedTabIndex) {
-            return viewModel.paymentAddresses[selectedTabIndex]
+        if viewModel.paymentAddresses.indices.contains(selectedAddressIndex) {
+            return viewModel.paymentAddresses[selectedAddressIndex]
         }
         return nil
     }
