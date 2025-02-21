@@ -15,56 +15,89 @@ struct ReceiveView: View {
     @State private var favoriteColor = 0
     @State var showCopyDialog = false
     @State var copied = false
+    @State private var isExpanded = false
 
     var body: some View {
 
         NavigationView {
             VStack {
                 if viewModel.paymentAddresses.count > 0 {
+                    TabView(selection: $selectedTabIndex) {
+                        ForEach(
+                            Array(viewModel.paymentAddresses.compactMap { $0 }.enumerated()),
+                            id: \.element.address
+                        ) { index, paymentAddress in
+                            VStack {
+                                // QR Code
+                                QRView(paymentAddress: paymentAddress)
+                                    .padding(.horizontal, 50)
 
-                    // QR Code
-                    GeometryReader { geometry in
-
-                        TabView(selection: $selectedTabIndex) {
-                            ForEach(
-                                Array(viewModel.paymentAddresses.compactMap { $0 }.enumerated()),
-                                id: \.element.address
-                            ) { index, paymentAddress in
-                                VStack {
-                                    QRView(paymentAddress: paymentAddress)
-                                        .padding(.horizontal, 50)
-
-                                    switch paymentAddress.type {
-                                    case .bip21:
+                                if paymentAddress.type == .bip21 {
+                                    // Collapsible List of Addresses
+                                    DisclosureGroup(isExpanded: $isExpanded) {
                                         VStack {
                                             ForEach(
                                                 viewModel.paymentAddresses.compactMap { $0 },
                                                 id: \.address
-                                            ) { paymentAddress in
+                                            ) { address in
                                                 PaymentAddressView(
-                                                    paymentAddress: paymentAddress,
+                                                    paymentAddress: address,
                                                     copied: $copied
                                                 )
-                                                .padding(.horizontal, 60)
                                             }
-                                        }
-                                    default:
-                                        PaymentAddressView(
-                                            paymentAddress: paymentAddress,
-                                            copied: $copied
-                                        )
-                                        .padding(.horizontal, 60)
+                                        }.padding(.vertical, 10)
+                                    } label: {
+                                        HStack {
+                                            isExpanded
+                                                ? nil
+                                                : HStack {
+                                                    Text("Unified address")
+                                                        .font(.subheadline.bold())
+                                                        .foregroundColor(.primary)
+                                                    Button {
+                                                        UIPasteboard.general.string =
+                                                            paymentAddress.address
+                                                        copied = true
+                                                    } label: {
+                                                        Image(
+                                                            systemName: copied
+                                                                ? "checkmark" : "doc.on.doc"
+                                                        )
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .frame(width: 16, height: 16)
+                                                        .foregroundColor(
+                                                            copied ? .secondary : .accentColor
+                                                        )
+                                                        .accessibilityLabel(
+                                                            copied ? "Copied" : "Copy"
+                                                        )
+                                                    }
+                                                }
+                                            Spacer()
+                                            Text(isExpanded ? "" : "Show all")
+                                        }.font(.subheadline)
+
                                     }
+                                    .padding(.horizontal, 55)
+                                    .animation(.easeInOut, value: isExpanded)
+                                } else {
+                                    PaymentAddressView(
+                                        paymentAddress: paymentAddress,
+                                        copied: $copied
+                                    )
+                                    .padding(.horizontal, 55)
                                 }
-                                .tag(index)
+
                             }
+                            .tag(index)
                         }
-                        //.frame(height: geometry.size.width)
-                        .tabViewStyle(.page(indexDisplayMode: .always))
-                        .indexViewStyle(.page(backgroundDisplayMode: .always))
-                        .onChange(of: selectedTabIndex) {
-                            self.copied = false
-                        }
+                    }
+                    //.frame(height: geometry.size.width)
+                    .tabViewStyle(.page(indexDisplayMode: .always))
+                    .indexViewStyle(.page(backgroundDisplayMode: .always))
+                    .onChange(of: selectedTabIndex) {
+                        self.copied = false
                     }
 
                     HStack {
@@ -144,10 +177,9 @@ struct PaymentAddressView: View {
     var body: some View {
         HStack {
             Text(paymentAddress.description)
-                .font(.caption)
+                .font(.subheadline.bold())
             Spacer()
             Text(paymentAddress.address.lowercased())
-                .font(.caption)
                 .foregroundColor(.secondary)
                 .frame(width: 100)
                 .lineLimit(1)
@@ -159,12 +191,13 @@ struct PaymentAddressView: View {
                 Image(systemName: copied ? "checkmark" : "doc.on.doc")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 14, height: 14)
+                    .frame(width: 16, height: 16)
                     .foregroundColor(copied ? .secondary : .accentColor)
                     .accessibilityLabel(copied ? "Copied" : "Copy node ID")
             }
         }
-        .frame(height: 20)
+        .frame(height: 24)
+        .font(.subheadline)
     }
 }
 
@@ -273,3 +306,33 @@ struct InvoiceRowView: View {
         //AmountEntryView(amount: .constant("21"))
     }
 #endif
+
+struct Bookmark: Identifiable {
+    let id = UUID()
+    let name: String
+    let icon: String
+    var items: [Bookmark]?
+
+    // some example websites
+    static let apple = Bookmark(name: "Unified", icon: "1.circle")
+    static let bbc = Bookmark(name: "Onchain", icon: "bitcoinsign")
+    static let swift = Bookmark(name: "Lightning", icon: "bolt")
+    static let twitter = Bookmark(name: "Twitter", icon: "mic")
+
+    // some example groups
+    static let example1 = Bookmark(
+        name: "Addresses",
+        icon: "star",
+        items: [Bookmark.apple, Bookmark.bbc, Bookmark.swift, Bookmark.twitter]
+    )
+    static let example2 = Bookmark(
+        name: "Recent",
+        icon: "timer",
+        items: [Bookmark.apple, Bookmark.bbc, Bookmark.swift, Bookmark.twitter]
+    )
+    static let example3 = Bookmark(
+        name: "Recommended",
+        icon: "hand.thumbsup",
+        items: [Bookmark.apple, Bookmark.bbc, Bookmark.swift, Bookmark.twitter]
+    )
+}
