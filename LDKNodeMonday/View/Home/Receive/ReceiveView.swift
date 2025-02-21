@@ -12,6 +12,7 @@ struct ReceiveView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ReceiveViewModel
     @State private var selectedTabIndex: Int = 0
+    @State private var favoriteColor = 0
     @State var showCopyDialog = false
     @State var copied = false
 
@@ -23,41 +24,42 @@ struct ReceiveView: View {
 
                     // QR Code
                     GeometryReader { geometry in
+
                         TabView(selection: $selectedTabIndex) {
                             ForEach(
                                 Array(viewModel.paymentAddresses.compactMap { $0 }.enumerated()),
                                 id: \.element.address
                             ) { index, paymentAddress in
                                 VStack {
-                                    // QR code
                                     QRView(paymentAddress: paymentAddress)
-                                        .padding(.horizontal, 60)
+                                        .padding(.horizontal, 50)
 
-                                    // Addresses in QR code
-                                    let showAddresses = paymentAddress.addressesToDisplay(
-                                        addresses: viewModel.paymentAddresses
-                                    )
-                                    HStack {
-                                        ForEach(showAddresses, id: \.address) { address in
-                                            VStack {
-                                                Text(address.description)
-                                                    .font(.caption)
-                                                    .foregroundColor(.secondary)
-                                                Text(address.address.lowercased())
-                                                    .font(.caption)
-                                                    .frame(width: 100)
-                                                    .lineLimit(1)
-                                                    .truncationMode(.middle)
-                                            }.padding(.horizontal)
+                                    switch paymentAddress.type {
+                                    case .bip21:
+                                        VStack {
+                                            ForEach(
+                                                viewModel.paymentAddresses.compactMap { $0 },
+                                                id: \.address
+                                            ) { paymentAddress in
+                                                PaymentAddressView(
+                                                    paymentAddress: paymentAddress,
+                                                    copied: $copied
+                                                )
+                                                .padding(.horizontal, 60)
+                                            }
                                         }
+                                    default:
+                                        PaymentAddressView(
+                                            paymentAddress: paymentAddress,
+                                            copied: $copied
+                                        )
+                                        .padding(.horizontal, 60)
                                     }
-
-                                    Text("Add amount and description")
-                                        .padding()
                                 }
                                 .tag(index)
                             }
                         }
+                        //.frame(height: geometry.size.width)
                         .tabViewStyle(.page(indexDisplayMode: .always))
                         .indexViewStyle(.page(backgroundDisplayMode: .always))
                         .onChange(of: selectedTabIndex) {
@@ -65,63 +67,49 @@ struct ReceiveView: View {
                         }
                     }
 
-                    // Share Button
-                    Button {
-                        //
-                    } label: {
-                        ShareLink(
-                            item: viewModel.paymentAddresses
-                                .compactMap({ $0 })
-                                .first(where: { $0.type == .bip21 })?.address ?? "",
-                            preview: SharePreview(
-                                "Bitcoin address, BIP21 format",
-                                image: Image("AppIcon")
+                    HStack {
+                        // Add amount Button
+                        Button {
+                            //
+                        } label: {
+                            Label("Add amount", systemImage: "plus")
+                        }
+                        .buttonStyle(
+                            BitcoinOutlined(
+                                width: 150,
+                                tintColor: .accent,
+                                isCapsule: true
                             )
-                        ) {
-                            Label("Share", systemImage: "square.and.arrow.up")
-                        }
-                    }
-                    .buttonStyle(
-                        BitcoinFilled(
-                            tintColor: .accent,
-                            isCapsule: true
                         )
-                    )
 
-                    // Copy Button and Confirmation Dialog
-                    Button {
-                        switch currentPaymentAddress?.type {
-                        case .bip21:
-                            self.showCopyDialog = true
-                        default:
-                            UIPasteboard.general.string = currentPaymentAddress?.address
-                            self.copied = true
-                        }
-                    } label: {
-                        Label(copied ? "Copied" : "Copy", systemImage: "document.on.document")
-                    }
-                    .disabled(copied)
-                    .buttonStyle(
-                        BitcoinPlain(
-                            tintColor: .accent
-                        )
-                    )
-                    .confirmationDialog(
-                        "Copy Address",
-                        isPresented: $showCopyDialog,
-                        titleVisibility: .visible
-                    ) {
-                        ForEach(viewModel.paymentAddresses.compactMap { $0 }, id: \.address) {
-                            paymentAddress in
-                            Button(paymentAddress.description) {
-                                UIPasteboard.general.string = paymentAddress.address
-                                self.copied = true
+                        Spacer()
+
+                        // Share Button
+                        Button {
+                            //
+                        } label: {
+                            ShareLink(
+                                item: currentPaymentAddress?.address ?? "No address",
+                                preview: SharePreview(
+                                    currentPaymentAddress?.description ?? "No description",
+                                    image: Image("AppIcon")
+                                )
+                            ) {
+                                Label("Share", systemImage: "square.and.arrow.up")
                             }
                         }
-                    }
+                        .buttonStyle(
+                            BitcoinFilled(
+                                width: 150,
+                                tintColor: .accent,
+                                isCapsule: true
+                            )
+                        )
+                    }.padding(.horizontal, 40)
                 } else {
                     ProgressView()
                 }
+                // TODO: Handle state where no address is generated / error
             }
             .padding(.bottom, 20)
             .navigationTitle(currentPaymentAddress?.title ?? "Receive Bitcoin")
@@ -146,6 +134,37 @@ struct ReceiveView: View {
             return viewModel.paymentAddresses[selectedTabIndex]
         }
         return nil
+    }
+}
+
+struct PaymentAddressView: View {
+    var paymentAddress: PaymentAddress
+    @Binding var copied: Bool
+
+    var body: some View {
+        HStack {
+            Text(paymentAddress.description)
+                .font(.caption)
+            Spacer()
+            Text(paymentAddress.address.lowercased())
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .frame(width: 100)
+                .lineLimit(1)
+                .truncationMode(.middle)
+            Button {
+                UIPasteboard.general.string = paymentAddress.address
+                copied = true
+            } label: {
+                Image(systemName: copied ? "checkmark" : "doc.on.doc")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(copied ? .secondary : .accentColor)
+                    .accessibilityLabel(copied ? "Copied" : "Copy node ID")
+            }
+        }
+        .frame(height: 20)
     }
 }
 

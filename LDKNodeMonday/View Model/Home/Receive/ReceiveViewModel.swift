@@ -183,9 +183,9 @@ public struct PaymentAddress {
     var description: String {
         switch self.type {
         case .bip21:
-            return "Onchain & Lightning"
+            return "Unified address"
         case .onchain:
-            return "Onchain"
+            return "Onchain address"
         case .bolt11:
             return "Lightning Bolt11"
         case .bolt12:
