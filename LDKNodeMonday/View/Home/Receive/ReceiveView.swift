@@ -11,6 +11,7 @@ import SwiftUI
 struct ReceiveView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ReceiveViewModel
+    @State private var selectedTabIndex: Int = 0
     @State var showCopyDialog = false
     @State var copied = false
 
@@ -22,10 +23,11 @@ struct ReceiveView: View {
 
                     // QR Code
                     GeometryReader { geometry in
-                        TabView {
-                            ForEach(viewModel.paymentAddresses.compactMap { $0 }, id: \.address) {
-                                paymentAddress in
-
+                        TabView(selection: $selectedTabIndex) {
+                            ForEach(
+                                Array(viewModel.paymentAddresses.compactMap { $0 }.enumerated()),
+                                id: \.element.address
+                            ) { index, paymentAddress in
                                 VStack {
                                     // QR code
                                     QRView(paymentAddress: paymentAddress)
@@ -49,12 +51,18 @@ struct ReceiveView: View {
                                             }.padding(.horizontal)
                                         }
                                     }
+
+                                    Text("Add amount and description")
+                                        .padding()
                                 }
+                                .tag(index)
                             }
                         }
-                        //.frame(height: geometry.size.width * 1.1)
                         .tabViewStyle(.page(indexDisplayMode: .always))
                         .indexViewStyle(.page(backgroundDisplayMode: .always))
+                        .onChange(of: selectedTabIndex) {
+                            self.copied = false
+                        }
                     }
 
                     // Share Button
@@ -82,7 +90,13 @@ struct ReceiveView: View {
 
                     // Copy Button and Confirmation Dialog
                     Button {
-                        self.showCopyDialog = true
+                        switch currentPaymentAddress?.type {
+                        case .bip21:
+                            self.showCopyDialog = true
+                        default:
+                            UIPasteboard.general.string = currentPaymentAddress?.address
+                            self.copied = true
+                        }
                     } label: {
                         Label(copied ? "Copied" : "Copy", systemImage: "document.on.document")
                     }
@@ -93,7 +107,7 @@ struct ReceiveView: View {
                         )
                     )
                     .confirmationDialog(
-                        "Copy Bitcoin Address",
+                        "Copy Address",
                         isPresented: $showCopyDialog,
                         titleVisibility: .visible
                     ) {
@@ -110,7 +124,7 @@ struct ReceiveView: View {
                 }
             }
             .padding(.bottom, 20)
-            .navigationTitle("Receive Bitcoin")
+            .navigationTitle(currentPaymentAddress?.title ?? "Receive Bitcoin")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -125,6 +139,13 @@ struct ReceiveView: View {
                 }
             }
         }
+    }
+
+    var currentPaymentAddress: PaymentAddress? {
+        if viewModel.paymentAddresses.indices.contains(selectedTabIndex) {
+            return viewModel.paymentAddresses[selectedTabIndex]
+        }
+        return nil
     }
 }
 

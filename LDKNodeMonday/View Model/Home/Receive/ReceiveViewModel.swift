@@ -187,9 +187,20 @@ public struct PaymentAddress {
         case .onchain:
             return "Onchain"
         case .bolt11:
-            return "Lightning - Bolt11"
+            return "Lightning Bolt11"
         case .bolt12:
-            return "Lightning - Bolt12"
+            return "Lightning Bolt12"
+        }
+    }
+
+    var title: String {
+        switch self.type {
+        case .bip21:
+            return "Receive Bitcoin"
+        case .onchain:
+            return "Receive Onchain"
+        case .bolt11, .bolt12:
+            return "Receive on Lightning"
         }
     }
 
