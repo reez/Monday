@@ -284,79 +284,9 @@ struct AmountEntryView: View {
     }
 }
 
-struct InvoiceRowView: View {
-    let title: String
-    let value: String
-    let isCopied: Bool
-    let showCheckmark: Bool
-    let networkColor: Color
-    let onCopy: () -> Void
-
-    var body: some View {
-        HStack(alignment: .center) {
-            VStack(alignment: .leading, spacing: 5.0) {
-                Text(title)
-                    .bold()
-                Text(value)
-                    .truncationMode(.middle)
-                    .lineLimit(1)
-                    .foregroundColor(.secondary)
-                    .redacted(reason: value.isEmpty ? .placeholder : [])
-            }
-            .font(.caption2)
-
-            Spacer()
-
-            Button(action: onCopy) {
-                HStack {
-                    withAnimation {
-                        Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                            .font(.title3)
-                            .minimumScaleFactor(0.5)
-                    }
-                }
-                .bold()
-                .foregroundColor(networkColor)
-            }
-            .font(.caption2)
-        }
-        .padding(.horizontal)
-    }
-}
-
 #if DEBUG
     #Preview {
         ReceiveView(viewModel: ReceiveViewModel(lightningClient: .mock))
         //AmountEntryView(amount: .constant("21"))
     }
 #endif
-
-struct Bookmark: Identifiable {
-    let id = UUID()
-    let name: String
-    let icon: String
-    var items: [Bookmark]?
-
-    // some example websites
-    static let apple = Bookmark(name: "Unified", icon: "1.circle")
-    static let bbc = Bookmark(name: "Onchain", icon: "bitcoinsign")
-    static let swift = Bookmark(name: "Lightning", icon: "bolt")
-    static let twitter = Bookmark(name: "Twitter", icon: "mic")
-
-    // some example groups
-    static let example1 = Bookmark(
-        name: "Addresses",
-        icon: "star",
-        items: [Bookmark.apple, Bookmark.bbc, Bookmark.swift, Bookmark.twitter]
-    )
-    static let example2 = Bookmark(
-        name: "Recent",
-        icon: "timer",
-        items: [Bookmark.apple, Bookmark.bbc, Bookmark.swift, Bookmark.twitter]
-    )
-    static let example3 = Bookmark(
-        name: "Recommended",
-        icon: "hand.thumbsup",
-        items: [Bookmark.apple, Bookmark.bbc, Bookmark.swift, Bookmark.twitter]
-    )
-}
