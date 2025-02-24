@@ -32,16 +32,34 @@ class ReceiveViewModel: ObservableObject {
 
     func receivePayment(amountSat: UInt64, message: String, expirySecs: UInt32) async {
         do {
-            let unified = try await lightningClient.receive(
-                amountSat,
-                message,
-                expirySecs
-            )
+            let unified = try await lightningClient.receive(amountSat, message, expirySecs)
             let parsedAddresses = parseUnifiedQR(unified)
 
-            // IF amountSat is higher than existing channel(s) receive capacity, generate JIT invoice
-            let maxReceiveCapacity = maxReceiveCapacity()
-            if maxReceiveCapacity > amountSat.satsAsMsats {
+            await MainActor.run {
+                self.paymentAddresses = parsedAddresses
+                self.addressGenerationFinished = true
+            }
+            
+        } catch let error {
+            debugPrint("Error generating unified QR: ", error.localizedDescription)
+            
+            // Fall back to create separate onchain, bolt11 etc
+            do {
+                let onchainAddress = try await lightningClient.newAddress()
+                let onchainPaymentAddress = PaymentAddress(
+                    type: .onchain,
+                    address: onchainAddress
+                )
+                
+                await MainActor.run {
+                    paymentAddresses.append(onchainPaymentAddress)
+                    self.addressGenerationFinished = true
+                }
+            } catch {
+                debugPrint("Error generating onchain address:", error.localizedDescription)
+            }
+            
+            do {
                 let jitInvoice = try await lightningClient.receiveViaJitChannel(
                     amountSat.satsAsMsats,
                     message,
@@ -49,41 +67,57 @@ class ReceiveViewModel: ObservableObject {
                     nil
                 )
                 let jitPaymentAddress = PaymentAddress(
-                    type: .bolt11,
+                    type: .bolt11Jit,
                     address: jitInvoice
                 )
-
-                var filteredAddresses =
-                    parsedAddresses
-                    .compactMap { $0 }
-                    .filter { $0.type != .bolt11 }
-
-                filteredAddresses.append(jitPaymentAddress)
-
+                
                 await MainActor.run {
-                    self.paymentAddresses = filteredAddresses
+                    paymentAddresses.append(jitPaymentAddress)
                     self.addressGenerationFinished = true
                 }
+                
+                // IF amountSat is higher than existing channel(s) receive capacity, generate JIT invoice
+                /*
+                let maxReceiveCapacity = maxReceiveCapacity()
+                if maxReceiveCapacity > amountSat.satsAsMsats {
+                    let jitInvoice = try await lightningClient.receiveViaJitChannel(
+                        amountSat.satsAsMsats,
+                        message,
+                        expirySecs,
+                        nil
+                    )
+                    let jitPaymentAddress = PaymentAddress(
+                        type: .bolt11,
+                        address: jitInvoice
+                    )
 
-            } else {
-                await MainActor.run {
-                    self.paymentAddresses = parsedAddresses
-                    self.addressGenerationFinished = true
+                    var filteredAddresses =
+                        parsedAddresses
+                        .compactMap { $0 }
+                        .filter { $0.type != .bolt11 }
+
+                    filteredAddresses.append(jitPaymentAddress)
+
+                    await MainActor.run {
+                        self.paymentAddresses = filteredAddresses
+                        self.addressGenerationFinished = true
+                    }
+
+                } else {
+                    await MainActor.run {
+                        self.paymentAddresses = parsedAddresses
+                        self.addressGenerationFinished = true
+                    }
                 }
+                 */
+            } catch {
+                debugPrint("Error generating JIT invoice:", error.localizedDescription)
             }
-
-        } catch let error as NodeError {
-            debugPrint(error.localizedDescription)
-            let errorString = handleNodeError(error)
-            await MainActor.run {
-                self.receiveViewError = .init(title: errorString.title, detail: errorString.detail)
-            }
-        } catch {
-            await MainActor.run {
-                self.receiveViewError = .init(
-                    title: "Unexpected error",
-                    detail: error.localizedDescription
-                )
+            
+            if paymentAddresses.isEmpty {
+                await MainActor.run {
+                    self.receiveViewError = .init(title: "Address error", detail: "Failed to generate any addresses.")
+                }
             }
         }
     }
