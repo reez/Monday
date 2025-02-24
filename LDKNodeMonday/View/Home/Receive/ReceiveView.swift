@@ -21,104 +21,23 @@ struct ReceiveView: View {
 
         NavigationView {
             VStack {
+                Spacer()
+                if viewModel.addressGenerationFinished == false {
+                    // Show progress indicator while generating addresses
+                    ProgressView()
+                } else if viewModel.receiveViewError != nil {
+                    // Show message if error
+                    Text(viewModel.receiveViewError.debugDescription)
+                }
                 if viewModel.paymentAddresses.count > 0 {
-
-                    Spacer()
-
-                    VStack {
-                        // QR Code
-                        QRView(paymentAddress: selectedPaymentAddress)
-                            .padding(.horizontal, 50)
-                        HStack {
-                            HStack {
-                                Text(selectedPaymentAddress?.description ?? "")
-                                    .font(.subheadline)
-                                    .foregroundColor(.primary)
-                                Button {
-                                    UIPasteboard.general.string = selectedPaymentAddress?.address
-                                    withAnimation {
-                                        copied = true
-                                    }
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                        withAnimation {
-                                            copied = false
-                                        }
-                                    }
-                                } label: {
-                                    Image(
-                                        systemName: copied
-                                            ? "checkmark" : "doc.on.doc"
-                                    )
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 16, height: 16)
-                                    .foregroundColor(
-                                        copied ? .secondary : .accentColor
-                                    )
-                                    .accessibilityLabel(
-                                        copied ? "Copied" : "Copy"
-                                    )
-                                    .animation(.spring(), value: copied)
-                                }
-                            }
-                            Spacer()
-                            Button {
-                                isExpanded.toggle()
-                            } label: {
-                                HStack {
-                                    Text("Show all")
-                                    Image(systemName: "chevron.right")
-                                        .font(.subheadline.bold())
-                                }
-                                .font(.subheadline)
-                                .foregroundColor(.accentColor)
-                            }
-                            .sheet(isPresented: $isExpanded) {
-                                NavigationStack {
-                                    let addressArray = Array(
-                                        viewModel.paymentAddresses.compactMap { $0 }
-                                            .enumerated()
-                                    )
-                                    Form {
-                                        Picker("Address Type", selection: $selectedAddressIndex) {
-                                            ForEach(
-                                                addressArray,
-                                                id: \.element.address
-                                            ) { index, address in
-                                                let isSelected =
-                                                    address.type == selectedPaymentAddress?.type
-
-                                                HStack {
-                                                    Label(
-                                                        address.description,
-                                                        systemImage: isSelected
-                                                            ? "qrcode" : "doc.on.doc"
-                                                    )
-                                                    .labelStyle(.titleOnly)
-
-                                                    Spacer()
-
-                                                    Text(address.address.lowercased())
-                                                        .font(.caption)
-                                                        .frame(width: 100)
-                                                        .truncationMode(.middle)
-                                                        .lineLimit(1)
-                                                        .foregroundColor(.secondary)
-                                                }.tag(index)
-                                            }
-                                        }
-                                        .pickerStyle(.inline)
-                                        .onChange(of: selectedAddressIndex) {
-                                            isExpanded = false
-                                        }
-                                    }
-                                    .presentationDetents([
-                                        .height(CGFloat(50 + addressArray.count * 45))
-                                    ])
-                                }
-                            }
-                        }.padding(.horizontal, 55)
-                    }
+                    // Show QR code and address info
+                    AddressInfoView(
+                        isExpanded: $isExpanded,
+                        selectedAddressIndex: $selectedAddressIndex,
+                        copied: $copied,
+                        selectedPaymentAddress: selectedPaymentAddress,
+                        addressArray: viewModel.paymentAddresses.compactMap { $0 }
+                    )
                 }
 
                 Spacer()
@@ -178,10 +97,6 @@ struct ReceiveView: View {
                     await viewModel.generateUnifiedQR()
                 }
             }
-            //            else {
-            //                    ProgressView()
-            //                }
-            // TODO: Handle state where no address is generated / error
         }
 
     }
@@ -194,36 +109,113 @@ struct ReceiveView: View {
     }
 }
 
-struct PaymentAddressView: View {
-    var paymentAddress: PaymentAddress
+struct AddressInfoView: View {
+    @Binding var isExpanded: Bool
+    @Binding var selectedAddressIndex: Int
     @Binding var copied: Bool
-
+    var selectedPaymentAddress: PaymentAddress?
+    var addressArray: [PaymentAddress]
+    
     var body: some View {
-        HStack {
-            Text(paymentAddress.description)
-                .font(.subheadline.bold())
-            Spacer()
-            Text(paymentAddress.address.lowercased())
-                .foregroundColor(.secondary)
-                .frame(width: 100)
-                .lineLimit(1)
-                .truncationMode(.middle)
-            Button {
-                UIPasteboard.general.string = paymentAddress.address
-                copied = true
-            } label: {
-                Image(systemName: copied ? "checkmark" : "doc.on.doc")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(copied ? .secondary : .accentColor)
-                    .accessibilityLabel(copied ? "Copied" : "Copy node ID")
+        VStack {
+            // QR Code and Address Information
+            QRView(paymentAddress: selectedPaymentAddress)
+                .padding(.horizontal, 50)
+            
+            HStack {
+                // Address Description and Copy Button
+                HStack {
+                    Text(selectedPaymentAddress?.description ?? "")
+                        .font(.subheadline)
+                        .foregroundColor(.primary)
+                    
+                    Button {
+                        UIPasteboard.general.string = selectedPaymentAddress?.address
+                        withAnimation {
+                            copied = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation {
+                                copied = false
+                            }
+                        }
+                    } label: {
+                        Image(systemName: copied ? "checkmark" : "doc.on.doc")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16)
+                            .foregroundColor(copied ? .secondary : .accentColor)
+                            .accessibilityLabel(copied ? "Copied" : "Copy")
+                            .animation(.spring(), value: copied)
+                    }
+                }
+                
+                Spacer()
+                
+                // "Show all" Button
+                Button {
+                    isExpanded.toggle()
+                } label: {
+                    HStack {
+                        Text("Show all")
+                        Image(systemName: "chevron.right")
+                            .font(.subheadline.bold())
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(.accentColor)
+                }
+                .sheet(isPresented: $isExpanded) {
+                    AddressPickerSheet(
+                        isExpanded: $isExpanded,
+                        selectedAddressIndex: $selectedAddressIndex,
+                        addressArray: addressArray,
+                        selectedPaymentAddress: selectedPaymentAddress
+                    )
+                }
             }
+            .padding(.horizontal, 55)
         }
-        .frame(height: 24)
-        .font(.subheadline)
     }
 }
+
+
+struct AddressPickerSheet: View {
+    @Binding var isExpanded: Bool
+    @Binding var selectedAddressIndex: Int
+    var addressArray: [PaymentAddress]
+    var selectedPaymentAddress: PaymentAddress?
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Picker("Address Type", selection: $selectedAddressIndex) {
+                    ForEach(Array(addressArray.enumerated()), id: \.element.address) { index, address in
+                        HStack {
+                            Label(address.description, systemImage: address.type == selectedPaymentAddress?.type ? "qrcode" : "doc.on.doc")
+                                .labelStyle(.titleOnly)
+                            
+                            Spacer()
+                            
+                            Text(address.address.lowercased())
+                                .font(.caption)
+                                .frame(width: 100)
+                                .truncationMode(.middle)
+                                .lineLimit(1)
+                                .foregroundColor(.secondary)
+                        }
+                        .tag(index)  // Use the index here instead of looking up the index
+                    }
+                }
+                .pickerStyle(.inline)
+                .onChange(of: selectedAddressIndex) {
+                    isExpanded = false
+                }
+            }
+            .presentationDetents([.height(CGFloat(50 + addressArray.count * 45))])
+        }
+    }
+}
+
 
 struct AmountEntryView: View {
     @Binding var amount: String

@@ -13,6 +13,7 @@ import SwiftUI
 class ReceiveViewModel: ObservableObject {
     @Published var selectedOption: ReceiveOption = .bip21
     @Published var paymentAddresses: [PaymentAddress?] = []
+    @Published var addressGenerationFinished = false
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var amountSat: UInt64 = 12100
@@ -55,11 +56,13 @@ class ReceiveViewModel: ObservableObject {
 
                 await MainActor.run {
                     self.paymentAddresses = filteredAddresses
+                    self.addressGenerationFinished = true
                 }
 
             } else {
                 await MainActor.run {
                     self.paymentAddresses = parsedAddresses
+                    self.addressGenerationFinished = true
                 }
             }
 
