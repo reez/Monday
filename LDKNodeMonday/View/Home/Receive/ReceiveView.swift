@@ -43,36 +43,50 @@ struct ReceiveView: View {
                                     HStack {
 
                                         Button {
+                                            withAnimation(.easeInOut) {
+                                                isExpanded = false
+                                                selectedAddressIndex = index
+                                            }
+
+                                        } label: {
+                                            Label(
+                                                address.description,
+                                                systemImage: ""
+                                            )
+                                            .labelStyle(.titleOnly)
+                                            .font(.subheadline)
+                                            .foregroundColor(isSelected ? .secondary : .accentColor)
+                                        }
+
+                                        /*
+                                        Button {
                                             UIPasteboard.general.string = address.address
                                             copied = true
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                                 copied = false
                                             }
+                                            //selectedAddressIndex = index
+                                            //isExpanded = false
                                         } label: {
                                             Label(
                                                 address.description,
-                                                systemImage: "doc.on.doc"
+                                                systemImage: isSelected ? "qrcode" : "doc.on.doc"
                                             )
                                             .labelStyle(.iconOnly)
                                             .font(.subheadline)
-                                            .foregroundColor(copied ? .secondary : .accentColor)
+                                            .foregroundColor(isSelected ? .secondary : .accentColor)
                                         }
-
-                                        Label(
-                                            address.description,
-                                            systemImage: ""
-                                        )
-                                        .labelStyle(.titleOnly)
-                                        .font(.subheadline)
+                                        */
 
                                         Spacer()
 
-                                        Text(address.address)
+                                        Text(address.address.lowercased())
                                             .font(.caption)
                                             .frame(width: 100)
                                             .truncationMode(.middle)
                                             .lineLimit(1)
                                             .foregroundColor(.secondary)
+
                                     }
                                 }.padding(.top, 5)
                             }
@@ -81,6 +95,9 @@ struct ReceiveView: View {
                                 isExpanded
                                     ? nil
                                     : HStack {
+                                        Text(selectedPaymentAddress?.description ?? "")
+                                            .font(.subheadline)
+                                            .foregroundColor(.primary)
                                         Button {
                                             UIPasteboard.general.string =
                                                 selectedPaymentAddress?.address
@@ -100,10 +117,6 @@ struct ReceiveView: View {
                                                 copied ? "Copied" : "Copy"
                                             )
                                         }
-                                        Text(selectedPaymentAddress?.description ?? "")
-                                            .font(.subheadline)
-                                            .foregroundColor(.primary)
-
                                     }
                                 Spacer()
                                 Text(isExpanded ? "" : "Show all")
