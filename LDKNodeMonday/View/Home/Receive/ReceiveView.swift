@@ -29,103 +29,93 @@ struct ReceiveView: View {
                         // QR Code
                         QRView(paymentAddress: selectedPaymentAddress)
                             .padding(.horizontal, 50)
-
-                        // Collapsible List of Addresses
-                        DisclosureGroup(isExpanded: $isExpanded) {
-                            VStack {
-                                ForEach(
-                                    Array(
-                                        viewModel.paymentAddresses.compactMap { $0 }.enumerated()
-                                    ),
-                                    id: \.element.address
-                                ) { index, address in
-                                    let isSelected = address.type == selectedPaymentAddress?.type
-                                    HStack {
-
-                                        Button {
-                                            withAnimation(.easeInOut) {
-                                                isExpanded = false
-                                                selectedAddressIndex = index
-                                            }
-
-                                        } label: {
-                                            Label(
-                                                address.description,
-                                                systemImage: ""
-                                            )
-                                            .labelStyle(.titleOnly)
-                                            .font(.subheadline)
-                                            .foregroundColor(isSelected ? .secondary : .accentColor)
-                                        }
-
-                                        /*
-                                        Button {
-                                            UIPasteboard.general.string = address.address
-                                            copied = true
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                                copied = false
-                                            }
-                                            //selectedAddressIndex = index
-                                            //isExpanded = false
-                                        } label: {
-                                            Label(
-                                                address.description,
-                                                systemImage: isSelected ? "qrcode" : "doc.on.doc"
-                                            )
-                                            .labelStyle(.iconOnly)
-                                            .font(.subheadline)
-                                            .foregroundColor(isSelected ? .secondary : .accentColor)
-                                        }
-                                        */
-
-                                        Spacer()
-
-                                        Text(address.address.lowercased())
-                                            .font(.caption)
-                                            .frame(width: 100)
-                                            .truncationMode(.middle)
-                                            .lineLimit(1)
-                                            .foregroundColor(.secondary)
-
-                                    }
-                                }.padding(.top, 5)
-                            }
-                        } label: {
+                        HStack {
                             HStack {
-                                isExpanded
-                                    ? nil
-                                    : HStack {
-                                        Text(selectedPaymentAddress?.description ?? "")
-                                            .font(.subheadline)
-                                            .foregroundColor(.primary)
-                                        Button {
-                                            UIPasteboard.general.string =
-                                                selectedPaymentAddress?.address
-                                            copied = true
-                                        } label: {
-                                            Image(
-                                                systemName: copied
-                                                    ? "checkmark" : "doc.on.doc"
-                                            )
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 16, height: 16)
-                                            .foregroundColor(
-                                                copied ? .secondary : .accentColor
-                                            )
-                                            .accessibilityLabel(
-                                                copied ? "Copied" : "Copy"
-                                            )
+                                Text(selectedPaymentAddress?.description ?? "")
+                                    .font(.subheadline)
+                                    .foregroundColor(.primary)
+                                Button {
+                                    UIPasteboard.general.string = selectedPaymentAddress?.address
+                                    withAnimation {
+                                        copied = true
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        withAnimation {
+                                            copied = false
                                         }
                                     }
-                                Spacer()
-                                Text(isExpanded ? "" : "Show all")
-                            }.font(.subheadline)
+                                } label: {
+                                    Image(
+                                        systemName: copied
+                                            ? "checkmark" : "doc.on.doc"
+                                    )
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 16, height: 16)
+                                    .foregroundColor(
+                                        copied ? .secondary : .accentColor
+                                    )
+                                    .accessibilityLabel(
+                                        copied ? "Copied" : "Copy"
+                                    )
+                                    .scaleEffect(copied ? 1.2 : 1.0)
+                                    .animation(.spring(), value: copied)
+                                }
+                            }
+                            Spacer()
+                            Button {
+                                isExpanded.toggle()
+                            } label: {
+                                HStack {
+                                    Text("Show all")
+                                    Image(systemName: "chevron.right")
+                                        .font(.subheadline.bold())
+                                }
+                                .font(.subheadline)
+                                .foregroundColor(.accentColor)
+                            }
+                            .sheet(isPresented: $isExpanded) {
+                                NavigationStack {
+                                    Form {
+                                        Picker("Address Type", selection: $selectedAddressIndex) {
+                                            ForEach(
+                                                Array(
+                                                    viewModel.paymentAddresses.compactMap { $0 }
+                                                        .enumerated()
+                                                ),
+                                                id: \.element.address
+                                            ) { index, address in
+                                                let isSelected =
+                                                    address.type == selectedPaymentAddress?.type
 
-                        }
-                        .padding(.horizontal, 55)
-                        .animation(.easeInOut, value: isExpanded)
+                                                HStack {
+                                                    Label(
+                                                        address.description,
+                                                        systemImage: isSelected
+                                                            ? "qrcode" : "doc.on.doc"
+                                                    )
+                                                    .labelStyle(.titleOnly)
 
+                                                    Spacer()
+
+                                                    Text(address.address.lowercased())
+                                                        .font(.caption)
+                                                        .frame(width: 100)
+                                                        .truncationMode(.middle)
+                                                        .lineLimit(1)
+                                                        .foregroundColor(.secondary)
+                                                }.tag(index)
+                                            }
+                                        }
+                                        .pickerStyle(.inline)
+                                        .onChange(of: selectedAddressIndex) {
+                                            isExpanded = false
+                                        }
+                                    }
+                                    .presentationDetents([.height(200)])
+                                }
+                            }
+                        }.padding(.horizontal, 55)
                     }
                 }
 
