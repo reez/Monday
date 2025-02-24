@@ -22,14 +22,17 @@ struct ReceiveView: View {
         NavigationView {
             VStack {
                 Spacer()
-                if viewModel.addressGenerationFinished == false {
+                if viewModel.receiveViewError != nil {
+                    // Show message if error
+                    VStack {
+                        Text(viewModel.receiveViewError?.title ?? "Error")
+                        Text(viewModel.receiveViewError?.detail ?? "Unknown error")
+                    }
+                    .padding(40)
+                } else if viewModel.addressGenerationFinished == false {
                     // Show progress indicator while generating addresses
                     ProgressView()
-                } else if viewModel.receiveViewError != nil {
-                    // Show message if error
-                    Text(viewModel.receiveViewError.debugDescription)
-                }
-                if viewModel.paymentAddresses.count > 0 {
+                } else if viewModel.paymentAddresses.count > 0 {
                     // Show QR code and address info
                     AddressInfoView(
                         isExpanded: $isExpanded,
@@ -42,48 +45,11 @@ struct ReceiveView: View {
 
                 Spacer()
 
-                HStack {
-                    // Add amount Button
-                    Button {
-                        //
-                    } label: {
-                        Label("Amount", systemImage: "plus")
-                    }
-                    .buttonStyle(
-                        BitcoinOutlined(
-                            width: 150,
-                            tintColor: .accent,
-                            isCapsule: true
-                        )
-                    )
-
-                    Spacer()
-
-                    // Share Button
-                    Button {
-                        //
-                    } label: {
-                        ShareLink(
-                            item: selectedPaymentAddress?.address ?? "No address",
-                            preview: SharePreview(
-                                selectedPaymentAddress?.description ?? "No description",
-                                image: Image("AppIcon")
-                            )
-                        ) {
-                            Label("Share", systemImage: "square.and.arrow.up")
-                        }
-                    }
-                    .buttonStyle(
-                        BitcoinFilled(
-                            width: 150,
-                            tintColor: .accent,
-                            isCapsule: true
-                        )
-                    )
-                }.padding(.horizontal, 40)
+                (viewModel.receiveViewError == nil)
+                    ? ReceiveActionButtons(selectedPaymentAddress: selectedPaymentAddress) : nil
             }
             .padding(.bottom, 20)
-            .navigationTitle(selectedPaymentAddress?.title ?? "Receive Bitcoin")
+            .navigationTitle("Receive Bitcoin")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -94,7 +60,7 @@ struct ReceiveView: View {
             }
             .onAppear {
                 Task {
-                    await viewModel.generateUnifiedQR()
+                    await viewModel.generateAddresses()
                 }
             }
         }
@@ -115,20 +81,20 @@ struct AddressInfoView: View {
     @Binding var copied: Bool
     var selectedPaymentAddress: PaymentAddress?
     var addressArray: [PaymentAddress]
-    
+
     var body: some View {
         VStack {
             // QR Code and Address Information
             QRView(paymentAddress: selectedPaymentAddress)
                 .padding(.horizontal, 50)
-            
+
             HStack {
                 // Address Description and Copy Button
                 HStack {
                     Text(selectedPaymentAddress?.description ?? "")
                         .font(.subheadline)
                         .foregroundColor(.primary)
-                    
+
                     Button {
                         UIPasteboard.general.string = selectedPaymentAddress?.address
                         withAnimation {
@@ -149,9 +115,9 @@ struct AddressInfoView: View {
                             .animation(.spring(), value: copied)
                     }
                 }
-                
+
                 Spacer()
-                
+
                 // "Show all" Button
                 Button {
                     isExpanded.toggle()
@@ -178,7 +144,6 @@ struct AddressInfoView: View {
     }
 }
 
-
 struct AddressPickerSheet: View {
     @Binding var isExpanded: Bool
     @Binding var selectedAddressIndex: Int
@@ -189,13 +154,19 @@ struct AddressPickerSheet: View {
         NavigationStack {
             Form {
                 Picker("Address Type", selection: $selectedAddressIndex) {
-                    ForEach(Array(addressArray.enumerated()), id: \.element.address) { index, address in
+                    ForEach(Array(addressArray.enumerated()), id: \.element.address) {
+                        index,
+                        address in
                         HStack {
-                            Label(address.description, systemImage: address.type == selectedPaymentAddress?.type ? "qrcode" : "doc.on.doc")
-                                .labelStyle(.titleOnly)
-                            
+                            Label(
+                                address.description,
+                                systemImage: address.type == selectedPaymentAddress?.type
+                                    ? "qrcode" : "doc.on.doc"
+                            )
+                            .labelStyle(.titleOnly)
+
                             Spacer()
-                            
+
                             Text(address.address.lowercased())
                                 .font(.caption)
                                 .frame(width: 100)
@@ -216,6 +187,49 @@ struct AddressPickerSheet: View {
     }
 }
 
+struct ReceiveActionButtons: View {
+    var selectedPaymentAddress: PaymentAddress?
+
+    var body: some View {
+        HStack {
+            // Add amount Button
+            Button {
+                // Action for adding amount
+            } label: {
+                Label("Amount", systemImage: "plus")
+            }
+            .buttonStyle(
+                BitcoinOutlined(
+                    width: 150,
+                    tintColor: .accent,
+                    isCapsule: true
+                )
+            )
+
+            // Share Button
+            Button {
+                // Action for sharing
+            } label: {
+                ShareLink(
+                    item: selectedPaymentAddress?.address ?? "No address",
+                    preview: SharePreview(
+                        selectedPaymentAddress?.description ?? "No description",
+                        image: Image("AppIcon")
+                    )
+                ) {
+                    Label("Share", systemImage: "square.and.arrow.up")
+                }
+            }
+            .buttonStyle(
+                BitcoinFilled(
+                    width: 150,
+                    tintColor: .accent,
+                    isCapsule: true
+                )
+            )
+        }
+    }
+}
 
 struct AmountEntryView: View {
     @Binding var amount: String
