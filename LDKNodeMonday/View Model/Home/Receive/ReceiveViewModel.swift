@@ -16,12 +16,18 @@ class ReceiveViewModel: ObservableObject {
     @Published var addressGenerationFinished = false
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
-    @Published var amountSat: UInt64 = 12100
+    @Published var amountSat: UInt64 = 121000
+    @Published var message: String = ""
+    @Published var expirySecs: UInt32 = 3600
 
     let lightningClient: LightningNodeClient
 
     init(lightningClient: LightningNodeClient) {
         self.lightningClient = lightningClient
+    }
+
+    func generateAddresses() async {
+        await receivePayment(amountSat: amountSat, message: message, expirySecs: expirySecs)
     }
 
     func receivePayment(amountSat: UInt64, message: String, expirySecs: UInt32) async {
@@ -67,6 +73,7 @@ class ReceiveViewModel: ObservableObject {
             }
 
         } catch let error as NodeError {
+            debugPrint(error.localizedDescription)
             let errorString = handleNodeError(error)
             await MainActor.run {
                 self.receiveViewError = .init(title: errorString.title, detail: errorString.detail)
@@ -79,15 +86,6 @@ class ReceiveViewModel: ObservableObject {
                 )
             }
         }
-    }
-
-    func generateUnifiedQR() async {
-        let amountSat = UInt64(amountSat)
-        await receivePayment(
-            amountSat: amountSat,
-            message: "Monday Wallet",
-            expirySecs: UInt32(3600)
-        )
     }
 
     func maxReceiveCapacity() -> UInt64 {
@@ -123,9 +121,13 @@ class ReceiveViewModel: ObservableObject {
         var bolt12: String?
 
         for param in params {
-            if param.starts(with: "lightning=") {
+            if param.lowercased().starts(with: "lightning=lnbc") {
                 bolt11 = String(param.dropFirst("lightning=".count))
-            } else if param.starts(with: "lno=") {
+            } else if param.lowercased().starts(with: "lightning=lntb") {
+                bolt11 = String(param.dropFirst("lightning=".count))
+            } else if param.lowercased().starts(with: "lightning=lno") {
+                bolt12 = String(param.dropFirst("lightning=".count))
+            } else if param.lowercased().starts(with: "lno=") {
                 bolt12 = String(param.dropFirst("lno=".count))
             }
         }
@@ -165,6 +167,7 @@ enum AddressType {
     case bip21
     case onchain
     case bolt11
+    case bolt11Jit
     case bolt12
 }
 
@@ -178,7 +181,7 @@ public struct PaymentAddress {
             return ""
         case .onchain:
             return "bitcoin:"
-        case .bolt11, .bolt12:
+        case .bolt11, .bolt11Jit, .bolt12:
             return "lightning:"
         }
     }
@@ -191,19 +194,10 @@ public struct PaymentAddress {
             return "Onchain address"
         case .bolt11:
             return "Lightning Bolt11"
+        case .bolt11Jit:
+            return "Lightning Bolt11 JIT"
         case .bolt12:
             return "Lightning Bolt12"
-        }
-    }
-
-    var title: String {
-        switch self.type {
-        case .bip21:
-            return "Receive Bitcoin"
-        case .onchain:
-            return "Receive Onchain"
-        case .bolt11, .bolt12:
-            return "Receive on Lightning"
         }
     }
 
