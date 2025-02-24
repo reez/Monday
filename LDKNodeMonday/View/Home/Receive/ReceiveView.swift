@@ -76,13 +76,14 @@ struct ReceiveView: View {
                             }
                             .sheet(isPresented: $isExpanded) {
                                 NavigationStack {
+                                    let addressArray = Array(
+                                        viewModel.paymentAddresses.compactMap { $0 }
+                                            .enumerated()
+                                    )
                                     Form {
                                         Picker("Address Type", selection: $selectedAddressIndex) {
                                             ForEach(
-                                                Array(
-                                                    viewModel.paymentAddresses.compactMap { $0 }
-                                                        .enumerated()
-                                                ),
+                                                addressArray,
                                                 id: \.element.address
                                             ) { index, address in
                                                 let isSelected =
@@ -112,7 +113,9 @@ struct ReceiveView: View {
                                             isExpanded = false
                                         }
                                     }
-                                    .presentationDetents([.height(200)])
+                                    .presentationDetents([
+                                        .height(CGFloat(50 + addressArray.count * 45))
+                                    ])
                                 }
                             }
                         }.padding(.horizontal, 55)
