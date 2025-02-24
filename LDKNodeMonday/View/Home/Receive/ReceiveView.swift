@@ -58,7 +58,6 @@ struct ReceiveView: View {
                                     .accessibilityLabel(
                                         copied ? "Copied" : "Copy"
                                     )
-                                    .scaleEffect(copied ? 1.2 : 1.0)
                                     .animation(.spring(), value: copied)
                                 }
                             }
@@ -129,7 +128,7 @@ struct ReceiveView: View {
                     Button {
                         //
                     } label: {
-                        Label("Add amount", systemImage: "plus")
+                        Label("Amount", systemImage: "plus")
                     }
                     .buttonStyle(
                         BitcoinOutlined(
