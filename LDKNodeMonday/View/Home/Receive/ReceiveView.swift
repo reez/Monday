@@ -22,130 +22,144 @@ struct ReceiveView: View {
         NavigationView {
             VStack {
                 if viewModel.paymentAddresses.count > 0 {
-                    TabView(selection: $selectedAddressIndex) {
-                        ForEach(
-                            Array(viewModel.paymentAddresses.compactMap { $0 }.enumerated()),
-                            id: \.element.address
-                        ) { index, paymentAddress in
-                            VStack {
-                                // QR Code
-                                QRView(paymentAddress: currentPaymentAddress)
-                                    .padding(.horizontal, 50)
 
-                                if paymentAddress.type == .bip21 {
-                                    // Collapsible List of Addresses
-                                    DisclosureGroup(isExpanded: $isExpanded) {
-                                        VStack {
-                                            ForEach(
-                                                viewModel.paymentAddresses.compactMap { $0 },
-                                                id: \.address
-                                            ) { address in
-                                                PaymentAddressView(
-                                                    paymentAddress: address,
-                                                    copied: $copied
-                                                )
+                    Spacer()
+
+                    VStack {
+                        // QR Code
+                        QRView(paymentAddress: selectedPaymentAddress)
+                            .padding(.horizontal, 50)
+
+                        // Collapsible List of Addresses
+                        DisclosureGroup(isExpanded: $isExpanded) {
+                            VStack {
+                                ForEach(
+                                    Array(
+                                        viewModel.paymentAddresses.compactMap { $0 }.enumerated()
+                                    ),
+                                    id: \.element.address
+                                ) { index, address in
+                                    let isSelected = address.type == selectedPaymentAddress?.type
+                                    HStack {
+
+                                        Button {
+                                            UIPasteboard.general.string = address.address
+                                            copied = true
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                                copied = false
                                             }
-                                        }.padding(.vertical, 10)
-                                    } label: {
-                                        HStack {
-                                            isExpanded
-                                                ? nil
-                                                : HStack {
-                                                    Text("Unified address")
-                                                        .font(.subheadline.bold())
-                                                        .foregroundColor(.primary)
-                                                    Button {
-                                                        UIPasteboard.general.string =
-                                                            paymentAddress.address
-                                                        copied = true
-                                                    } label: {
-                                                        Image(
-                                                            systemName: copied
-                                                                ? "checkmark" : "doc.on.doc"
-                                                        )
-                                                        .resizable()
-                                                        .scaledToFit()
-                                                        .frame(width: 16, height: 16)
-                                                        .foregroundColor(
-                                                            copied ? .secondary : .accentColor
-                                                        )
-                                                        .accessibilityLabel(
-                                                            copied ? "Copied" : "Copy"
-                                                        )
-                                                    }
-                                                }
-                                            Spacer()
-                                            Text(isExpanded ? "" : "Show all")
-                                        }.font(.subheadline)
+                                        } label: {
+                                            Label(
+                                                address.description,
+                                                systemImage: "doc.on.doc"
+                                            )
+                                            .labelStyle(.iconOnly)
+                                            .font(.subheadline)
+                                            .foregroundColor(copied ? .secondary : .accentColor)
+                                        }
+
+                                        Label(
+                                            address.description,
+                                            systemImage: ""
+                                        )
+                                        .labelStyle(.titleOnly)
+                                        .font(.subheadline)
+
+                                        Spacer()
+
+                                        Text(address.address)
+                                            .font(.caption)
+                                            .frame(width: 100)
+                                            .truncationMode(.middle)
+                                            .lineLimit(1)
+                                            .foregroundColor(.secondary)
+                                    }
+                                }.padding(.top, 5)
+                            }
+                        } label: {
+                            HStack {
+                                isExpanded
+                                    ? nil
+                                    : HStack {
+                                        Button {
+                                            UIPasteboard.general.string =
+                                                selectedPaymentAddress?.address
+                                            copied = true
+                                        } label: {
+                                            Image(
+                                                systemName: copied
+                                                    ? "checkmark" : "doc.on.doc"
+                                            )
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 16, height: 16)
+                                            .foregroundColor(
+                                                copied ? .secondary : .accentColor
+                                            )
+                                            .accessibilityLabel(
+                                                copied ? "Copied" : "Copy"
+                                            )
+                                        }
+                                        Text(selectedPaymentAddress?.description ?? "")
+                                            .font(.subheadline)
+                                            .foregroundColor(.primary)
 
                                     }
-                                    .padding(.horizontal, 55)
-                                    .animation(.easeInOut, value: isExpanded)
-                                } else {
-                                    PaymentAddressView(
-                                        paymentAddress: paymentAddress,
-                                        copied: $copied
-                                    )
-                                    .padding(.horizontal, 55)
-                                }
+                                Spacer()
+                                Text(isExpanded ? "" : "Show all")
+                            }.font(.subheadline)
 
-                            }
-                            .tag(index)
                         }
+                        .padding(.horizontal, 55)
+                        .animation(.easeInOut, value: isExpanded)
+
                     }
-                    //.frame(height: geometry.size.width)
-                    .tabViewStyle(.page(indexDisplayMode: .always))
-                    .indexViewStyle(.page(backgroundDisplayMode: .always))
-                    .onChange(of: selectedAddressIndex) {
-                        self.copied = false
-                    }
-
-                    HStack {
-                        // Add amount Button
-                        Button {
-                            //
-                        } label: {
-                            Label("Add amount", systemImage: "plus")
-                        }
-                        .buttonStyle(
-                            BitcoinOutlined(
-                                width: 150,
-                                tintColor: .accent,
-                                isCapsule: true
-                            )
-                        )
-
-                        Spacer()
-
-                        // Share Button
-                        Button {
-                            //
-                        } label: {
-                            ShareLink(
-                                item: currentPaymentAddress?.address ?? "No address",
-                                preview: SharePreview(
-                                    currentPaymentAddress?.description ?? "No description",
-                                    image: Image("AppIcon")
-                                )
-                            ) {
-                                Label("Share", systemImage: "square.and.arrow.up")
-                            }
-                        }
-                        .buttonStyle(
-                            BitcoinFilled(
-                                width: 150,
-                                tintColor: .accent,
-                                isCapsule: true
-                            )
-                        )
-                    }.padding(.horizontal, 40)
-                } else {
-                    ProgressView()
                 }
-                // TODO: Handle state where no address is generated / error
+
+                Spacer()
+
+                HStack {
+                    // Add amount Button
+                    Button {
+                        //
+                    } label: {
+                        Label("Add amount", systemImage: "plus")
+                    }
+                    .buttonStyle(
+                        BitcoinOutlined(
+                            width: 150,
+                            tintColor: .accent,
+                            isCapsule: true
+                        )
+                    )
+
+                    Spacer()
+
+                    // Share Button
+                    Button {
+                        //
+                    } label: {
+                        ShareLink(
+                            item: selectedPaymentAddress?.address ?? "No address",
+                            preview: SharePreview(
+                                selectedPaymentAddress?.description ?? "No description",
+                                image: Image("AppIcon")
+                            )
+                        ) {
+                            Label("Share", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                    .buttonStyle(
+                        BitcoinFilled(
+                            width: 150,
+                            tintColor: .accent,
+                            isCapsule: true
+                        )
+                    )
+                }.padding(.horizontal, 40)
             }
             .padding(.bottom, 20)
-            .navigationTitle(currentPaymentAddress?.title ?? "Receive Bitcoin")
+            .navigationTitle(selectedPaymentAddress?.title ?? "Receive Bitcoin")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -159,10 +173,15 @@ struct ReceiveView: View {
                     await viewModel.generateUnifiedQR()
                 }
             }
+            //            else {
+            //                    ProgressView()
+            //                }
+            // TODO: Handle state where no address is generated / error
         }
+
     }
 
-    var currentPaymentAddress: PaymentAddress? {
+    var selectedPaymentAddress: PaymentAddress? {
         if viewModel.paymentAddresses.indices.contains(selectedAddressIndex) {
             return viewModel.paymentAddresses[selectedAddressIndex]
         }
