@@ -85,7 +85,7 @@ class ReceiveViewModel: ObservableObject {
             if bolt11PaymentAddress != nil {
                 let unifiedQRString = unifiedQRString(
                     onchainAddress: onchainPaymentAddress?.address ?? "",
-                    amount: Double(amountSat),
+                    amountBTC: amountSat.satsAsBTC,
                     message: message,
                     bolt11: bolt11PaymentAddress?.address,
                     bolt12: nil
@@ -161,7 +161,7 @@ class ReceiveViewModel: ObservableObject {
 
         let unifiedQRString = unifiedQRString(
             onchainAddress: onchain,
-            amount: Double(amountSat),
+            amountBTC: amountSat.satsAsBTC,
             message: message,
             bolt11: bolt11,
             bolt12: bolt12
@@ -257,7 +257,7 @@ extension PaymentAddress {
 
 func unifiedQRString(
     onchainAddress: String,
-    amount: Double?,
+    amountBTC: Double?,
     message: String?,
     bolt11: String?,
     bolt12: String?
@@ -266,7 +266,7 @@ func unifiedQRString(
 
     var queryItems: [String] = []
 
-    if let amount = amount, amount > 0 {
+    if let amount = amountBTC, amount > 0 {
         queryItems.append("amount=\(String(format: "%.8f", amount))")
     }
 
