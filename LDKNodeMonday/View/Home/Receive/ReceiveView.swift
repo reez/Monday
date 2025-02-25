@@ -46,7 +46,10 @@ struct ReceiveView: View {
                 Spacer()
 
                 (viewModel.receiveViewError == nil)
-                    ? ReceiveActionButtons(selectedPaymentAddress: selectedPaymentAddress) : nil
+                    ? ReceiveActionButtons(
+                        selectedPaymentAddress: selectedPaymentAddress,
+                        viewModel: viewModel
+                    ) : nil
             }
             .padding(.bottom, 20)
             .navigationTitle("Receive Bitcoin")
@@ -189,12 +192,14 @@ struct AddressPickerSheet: View {
 
 struct ReceiveActionButtons: View {
     var selectedPaymentAddress: PaymentAddress?
+    @ObservedObject var viewModel: ReceiveViewModel
+    @State var showAmountEntryView = false
 
     var body: some View {
         HStack {
             // Add amount Button
             Button {
-                // Action for adding amount
+                showAmountEntryView.toggle()
             } label: {
                 Label("Amount", systemImage: "plus")
             }
@@ -205,6 +210,19 @@ struct ReceiveActionButtons: View {
                     isCapsule: true
                 )
             )
+            .sheet(
+                isPresented: $showAmountEntryView,
+                content: {
+                    AmountEntryView(amount: $viewModel.amountSat)
+                }
+            )
+            .onChange(of: showAmountEntryView) {
+                if !$0 {
+                    Task {
+                        await viewModel.generateAddresses()
+                    }
+                }
+            }
 
             // Share Button
             Button {
@@ -227,65 +245,6 @@ struct ReceiveActionButtons: View {
                     isCapsule: true
                 )
             )
-        }
-    }
-}
-
-struct AmountEntryView: View {
-    @Binding var amount: String
-    @Environment(\.dismiss) private var dismiss
-
-    @State private var numpadAmount = "0"
-
-    var body: some View {
-        VStack(spacing: 20) {
-
-            Spacer()
-
-            Text("\(numpadAmount.formattedAmount(defaultValue: "0")) sats")
-                .textStyle(BitcoinTitle1())
-                .padding()
-
-            GeometryReader { geometry in
-                let buttonSize = geometry.size.width / 4
-                VStack(spacing: buttonSize / 10) {
-                    numpadRow(["1", "2", "3"], buttonSize: buttonSize)
-                    numpadRow(["4", "5", "6"], buttonSize: buttonSize)
-                    numpadRow(["7", "8", "9"], buttonSize: buttonSize)
-                    numpadRow([" ", "0", "<"], buttonSize: buttonSize)
-                }
-                .frame(maxWidth: .infinity)
-            }
-            .frame(height: 300)
-
-            Spacer()
-
-            Button {
-                amount = numpadAmount
-                dismiss()
-            } label: {
-                HStack(spacing: 1) {
-                    Text("Confirm")
-                        .padding(.horizontal, 40)
-                        .padding(.vertical, 5)
-                }
-                .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                .bold()
-            }
-            .buttonBorderShape(.capsule)
-            .buttonStyle(.borderedProminent)
-            .tint(.primary)
-
-        }
-        .padding()
-    }
-
-    func numpadRow(_ characters: [String], buttonSize: CGFloat) -> some View {
-        HStack(spacing: buttonSize / 2) {
-            ForEach(characters, id: \.self) { character in
-                NumpadButton(numpadAmount: $numpadAmount, character: character)
-                    .frame(width: buttonSize, height: buttonSize / 1.5)
-            }
         }
     }
 }
