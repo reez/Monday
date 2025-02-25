@@ -52,6 +52,7 @@ struct ReceiveView: View {
                     ) : nil
             }
             .padding(.bottom, 20)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
             .navigationTitle("Receive Bitcoin")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

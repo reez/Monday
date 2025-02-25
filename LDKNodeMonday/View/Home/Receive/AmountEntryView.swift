@@ -59,7 +59,7 @@ struct AmountEntryView: View {
                     Text("Done")
                 }
                 .buttonStyle(
-                    BitcoinOutlined(
+                    BitcoinFilled(
                         tintColor: .accent,
                         isCapsule: true
                     )
@@ -67,6 +67,7 @@ struct AmountEntryView: View {
 
             }
             .padding(.bottom, 20)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
             .navigationTitle("Add Amount")
             .navigationBarTitleDisplayMode(.inline)
         }
