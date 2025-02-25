@@ -39,84 +39,77 @@ class ReceiveViewModel: ObservableObject {
                 self.paymentAddresses = parsedAddresses
                 self.addressGenerationFinished = true
             }
-            
+
         } catch let error {
             debugPrint("Error generating unified QR: ", error.localizedDescription)
-            
-            // Fall back to create separate onchain, bolt11 etc
+
+            // Fall back to create separate addressinfo
+            var unifiedPaymentAddress: PaymentAddress?
+            var onchainPaymentAddress: PaymentAddress?
+            var bolt11PaymentAddress: PaymentAddress?
+
+            // Onchain
             do {
                 let onchainAddress = try await lightningClient.newAddress()
-                let onchainPaymentAddress = PaymentAddress(
+                onchainPaymentAddress = PaymentAddress(
                     type: .onchain,
                     address: onchainAddress
                 )
-                
-                await MainActor.run {
-                    paymentAddresses.append(onchainPaymentAddress)
-                    self.addressGenerationFinished = true
-                }
             } catch {
                 debugPrint("Error generating onchain address:", error.localizedDescription)
             }
-            
+
+            // Bolt11
             do {
-                let jitInvoice = try await lightningClient.receiveViaJitChannel(
-                    amountSat.satsAsMsats,
-                    message,
-                    expirySecs,
-                    nil
-                )
-                let jitPaymentAddress = PaymentAddress(
-                    type: .bolt11Jit,
-                    address: jitInvoice
-                )
-                
-                await MainActor.run {
-                    paymentAddresses.append(jitPaymentAddress)
-                    self.addressGenerationFinished = true
-                }
-                
                 // IF amountSat is higher than existing channel(s) receive capacity, generate JIT invoice
-                /*
                 let maxReceiveCapacity = maxReceiveCapacity()
-                if maxReceiveCapacity > amountSat.satsAsMsats {
+                if amountSat.satsAsMsats > maxReceiveCapacity {
                     let jitInvoice = try await lightningClient.receiveViaJitChannel(
                         amountSat.satsAsMsats,
                         message,
                         expirySecs,
                         nil
                     )
-                    let jitPaymentAddress = PaymentAddress(
-                        type: .bolt11,
+                    bolt11PaymentAddress = PaymentAddress(
+                        type: .bolt11Jit,
                         address: jitInvoice
                     )
-
-                    var filteredAddresses =
-                        parsedAddresses
-                        .compactMap { $0 }
-                        .filter { $0.type != .bolt11 }
-
-                    filteredAddresses.append(jitPaymentAddress)
-
-                    await MainActor.run {
-                        self.paymentAddresses = filteredAddresses
-                        self.addressGenerationFinished = true
-                    }
-
                 } else {
-                    await MainActor.run {
-                        self.paymentAddresses = parsedAddresses
-                        self.addressGenerationFinished = true
-                    }
+                    // generate bolt11
                 }
-                 */
             } catch {
-                debugPrint("Error generating JIT invoice:", error.localizedDescription)
+                debugPrint("Error generating Bolt11:", error.localizedDescription)
             }
-            
+
+            // Unified
+            if bolt11PaymentAddress != nil {
+                let unifiedQRString = unifiedQRString(
+                    onchainAddress: onchainPaymentAddress?.address ?? "",
+                    amount: Double(amountSat),
+                    message: message,
+                    bolt11: bolt11PaymentAddress?.address,
+                    bolt12: nil
+                )
+                unifiedPaymentAddress = PaymentAddress(
+                    type: .bip21,
+                    address: unifiedQRString
+                )
+            }
+
+            let addresses = [unifiedPaymentAddress, onchainPaymentAddress, bolt11PaymentAddress]
+                .compactMap { $0 }
+
+            await MainActor.run {
+                self.paymentAddresses = addresses
+                self.addressGenerationFinished = true
+            }
+
             if paymentAddresses.isEmpty {
                 await MainActor.run {
-                    self.receiveViewError = .init(title: "Address error", detail: "Failed to generate any addresses.")
+                    self.receiveViewError = .init(
+                        title: "Address error",
+                        detail: "Failed to generate any addresses."
+                    )
                 }
             }
         }
@@ -166,14 +159,18 @@ class ReceiveViewModel: ObservableObject {
             }
         }
 
-        if bolt11 == nil && bolt12 == nil {
-            return []
-        }
+        let unifiedQRString = unifiedQRString(
+            onchainAddress: onchain,
+            amount: Double(amountSat),
+            message: message,
+            bolt11: bolt11,
+            bolt12: bolt12
+        )
 
         let paymentAddresses: [PaymentAddress?] = [
             PaymentAddress(
                 type: .bip21,
-                address: unifiedQR
+                address: unifiedQRString
             ),
             PaymentAddress(
                 type: .onchain,
@@ -256,4 +253,40 @@ extension PaymentAddress {
     var qrString: String {
         return self.prefix + address
     }
+}
+
+func unifiedQRString(
+    onchainAddress: String,
+    amount: Double?,
+    message: String?,
+    bolt11: String?,
+    bolt12: String?
+) -> String {
+    var qrString = "bitcoin:\(onchainAddress)"
+
+    var queryItems: [String] = []
+
+    if let amount = amount, amount > 0 {
+        queryItems.append("amount=\(String(format: "%.8f", amount))")
+    }
+
+    if let message = message, !message.isEmpty {
+        queryItems.append(
+            "message=\(message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+        )
+    }
+
+    if let bolt11 = bolt11, !bolt11.isEmpty {
+        queryItems.append("lightning=\(bolt11)")
+    }
+
+    if let bolt12 = bolt12, !bolt12.isEmpty {
+        queryItems.append("lno=\(bolt12)")
+    }
+
+    if !queryItems.isEmpty {
+        qrString += "?" + queryItems.joined(separator: "&")
+    }
+
+    return qrString
 }
