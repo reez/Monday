@@ -203,7 +203,15 @@ struct NumpadButton: View {
                 }
             }
         } label: {
-            Text(character).textStyle(BitcoinTitle3())
+            if character == "<" {
+                Image(systemName: "delete.left")
+                    .bold()
+                    .foregroundColor(.primary)
+            } else {
+                Text(character)
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .foregroundColor(.primary)
+            }
         }
     }
 }
