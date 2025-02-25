@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		652CF3A62D6DFEE200D700D0 /* AmountEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652CF3A52D6DFEDC00D700D0 /* AmountEntryView.swift */; };
 		655574802D398A750064F859 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555747F2D398A750064F859 /* LoadingView.swift */; };
 		655574822D3994E10064F859 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655574812D3994E10064F859 /* ErrorView.swift */; };
 		655C19042D42AB1500AC5F72 /* WalletClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655C19032D42AB1500AC5F72 /* WalletClient.swift */; };
@@ -90,6 +91,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		652CF3A52D6DFEDC00D700D0 /* AmountEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountEntryView.swift; sourceTree = "<group>"; };
 		6555747F2D398A750064F859 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		655574812D3994E10064F859 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		655C19032D42AB1500AC5F72 /* WalletClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletClient.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 		AE551D422B8ECC400034B61E /* Receive */ = {
 			isa = PBXGroup;
 			children = (
+				652CF3A52D6DFEDC00D700D0 /* AmountEntryView.swift */,
 				6560EB802D65F8D400BBE772 /* QRView.swift */,
 				AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */,
 			);
@@ -617,6 +620,7 @@
 				AE028A2E2B9638EC00B336E7 /* FileManager+Extensions.swift in Sources */,
 				AE49E8662A2537D5002623E8 /* PeerViewModel.swift in Sources */,
 				AE33D3AE2C7BD0EE00AF562B /* URL+Extensions.swift in Sources */,
+				652CF3A62D6DFEE200D700D0 /* AmountEntryView.swift in Sources */,
 				AEBAA4942A01C6BD0042EA82 /* PeerDetailsView.swift in Sources */,
 				65A406632D070CBD00EA331E /* NetworkSettingsView.swift in Sources */,
 				AE49E8682A2537FB002623E8 /* DisconnectViewModel.swift in Sources */,
