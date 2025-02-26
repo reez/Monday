@@ -32,14 +32,44 @@ class ReceiveViewModel: ObservableObject {
 
     func receivePayment(amountSat: UInt64, message: String, expirySecs: UInt32) async {
         do {
+            // Use the LDK Node method for generating unified QR string
             let unified = try await lightningClient.receive(amountSat, message, expirySecs)
             let parsedAddresses = parseUnifiedQR(unified)
+            let finalAddresses: [PaymentAddress?]
 
-            await MainActor.run {
-                self.paymentAddresses = parsedAddresses
-                self.addressGenerationFinished = true
+            do {
+                // IF amountSat is higher than existing channel(s) receive capacity, generate JIT invoice
+                let maxReceiveCapacity = maxReceiveCapacity()
+                if amountSat.satsAsMsats > maxReceiveCapacity {
+                    let jitInvoice = try await lightningClient.receiveViaJitChannel(
+                        amountSat.satsAsMsats,
+                        message,
+                        expirySecs,
+                        nil
+                    )
+                    let bolt11JITPaymentAddress = PaymentAddress(
+                        type: .bolt11Jit,
+                        address: jitInvoice
+                    )
+
+                    // Replace the Bolt11 with the JIT version
+                    finalAddresses = parsedAddresses.map { address in
+                        guard let address = address else { return nil }
+                        return address.type == .bolt11 ? bolt11JITPaymentAddress : address
+                    }
+                } else {
+                    // If no JIT needed, use the parsed addresses as-is
+                    finalAddresses = parsedAddresses
+                }
+            } catch {
+                debugPrint("Error generating Bolt11:", error.localizedDescription)
+                finalAddresses = parsedAddresses
             }
 
+            await MainActor.run {
+                self.paymentAddresses = finalAddresses
+                self.addressGenerationFinished = true
+            }
         } catch let error {
             debugPrint("Error generating unified QR: ", error.localizedDescription)
 
