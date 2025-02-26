@@ -16,7 +16,7 @@ class ReceiveViewModel: ObservableObject {
     @Published var addressGenerationFinished = false
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
-    @Published var amountSat: UInt64 = 12100
+    @Published var amountSat: UInt64 = 0
     @Published var message: String = ""
     @Published var expirySecs: UInt32 = 3600
 
