@@ -9,13 +9,7 @@ import CoreImage.CIFilterBuiltins
 import SwiftUI
 
 public struct QRView: View {
-    @State private var viewState = CGSize.zero
-    let screenBounds = UIScreen.main.bounds
     public var paymentAddress: PaymentAddress?
-
-    public init(paymentAddress: PaymentAddress?) {
-        self.paymentAddress = paymentAddress
-    }
 
     public var body: some View {
         if let address = paymentAddress {
