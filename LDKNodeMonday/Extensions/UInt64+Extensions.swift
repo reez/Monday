@@ -17,7 +17,7 @@ extension UInt64 {
     }
 
     var mSatsAsBTC: Double {
-        return Double(self.mSatsAsSats) / 100_000_000
+        return Double(self.mSatsAsSats) / Double(UInt64.satsPerBtc)
     }
 
     var satsAsMsats: UInt64 {
@@ -25,7 +25,7 @@ extension UInt64 {
     }
 
     var satsAsBTC: Double {
-        return Double(self) / 100_000_000
+        return Double(self) / Double(UInt64.satsPerBtc)
     }
 
     func formattedSatsAsBtc(format: BitcoinFormatting? = .truncated) -> String {
