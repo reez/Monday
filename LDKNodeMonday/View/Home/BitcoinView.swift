@@ -64,7 +64,7 @@ struct BitcoinView: View {
         .onAppear { viewModel.update() }
         .onChange(
             of: eventService.lastMessage,
-            { oldValue, newValue in
+            { _, _ in
                 showToast = eventService.lastMessage != nil
             }
         )

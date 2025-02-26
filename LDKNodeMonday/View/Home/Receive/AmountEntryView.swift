@@ -1,5 +1,5 @@
 //
-//  Untitled.swift
+//  AmountEntryView.swift
 //  LDKNodeMonday
 //
 //  Created by Daniel Nordh on 25/02/2025.
@@ -26,7 +26,6 @@ struct AmountEntryView: View {
                         .font(.system(size: 48, weight: .bold, design: .rounded))
                         .contentTransition(.numericText())
                     HStack(spacing: 5) {
-                        //Text("$0").contentTransition(.interpolate)
                         Text("sats")
                             .contentTransition(.interpolate)
                     }

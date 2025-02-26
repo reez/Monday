@@ -12,8 +12,6 @@ struct ReceiveView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ReceiveViewModel
     @State private var selectedAddressIndex: Int = 0
-    @State private var favoriteColor = 0
-    @State var showShareDialog = false
     @State private var isExpanded = false
 
     var body: some View {
@@ -289,6 +287,6 @@ struct ReceiveActionButtons: View {
 #if DEBUG
     #Preview {
         ReceiveView(viewModel: ReceiveViewModel(lightningClient: .mock))
-        //AmountEntryView(amount: .constant("21"))
+        // AmountEntryView(amount: .constant("21"))
     }
 #endif
