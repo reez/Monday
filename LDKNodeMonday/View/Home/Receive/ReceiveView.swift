@@ -13,8 +13,7 @@ struct ReceiveView: View {
     @ObservedObject var viewModel: ReceiveViewModel
     @State private var selectedAddressIndex: Int = 0
     @State private var favoriteColor = 0
-    @State var showCopyDialog = false
-    @State var copied = false
+    @State var showShareDialog = false
     @State private var isExpanded = false
 
     var body: some View {
@@ -29,7 +28,7 @@ struct ReceiveView: View {
                         Text(viewModel.receiveViewError?.detail ?? "Unknown error")
                     }
                     .padding(40)
-                } else if viewModel.addressGenerationFinished == false {
+                } else if viewModel.addressGenerationStatus == .generating {
                     // Show progress indicator while generating addresses
                     ProgressView()
                 } else if viewModel.paymentAddresses.count > 0 {
@@ -37,7 +36,6 @@ struct ReceiveView: View {
                     AddressInfoView(
                         isExpanded: $isExpanded,
                         selectedAddressIndex: $selectedAddressIndex,
-                        copied: $copied,
                         selectedPaymentAddress: selectedPaymentAddress,
                         addressArray: viewModel.paymentAddresses.compactMap { $0 }
                     )
@@ -84,7 +82,7 @@ struct ReceiveView: View {
 struct AddressInfoView: View {
     @Binding var isExpanded: Bool
     @Binding var selectedAddressIndex: Int
-    @Binding var copied: Bool
+    @State var showQRFullScreen = false
     var selectedPaymentAddress: PaymentAddress?
     var addressArray: [PaymentAddress]
 
@@ -92,34 +90,35 @@ struct AddressInfoView: View {
         VStack {
             // QR Code and Address Information
             QRView(paymentAddress: selectedPaymentAddress)
-                .padding(.horizontal, 50)
+                .onTapGesture {
+                    withAnimation(
+                        .interpolatingSpring,
+                        {
+                            showQRFullScreen.toggle()
+                        }
+                    )
+                }
 
             HStack {
-                // Address Description and Copy Button
-                HStack {
-                    Text(selectedPaymentAddress?.description ?? "")
-                        .font(.subheadline)
-                        .foregroundColor(.primary)
-
-                    Button {
-                        UIPasteboard.general.string = selectedPaymentAddress?.address
-                        withAnimation {
-                            copied = true
+                // Address Description
+                Text(selectedPaymentAddress?.description ?? "")
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+                Button {
+                    withAnimation(
+                        .interpolatingSpring,
+                        {
+                            showQRFullScreen.toggle()
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            withAnimation {
-                                copied = false
-                            }
-                        }
-                    } label: {
-                        Image(systemName: copied ? "checkmark" : "doc.on.doc")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                            .foregroundColor(copied ? .secondary : .accentColor)
-                            .accessibilityLabel(copied ? "Copied" : "Copy")
-                            .animation(.spring(), value: copied)
-                    }
+                    )
+                } label: {
+                    Image(systemName: "rectangle.expand.diagonal")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                        .font(.subheadline.bold())
+                        .foregroundColor(.accentColor)
+                        .accessibilityLabel("QR code fullscreen")
                 }
 
                 Spacer()
@@ -145,8 +144,8 @@ struct AddressInfoView: View {
                     )
                 }
             }
-            .padding(.horizontal, 55)
-        }
+
+        }.padding(.horizontal, showQRFullScreen ? 5 : 50)
     }
 }
 
@@ -197,18 +196,25 @@ struct ReceiveActionButtons: View {
     var selectedPaymentAddress: PaymentAddress?
     @ObservedObject var viewModel: ReceiveViewModel
     @State var showAmountEntryView = false
+    @State var copied = false
 
     var body: some View {
-        HStack {
+        VStack {
             // Add amount Button
             Button {
                 showAmountEntryView.toggle()
             } label: {
-                Label("Amount", systemImage: "plus")
+                if viewModel.amountSat == UInt64(0) {
+                    Label("Add Amount", systemImage: "plus")
+                } else {
+                    Text(
+                        (Int(viewModel.amountSat).formatted(.number.notation(.automatic))) + " sats"
+                    )
+                }
             }
+            .padding(.vertical, 10)
             .buttonStyle(
                 BitcoinOutlined(
-                    width: 150,
                     tintColor: .accent,
                     isCapsule: true
                 )
@@ -227,27 +233,55 @@ struct ReceiveActionButtons: View {
                 }
             }
 
-            // Share Button
-            Button {
-                // Action for sharing
-            } label: {
-                ShareLink(
-                    item: selectedPaymentAddress?.address ?? "No address",
-                    preview: SharePreview(
-                        selectedPaymentAddress?.description ?? "No description",
-                        image: Image("AppIcon")
-                    )
-                ) {
-                    Label("Share", systemImage: "square.and.arrow.up")
+            HStack {
+                // Share Button
+                Button {
+                    // Action for sharing
+                } label: {
+                    ShareLink(
+                        item: selectedPaymentAddress?.address ?? "No address",
+                        preview: SharePreview(
+                            selectedPaymentAddress?.description ?? "No description",
+                            image: Image("AppIcon")
+                        )
+                    ) {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
                 }
-            }
-            .buttonStyle(
-                BitcoinFilled(
-                    width: 150,
-                    tintColor: .accent,
-                    isCapsule: true
+                .buttonStyle(
+                    BitcoinFilled(
+                        width: 150,
+                        tintColor: .accent,
+                        isCapsule: true
+                    )
                 )
-            )
+
+                // Copy Button
+                Button {
+                    UIPasteboard.general.string = selectedPaymentAddress?.address
+                    withAnimation {
+                        copied = true
+                    }
+                } label: {
+                    Label(
+                        copied ? "Copied" : "Copy",
+                        systemImage: copied ? "checkmark" : "doc.on.doc"
+                    )
+                }
+                .buttonStyle(
+                    BitcoinFilled(
+                        width: 150,
+                        tintColor: copied ? .secondary : .accent,
+                        isCapsule: true
+                    )
+                )
+            }
+        }
+        .onChange(of: selectedPaymentAddress) {
+            copied = false
+        }
+        .onChange(of: viewModel.amountSat) {
+            copied = false
         }
     }
 }

@@ -13,7 +13,7 @@ import SwiftUI
 class ReceiveViewModel: ObservableObject {
     @Published var selectedOption: ReceiveOption = .bip21
     @Published var paymentAddresses: [PaymentAddress?] = []
-    @Published var addressGenerationFinished = false
+    @Published var addressGenerationStatus = AddressGenerationStatus.generating
     @Published var receiveViewError: MondayError?
     @Published var networkColor = Color.gray
     @Published var amountSat: UInt64 = 0
@@ -31,6 +31,10 @@ class ReceiveViewModel: ObservableObject {
     }
 
     func receivePayment(amountSat: UInt64, message: String, expirySecs: UInt32) async {
+        await MainActor.run {
+            self.addressGenerationStatus = .generating
+        }
+
         do {
             // Use the LDK Node method for generating unified QR string
             let unified = try await lightningClient.receive(amountSat, message, expirySecs)
@@ -68,7 +72,7 @@ class ReceiveViewModel: ObservableObject {
 
             await MainActor.run {
                 self.paymentAddresses = finalAddresses
-                self.addressGenerationFinished = true
+                self.addressGenerationStatus = .finished
             }
         } catch let error {
             debugPrint("Error generating unified QR: ", error.localizedDescription)
@@ -131,7 +135,7 @@ class ReceiveViewModel: ObservableObject {
 
             await MainActor.run {
                 self.paymentAddresses = addresses
-                self.addressGenerationFinished = true
+                self.addressGenerationStatus = .finished
             }
 
             if paymentAddresses.isEmpty {
@@ -224,6 +228,11 @@ class ReceiveViewModel: ObservableObject {
     }
 }
 
+enum AddressGenerationStatus {
+    case generating
+    case finished
+}
+
 enum AddressType {
     case bip21
     case onchain
@@ -232,7 +241,7 @@ enum AddressType {
     case bolt12
 }
 
-public struct PaymentAddress {
+public struct PaymentAddress: Equatable {
     let type: AddressType
     let address: String
 
