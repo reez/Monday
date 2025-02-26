@@ -59,7 +59,7 @@ struct AmountEntryView: View {
                     Text("Done")
                 }
                 .buttonStyle(
-                    BitcoinFilled(
+                    BitcoinOutlined(
                         tintColor: .accent,
                         isCapsule: true
                     )

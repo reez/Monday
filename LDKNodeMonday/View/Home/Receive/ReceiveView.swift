@@ -45,11 +45,13 @@ struct ReceiveView: View {
 
                 Spacer()
 
-                (viewModel.receiveViewError == nil)
-                    ? ReceiveActionButtons(
+                if viewModel.receiveViewError == nil {
+                    ReceiveActionButtons(
                         selectedPaymentAddress: selectedPaymentAddress,
                         viewModel: viewModel
-                    ) : nil
+                    )
+                }
+
             }
             .padding(.bottom, 20)
             .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
@@ -217,8 +219,8 @@ struct ReceiveActionButtons: View {
                     AmountEntryView(amount: $viewModel.amountSat)
                 }
             )
-            .onChange(of: showAmountEntryView) {
-                if !$0 {
+            .onChange(of: showAmountEntryView) { _, newValue in
+                if newValue == false {
                     Task {
                         await viewModel.generateAddresses()
                     }
