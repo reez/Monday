@@ -43,17 +43,18 @@ class ReceiveViewModel: ObservableObject {
 
             do {
                 // IF amountSat is higher than existing channel(s) receive capacity, generate JIT invoice
-                let maxReceiveCapacity = maxReceiveCapacity()
-                if amountSat.satsAsMsats > maxReceiveCapacity {
-                    let jitInvoice = try await lightningClient.receiveViaJitChannel(
+                let needsJIT = amountSat.satsAsMsats > maxReceiveCapacity()
+                if needsJIT {
+                    let bolt11Invoice = try await lightningClient.bolt11Payment(
                         amountSat.satsAsMsats,
                         message,
                         expirySecs,
-                        nil
+                        nil,
+                        true
                     )
                     let bolt11JITPaymentAddress = PaymentAddress(
                         type: .bolt11Jit,
-                        address: jitInvoice
+                        address: bolt11Invoice
                     )
 
                     // Replace the Bolt11 with the JIT version
@@ -95,22 +96,18 @@ class ReceiveViewModel: ObservableObject {
 
             // Bolt11
             do {
-                // IF amountSat is higher than existing channel(s) receive capacity, generate JIT invoice
-                let maxReceiveCapacity = maxReceiveCapacity()
-                if amountSat.satsAsMsats > maxReceiveCapacity {
-                    let jitInvoice = try await lightningClient.receiveViaJitChannel(
-                        amountSat.satsAsMsats,
-                        message,
-                        expirySecs,
-                        nil
-                    )
-                    bolt11PaymentAddress = PaymentAddress(
-                        type: .bolt11Jit,
-                        address: jitInvoice
-                    )
-                } else {
-                    // generate bolt11
-                }
+                let needsJIT = amountSat.satsAsMsats > maxReceiveCapacity()
+                let bolt11Invoice = try await lightningClient.bolt11Payment(
+                    amountSat.satsAsMsats,
+                    message,
+                    expirySecs,
+                    nil,
+                    needsJIT
+                )
+                bolt11PaymentAddress = PaymentAddress(
+                    type: needsJIT ? .bolt11Jit : .bolt11,
+                    address: bolt11Invoice
+                )
             } catch {
                 debugPrint("Error generating Bolt11:", error.localizedDescription)
             }

@@ -256,19 +256,29 @@ class LightningNodeService {
         return bip21UriString
     }
 
-    func receiveViaJitChannel(
+    func bolt11Payment(
         amountMsat: UInt64,
         description: String,
         expirySecs: UInt32,
-        maxLspFeeLimitMsat: UInt64?
+        maxLspFeeLimitMsat: UInt64?,
+        receiveViaJitChannel: Bool?
     ) async throws -> Bolt11Invoice {
-        let invoice = try ldkNode.bolt11Payment().receiveViaJitChannel(
-            amountMsat: amountMsat,
-            description: description,
-            expirySecs: expirySecs,
-            maxLspFeeLimitMsat: maxLspFeeLimitMsat
-        )
-        return invoice
+        if receiveViaJitChannel ?? false {
+            let invoice = try ldkNode.bolt11Payment().receiveViaJitChannel(
+                amountMsat: amountMsat,
+                description: description,
+                expirySecs: expirySecs,
+                maxLspFeeLimitMsat: maxLspFeeLimitMsat
+            )
+            return invoice
+        } else {
+            let invoice = try ldkNode.bolt11Payment().receive(
+                amountMsat: amountMsat,
+                description: description,
+                expirySecs: expirySecs
+            )
+            return invoice
+        }
     }
 
     func listPeers() -> [PeerDetails] {
@@ -355,7 +365,7 @@ public struct LightningNodeClient {
     let closeChannel: (ChannelId, PublicKey) throws -> Void
     let send: (String) async throws -> QrPaymentResult
     let receive: (UInt64, String, UInt32) async throws -> String
-    let receiveViaJitChannel: (UInt64, String, UInt32, UInt64?) async throws -> Bolt11Invoice
+    let bolt11Payment: (UInt64, String, UInt32, UInt64?, Bool?) async throws -> Bolt11Invoice
     let listPeers: () -> [PeerDetails]
     let listChannels: () -> [ChannelDetails]
     let listPayments: () -> [PaymentDetails]
@@ -421,12 +431,13 @@ extension LightningNodeClient {
                 expirySec: expiry
             )
         },
-        receiveViaJitChannel: { amount, description, expiry, maxFee in
-            try await LightningNodeService.shared.receiveViaJitChannel(
+        bolt11Payment: { amount, description, expiry, maxFee, receiveViaJitChannel in
+            try await LightningNodeService.shared.bolt11Payment(
                 amountMsat: amount,
                 description: description,
                 expirySecs: expiry,
-                maxLspFeeLimitMsat: maxFee
+                maxLspFeeLimitMsat: maxFee,
+                receiveViaJitChannel: receiveViaJitChannel
             )
         },
         listPeers: { LightningNodeService.shared.listPeers() },
@@ -465,7 +476,7 @@ extension LightningNodeClient {
         receive: { _, _, _ in
             "bitcoin:BC1QYLH3U67J673H6Y6ALV70M0PL2YZ53TZHVXGG7U?amount=0.00001&label=sbddesign%3A%20For%20lunch%20Tuesday&message=For%20lunch%20Tuesday&lightning=LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6&lightning=LNO1PG257ENXV4EZQCNEYPE82UM50YNHXGRWDAJX283QFWDPL28QQMC78YMLVHMXCSYWDK5WRJNJ36JRYG488QWLRNZYJCZS"
         },
-        receiveViaJitChannel: { _, _, _, _ in Bolt11Invoice("lnbc1...") },
+        bolt11Payment: { _, _, _, _, _ in Bolt11Invoice("lnbc1...") },
         listPeers: { [] },
         listChannels: { [] },
         listPayments: { mockPayments },
