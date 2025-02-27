@@ -201,6 +201,7 @@ struct ReceiveActionButtons: View {
             // Add amount Button
             Button {
                 showAmountEntryView.toggle()
+                viewModel.addressGenerationStatus = .generating
             } label: {
                 if viewModel.amountSat == UInt64(0) {
                     Label("Add Amount", systemImage: "plus")
@@ -275,11 +276,17 @@ struct ReceiveActionButtons: View {
                 )
             }
         }
+        .opacity(viewModel.addressGenerationStatus == .finished ? 1 : 0)
+        .animation(.easeOut(duration: 0.5), value: viewModel.addressGenerationStatus)
         .onChange(of: selectedPaymentAddress) {
-            copied = false
+            withAnimation {
+                copied = false
+            }
         }
         .onChange(of: viewModel.amountSat) {
-            copied = false
+            withAnimation {
+                copied = false
+            }
         }
     }
 }
