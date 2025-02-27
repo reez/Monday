@@ -42,7 +42,7 @@ struct SeedView: View {
                     }
             } else {
                 SeedPhraseView(
-                    words: viewModel.seed.mnemonic.components(separatedBy: " "),
+                    words: (viewModel.seed?.mnemonic ?? "").components(separatedBy: " "),
                     preferredWordsPerRow: 2,
                     usePaging: true,
                     wordsPerPage: 12
@@ -54,7 +54,7 @@ struct SeedView: View {
                         systemImage: showCheckmark
                             ? "checkmark" : "doc.on.doc"
                     ) {
-                        UIPasteboard.general.string = viewModel.seed.mnemonic
+                        UIPasteboard.general.string = viewModel.seed?.mnemonic
                         isCopied = true
                         showCheckmark = true
 
