@@ -15,53 +15,53 @@ struct NetworkSettingsView: View {
     @State private var tempNetwork: Network?
     @State private var tempServer: EsploraServer?
 
-    var body: some View {
+    // Create local state that tracks current values
+    @State private var currentNetwork: Network
+    @State private var currentServer: EsploraServer
 
+    // Initialize the local state in the initializer
+    init(walletClient: Binding<WalletClient>) {
+        self._walletClient = walletClient
+        self._currentNetwork = State(initialValue: walletClient.wrappedValue.network)
+        self._currentServer = State(initialValue: walletClient.wrappedValue.server)
+    }
+
+    var body: some View {
         VStack {
             Form {
                 Section {
                     Picker(
                         "Network",
-                        selection: Binding(
-                            get: { walletClient.network },
-                            set: { newNetwork in
-                                if walletClient.appState == .onboarding {
-                                    walletClient.network = newNetwork
-                                    guard let server = availableServers(network: newNetwork).first
-                                    else {
-                                        // This should never happen, but if it does:
-                                        fatalError("No servers available for \(newNetwork)")
-                                    }
-                                    walletClient.server = server
-                                } else {
-                                    tempNetwork = newNetwork
-                                    showRestartAlert = true
-                                }
-                            }
-                        )
+                        selection: $currentNetwork
                     ) {
                         Text("Signet").tag(Network.signet)
                         Text("Testnet").tag(Network.testnet)
                     }
                     .pickerStyle(.navigationLink)
                     .accessibilityLabel("Select bitcoin network")
+                    .onChange(of: currentNetwork) { oldValue, newValue in
+                        guard let newServer = availableServers(network: newValue).first else {
+                            fatalError("No servers available for \(newValue)")
+                        }
+
+                        currentServer = newServer
+
+                        if walletClient.appState == .onboarding {
+                            walletClient.network = newValue
+                            walletClient.server = newServer
+                        } else {
+                            tempNetwork = newValue
+                            tempServer = newServer
+                            showRestartAlert = true
+                        }
+                    }
 
                     Picker(
                         "Server",
-                        selection: Binding(
-                            get: { walletClient.server },
-                            set: { newServer in
-                                if walletClient.appState == .onboarding {
-                                    walletClient.server = newServer
-                                } else {
-                                    tempServer = newServer
-                                    showRestartAlert = true
-                                }
-                            }
-                        )
+                        selection: $currentServer
                     ) {
                         ForEach(
-                            availableServers(network: walletClient.network),
+                            availableServers(network: currentNetwork),
                             id: \.self
                         ) { esploraServer in
                             Text(esploraServer.name).tag(esploraServer)
@@ -69,13 +69,40 @@ struct NetworkSettingsView: View {
                     }
                     .pickerStyle(.navigationLink)
                     .accessibilityLabel("Select esplora server")
+                    .onChange(of: currentServer) { oldValue, newValue in
+                        if walletClient.appState == .onboarding {
+                            walletClient.server = newValue
+                        } else {
+                            tempServer = newValue
+                            showRestartAlert = true
+                        }
+                    }
                 } footer: {
                     Text(
                         "Set your desired network and connection server.\nIf in doubt, use the default settings."
                     )
                 }
                 .alert("Change and restart?", isPresented: $showRestartAlert) {
-                    Button("Cancel", role: .cancel) {}
+                    Button("Cancel", role: .cancel) {
+                        // Reset local state to match wallet client on cancel
+                        currentNetwork = walletClient.network
+
+                        // Make sure we select a valid server for the current network
+                        if availableServers(network: walletClient.network).contains(
+                            walletClient.server
+                        ) {
+                            currentServer = walletClient.server
+                        } else {
+                            guard let server = availableServers(network: walletClient.network).first
+                            else {
+                                fatalError("No servers available for \(walletClient.network)")
+                            }
+                            currentServer = server
+                        }
+
+                        tempNetwork = nil
+                        tempServer = nil
+                    }
                     Button("Restart") {
                         Task {
                             await handleRestart()
@@ -101,12 +128,26 @@ struct NetworkSettingsView: View {
     private func handleRestart() async {
         if tempNetwork != nil || tempServer != nil {
             let newNetwork = tempNetwork ?? walletClient.network
-            guard let server = availableServers(network: newNetwork).first
-            else {
-                // This should never happen, but if it does:
-                fatalError("No servers available for \(newNetwork)")
+
+            // If we only have tempServer but no tempNetwork, verify tempServer is valid for current network
+            let newServer: EsploraServer
+            if let server = tempServer {
+                if availableServers(network: newNetwork).contains(server) {
+                    newServer = server
+                } else {
+                    // If somehow the server is not valid for the network, use a default
+                    guard let defaultServer = availableServers(network: newNetwork).first else {
+                        fatalError("No servers available for \(newNetwork)")
+                    }
+                    newServer = defaultServer
+                }
+            } else {
+                // No tempServer, use a default server for the new network
+                guard let defaultServer = availableServers(network: newNetwork).first else {
+                    fatalError("No servers available for \(newNetwork)")
+                }
+                newServer = defaultServer
             }
-            let newServer = tempServer ?? server
 
             do {
                 try KeyClient.live.saveNetwork(newNetwork.description)
