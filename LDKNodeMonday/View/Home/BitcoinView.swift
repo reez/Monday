@@ -64,7 +64,7 @@ struct BitcoinView: View {
         .onAppear { viewModel.update() }
         .onChange(
             of: eventService.lastMessage,
-            { oldValue, newValue in
+            { _, _ in
                 showToast = eventService.lastMessage != nil
             }
         )
@@ -113,10 +113,8 @@ struct BitcoinView: View {
             onDismiss: { viewModel.update() }
         ) { receiveOption in
             ReceiveView(
-                lightningClient: viewModel.lightningClient,
-                selectedOption: receiveOption
+                viewModel: .init(lightningClient: viewModel.lightningClient)
             )
-            .presentationDetents([.large])
         }
         .navigationDestination(for: NavigationDestination.self) { destination in
             switch destination {
@@ -284,7 +282,7 @@ struct TransactionButtons: View {
                     }
                 }
             ) {
-                ReceiveView(lightningClient: viewModel.walletClient.lightningClient)
+                ReceiveView(viewModel: .init(lightningClient: viewModel.lightningClient))
                     .presentationDetents([.large])
             }
 

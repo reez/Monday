@@ -9,145 +9,291 @@ import BitcoinUI
 import SwiftUI
 
 struct ReceiveView: View {
-    let lightningClient: LightningNodeClient
-    @State public var selectedOption: ReceiveOption = .bip21
-
-    var body: some View {
-
-        VStack {
-
-            Picker("Options", selection: $selectedOption) {
-                ForEach(ReceiveOption.allCases, id: \.self) { option in
-                    HStack(spacing: 5) {
-                        Image(systemName: option.systemImageName)
-                        Text(option.rawValue)
-                    }
-                    .tag(option)
-                }
-            }
-            .pickerStyle(.menu)
-            .tint(.primary)
-
-            Spacer()
-
-            switch selectedOption {
-            case .bolt11JIT:
-                JITInvoiceView(viewModel: .init(lightningClient: lightningClient))
-            case .bip21:
-                BIP21View(viewModel: .init(lightningClient: lightningClient))
-            }
-
-        }
-        .padding()
-        .padding(.vertical, 40.0)
-
-    }
-
-}
-
-struct AmountEntryView: View {
-    @Binding var amount: String
     @Environment(\.dismiss) private var dismiss
-
-    @State private var numpadAmount = "0"
+    @ObservedObject var viewModel: ReceiveViewModel
+    @State private var selectedAddressIndex: Int = 0
+    @State private var isExpanded = false
 
     var body: some View {
-        VStack(spacing: 20) {
 
-            Spacer()
-
-            Text("\(numpadAmount.formattedAmount(defaultValue: "0")) sats")
-                .textStyle(BitcoinTitle1())
-                .padding()
-
-            GeometryReader { geometry in
-                let buttonSize = geometry.size.width / 4
-                VStack(spacing: buttonSize / 10) {
-                    numpadRow(["1", "2", "3"], buttonSize: buttonSize)
-                    numpadRow(["4", "5", "6"], buttonSize: buttonSize)
-                    numpadRow(["7", "8", "9"], buttonSize: buttonSize)
-                    numpadRow([" ", "0", "<"], buttonSize: buttonSize)
+        NavigationView {
+            VStack {
+                Spacer()
+                if viewModel.receiveViewError != nil {
+                    // Show message if error
+                    VStack {
+                        Text(viewModel.receiveViewError?.title ?? "Error")
+                        Text(viewModel.receiveViewError?.detail ?? "Unknown error")
+                    }
+                    .padding(40)
+                } else if viewModel.addressGenerationStatus == .generating {
+                    // Show progress indicator while generating addresses
+                    ProgressView()
+                } else if viewModel.paymentAddresses.count > 0 {
+                    // Show QR code and address info
+                    AddressInfoView(
+                        isExpanded: $isExpanded,
+                        selectedAddressIndex: $selectedAddressIndex,
+                        selectedPaymentAddress: selectedPaymentAddress,
+                        addressArray: viewModel.paymentAddresses.compactMap { $0 }
+                    )
                 }
-                .frame(maxWidth: .infinity)
-            }
-            .frame(height: 300)
 
-            Spacer()
+                Spacer()
 
-            Button {
-                amount = numpadAmount
-                dismiss()
-            } label: {
-                HStack(spacing: 1) {
-                    Text("Confirm")
-                        .padding(.horizontal, 40)
-                        .padding(.vertical, 5)
+                if viewModel.receiveViewError == nil {
+                    ReceiveActionButtons(
+                        selectedPaymentAddress: selectedPaymentAddress,
+                        viewModel: viewModel
+                    )
                 }
-                .foregroundColor(Color(uiColor: UIColor.systemBackground))
-                .bold()
-            }
-            .buttonBorderShape(.capsule)
-            .buttonStyle(.borderedProminent)
-            .tint(.primary)
 
+            }
+            .padding(.bottom, 20)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
+            .navigationTitle("Receive Bitcoin")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+            .onAppear {
+                Task {
+                    await viewModel.generateAddresses()
+                }
+            }
         }
-        .padding()
+
     }
 
-    func numpadRow(_ characters: [String], buttonSize: CGFloat) -> some View {
-        HStack(spacing: buttonSize / 2) {
-            ForEach(characters, id: \.self) { character in
-                NumpadButton(numpadAmount: $numpadAmount, character: character)
-                    .frame(width: buttonSize, height: buttonSize / 1.5)
+    var selectedPaymentAddress: PaymentAddress? {
+        if viewModel.paymentAddresses.indices.contains(selectedAddressIndex) {
+            return viewModel.paymentAddresses[selectedAddressIndex]
+        }
+        return nil
+    }
+}
+
+struct AddressInfoView: View {
+    @Binding var isExpanded: Bool
+    @Binding var selectedAddressIndex: Int
+    @State var showQRFullScreen = false
+    var selectedPaymentAddress: PaymentAddress?
+    var addressArray: [PaymentAddress]
+
+    var body: some View {
+        VStack {
+            // QR Code and Address Information
+            QRView(paymentAddress: selectedPaymentAddress)
+                .onTapGesture {
+                    withAnimation(
+                        .interpolatingSpring,
+                        {
+                            showQRFullScreen.toggle()
+                        }
+                    )
+                }
+
+            HStack {
+                // Address Description
+                Text(selectedPaymentAddress?.description ?? "")
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+                Button {
+                    withAnimation(
+                        .interpolatingSpring,
+                        {
+                            showQRFullScreen.toggle()
+                        }
+                    )
+                } label: {
+                    Image(systemName: "rectangle.expand.diagonal")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                        .font(.subheadline.bold())
+                        .foregroundColor(.accentColor)
+                        .accessibilityLabel("QR code fullscreen")
+                }
+
+                Spacer()
+
+                // "Show all" Button
+                Button {
+                    isExpanded.toggle()
+                } label: {
+                    HStack {
+                        Text("Show all")
+                        Image(systemName: "chevron.right")
+                            .font(.subheadline.bold())
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(.accentColor)
+                }
+                .sheet(isPresented: $isExpanded) {
+                    AddressPickerSheet(
+                        isExpanded: $isExpanded,
+                        selectedAddressIndex: $selectedAddressIndex,
+                        addressArray: addressArray,
+                        selectedPaymentAddress: selectedPaymentAddress
+                    )
+                }
             }
+
+        }.padding(.horizontal, showQRFullScreen ? 5 : 50)
+    }
+}
+
+struct AddressPickerSheet: View {
+    @Binding var isExpanded: Bool
+    @Binding var selectedAddressIndex: Int
+    var addressArray: [PaymentAddress]
+    var selectedPaymentAddress: PaymentAddress?
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Picker("Address Type", selection: $selectedAddressIndex) {
+                    ForEach(Array(addressArray.enumerated()), id: \.element.address) {
+                        index,
+                        address in
+                        HStack {
+                            Label(
+                                address.description,
+                                systemImage: address.type == selectedPaymentAddress?.type
+                                    ? "qrcode" : "doc.on.doc"
+                            )
+                            .labelStyle(.titleOnly)
+
+                            Spacer()
+
+                            Text(address.address.lowercased())
+                                .font(.caption)
+                                .frame(width: 100)
+                                .truncationMode(.middle)
+                                .lineLimit(1)
+                                .foregroundColor(.secondary)
+                        }
+                        .tag(index)  // Use the index here instead of looking up the index
+                    }
+                }
+                .pickerStyle(.inline)
+                .onChange(of: selectedAddressIndex) {
+                    isExpanded = false
+                }
+            }
+            .presentationDetents([.height(CGFloat(50 + addressArray.count * 45))])
         }
     }
 }
 
-struct InvoiceRowView: View {
-    let title: String
-    let value: String
-    let isCopied: Bool
-    let showCheckmark: Bool
-    let networkColor: Color
-    let onCopy: () -> Void
+struct ReceiveActionButtons: View {
+    var selectedPaymentAddress: PaymentAddress?
+    @ObservedObject var viewModel: ReceiveViewModel
+    @State var showAmountEntryView = false
+    @State var copied = false
 
     var body: some View {
-        HStack(alignment: .center) {
-            VStack(alignment: .leading, spacing: 5.0) {
-                Text(title)
-                    .bold()
-                Text(value)
-                    .truncationMode(.middle)
-                    .lineLimit(1)
-                    .foregroundColor(.secondary)
-                    .redacted(reason: value.isEmpty ? .placeholder : [])
+        VStack {
+            // Add amount Button
+            Button {
+                showAmountEntryView.toggle()
+                viewModel.addressGenerationStatus = .generating
+            } label: {
+                if viewModel.amountSat == UInt64(0) {
+                    Label("Add Amount", systemImage: "plus")
+                } else {
+                    Text(
+                        (Int(viewModel.amountSat).formatted(.number.notation(.automatic))) + " sats"
+                    )
+                }
             }
-            .font(.caption2)
-
-            Spacer()
-
-            Button(action: onCopy) {
-                HStack {
-                    withAnimation {
-                        Image(systemName: showCheckmark ? "checkmark" : "doc.on.doc")
-                            .font(.title3)
-                            .minimumScaleFactor(0.5)
+            .padding(.vertical, 10)
+            .buttonStyle(
+                BitcoinOutlined(
+                    tintColor: .accent,
+                    isCapsule: true
+                )
+            )
+            .sheet(
+                isPresented: $showAmountEntryView,
+                content: {
+                    AmountEntryView(amount: $viewModel.amountSat)
+                }
+            )
+            .onChange(of: showAmountEntryView) { _, newValue in
+                if newValue == false {
+                    Task {
+                        await viewModel.generateAddresses()
                     }
                 }
-                .bold()
-                .foregroundColor(networkColor)
             }
-            .font(.caption2)
+
+            HStack {
+                // Share Button
+                Button {
+                    // Action for sharing
+                } label: {
+                    ShareLink(
+                        item: selectedPaymentAddress?.address ?? "No address",
+                        preview: SharePreview(
+                            selectedPaymentAddress?.description ?? "No description",
+                            image: Image("AppIcon")
+                        )
+                    ) {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                }
+                .buttonStyle(
+                    BitcoinFilled(
+                        width: 150,
+                        tintColor: .accent,
+                        isCapsule: true
+                    )
+                )
+
+                // Copy Button
+                Button {
+                    UIPasteboard.general.string = selectedPaymentAddress?.address
+                    withAnimation {
+                        copied = true
+                    }
+                } label: {
+                    Label(
+                        copied ? "Copied" : "Copy",
+                        systemImage: copied ? "checkmark" : "doc.on.doc"
+                    )
+                }
+                .buttonStyle(
+                    BitcoinFilled(
+                        width: 150,
+                        tintColor: copied ? .secondary : .accent,
+                        isCapsule: true
+                    )
+                )
+            }
         }
-        .padding(.horizontal)
+        .opacity(viewModel.addressGenerationStatus == .finished ? 1 : 0)
+        .animation(.easeOut(duration: 0.5), value: viewModel.addressGenerationStatus)
+        .onChange(of: selectedPaymentAddress) {
+            withAnimation {
+                copied = false
+            }
+        }
+        .onChange(of: viewModel.amountSat) {
+            withAnimation {
+                copied = false
+            }
+        }
     }
 }
 
 #if DEBUG
     #Preview {
-        AmountEntryView(
-            amount: .constant("21")
-        )
+        ReceiveView(viewModel: ReceiveViewModel(lightningClient: .mock))
+        // AmountEntryView(amount: .constant("21"))
     }
 #endif
