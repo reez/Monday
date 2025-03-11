@@ -11,12 +11,9 @@ import CodeScanner
 import SwiftUI
 
 struct AddressView: View {
-    @State private var address: String = ""
+    @ObservedObject var viewModel: SendViewModel
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
-    @Binding var amount: UInt64
-    @Binding var paymentAddress: PaymentAddress?
-    @Binding var sendViewState: SendViewState
     let pasteboard = UIPasteboard.general
     var spendableBalance: UInt64
 
@@ -61,14 +58,14 @@ extension AddressView {
                 alertMessage = "Unsupported scan format"
                 isShowingAlert = true
             } else {
-                address = scanString
-                amount = extractedAmount
-                paymentAddress = extractedPaymentAddress
+                viewModel.address = scanString
+                viewModel.amountSat = extractedAmount
+                viewModel.paymentAddress = extractedPaymentAddress
 
-                if amount == 0 {
-                    sendViewState = .manual
+                if viewModel.amountSat == 0 {
+                    viewModel.sendViewState = .manual
                 } else {
-                    sendViewState = .review
+                    viewModel.sendViewState = .review
                 }
             }
 
@@ -87,11 +84,11 @@ extension AddressView {
                 alertMessage = "Unsupported paste format"
                 isShowingAlert = true
             } else {
-                address = extractedPaymentAddress?.address ?? ""
-                amount = extractedAmount
-                paymentAddress = extractedPaymentAddress
+                viewModel.address = extractedPaymentAddress?.address ?? ""
+                viewModel.amountSat = extractedAmount
+                viewModel.paymentAddress = extractedPaymentAddress
 
-                sendViewState = .review
+                viewModel.sendViewState = .review
             }
         } else {
             alertMessage = "No address found in pasteboard"
@@ -143,9 +140,7 @@ struct CustomScannerView: View {
 #if DEBUG
     #Preview {
         AddressView(
-            amount: .constant(0),
-            paymentAddress: .constant(nil),
-            sendViewState: .constant(.camera),
+            viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manual),
             spendableBalance: 21
         )
     }

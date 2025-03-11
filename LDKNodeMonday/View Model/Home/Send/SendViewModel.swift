@@ -14,12 +14,14 @@ import SwiftUI
 class SendViewModel: ObservableObject {
     var amountConfirmationViewError: MondayError?
     let lightningClient: LightningNodeClient
+    @Published var sendViewState: SendViewState
     @Published var paymentAddress: PaymentAddress?
     @Published var address = ""
     @Published var amountSat: UInt64 = 0
 
-    init(lightningClient: LightningNodeClient) {
+    init(lightningClient: LightningNodeClient, sendViewState: SendViewState) {
         self.lightningClient = lightningClient
+        self.sendViewState = sendViewState
     }
 
     func send(uriStr: String) async throws -> QrPaymentResult {

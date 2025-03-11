@@ -205,7 +205,9 @@ extension String {
             return (UInt64(amount) ?? 0, PaymentAddress(type: .bolt12, address: sanitizedAddress))
         } else {
             let bolt11Amount = sanitizedAddress.bolt11amount() ?? amount
-            return (UInt64(bolt11Amount) ?? 0, PaymentAddress(type: .bolt11, address: sanitizedAddress))
+            return (
+                UInt64(bolt11Amount) ?? 0, PaymentAddress(type: .bolt11, address: sanitizedAddress)
+            )
         }
     }
 

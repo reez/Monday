@@ -215,8 +215,7 @@ struct NumpadButton: View {
 #if DEBUG
     #Preview {
         AmountView(
-            viewModel: .init(lightningClient: .mock),
-            //spendableBalance: UInt64(21000),
+            viewModel: .init(lightningClient: .mock, sendViewState: .manual),
             sendViewState: .constant(.manual)
         )
     }

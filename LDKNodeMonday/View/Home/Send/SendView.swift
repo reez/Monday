@@ -11,19 +11,16 @@ import SwiftUI
 struct SendView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: SendViewModel
-    @State var sendViewState: SendViewState
     @State var showAmountEntryView = false
 
     var body: some View {
 
         NavigationView {
             VStack {
-                switch sendViewState {
+                switch viewModel.sendViewState {
                 case .camera:
                     AddressView(
-                        amount: $viewModel.amountSat,
-                        paymentAddress: $viewModel.paymentAddress,
-                        sendViewState: $sendViewState,
+                        viewModel: viewModel,
                         spendableBalance: 0
                     )
                 case .manual:
@@ -36,13 +33,13 @@ struct SendView: View {
                             } label: {
                                 Text(viewModel.amountSat.description)
                                     .frame(width: 260, height: 48, alignment: .leading)
-                                .tint(viewModel.amountSat == 0 ? .secondary : .primary)
-                                .padding([.leading, .trailing], 20)
-                                .truncationMode(.middle)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 24)
-                                        .stroke(Color.accentColor, lineWidth: 2)
-                                )
+                                    .tint(viewModel.amountSat == 0 ? .secondary : .primary)
+                                    .padding([.leading, .trailing], 20)
+                                    .truncationMode(.middle)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 24)
+                                            .stroke(Color.accentColor, lineWidth: 2)
+                                    )
                             }
                             .sheet(
                                 isPresented: $showAmountEntryView,
@@ -80,7 +77,7 @@ struct SendView: View {
                     Spacer()
 
                     Button {
-                        sendViewState = .review
+                        viewModel.sendViewState = .review
                     } label: {
                         Text("Review")
                     }
@@ -92,43 +89,11 @@ struct SendView: View {
                     ).disabled(viewModel.amountSat == 0)
                     .padding(.bottom, 40)
                 case .review:
-                    List {
-                        VStack {
-                            Text("Amount")
-                                .font(.subheadline.weight(.medium))
-                            Text(viewModel.amountSat.description)
-                        }
-                        VStack(alignment: .leading) {
-                            Text("To")
-                                .font(.subheadline.weight(.medium))
-                            Text(viewModel.paymentAddress?.address ?? "No address")
-                                .truncationMode(.middle)
-                                .lineLimit(1)
-                        }
-
-                    }
-                    .listStyle(.plain)
-                    .padding(20)
-
-                    Spacer()
-
-                    Button {
-                        //
-                    } label: {
-                        Text("Send")
-                    }
-                    .buttonStyle(
-                        BitcoinFilled(
-                            tintColor: .accent,
-                            isCapsule: true
-                        )
-                    )
-                    //.disabled()
-                    .padding(.bottom, 40)
+                    SendReviewView(viewModel: viewModel)
                 }
             }
             .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
-            .navigationTitle(sendViewState.rawValue)
+            .navigationTitle(viewModel.sendViewState.rawValue)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -148,5 +113,5 @@ struct SendView: View {
 }
 
 #Preview {
-    SendView(viewModel: SendViewModel.init(lightningClient: .mock), sendViewState: .manual)
+    SendView(viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manual))
 }
