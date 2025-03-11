@@ -14,8 +14,8 @@ struct AddressView: View {
     @State private var address: String = ""
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
-    @State private var numpadAmount = "0"
-    @State private var payment: PaymentAddress?
+    @Binding var amount: UInt64
+    @Binding var paymentAddress: PaymentAddress?
     @Binding var sendViewState: SendViewState
     let pasteboard = UIPasteboard.general
     var spendableBalance: UInt64
@@ -54,24 +54,22 @@ extension AddressView {
         switch result {
         case .success(let scanResult):
             let scanString = scanResult.string
-            let (_, extractedAmount, extractedPayment) =
+            let (extractedAmount, extractedPaymentAddress) =
                 scanString.extractPaymentInfo(spendableBalance: spendableBalance)
-            address = scanString
-            numpadAmount = extractedAmount
-            payment = extractedPayment
 
-            if extractedPayment == .none {
+            if extractedPaymentAddress == nil {
                 alertMessage = "Unsupported scan format"
                 isShowingAlert = true
             } else {
-                sendViewState = .manual
-//                navigationPath.append(
-//                    NavigationDestination.amount(
-//                        address: address,
-//                        amount: numpadAmount,
-//                        payment: payment
-//                    )
-//                )
+                address = scanString
+                amount = extractedAmount
+                paymentAddress = extractedPaymentAddress
+
+                if amount == 0 {
+                    sendViewState = .manual
+                } else {
+                    sendViewState = .review
+                }
             }
 
         case .failure(let scanError):
@@ -82,24 +80,18 @@ extension AddressView {
 
     private func pasteAddress() {
         if pasteboard.hasStrings, let string = pasteboard.string {
-            let (extractedAddress, extractedAmount, extractedPayment) =
+            let (extractedAmount, extractedPaymentAddress) =
                 string.extractPaymentInfo(spendableBalance: spendableBalance)
-            address = extractedAddress
-            numpadAmount = extractedAmount
-            payment = extractedPayment
 
-            if extractedPayment == .none {
+            if extractedPaymentAddress == nil {
                 alertMessage = "Unsupported paste format"
                 isShowingAlert = true
             } else {
-                sendViewState = .manual
-//                navigationPath.append(
-//                    NavigationDestination.amount(
-//                        address: address,
-//                        amount: numpadAmount,
-//                        payment: payment
-//                    )
-//                )
+                address = extractedPaymentAddress?.address ?? ""
+                amount = extractedAmount
+                paymentAddress = extractedPaymentAddress
+
+                sendViewState = .review
             }
         } else {
             alertMessage = "No address found in pasteboard"
@@ -115,7 +107,7 @@ struct CustomScannerView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            
+
             ZStack(alignment: .top) {
                 CodeScannerView(
                     codeTypes: [.qr],
@@ -133,7 +125,14 @@ struct CustomScannerView: View {
 
                     Button(action: pasteAction) {
                         Text("Paste Address")
-                    }.buttonStyle(BitcoinFilled(width: 150, tintColor: .white, textColor: .black, isCapsule: true))
+                    }.buttonStyle(
+                        BitcoinFilled(
+                            width: 150,
+                            tintColor: .white,
+                            textColor: .black,
+                            isCapsule: true
+                        )
+                    )
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 60)
                 }
             }
@@ -144,8 +143,10 @@ struct CustomScannerView: View {
 #if DEBUG
     #Preview {
         AddressView(
+            amount: .constant(0),
+            paymentAddress: .constant(nil),
             sendViewState: .constant(.camera),
-            spendableBalance: UInt64(21)
+            spendableBalance: 21
         )
     }
 #endif

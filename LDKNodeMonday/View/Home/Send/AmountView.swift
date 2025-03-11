@@ -49,19 +49,19 @@ struct AmountView: View {
                                     numpadAmount = "0"
                                     payment = .lightning
                                 } else {
-//                                    let (extractedAddress, extractedAmount, extractedPayment) =
-//                                        string.extractPaymentInfo(
-//                                            spendableBalance: spendableBalance
-//                                        )
-//                                    address = extractedAddress
-//                                    viewModel.numpadAmount = extractedAmount
-//                                    payment = extractedPayment
-//                                    if extractedPayment == .none {
-//                                        self.parseError = .init(
-//                                            title: "Scan Error",
-//                                            detail: "Unsupported paste format"
-//                                        )
-//                                    }
+                                    //                                    let (extractedAddress, extractedAmount, extractedPayment) =
+                                    //                                        string.extractPaymentInfo(
+                                    //                                            spendableBalance: spendableBalance
+                                    //                                        )
+                                    //                                    address = extractedAddress
+                                    //                                    viewModel.numpadAmount = extractedAmount
+                                    //                                    payment = extractedPayment
+                                    //                                    if extractedPayment == .none {
+                                    //                                        self.parseError = .init(
+                                    //                                            title: "Scan Error",
+                                    //                                            detail: "Unsupported paste format"
+                                    //                                        )
+                                    //                                    }
                                 }
                             } else {
                                 self.parseError = .init(

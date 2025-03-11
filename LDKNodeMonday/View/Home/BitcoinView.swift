@@ -116,31 +116,6 @@ struct BitcoinView: View {
                 viewModel: .init(lightningClient: viewModel.lightningClient)
             )
         }
-//        .navigationDestination(for: NavigationDestination.self) { destination in
-//            switch destination {
-//            case .address:
-//                AddressView(
-//                    navigationPath: $sendNavigationPath,
-//                    spendableBalance: viewModel.balances.spendableOnchainBalanceSats
-//                )
-//            case .amount(let address, let amount, let payment):
-//                AmountView(
-//                    viewModel: .init(lightningClient: viewModel.lightningClient),
-//                    address: address,
-//                    numpadAmount: amount,
-//                    payment: payment,
-//                    spendableBalance: viewModel.balances.spendableOnchainBalanceSats,
-//                    navigationPath: $sendNavigationPath
-//                )
-//                .onDisappear {
-//                    viewModel.update()
-//
-//                }
-//
-//            }
-//
-//        }.sensoryFeedback(.increase, trigger: sendNavigationPath)
-
     }
 
 }
@@ -246,7 +221,7 @@ struct TransactionButtons: View {
                     tintColor: .accent,
                     isCapsule: true
                 )
-            )//.disabled(viewModel.unifiedBalance == 0)
+            )  //.disabled(viewModel.unifiedBalance == 0)
 
             Spacer()
 
@@ -260,7 +235,7 @@ struct TransactionButtons: View {
                     .labelStyle(.iconOnly)
                     .foregroundColor(.accentColor)
                     .padding()
-            }//.disabled(viewModel.unifiedBalance == 0)
+            }  //.disabled(viewModel.unifiedBalance == 0)
 
             Spacer()
 
@@ -284,8 +259,11 @@ struct TransactionButtons: View {
                     }
                 }
             ) {
-                SendView(viewModel: SendViewModel.init(lightningClient: viewModel.lightningClient), sendViewState: .manual)
-                    .presentationDetents([.large])
+                SendView(
+                    viewModel: SendViewModel.init(lightningClient: viewModel.lightningClient),
+                    sendViewState: .manual
+                )
+                .presentationDetents([.large])
             }
             .sheet(
                 isPresented: $isSendSheetCameraPresented,
@@ -295,8 +273,11 @@ struct TransactionButtons: View {
                     }
                 }
             ) {
-                SendView(viewModel: SendViewModel.init(lightningClient: viewModel.lightningClient), sendViewState: .camera)
-                    .presentationDetents([.large])
+                SendView(
+                    viewModel: SendViewModel.init(lightningClient: viewModel.lightningClient),
+                    sendViewState: .camera
+                )
+                .presentationDetents([.large])
             }
             .sheet(
                 isPresented: $isReceiveSheetPresented,
@@ -312,11 +293,6 @@ struct TransactionButtons: View {
 
         }
     }
-}
-
-enum NavigationDestination: Hashable {
-    case address
-    case amount(address: String, amount: String, payment: PaymentType)
 }
 
 public enum DisplayBalanceType: String {

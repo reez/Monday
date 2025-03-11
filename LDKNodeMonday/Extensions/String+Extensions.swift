@@ -128,11 +128,11 @@ extension String {
         return url.queryParameters()
     }
 
-    func processBIP21(_ input: String, spendableBalance: UInt64) -> (String, String, Payment) {
+    func processBIP21(_ input: String, spendableBalance: UInt64) -> (UInt64, PaymentAddress?) {
         guard let url = URL(string: input),
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         else {
-            return ("", "0", .isNone)
+            return (0, nil)
         }
 
         let bitcoinAddress = url.path
@@ -161,51 +161,51 @@ extension String {
         if let invoice = bolt11Invoice {
             return processLightningAddress(invoice, amount: amount)
         }
-        return (bitcoinAddress, amount, .isBitcoin)
+        return (UInt64(amount) ?? 0, PaymentAddress(type: .onchain, address: bitcoinAddress))
     }
 
     func extractPaymentInfo(spendableBalance: UInt64) -> (
-        address: String, amount: String, payment: Payment
+        amount: UInt64, payment: PaymentAddress?
     ) {
         if self.lowercased().starts(with: "bitcoin:") && self.contains("?") {
             return processBIP21(self, spendableBalance: spendableBalance)
         } else if self.lowercased().starts(with: "lightning:") {
             let invoice = String(self.dropFirst(10))  // Remove "lightning:" prefix
-            return processLightningAddress(invoice, amount: "0")
+            return processLightningAddress(invoice, amount: "")
         } else if self.lowercased().starts(with: "lnbc") || self.lowercased().starts(with: "lntb") {
-            return processLightningAddress(self, amount: "0")
+            return processLightningAddress(self, amount: "")
         } else if self.isBitcoinAddress {
             return processBitcoinAddress(spendableBalance)
         } else if self.starts(with: "lnurl") {
-            return ("LNURL not supported yet", "0", .isLightningURL)
+            return (0, nil)  // TODO: Implement support for lnurl
         } else {
-            return ("", "0", .isNone)
+            return (0, .none)
         }
     }
 
-    private func processBitcoinAddress(_ spendableBalance: UInt64) -> (String, String, Payment) {
+    private func processBitcoinAddress(_ spendableBalance: UInt64) -> (UInt64, PaymentAddress) {
         let address = self.extractBitcoinAddress()
         let queryParams = self.queryParameters()
-        let amount = queryParams["amount"] ?? "0"
+        let amount = queryParams["amount"] ?? ""
 
         if let amountValue = UInt64(amount), amountValue <= spendableBalance {
-            return (address, amount, .isBitcoin)
+            return (amountValue, PaymentAddress(type: .onchain, address: address))
         } else {
-            return (address, "0", .isBitcoin)
+            return (0, PaymentAddress(type: .onchain, address: address))
         }
     }
 
     private func processLightningAddress(_ address: String, amount: String) -> (
-        String, String, Payment
+        UInt64, PaymentAddress
     ) {
         let sanitizedAddress = address.replacingOccurrences(of: "lightning:", with: "")
 
         if sanitizedAddress.lowercased().starts(with: "lno") {
             // Use the amount passed from the BIP21 parsing logic
-            return (sanitizedAddress, amount, .isLightning)
+            return (UInt64(amount) ?? 0, PaymentAddress(type: .bolt12, address: sanitizedAddress))
         } else {
             let bolt11Amount = sanitizedAddress.bolt11amount() ?? amount
-            return (sanitizedAddress, bolt11Amount, .isLightning)
+            return (UInt64(bolt11Amount) ?? 0, PaymentAddress(type: .bolt11, address: sanitizedAddress))
         }
     }
 

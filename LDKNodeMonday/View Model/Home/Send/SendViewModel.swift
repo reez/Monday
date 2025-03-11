@@ -16,7 +16,7 @@ class SendViewModel: ObservableObject {
     let lightningClient: LightningNodeClient
     @Published var paymentAddress: PaymentAddress?
     @Published var address = ""
-    @Published var amount = ""
+    @Published var amountSat: UInt64 = 0
 
     init(lightningClient: LightningNodeClient) {
         self.lightningClient = lightningClient
