@@ -63,9 +63,13 @@ extension SendScanAddressView {
                 viewModel.paymentAddress = extractedPaymentAddress
 
                 if viewModel.amountSat == 0 {
-                    viewModel.sendViewState = .manualEntry
+                    withAnimation {
+                        viewModel.sendViewState = .manualEntry
+                    }
                 } else {
-                    viewModel.sendViewState = .reviewPayment
+                    withAnimation {
+                        viewModel.sendViewState = .reviewPayment
+                    }
                 }
             }
 
@@ -88,7 +92,9 @@ extension SendScanAddressView {
                 viewModel.amountSat = extractedAmount
                 viewModel.paymentAddress = extractedPaymentAddress
 
-                viewModel.sendViewState = .reviewPayment
+                withAnimation {
+                    viewModel.sendViewState = .reviewPayment
+                }
             }
         } else {
             alertMessage = "No address found in pasteboard"

@@ -41,19 +41,33 @@ struct SendManualEntry: View {
             VStack(alignment: .leading) {
                 Text("To")
                     .font(.subheadline.weight(.medium))
-                TextField(
-                    "Address or lightning invoice",
-                    text: Binding(
-                        get: { viewModel.paymentAddress?.address ?? viewModel.address },
-                        set: { viewModel.address = $0 }
+                ZStack {
+                    TextField(
+                        "Address or lightning invoice",
+                        text: Binding(
+                            get: { viewModel.paymentAddress?.address ?? viewModel.address },
+                            set: { viewModel.address = $0 }
+                        )
                     )
-                )
+                    .tint(.accentColor)
+                    .keyboardType(.numbersAndPunctuation)
+                    .truncationMode(.middle)
+                    .submitLabel(.done)
+                    HStack {
+                        Spacer()
+                        Button {
+                            withAnimation {
+                                viewModel.sendViewState = .scanAddress
+                            }
+                        } label: {
+                            Label("Scan QR", systemImage: "qrcode.viewfinder")
+                                .labelStyle(.iconOnly)
+                                .foregroundColor(.accentColor)
+                        }
+                    }
+                }
                 .frame(width: 260, height: 48)
-                .tint(.accentColor)
                 .padding([.leading, .trailing], 20)
-                .keyboardType(.numbersAndPunctuation)
-                .truncationMode(.middle)
-                .submitLabel(.done)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(Color.accentColor, lineWidth: 2)
@@ -81,5 +95,7 @@ struct SendManualEntry: View {
 }
 
 #Preview {
-    SendManualEntry(viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manualEntry))
+    SendManualEntry(
+        viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manualEntry)
+    )
 }
