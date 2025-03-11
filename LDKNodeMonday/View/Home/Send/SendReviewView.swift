@@ -16,12 +16,12 @@ struct SendReviewView: View {
             VStack {
                 Text("Amount")
                     .font(.subheadline.weight(.medium))
-                Text(viewModel.amountSat.description)
+                Text(viewModel.amountSat.formatted(.number.notation(.automatic)))
             }
             VStack(alignment: .leading) {
                 Text("To")
                     .font(.subheadline.weight(.medium))
-                Text(viewModel.paymentAddress?.address ?? "No address")
+                Text(viewModel.paymentAddress?.address.lowercased() ?? "No address")
                     .truncationMode(.middle)
                     .lineLimit(1)
             }

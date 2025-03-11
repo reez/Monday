@@ -20,7 +20,7 @@ struct SendManualEntry: View {
                 Button {
                     showAmountEntryView.toggle()
                 } label: {
-                    Text(viewModel.amountSat.description)
+                    Text(viewModel.amountSat.formatted(.number.notation(.automatic)))
                         .frame(width: 260, height: 48, alignment: .leading)
                         .tint(viewModel.amountSat == 0 ? .secondary : .primary)
                         .padding([.leading, .trailing], 20)
@@ -45,7 +45,7 @@ struct SendManualEntry: View {
                     TextField(
                         "Address or lightning invoice",
                         text: Binding(
-                            get: { viewModel.paymentAddress?.address ?? viewModel.address },
+                            get: { viewModel.paymentAddress?.address.lowercased() ?? viewModel.address.lowercased() },
                             set: { viewModel.address = $0 }
                         )
                     )
