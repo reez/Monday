@@ -146,7 +146,11 @@ struct CustomScannerView: View {
 #if DEBUG
     #Preview {
         SendScanAddressView(
-            viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manualEntry),
+            viewModel: SendViewModel.init(
+                lightningClient: .mock,
+                sendViewState: .manualEntry,
+                price: 19000.00
+            ),
             spendableBalance: 21
         )
     }

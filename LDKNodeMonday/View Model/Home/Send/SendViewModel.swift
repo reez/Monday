@@ -12,27 +12,36 @@ import SwiftUI
 
 @MainActor
 class SendViewModel: ObservableObject {
-    var amountConfirmationViewError: MondayError?
     let lightningClient: LightningNodeClient
     @Published var sendViewState: SendViewState
     @Published var paymentAddress: PaymentAddress?
     @Published var address = ""
     @Published var amountSat: UInt64 = 0
+    @Published var sendError: MondayError?
+    var price: Double
 
-    init(lightningClient: LightningNodeClient, sendViewState: SendViewState) {
+    init(lightningClient: LightningNodeClient, sendViewState: SendViewState, price: Double) {
         self.lightningClient = lightningClient
         self.sendViewState = sendViewState
+        self.price = price
     }
 
-    func send(uriStr: String) async throws -> QrPaymentResult {
+    func send() async throws {
         do {
-            let qrPaymentResult = try await lightningClient.send(uriStr)
-            return qrPaymentResult
+            switch paymentAddress?.type {
+            case .onchain:
+                let txId = try await lightningClient.sendToAddress(
+                    paymentAddress?.address ?? "",
+                    amountSat
+                )
+            default:
+                let qrPaymentResult = try await lightningClient.send(paymentAddress?.address ?? "")
+            }
         } catch let error as NodeError {
             NotificationCenter.default.post(name: .ldkErrorReceived, object: error)
             let errorString = handleNodeError(error)
             DispatchQueue.main.async {
-                self.amountConfirmationViewError = .init(
+                self.sendError = .init(
                     title: errorString.title,
                     detail: errorString.detail
                 )
@@ -40,7 +49,7 @@ class SendViewModel: ObservableObject {
             throw error
         } catch {
             DispatchQueue.main.async {
-                self.amountConfirmationViewError = .init(
+                self.sendError = .init(
                     title: "Unexpected error",
                     detail: error.localizedDescription
                 )

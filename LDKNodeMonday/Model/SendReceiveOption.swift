@@ -31,4 +31,5 @@ enum SendViewState: String, CaseIterable, Identifiable {
     case scanAddress = "Scan Address"
     case manualEntry = "Send Bitcoin"
     case reviewPayment = "Review Payment"
+    case paymentSent = "Payment Sent"
 }

@@ -13,12 +13,16 @@ struct SendReviewView: View {
 
     var body: some View {
         List {
-            VStack {
+            VStack(alignment: .leading, spacing: 10) {
                 Text("Amount")
                     .font(.subheadline.weight(.medium))
-                Text(viewModel.amountSat.formatted(.number.notation(.automatic)))
+                HStack {
+                    Text(viewModel.amountSat.formatted(.number.notation(.automatic)))
+                    Spacer()
+                    Text(viewModel.amountSat.formattedSatsAsUSD(price: viewModel.price))
+                }
             }
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 10) {
                 Text("To")
                     .font(.subheadline.weight(.medium))
                 Text(viewModel.paymentAddress?.address.lowercased() ?? "No address")
@@ -33,7 +37,16 @@ struct SendReviewView: View {
         Spacer()
 
         Button {
-            //
+            Task {
+                try await viewModel.send()
+            }
+            if viewModel.sendError == nil {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    withAnimation {
+                        viewModel.sendViewState = .paymentSent
+                    }
+                }
+            }
         } label: {
             Text("Send")
         }
@@ -43,13 +56,17 @@ struct SendReviewView: View {
                 isCapsule: true
             )
         )
-        //.disabled()
+        .disabled(viewModel.paymentAddress.isNil)
         .padding(.bottom, 40)
     }
 }
 
 #Preview {
     SendReviewView(
-        viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manualEntry)
+        viewModel: SendViewModel.init(
+            lightningClient: .mock,
+            sendViewState: .manualEntry,
+            price: 19000.00
+        )
     )
 }

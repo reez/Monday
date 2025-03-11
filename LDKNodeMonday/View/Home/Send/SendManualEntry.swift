@@ -45,7 +45,10 @@ struct SendManualEntry: View {
                     TextField(
                         "Address or lightning invoice",
                         text: Binding(
-                            get: { viewModel.paymentAddress?.address.lowercased() ?? viewModel.address.lowercased() },
+                            get: {
+                                viewModel.paymentAddress?.address.lowercased()
+                                    ?? viewModel.address.lowercased()
+                            },
                             set: { viewModel.address = $0 }
                         )
                     )
@@ -53,16 +56,19 @@ struct SendManualEntry: View {
                     .keyboardType(.numbersAndPunctuation)
                     .truncationMode(.middle)
                     .submitLabel(.done)
-                    HStack {
-                        Spacer()
-                        Button {
-                            withAnimation {
-                                viewModel.sendViewState = .scanAddress
+
+                    if viewModel.paymentAddress.isNil {
+                        HStack {
+                            Spacer()
+                            Button {
+                                withAnimation {
+                                    viewModel.sendViewState = .scanAddress
+                                }
+                            } label: {
+                                Label("Scan QR", systemImage: "qrcode.viewfinder")
+                                    .labelStyle(.iconOnly)
+                                    .foregroundColor(.accentColor)
                             }
-                        } label: {
-                            Label("Scan QR", systemImage: "qrcode.viewfinder")
-                                .labelStyle(.iconOnly)
-                                .foregroundColor(.accentColor)
                         }
                     }
                 }
@@ -96,6 +102,10 @@ struct SendManualEntry: View {
 
 #Preview {
     SendManualEntry(
-        viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manualEntry)
+        viewModel: SendViewModel.init(
+            lightningClient: .mock,
+            sendViewState: .manualEntry,
+            price: 19000.00
+        )
     )
 }
