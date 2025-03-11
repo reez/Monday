@@ -10,17 +10,17 @@ import CodeScanner
 import SwiftUI
 
 struct AmountView: View {
-    @Bindable var viewModel: AmountViewModel
+    @ObservedObject var viewModel: SendViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingScanner = false
-    @State var address: String = ""
+    @State var address = ""
     @State var numpadAmount = "0"
     @State var parseError: MondayError?
-    @State var payment: Payment = .isNone
+    @State var payment: PaymentType = .none
     @State private var showingAmountViewErrorAlert = false
     let pasteboard = UIPasteboard.general
-    var spendableBalance: UInt64
-    @Binding var navigationPath: NavigationPath
+    //var spendableBalance: UInt64
+    @Binding var sendViewState: SendViewState
 
     var body: some View {
 
@@ -47,21 +47,21 @@ struct AmountView: View {
                                 if address.starts(with: "lno") {
                                     address = address
                                     numpadAmount = "0"
-                                    payment = .isLightning
+                                    payment = .lightning
                                 } else {
-                                    let (extractedAddress, extractedAmount, extractedPayment) =
-                                        string.extractPaymentInfo(
-                                            spendableBalance: spendableBalance
-                                        )
-                                    address = extractedAddress
-                                    numpadAmount = extractedAmount
-                                    payment = extractedPayment
-                                    if extractedPayment == .isNone {
-                                        self.parseError = .init(
-                                            title: "Scan Error",
-                                            detail: "Unsupported paste format"
-                                        )
-                                    }
+//                                    let (extractedAddress, extractedAmount, extractedPayment) =
+//                                        string.extractPaymentInfo(
+//                                            spendableBalance: spendableBalance
+//                                        )
+//                                    address = extractedAddress
+//                                    viewModel.numpadAmount = extractedAmount
+//                                    payment = extractedPayment
+//                                    if extractedPayment == .none {
+//                                        self.parseError = .init(
+//                                            title: "Scan Error",
+//                                            detail: "Unsupported paste format"
+//                                        )
+//                                    }
                                 }
                             } else {
                                 self.parseError = .init(
@@ -130,7 +130,7 @@ struct AmountView: View {
                         }
                         if viewModel.amountConfirmationViewError == nil {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                                navigationPath.removeLast(navigationPath.count)
+                                //navigationPath.removeLast(navigationPath.count)
                             }
                         }
                     } label: {
@@ -142,16 +142,12 @@ struct AmountView: View {
                     }
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.borderedProminent)
-                    .tint(viewModel.networkColor)
                     .frame(width: 300, height: 25)
                     .padding()
                     .padding(.bottom, 20.0)
 
                 }
                 .padding()
-                .onAppear {
-                    viewModel.getColor()
-                }
                 .alert(isPresented: $showingAmountViewErrorAlert) {
                     Alert(
                         title: Text(viewModel.amountConfirmationViewError?.title ?? "Unknown"),
@@ -220,8 +216,8 @@ struct NumpadButton: View {
     #Preview {
         AmountView(
             viewModel: .init(lightningClient: .mock),
-            spendableBalance: UInt64(21000),
-            navigationPath: .constant(.init())
+            //spendableBalance: UInt64(21000),
+            sendViewState: .constant(.manual)
         )
     }
 #endif

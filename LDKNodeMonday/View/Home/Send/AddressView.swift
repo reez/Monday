@@ -15,8 +15,8 @@ struct AddressView: View {
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
     @State private var numpadAmount = "0"
-    @State private var payment: Payment = .isNone
-    @Binding var navigationPath: NavigationPath
+    @State private var payment: PaymentAddress?
+    @Binding var sendViewState: SendViewState
     let pasteboard = UIPasteboard.general
     var spendableBalance: UInt64
 
@@ -26,7 +26,6 @@ struct AddressView: View {
                 .edgesIgnoringSafeArea(.all)
 
             CustomScannerView(
-                codeTypes: [.qr],
                 completion: handleScan,
                 pasteAction: pasteAddress
             )
@@ -61,17 +60,18 @@ extension AddressView {
             numpadAmount = extractedAmount
             payment = extractedPayment
 
-            if extractedPayment == .isNone {
+            if extractedPayment == .none {
                 alertMessage = "Unsupported scan format"
                 isShowingAlert = true
             } else {
-                navigationPath.append(
-                    NavigationDestination.amount(
-                        address: address,
-                        amount: numpadAmount,
-                        payment: payment
-                    )
-                )
+                sendViewState = .manual
+//                navigationPath.append(
+//                    NavigationDestination.amount(
+//                        address: address,
+//                        amount: numpadAmount,
+//                        payment: payment
+//                    )
+//                )
             }
 
         case .failure(let scanError):
@@ -88,17 +88,18 @@ extension AddressView {
             numpadAmount = extractedAmount
             payment = extractedPayment
 
-            if extractedPayment == .isNone {
+            if extractedPayment == .none {
                 alertMessage = "Unsupported paste format"
                 isShowingAlert = true
             } else {
-                navigationPath.append(
-                    NavigationDestination.amount(
-                        address: address,
-                        amount: numpadAmount,
-                        payment: payment
-                    )
-                )
+                sendViewState = .manual
+//                navigationPath.append(
+//                    NavigationDestination.amount(
+//                        address: address,
+//                        amount: numpadAmount,
+//                        payment: payment
+//                    )
+//                )
             }
         } else {
             alertMessage = "No address found in pasteboard"
@@ -108,59 +109,42 @@ extension AddressView {
 }
 
 struct CustomScannerView: View {
-    let codeTypes: [AVMetadataObject.ObjectType]
     let completion: (Result<ScanResult, ScanError>) -> Void
     let pasteAction: () -> Void
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         GeometryReader { geometry in
+            
             ZStack(alignment: .top) {
                 CodeScannerView(
-                    codeTypes: codeTypes,
+                    codeTypes: [.qr],
                     shouldVibrateOnSuccess: true,
                     completion: completion
                 )
-                .edgesIgnoringSafeArea(.all)
 
                 VStack {
-                    HStack {
-                        Button(action: { dismiss() }) {
-                            Image(systemName: "xmark")
-                                .foregroundColor(.white)
-                                .font(.system(size: 20, weight: .bold))
-                                .frame(width: 44, height: 44)
-                                .background(Color.black.opacity(0.6))
-                                .clipShape(Circle())
-                        }
-                        .padding(.top, 50)
-                        .padding(.leading, 20)
-
-                        Spacer()
-                    }
-
+                    Spacer()
+                    RoundedRectangle(cornerRadius: 30)
+                        .fill(.black.opacity(0.1))
+                        .stroke(.white, lineWidth: 4)
+                        .frame(width: geometry.size.width * 0.8, height: geometry.size.width * 0.8)
                     Spacer()
 
                     Button(action: pasteAction) {
-                        Text("Paste Payment")
-                            .padding()
-                            .foregroundColor(Color(uiColor: .label))
-                            .background(Color(uiColor: .systemBackground).opacity(0.5))
-                            .clipShape(Capsule())
-                    }
-                    .padding(.bottom, geometry.safeAreaInsets.bottom + 40)
+                        Text("Paste Address")
+                    }.buttonStyle(BitcoinFilled(width: 150, tintColor: .white, textColor: .black, isCapsule: true))
+                    .padding(.bottom, geometry.safeAreaInsets.bottom + 60)
                 }
             }
         }
-        .navigationBarHidden(true)
-        .edgesIgnoringSafeArea(.all)
     }
 }
 
 #if DEBUG
     #Preview {
         AddressView(
-            navigationPath: .constant(NavigationPath()),
+            sendViewState: .constant(.camera),
             spendableBalance: UInt64(21)
         )
     }

@@ -116,30 +116,30 @@ struct BitcoinView: View {
                 viewModel: .init(lightningClient: viewModel.lightningClient)
             )
         }
-        .navigationDestination(for: NavigationDestination.self) { destination in
-            switch destination {
-            case .address:
-                AddressView(
-                    navigationPath: $sendNavigationPath,
-                    spendableBalance: viewModel.balances.spendableOnchainBalanceSats
-                )
-            case .amount(let address, let amount, let payment):
-                AmountView(
-                    viewModel: .init(lightningClient: viewModel.lightningClient),
-                    address: address,
-                    numpadAmount: amount,
-                    payment: payment,
-                    spendableBalance: viewModel.balances.spendableOnchainBalanceSats,
-                    navigationPath: $sendNavigationPath
-                )
-                .onDisappear {
-                    viewModel.update()
-
-                }
-
-            }
-
-        }.sensoryFeedback(.increase, trigger: sendNavigationPath)
+//        .navigationDestination(for: NavigationDestination.self) { destination in
+//            switch destination {
+//            case .address:
+//                AddressView(
+//                    navigationPath: $sendNavigationPath,
+//                    spendableBalance: viewModel.balances.spendableOnchainBalanceSats
+//                )
+//            case .amount(let address, let amount, let payment):
+//                AmountView(
+//                    viewModel: .init(lightningClient: viewModel.lightningClient),
+//                    address: address,
+//                    numpadAmount: amount,
+//                    payment: payment,
+//                    spendableBalance: viewModel.balances.spendableOnchainBalanceSats,
+//                    navigationPath: $sendNavigationPath
+//                )
+//                .onDisappear {
+//                    viewModel.update()
+//
+//                }
+//
+//            }
+//
+//        }.sensoryFeedback(.increase, trigger: sendNavigationPath)
 
     }
 
@@ -229,36 +229,38 @@ struct BalanceHeader: View {
 struct TransactionButtons: View {
     @ObservedObject var viewModel: BitcoinViewModel
     @State private var isReceiveSheetPresented = false
+    @State private var isSendSheetManualPresented = false
+    @State private var isSendSheetCameraPresented = false
 
     var body: some View {
         HStack(alignment: .center) {
 
             // Send button
-            NavigationLink(value: NavigationDestination.address) {
-                Button {
-                    // Optional button action if needed
-                } label: {
-                    Text("Send")
-                }.buttonStyle(
-                    BitcoinFilled(
-                        width: 120,
-                        tintColor: .accent,
-                        isCapsule: true
-                    )
-                ).allowsHitTesting(false)  // Required to enable NavigationLink to work
-            }.disabled(viewModel.unifiedBalance == 0)
+            Button {
+                isSendSheetManualPresented = true
+            } label: {
+                Text("Send")
+            }.buttonStyle(
+                BitcoinFilled(
+                    width: 120,
+                    tintColor: .accent,
+                    isCapsule: true
+                )
+            )//.disabled(viewModel.unifiedBalance == 0)
 
             Spacer()
 
             // Scan QR button
-            NavigationLink(value: NavigationDestination.address) {
+            Button {
+                isSendSheetCameraPresented = true
+            } label: {
                 Label("Scan QR", systemImage: "qrcode.viewfinder")
                     .font(.title)
                     .frame(height: 60, alignment: .center)
                     .labelStyle(.iconOnly)
                     .foregroundColor(.accentColor)
                     .padding()
-            }.disabled(viewModel.unifiedBalance == 0)
+            }//.disabled(viewModel.unifiedBalance == 0)
 
             Spacer()
 
@@ -274,6 +276,28 @@ struct TransactionButtons: View {
                     isCapsule: true
                 )
             )
+            .sheet(
+                isPresented: $isSendSheetManualPresented,
+                onDismiss: {
+                    Task {
+                        viewModel.update()
+                    }
+                }
+            ) {
+                SendView(viewModel: SendViewModel.init(lightningClient: viewModel.lightningClient), sendViewState: .manual)
+                    .presentationDetents([.large])
+            }
+            .sheet(
+                isPresented: $isSendSheetCameraPresented,
+                onDismiss: {
+                    Task {
+                        viewModel.update()
+                    }
+                }
+            ) {
+                SendView(viewModel: SendViewModel.init(lightningClient: viewModel.lightningClient), sendViewState: .camera)
+                    .presentationDetents([.large])
+            }
             .sheet(
                 isPresented: $isReceiveSheetPresented,
                 onDismiss: {
@@ -292,7 +316,7 @@ struct TransactionButtons: View {
 
 enum NavigationDestination: Hashable {
     case address
-    case amount(address: String, amount: String, payment: Payment)
+    case amount(address: String, amount: String, payment: PaymentType)
 }
 
 public enum DisplayBalanceType: String {

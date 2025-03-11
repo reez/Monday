@@ -24,3 +24,11 @@ extension ReceiveOption {
         }
     }
 }
+
+enum SendViewState: String, CaseIterable, Identifiable {
+    var id: Self { self }
+
+    case camera = "Scan Address"
+    case manual = "Send Bitcoin"
+    case review = "Review Payment"
+}

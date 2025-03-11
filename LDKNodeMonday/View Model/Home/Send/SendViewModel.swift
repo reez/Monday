@@ -11,11 +11,12 @@ import LDKNode
 import SwiftUI
 
 @MainActor
-@Observable
-class AmountViewModel {
-    var networkColor = Color.gray
+class SendViewModel: ObservableObject {
     var amountConfirmationViewError: MondayError?
-    private let lightningClient: LightningNodeClient
+    let lightningClient: LightningNodeClient
+    @Published var paymentAddress: PaymentAddress?
+    @Published var address = ""
+    @Published var amount = ""
 
     init(lightningClient: LightningNodeClient) {
         self.lightningClient = lightningClient
@@ -43,13 +44,6 @@ class AmountViewModel {
                 )
             }
             throw error
-        }
-    }
-
-    func getColor() {
-        let color = lightningClient.getNetworkColor()
-        DispatchQueue.main.async {
-            self.networkColor = color
         }
     }
 }
