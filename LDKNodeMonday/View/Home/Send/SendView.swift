@@ -17,14 +17,14 @@ struct SendView: View {
         NavigationView {
             VStack {
                 switch viewModel.sendViewState {
-                case .camera:
+                case .scanAddress:
                     SendScanAddressView(
                         viewModel: viewModel,
                         spendableBalance: 0
                     )
-                case .manual:
+                case .manualEntry:
                     SendManualEntry(viewModel: viewModel)
-                case .review:
+                case .reviewPayment:
                     SendReviewView(viewModel: viewModel)
                 }
             }
@@ -49,5 +49,5 @@ struct SendView: View {
 }
 
 #Preview {
-    SendView(viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manual))
+    SendView(viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manualEntry))
 }

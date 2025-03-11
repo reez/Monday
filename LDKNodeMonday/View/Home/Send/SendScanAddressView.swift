@@ -63,9 +63,9 @@ extension SendScanAddressView {
                 viewModel.paymentAddress = extractedPaymentAddress
 
                 if viewModel.amountSat == 0 {
-                    viewModel.sendViewState = .manual
+                    viewModel.sendViewState = .manualEntry
                 } else {
-                    viewModel.sendViewState = .review
+                    viewModel.sendViewState = .reviewPayment
                 }
             }
 
@@ -88,7 +88,7 @@ extension SendScanAddressView {
                 viewModel.amountSat = extractedAmount
                 viewModel.paymentAddress = extractedPaymentAddress
 
-                viewModel.sendViewState = .review
+                viewModel.sendViewState = .reviewPayment
             }
         } else {
             alertMessage = "No address found in pasteboard"
@@ -140,7 +140,7 @@ struct CustomScannerView: View {
 #if DEBUG
     #Preview {
         SendScanAddressView(
-            viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manual),
+            viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manualEntry),
             spendableBalance: 21
         )
     }

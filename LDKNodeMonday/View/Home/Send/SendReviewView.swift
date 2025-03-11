@@ -49,5 +49,5 @@ struct SendReviewView: View {
 }
 
 #Preview {
-    SendReviewView(viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manual))
+    SendReviewView(viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manualEntry))
 }

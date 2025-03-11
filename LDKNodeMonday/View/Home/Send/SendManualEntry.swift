@@ -66,7 +66,7 @@ struct SendManualEntry: View {
         Spacer()
 
         Button {
-            viewModel.sendViewState = .review
+            viewModel.sendViewState = .reviewPayment
         } label: {
             Text("Review")
         }
@@ -81,5 +81,5 @@ struct SendManualEntry: View {
 }
 
 #Preview {
-    SendManualEntry(viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manual))
+    SendManualEntry(viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manualEntry))
 }

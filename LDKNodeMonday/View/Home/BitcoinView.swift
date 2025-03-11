@@ -262,7 +262,7 @@ struct TransactionButtons: View {
                 SendView(
                     viewModel: SendViewModel.init(
                         lightningClient: viewModel.lightningClient,
-                        sendViewState: .manual
+                        sendViewState: .manualEntry
                     )
                 )
                 .presentationDetents([.large])
@@ -278,7 +278,7 @@ struct TransactionButtons: View {
                 SendView(
                     viewModel: SendViewModel.init(
                         lightningClient: viewModel.lightningClient,
-                        sendViewState: .camera
+                        sendViewState: .scanAddress
                     )
                 )
                 .presentationDetents([.large])
