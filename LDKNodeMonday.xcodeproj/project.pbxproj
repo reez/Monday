@@ -12,6 +12,7 @@
 		655574822D3994E10064F859 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655574812D3994E10064F859 /* ErrorView.swift */; };
 		6555D58B2D7F010A00E5D533 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555D58A2D7F010A00E5D533 /* SendView.swift */; };
 		6555D58D2D80658A00E5D533 /* SendReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555D58C2D80658A00E5D533 /* SendReviewView.swift */; };
+		6555D58F2D806A3900E5D533 /* SendManualEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555D58E2D806A3900E5D533 /* SendManualEntry.swift */; };
 		655C19042D42AB1500AC5F72 /* WalletClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655C19032D42AB1500AC5F72 /* WalletClient.swift */; };
 		6560EB812D65F8E000BBE772 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6560EB802D65F8D400BBE772 /* QRView.swift */; };
 		65875A932CCB9809000D3E70 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 65875A922CCB9809000D3E70 /* LDKNode */; };
@@ -43,7 +44,7 @@
 		AE3815362B6A9705006B2952 /* LightningNodesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3815352B6A9705006B2952 /* LightningNodesService.swift */; };
 		AE3815392B6A978A006B2952 /* LightningNodeServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3815382B6A978A006B2952 /* LightningNodeServiceError.swift */; };
 		AE38153B2B6A979E006B2952 /* LightningNodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE38153A2B6A979E006B2952 /* LightningNodeInfo.swift */; };
-		AE4536152C83508E0047D1B2 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4536142C83508E0047D1B2 /* AddressView.swift */; };
+		AE4536152C83508E0047D1B2 /* SendScanAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4536142C83508E0047D1B2 /* SendScanAddressView.swift */; };
 		AE49E84C2A24F96F002623E8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E84B2A24F96F002623E8 /* Constants.swift */; };
 		AE49E8542A253647002623E8 /* BitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8532A253647002623E8 /* BitcoinViewModel.swift */; };
 		AE49E8582A2536B4002623E8 /* ChannelsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE49E8572A2536B4002623E8 /* ChannelsListViewModel.swift */; };
@@ -98,6 +99,7 @@
 		655574812D3994E10064F859 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		6555D58A2D7F010A00E5D533 /* SendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendView.swift; sourceTree = "<group>"; };
 		6555D58C2D80658A00E5D533 /* SendReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReviewView.swift; sourceTree = "<group>"; };
+		6555D58E2D806A3900E5D533 /* SendManualEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendManualEntry.swift; sourceTree = "<group>"; };
 		655C19032D42AB1500AC5F72 /* WalletClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletClient.swift; sourceTree = "<group>"; };
 		6560EB802D65F8D400BBE772 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
 		659EE6942CF8D4990064ED78 /* ImportWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletView.swift; sourceTree = "<group>"; };
@@ -126,7 +128,7 @@
 		AE3815352B6A9705006B2952 /* LightningNodesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodesService.swift; sourceTree = "<group>"; };
 		AE3815382B6A978A006B2952 /* LightningNodeServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeServiceError.swift; sourceTree = "<group>"; };
 		AE38153A2B6A979E006B2952 /* LightningNodeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningNodeInfo.swift; sourceTree = "<group>"; };
-		AE4536142C83508E0047D1B2 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
+		AE4536142C83508E0047D1B2 /* SendScanAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendScanAddressView.swift; sourceTree = "<group>"; };
 		AE49E84B2A24F96F002623E8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		AE49E8532A253647002623E8 /* BitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinViewModel.swift; sourceTree = "<group>"; };
 		AE49E8572A2536B4002623E8 /* ChannelsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListViewModel.swift; sourceTree = "<group>"; };
@@ -362,10 +364,11 @@
 		AE551D412B8ECC390034B61E /* Send */ = {
 			isa = PBXGroup;
 			children = (
-				AE4536142C83508E0047D1B2 /* AddressView.swift */,
+				AE4536142C83508E0047D1B2 /* SendScanAddressView.swift */,
 				AEBFD8B12B8ABF7C0024E3F7 /* AmountView.swift */,
 				6555D58A2D7F010A00E5D533 /* SendView.swift */,
 				6555D58C2D80658A00E5D533 /* SendReviewView.swift */,
+				6555D58E2D806A3900E5D533 /* SendManualEntry.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -649,6 +652,7 @@
 				AE7594812A4FAE0200EAEDA2 /* PaymentsListView.swift in Sources */,
 				AE01C5B42AB3BF8100F28C7E /* Bundle+Extensions.swift in Sources */,
 				AEFAF2922A433F6F001128DF /* LightningPaymentStatus.swift in Sources */,
+				6555D58F2D806A3900E5D533 /* SendManualEntry.swift in Sources */,
 				AE0055122B47A65700100797 /* Color+Extensions.swift in Sources */,
 				AE7C4A0C2B40785F0061189D /* SeedView.swift in Sources */,
 				AE028A2C2B96381200B336E7 /* LightningServiceError.swift in Sources */,
@@ -661,7 +665,7 @@
 				AE49E85C2A2536FB002623E8 /* ChannelDetailViewModel.swift in Sources */,
 				AEDF47F12B3FADF900145D64 /* EventService.swift in Sources */,
 				AEBFD8B22B8ABF7C0024E3F7 /* AmountView.swift in Sources */,
-				AE4536152C83508E0047D1B2 /* AddressView.swift in Sources */,
+				AE4536152C83508E0047D1B2 /* SendScanAddressView.swift in Sources */,
 				AE0055182B4A21BA00100797 /* Network+Extensions.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
 				AE00550E2B479EF000100797 /* OnboardingView.swift in Sources */,

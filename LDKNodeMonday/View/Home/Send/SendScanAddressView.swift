@@ -1,5 +1,5 @@
 //
-//  AddressView.swift
+//  SendScanAddressView.swift
 //  LDKNodeMonday
 //
 //  Created by Matthew Ramsden on 8/31/24.
@@ -10,7 +10,7 @@ import BitcoinUI
 import CodeScanner
 import SwiftUI
 
-struct AddressView: View {
+struct SendScanAddressView: View {
     @ObservedObject var viewModel: SendViewModel
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
@@ -45,7 +45,7 @@ struct AddressView: View {
     }
 }
 
-extension AddressView {
+extension SendScanAddressView {
 
     func handleScan(result: Result<ScanResult, ScanError>) {
         switch result {
@@ -139,7 +139,7 @@ struct CustomScannerView: View {
 
 #if DEBUG
     #Preview {
-        AddressView(
+        SendScanAddressView(
             viewModel: SendViewModel.init(lightningClient: .mock, sendViewState: .manual),
             spendableBalance: 21
         )
