@@ -206,6 +206,7 @@ struct TransactionButtons: View {
     @State private var isReceiveSheetPresented = false
     @State private var isSendSheetManualPresented = false
     @State private var isSendSheetCameraPresented = false
+    @StateObject private var eventService = EventService()
 
     var body: some View {
         HStack(alignment: .center) {
@@ -297,8 +298,18 @@ struct TransactionButtons: View {
                     .presentationDetents([.large])
             }
 
-        }
+        }.onChange(
+            of: eventService.lastMessage,
+            { _, _ in
+                withAnimation {
+                    isReceiveSheetPresented = false
+                    isSendSheetManualPresented = false
+                    isSendSheetCameraPresented = false
+                }
+            }
+        )
     }
+    
 }
 
 public enum DisplayBalanceType: String {
