@@ -79,7 +79,6 @@
 		AEBAA4922A01C34A0042EA82 /* ChannelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */; };
 		AEBAA4942A01C6BD0042EA82 /* PeerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAA4932A01C6BD0042EA82 /* PeerDetailsView.swift */; };
 		AEBFD8B02B8A97DB0024E3F7 /* LightningServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8AF2B8A97DB0024E3F7 /* LightningServiceProvider.swift */; };
-		AEBFD8B22B8ABF7C0024E3F7 /* AmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8B12B8ABF7C0024E3F7 /* AmountView.swift */; };
 		AEBFD8B62B8BABC00024E3F7 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */; };
 		AEDF47F12B3FADF900145D64 /* EventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDF47F02B3FADF900145D64 /* EventService.swift */; };
 		AEDF47F32B3FBAB900145D64 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDF47F22B3FBAB900145D64 /* Notification+Extensions.swift */; };
@@ -161,7 +160,6 @@
 		AEBAA4912A01C34A0042EA82 /* ChannelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelDetailView.swift; sourceTree = "<group>"; };
 		AEBAA4932A01C6BD0042EA82 /* PeerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerDetailsView.swift; sourceTree = "<group>"; };
 		AEBFD8AF2B8A97DB0024E3F7 /* LightningServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningServiceProvider.swift; sourceTree = "<group>"; };
-		AEBFD8B12B8ABF7C0024E3F7 /* AmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountView.swift; sourceTree = "<group>"; };
 		AEBFD8B52B8BABC00024E3F7 /* ReceiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveView.swift; sourceTree = "<group>"; };
 		AEDF47F02B3FADF900145D64 /* EventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventService.swift; sourceTree = "<group>"; };
 		AEDF47F22B3FBAB900145D64 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
@@ -365,7 +363,6 @@
 			isa = PBXGroup;
 			children = (
 				AE4536142C83508E0047D1B2 /* SendScanAddressView.swift */,
-				AEBFD8B12B8ABF7C0024E3F7 /* AmountView.swift */,
 				6555D58A2D7F010A00E5D533 /* SendView.swift */,
 				6555D58C2D80658A00E5D533 /* SendReviewView.swift */,
 				6555D58E2D806A3900E5D533 /* SendManualEntry.swift */,
@@ -664,7 +661,6 @@
 				AE17E8DA29A402E30058C9C9 /* LDKNodeMondayApp.swift in Sources */,
 				AE49E85C2A2536FB002623E8 /* ChannelDetailViewModel.swift in Sources */,
 				AEDF47F12B3FADF900145D64 /* EventService.swift in Sources */,
-				AEBFD8B22B8ABF7C0024E3F7 /* AmountView.swift in Sources */,
 				AE4536152C83508E0047D1B2 /* SendScanAddressView.swift in Sources */,
 				AE0055182B4A21BA00100797 /* Network+Extensions.swift in Sources */,
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
