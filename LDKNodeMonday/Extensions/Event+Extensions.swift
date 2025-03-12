@@ -7,8 +7,28 @@
 
 import Foundation
 import LDKNode
+import SwiftUI
 
-extension Event: CustomStringConvertible {
+extension Event {
+
+    public var title: String {
+        switch self {
+        case .paymentSuccessful:
+            return "Payment Sent"
+        case .paymentReceived:
+            return "Payment Received"
+        case .paymentFailed:
+            return "Payment Failed"
+        case .channelReady:
+            return "Channel Opened"
+        case .channelClosed:
+            return "Channel Closed"
+        case .channelPending:
+            return "Channel Pending"
+        default:
+            return ""
+        }
+    }
 
     public var description: String {
 
@@ -36,16 +56,82 @@ extension Event: CustomStringConvertible {
             return
                 "Channel Closed \(debugReason) \(counterpartyNodeId?.truncated(toLength: 10) ?? "")"
 
-        case .paymentClaimable(
-            let paymentId,
-            let paymentHash,
-            let claimableAmountMsat,
-            let claimDeadline
-        ):
+        case .paymentClaimable(_, let paymentHash, _, _):
             return "Payment Claimable \(paymentHash.truncated(toLength: 10))"
-
         }
 
     }
 
+    public var iconName: String {
+        switch self {
+        case .paymentSuccessful:
+            return "arrow.up"
+        case .paymentReceived:
+            return "arrow.down"
+        case .paymentFailed:
+            return "x.circle"
+        case .channelReady:
+            return "checkmark.circle"
+        case .channelClosed:
+            return "x.circle"
+        default:
+            return "info.circle"
+        }
+    }
+
+    public var amount: UInt64 {
+        switch self {
+        case .paymentReceived(_, _, let amountMsat):
+            return amountMsat.mSatsAsSats
+        default:
+            return 0
+        }
+    }
+}
+
+struct EventItemView: View {
+    var event: Event?
+    //var displayBalanceType: DisplayBalanceType
+    var price: Double
+
+    var body: some View {
+        HStack(spacing: 15) {
+            ZStack {
+                Circle()
+                    .fill(Color.bitcoinNeutral2)
+                    .frame(width: 40, height: 40)
+                Image(systemName: event?.iconName ?? "info.circle")
+                    .font(.system(.body, weight: .bold))
+                    .foregroundColor(.bitcoinNeutral8)
+            }
+
+            VStack(alignment: .leading) {
+                Text(event?.title ?? "Title")
+                    .font(.system(.body, design: .rounded, weight: .medium))
+                Text("Just now")
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundColor(.secondary)
+            }
+
+            Spacer()
+
+            VStack(alignment: .trailing) {
+                if let amount = event?.amount, amount != 0 {
+                    Text("+ \(amount.formatted(.number.notation(.automatic)))")
+                        .font(.system(.body, design: .rounded, weight: .medium))
+                        .foregroundColor(.bitcoinGreen)
+                    Text(event?.amount.formattedSatsAsUSD(price: price) ?? "")
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+        .padding()
+        .background(Color.white)
+        .clipShape(Capsule())
+        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+        .lineLimit(1)
+        .minimumScaleFactor(0.75)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
+    }
 }

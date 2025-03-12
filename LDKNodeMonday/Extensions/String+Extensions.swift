@@ -163,7 +163,7 @@ extension String {
             return processLightningAddress(invoice, amount: amount)
         }
         */
-        
+
         // Return as Bip21 PaymentAddress
         return (UInt64(amount) ?? 0, PaymentAddress(type: .bip21, address: input))
     }

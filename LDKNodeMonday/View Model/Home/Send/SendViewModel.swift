@@ -33,7 +33,13 @@ class SendViewModel: ObservableObject {
                 let uriString = paymentAddress?.address ?? ""
                 _ = try await lightningClient.send(uriString)
             case .onchain:
-                let uriString = unifiedQRString(onchainAddress: paymentAddress?.address ?? "", amountBTC: amountSat.satsAsBTC, message: nil, bolt11: nil, bolt12: nil)
+                let uriString = unifiedQRString(
+                    onchainAddress: paymentAddress?.address ?? "",
+                    amountBTC: amountSat.satsAsBTC,
+                    message: nil,
+                    bolt11: nil,
+                    bolt12: nil
+                )
                 _ = try await lightningClient.send(uriString)
             case .bolt11:
                 _ = try await lightningClient.sendBolt11Payment(paymentAddress?.address ?? "", nil)

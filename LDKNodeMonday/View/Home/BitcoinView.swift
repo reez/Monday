@@ -63,9 +63,9 @@ struct BitcoinView: View {
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
         .onAppear { viewModel.update() }
         .onChange(
-            of: eventService.lastMessage,
+            of: eventService.lastEvent,
             { _, _ in
-                showToast = eventService.lastMessage != nil
+                showToast = eventService.lastEvent != nil
             }
         )
         .onReceive(viewModel.$bitcoinViewError) { errorMessage in
@@ -73,7 +73,7 @@ struct BitcoinView: View {
                 showingBitcoinViewErrorAlert = true
             }
         }
-        .onReceive(eventService.$lastMessage) { _ in
+        .onReceive(eventService.$lastEvent) { _ in
             viewModel.update()
         }
         .alert(isPresented: $showingBitcoinViewErrorAlert) {
@@ -93,20 +93,8 @@ struct BitcoinView: View {
                 modifierType: .slide
             )
         ) {
-            Text(eventService.lastMessage ?? "")
-                .padding()
-                .background(
-                    Capsule()
-                        .foregroundColor(
-                            Color(
-                                uiColor:
-                                    colorScheme == .dark
-                                    ? .secondarySystemBackground : .systemGray6
-                            )
-                        )
-                )
-                .foregroundColor(Color.primary)
-                .font(.caption2)
+            EventItemView(event: eventService.lastEvent, price: viewModel.price)
+                .padding(.horizontal, 40)
         }
         .sheet(
             item: $showReceiveViewWithOption,
@@ -299,7 +287,7 @@ struct TransactionButtons: View {
             }
 
         }.onChange(
-            of: eventService.lastMessage,
+            of: eventService.lastEvent,
             { _, _ in
                 withAnimation {
                     isReceiveSheetPresented = false
@@ -309,7 +297,7 @@ struct TransactionButtons: View {
             }
         )
     }
-    
+
 }
 
 public enum DisplayBalanceType: String {
