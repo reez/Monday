@@ -29,17 +29,21 @@ class SendViewModel: ObservableObject {
     func send() async throws {
         do {
             switch paymentAddress?.type {
+            case .bip21:
+                let uriString = paymentAddress?.address ?? ""
+                _ = try await lightningClient.send(uriString)
             case .onchain:
-                let txId = try await lightningClient.sendToAddress(
-                    paymentAddress?.address ?? "",
-                    amountSat
-                )
+                let uriString = unifiedQRString(onchainAddress: paymentAddress?.address ?? "", amountBTC: amountSat.satsAsBTC, message: nil, bolt11: nil, bolt12: nil)
+                _ = try await lightningClient.send(uriString)
+            case .bolt11:
+                _ = try await lightningClient.sendBolt11Payment(paymentAddress?.address ?? "", nil)
             default:
-                let qrPaymentResult = try await lightningClient.send(paymentAddress?.address ?? "")
+                debugPrint("Unhandled paymentAddress type")
             }
         } catch let error as NodeError {
             NotificationCenter.default.post(name: .ldkErrorReceived, object: error)
             let errorString = handleNodeError(error)
+            debugPrint(errorString)
             DispatchQueue.main.async {
                 self.sendError = .init(
                     title: errorString.title,
