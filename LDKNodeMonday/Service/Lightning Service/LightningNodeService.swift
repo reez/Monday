@@ -77,7 +77,7 @@ class LightningNodeService {
         config.logDirPath = logPath
         config.network = self.network
         config.trustedPeers0conf = [
-            Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId
+            Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
         ]
         config.logLevel = .trace
 
@@ -100,9 +100,9 @@ class LightningNodeService {
                 rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
             )
             nodeBuilder.setLiquiditySourceLsps2(
-                address: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.address,
-                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.nodeId,
-                token: Constants.Config.LiquiditySourceLsps2.Signet.lqwd.token
+                address: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.address,
+                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId,
+                token: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.token
             )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
         case .regtest:
@@ -246,6 +246,17 @@ class LightningNodeService {
         return qrPaymentResult
     }
 
+    // Pays a Bolt11 invoice
+    func sendBolt11Payment(invoice: Bolt11Invoice, sendingParameters: SendingParameters?) async throws
+        -> PaymentId
+    {
+        let bolt11Payment = try ldkNode.bolt11Payment().send(
+            invoice: invoice,
+            sendingParameters: sendingParameters
+        )
+        return bolt11Payment
+    }
+
     // Generates a BIP21 URI string with an on the address and BOLT11 invoice.
     func receive(amountSat: UInt64, message: String, expirySec: UInt32) async throws -> String {
         let bip21UriString = try ldkNode.unifiedQrPayment().receive(
@@ -364,6 +375,7 @@ public struct LightningNodeClient {
         (PublicKey, String, UInt64, UInt64?, ChannelConfig?, Bool) async throws -> UserChannelId
     let closeChannel: (ChannelId, PublicKey) throws -> Void
     let send: (String) async throws -> QrPaymentResult
+    let sendBolt11Payment: (Bolt11Invoice, SendingParameters?) async throws -> PaymentId
     let receive: (UInt64, String, UInt32) async throws -> String
     let bolt11Payment: (UInt64, String, UInt32, UInt64?, Bool?) async throws -> Bolt11Invoice
     let listPeers: () -> [PeerDetails]
@@ -424,6 +436,7 @@ extension LightningNodeClient {
             )
         },
         send: { uriStr in try await LightningNodeService.shared.send(uriStr: uriStr) },
+        sendBolt11Payment: { invoice, sendingParameters in try await LightningNodeService.shared.sendBolt11Payment(invoice: invoice, sendingParameters: sendingParameters) },
         receive: { amount, message, expiry in
             try await LightningNodeService.shared.receive(
                 amountSat: amount,
@@ -473,6 +486,7 @@ extension LightningNodeClient {
         connectOpenChannel: { _, _, _, _, _, _ in UserChannelId("abcdef") },
         closeChannel: { _, _ in },
         send: { _ in QrPaymentResult.onchain(txid: "txid") },
+        sendBolt11Payment: { _, _ in PaymentId("")},
         receive: { _, _, _ in
             "bitcoin:BC1QYLH3U67J673H6Y6ALV70M0PL2YZ53TZHVXGG7U?amount=0.00001&label=sbddesign%3A%20For%20lunch%20Tuesday&message=For%20lunch%20Tuesday&lightning=LNBC10U1P3PJ257PP5YZTKWJCZ5FTL5LAXKAV23ZMZEKAW37ZK6KMV80PK4XAEV5QHTZ7QDPDWD3XGER9WD5KWM36YPRX7U3QD36KUCMGYP282ETNV3SHJCQZPGXQYZ5VQSP5USYC4LK9CHSFP53KVCNVQ456GANH60D89REYKDNGSMTJ6YW3NHVQ9QYYSSQJCEWM5CJWZ4A6RFJX77C490YCED6PEMK0UPKXHY89CMM7SCT66K8GNEANWYKZGDRWRFJE69H9U5U0W57RRCSYSAS7GADWMZXC8C6T0SPJAZUP6&lightning=LNO1PG257ENXV4EZQCNEYPE82UM50YNHXGRWDAJX283QFWDPL28QQMC78YMLVHMXCSYWDK5WRJNJ36JRYG488QWLRNZYJCZS"
         },
