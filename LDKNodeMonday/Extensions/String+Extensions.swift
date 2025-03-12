@@ -155,13 +155,17 @@ extension String {
             }
         }
 
+        /*
         if let offer = bolt12Offer {
             return processLightningAddress(offer, amount: amount)
         }
         if let invoice = bolt11Invoice {
             return processLightningAddress(invoice, amount: amount)
         }
-        return (UInt64(amount) ?? 0, PaymentAddress(type: .onchain, address: bitcoinAddress))
+        */
+        
+        // Return as Bip21 PaymentAddress
+        return (UInt64(amount) ?? 0, PaymentAddress(type: .bip21, address: input))
     }
 
     func extractPaymentInfo(spendableBalance: UInt64) -> (
