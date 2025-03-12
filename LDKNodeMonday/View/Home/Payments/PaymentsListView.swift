@@ -46,7 +46,9 @@ struct PaymentsListView: View {
                         .listRowSeparator(.hidden)
                 } else {
                     // List payments
-                    ForEach(payments, id: \.id) { payment in
+                    ForEach(payments
+                        //.filter { $0.status != .pending }
+                        .sorted { $0.latestUpdateTimestamp > $1.latestUpdateTimestamp }, id: \.id) { payment in
                         PaymentItemView(
                             payment: payment,
                             displayBalanceType: displayBalanceType,
