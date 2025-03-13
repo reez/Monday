@@ -107,11 +107,11 @@ extension String {
         return words.map { $0.capitalized }.joined(separator: " ")
     }
 
-    private var isBitcoinAddress: Bool {
+    var isBip21Address: Bool {
         return lowercased().hasPrefix("bitcoin:") || isValidBitcoinAddress
     }
 
-    private var isValidBitcoinAddress: Bool {
+    var isValidBitcoinAddress: Bool {
         let patterns = [
             "^1[a-km-zA-HJ-NP-Z1-9]{25,34}$",  // P2PKH Mainnet
             "^[mn2][a-km-zA-HJ-NP-Z1-9]{33}$",  // P2PKH or P2SH Testnet
@@ -178,7 +178,7 @@ extension String {
             return processLightningAddress(invoice, amount: "")
         } else if self.lowercased().starts(with: "lnbc") || self.lowercased().starts(with: "lntb") {
             return processLightningAddress(self, amount: "")
-        } else if self.isBitcoinAddress {
+        } else if self.isBip21Address {
             return processBitcoinAddress(spendableBalance)
         } else if self.starts(with: "lnurl") {
             return (0, nil)  // TODO: Implement support for lnurl
@@ -224,6 +224,13 @@ extension String {
             return address.uppercased()
         }
         return self.uppercased()
+    }
+
+    func truncateMiddle(first: Int, last: Int) -> String {
+        guard self.count > first + last else { return self }
+        let start = self.prefix(first)
+        let end = self.suffix(last)
+        return "\(start)…\(end)"
     }
 
 }

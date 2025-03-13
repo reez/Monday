@@ -46,7 +46,10 @@ struct SendManualEntry: View {
                         "Address or lightning invoice",
                         text: Binding(
                             get: {
-                                viewModel.paymentAddress?.address.lowercased()
+                                viewModel.paymentAddress?.address.lowercased().truncateMiddle(
+                                    first: 10,
+                                    last: 10
+                                )
                                     ?? viewModel.address.lowercased()
                             },
                             set: { viewModel.address = $0 }
@@ -54,8 +57,18 @@ struct SendManualEntry: View {
                     )
                     .tint(.accentColor)
                     .keyboardType(.numbersAndPunctuation)
-                    .truncationMode(.middle)
+                    .disabled(!viewModel.paymentAddress.isNil)
                     .submitLabel(.done)
+                    .onChange(of: viewModel.address) {
+                        if viewModel.address.isValidBitcoinAddress {
+                            let onchainAddress = PaymentAddress(
+                                type: .onchain,
+                                address: viewModel.address
+                            )
+                            viewModel.paymentAddress = onchainAddress
+                        }
+                        // TODO: validate if bolt11 or bolt12
+                    }
 
                     if viewModel.paymentAddress.isNil {
                         HStack {
@@ -66,6 +79,20 @@ struct SendManualEntry: View {
                                 }
                             } label: {
                                 Label("Scan QR", systemImage: "qrcode.viewfinder")
+                                    .labelStyle(.iconOnly)
+                                    .foregroundColor(.accentColor)
+                            }
+                        }
+                    } else {
+                        HStack {
+                            Spacer()
+                            Button {
+                                withAnimation {
+                                    viewModel.paymentAddress = nil
+                                    viewModel.address = ""
+                                }
+                            } label: {
+                                Label("Delete", systemImage: "x.circle")
                                     .labelStyle(.iconOnly)
                                     .foregroundColor(.accentColor)
                             }
