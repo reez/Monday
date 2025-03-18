@@ -50,7 +50,7 @@ struct SendManualEntry: View {
                                     first: 10,
                                     last: 10
                                 )
-                                    ?? viewModel.address.lowercased()
+                                    ?? viewModel.address
                             },
                             set: { viewModel.address = $0 }
                         )
@@ -60,14 +60,19 @@ struct SendManualEntry: View {
                     .disabled(!viewModel.paymentAddress.isNil)
                     .submitLabel(.done)
                     .onChange(of: viewModel.address) {
-                        if viewModel.address.isValidBitcoinAddress {
-                            let onchainAddress = PaymentAddress(
-                                type: .onchain,
-                                address: viewModel.address
-                            )
-                            viewModel.paymentAddress = onchainAddress
+                        let (extractedAmount, extractedPaymentAddress) =
+                            viewModel.address.extractPaymentInfo(spendableBalance: 0)
+
+                        if extractedPaymentAddress != nil && viewModel.paymentAddress == nil {
+                            viewModel.amountSat = extractedAmount
+                            viewModel.paymentAddress = extractedPaymentAddress
+
+                            if extractedAmount != 0 {
+                                withAnimation {
+                                    viewModel.sendViewState = .reviewPayment
+                                }
+                            }
                         }
-                        // TODO: validate if bolt11 or bolt12
                     }
 
                     if viewModel.paymentAddress.isNil {

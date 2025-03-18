@@ -135,36 +135,19 @@ extension String {
             return (0, nil)
         }
 
-        let bitcoinAddress = url.path
         var amount = "0"
-        var bolt12Offer: String?
-        var bolt11Invoice: String?
 
         for item in components.queryItems ?? [] {
             switch item.name.lowercased() {
             case "amount":
                 if let value = item.value, let btcAmount = Double(value) {
-                    amount = String(format: "%.0f", btcAmount * 100_000_000)
+                    amount = String(format: "%.0f", btcAmount * Double(Constants.satsPerBtc))
                 }
-            case "lightning":
-                bolt11Invoice = item.value
-            case "lno":
-                bolt12Offer = item.value
             default:
                 break
             }
         }
 
-        /*
-        if let offer = bolt12Offer {
-            return processLightningAddress(offer, amount: amount)
-        }
-        if let invoice = bolt11Invoice {
-            return processLightningAddress(invoice, amount: amount)
-        }
-        */
-
-        // Return as Bip21 PaymentAddress
         return (UInt64(amount) ?? 0, PaymentAddress(type: .bip21, address: input))
     }
 
