@@ -159,7 +159,7 @@ extension String {
         } else if self.lowercased().starts(with: "lightning:") {
             let invoice = String(self.dropFirst(10))  // Remove "lightning:" prefix
             return processLightningAddress(invoice, amount: "")
-        } else if self.lowercased().starts(with: "lnbc") || self.lowercased().starts(with: "lntb") {
+        } else if self.lowercased().starts(with: "lno") || self.lowercased().starts(with: "lntb") {
             return processLightningAddress(self, amount: "")
         } else if self.isBip21Address {
             return processBitcoinAddress(spendableBalance)
@@ -188,7 +188,7 @@ extension String {
         let sanitizedAddress = address.replacingOccurrences(of: "lightning:", with: "")
 
         if sanitizedAddress.lowercased().starts(with: "lno") {
-            // Use the amount passed from the BIP21 parsing logic
+            // TODO: Need to extract amount from offer, but not yet possible with ldkNode
             return (UInt64(amount) ?? 0, PaymentAddress(type: .bolt12, address: sanitizedAddress))
         } else {
             let bolt11Amount = sanitizedAddress.bolt11amount() ?? amount
