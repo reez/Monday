@@ -42,7 +42,7 @@ class SendViewModel: ObservableObject {
                 )
                 _ = try await lightningClient.send(uriString)
             case .bolt11:
-                _ = try await lightningClient.sendBolt11Payment(paymentAddress?.address ?? "", nil)
+                _ = try await lightningClient.sendBolt11Payment(Bolt11Invoice(paymentAddress?.address ?? ""), nil)
             default:
                 debugPrint("Unhandled paymentAddress type")
             }
