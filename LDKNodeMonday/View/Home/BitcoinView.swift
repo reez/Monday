@@ -210,7 +210,7 @@ struct TransactionButtons: View {
                     tintColor: .accent,
                     isCapsule: true
                 )
-            )  //.disabled(viewModel.unifiedBalance == 0)
+            ).disabled(viewModel.unifiedBalance == 0)
 
             Spacer()
 
@@ -224,7 +224,7 @@ struct TransactionButtons: View {
                     .labelStyle(.iconOnly)
                     .foregroundColor(.accentColor)
                     .padding()
-            }  //.disabled(viewModel.unifiedBalance == 0)
+            }.disabled(viewModel.unifiedBalance == 0)
 
             Spacer()
 

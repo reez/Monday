@@ -128,7 +128,7 @@ extension String {
         return url.queryParameters()
     }
 
-    func processBIP21(_ input: String, spendableBalance: UInt64) -> (UInt64, PaymentAddress?) {
+    func processBIP21(_ input: String) -> (UInt64, PaymentAddress?) {
         guard let url = URL(string: input),
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         else {
@@ -151,18 +151,18 @@ extension String {
         return (UInt64(amount) ?? 0, PaymentAddress(type: .bip21, address: input))
     }
 
-    func extractPaymentInfo(spendableBalance: UInt64) -> (
+    func extractPaymentInfo() -> (
         amount: UInt64, payment: PaymentAddress?
     ) {
         if self.lowercased().starts(with: "bitcoin:") && self.contains("?") {
-            return processBIP21(self, spendableBalance: spendableBalance)
+            return processBIP21(self)
         } else if self.lowercased().starts(with: "lightning:") {
             let invoice = String(self.dropFirst(10))  // Remove "lightning:" prefix
             return processLightningAddress(invoice, amount: "")
         } else if self.lowercased().starts(with: "lno") || self.lowercased().starts(with: "lntb") {
             return processLightningAddress(self, amount: "")
         } else if self.isBip21Address {
-            return processBitcoinAddress(spendableBalance)
+            return processBitcoinAddress()
         } else if self.starts(with: "lnurl") {
             return (0, nil)  // TODO: Implement support for lnurl
         } else {
@@ -170,16 +170,13 @@ extension String {
         }
     }
 
-    private func processBitcoinAddress(_ spendableBalance: UInt64) -> (UInt64, PaymentAddress) {
+    private func processBitcoinAddress() -> (UInt64, PaymentAddress) {
         let address = self.extractBitcoinAddress()
         let queryParams = self.queryParameters()
         let amount = queryParams["amount"] ?? ""
 
-        if let amountValue = UInt64(amount), amountValue <= spendableBalance {
-            return (amountValue, PaymentAddress(type: .onchain, address: address))
-        } else {
-            return (0, PaymentAddress(type: .onchain, address: address))
-        }
+        let amountValue = UInt64(amount)
+        return (amountValue ?? 0, PaymentAddress(type: .onchain, address: address))
     }
 
     private func processLightningAddress(_ address: String, amount: String) -> (

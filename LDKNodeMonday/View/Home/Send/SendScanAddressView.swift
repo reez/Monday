@@ -15,7 +15,6 @@ struct SendScanAddressView: View {
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
     let pasteboard = UIPasteboard.general
-    var spendableBalance: UInt64
 
     var body: some View {
         ZStack {
@@ -52,7 +51,7 @@ extension SendScanAddressView {
         case .success(let scanResult):
             let scanString = scanResult.string
             let (extractedAmount, extractedPaymentAddress) =
-                scanString.extractPaymentInfo(spendableBalance: spendableBalance)
+                scanString.extractPaymentInfo()
 
             if extractedPaymentAddress == nil {
                 alertMessage = "Unsupported scan format"
@@ -82,7 +81,7 @@ extension SendScanAddressView {
     private func pasteAddress() {
         if pasteboard.hasStrings, let string = pasteboard.string {
             let (extractedAmount, extractedPaymentAddress) =
-                string.extractPaymentInfo(spendableBalance: spendableBalance)
+                string.extractPaymentInfo()
 
             if extractedPaymentAddress == nil {
                 alertMessage = "Unsupported paste format"
@@ -150,8 +149,7 @@ struct CustomScannerView: View {
                 lightningClient: .mock,
                 sendViewState: .manualEntry,
                 price: 19000.00
-            ),
-            spendableBalance: 21
+            )
         )
     }
 #endif

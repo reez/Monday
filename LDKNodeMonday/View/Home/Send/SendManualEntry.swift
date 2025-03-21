@@ -61,7 +61,7 @@ struct SendManualEntry: View {
                     .submitLabel(.done)
                     .onChange(of: viewModel.address) {
                         let (extractedAmount, extractedPaymentAddress) =
-                            viewModel.address.extractPaymentInfo(spendableBalance: 0)
+                            viewModel.address.extractPaymentInfo()
 
                         if extractedPaymentAddress != nil && viewModel.paymentAddress == nil {
                             viewModel.amountSat = extractedAmount

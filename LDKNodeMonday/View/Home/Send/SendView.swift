@@ -19,8 +19,7 @@ struct SendView: View {
                 switch viewModel.sendViewState {
                 case .scanAddress:
                     SendScanAddressView(
-                        viewModel: viewModel,
-                        spendableBalance: 0
+                        viewModel: viewModel
                     )
                 case .manualEntry:
                     SendManualEntry(viewModel: viewModel)
