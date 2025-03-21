@@ -57,10 +57,6 @@ extension SendScanAddressView {
                 alertMessage = "Unsupported scan format"
                 isShowingAlert = true
             } else {
-                viewModel.address = scanString
-                viewModel.amountSat = extractedAmount
-                viewModel.paymentAddress = extractedPaymentAddress
-
                 viewModel.address = extractedPaymentAddress?.address ?? ""
                 viewModel.amountSat = extractedAmount
                 viewModel.paymentAddress = extractedPaymentAddress
