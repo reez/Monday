@@ -61,12 +61,15 @@ extension SendScanAddressView {
                 viewModel.amountSat = extractedAmount
                 viewModel.paymentAddress = extractedPaymentAddress
 
-                if viewModel.amountSat == 0 {
-                    withAnimation {
+                viewModel.address = extractedPaymentAddress?.address ?? ""
+                viewModel.amountSat = extractedAmount
+                viewModel.paymentAddress = extractedPaymentAddress
+
+                withAnimation {
+                    viewModel.sendViewState = .reviewPayment
+                    if viewModel.amountSat == 0 {
                         viewModel.sendViewState = .manualEntry
-                    }
-                } else {
-                    withAnimation {
+                    } else {
                         viewModel.sendViewState = .reviewPayment
                     }
                 }
