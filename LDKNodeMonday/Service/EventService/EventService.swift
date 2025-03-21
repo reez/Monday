@@ -9,7 +9,7 @@ import Foundation
 import LDKNode
 
 class EventService: ObservableObject {
-    @Published var lastMessage: String? = nil
+    @Published var lastEvent: Event? = nil
 
     init() {
         NotificationCenter.default.addObserver(
@@ -17,25 +17,11 @@ class EventService: ObservableObject {
             object: nil,
             queue: .main
         ) { [weak self] notification in
-            if let message = notification.object as? String {
-                self?.lastMessage = message
+            if let event = notification.object as? Event {
+                self?.lastEvent = event
             } else {
-                self?.lastMessage = "\(notification.object.debugDescription)"
+                self?.lastEvent = nil
             }
         }
-
-        NotificationCenter.default.addObserver(
-            forName: .ldkErrorReceived,
-            object: nil,
-            queue: .main
-        ) { [weak self] notification in
-            if let error = notification.object as? NodeError {
-                let errorDetails = handleNodeError(error)
-                self?.lastMessage = "\(errorDetails.title)"
-            } else {
-                self?.lastMessage = "\(notification.object.debugDescription)"
-            }
-        }
-
     }
 }

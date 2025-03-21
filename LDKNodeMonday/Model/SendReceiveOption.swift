@@ -24,3 +24,12 @@ extension ReceiveOption {
         }
     }
 }
+
+enum SendViewState: String, CaseIterable, Identifiable {
+    var id: Self { self }
+
+    case scanAddress = "Scan Address"
+    case manualEntry = "Send Bitcoin"
+    case reviewPayment = "Review Payment"
+    case paymentSent = "Payment Sent"
+}

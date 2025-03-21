@@ -107,11 +107,11 @@ extension String {
         return words.map { $0.capitalized }.joined(separator: " ")
     }
 
-    private var isBitcoinAddress: Bool {
+    var isBip21Address: Bool {
         return lowercased().hasPrefix("bitcoin:") || isValidBitcoinAddress
     }
 
-    private var isValidBitcoinAddress: Bool {
+    var isValidBitcoinAddress: Bool {
         let patterns = [
             "^1[a-km-zA-HJ-NP-Z1-9]{25,34}$",  // P2PKH Mainnet
             "^[mn2][a-km-zA-HJ-NP-Z1-9]{33}$",  // P2PKH or P2SH Testnet
@@ -128,84 +128,70 @@ extension String {
         return url.queryParameters()
     }
 
-    func processBIP21(_ input: String, spendableBalance: UInt64) -> (String, String, Payment) {
+    func processBIP21(_ input: String) -> (UInt64, PaymentAddress?) {
         guard let url = URL(string: input),
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         else {
-            return ("", "0", .isNone)
+            return (0, nil)
         }
 
-        let bitcoinAddress = url.path
         var amount = "0"
-        var bolt12Offer: String?
-        var bolt11Invoice: String?
 
         for item in components.queryItems ?? [] {
             switch item.name.lowercased() {
             case "amount":
                 if let value = item.value, let btcAmount = Double(value) {
-                    amount = String(format: "%.0f", btcAmount * 100_000_000)
+                    amount = String(format: "%.0f", btcAmount * Double(Constants.satsPerBtc))
                 }
-            case "lightning":
-                bolt11Invoice = item.value
-            case "lno":
-                bolt12Offer = item.value
             default:
                 break
             }
         }
 
-        if let offer = bolt12Offer {
-            return processLightningAddress(offer, amount: amount)
-        }
-        if let invoice = bolt11Invoice {
-            return processLightningAddress(invoice, amount: amount)
-        }
-        return (bitcoinAddress, amount, .isBitcoin)
+        return (UInt64(amount) ?? 0, PaymentAddress(type: .bip21, address: input))
     }
 
-    func extractPaymentInfo(spendableBalance: UInt64) -> (
-        address: String, amount: String, payment: Payment
+    func extractPaymentInfo() -> (
+        amount: UInt64, payment: PaymentAddress?
     ) {
         if self.lowercased().starts(with: "bitcoin:") && self.contains("?") {
-            return processBIP21(self, spendableBalance: spendableBalance)
+            return processBIP21(self)
         } else if self.lowercased().starts(with: "lightning:") {
             let invoice = String(self.dropFirst(10))  // Remove "lightning:" prefix
-            return processLightningAddress(invoice, amount: "0")
-        } else if self.lowercased().starts(with: "lnbc") || self.lowercased().starts(with: "lntb") {
-            return processLightningAddress(self, amount: "0")
-        } else if self.isBitcoinAddress {
-            return processBitcoinAddress(spendableBalance)
+            return processLightningAddress(invoice, amount: "")
+        } else if self.lowercased().starts(with: "lno") || self.lowercased().starts(with: "lntb") {
+            return processLightningAddress(self, amount: "")
+        } else if self.isBip21Address {
+            return processBitcoinAddress()
         } else if self.starts(with: "lnurl") {
-            return ("LNURL not supported yet", "0", .isLightningURL)
+            return (0, nil)  // TODO: Implement support for lnurl
         } else {
-            return ("", "0", .isNone)
+            return (0, .none)
         }
     }
 
-    private func processBitcoinAddress(_ spendableBalance: UInt64) -> (String, String, Payment) {
+    private func processBitcoinAddress() -> (UInt64, PaymentAddress) {
         let address = self.extractBitcoinAddress()
         let queryParams = self.queryParameters()
-        let amount = queryParams["amount"] ?? "0"
+        let amount = queryParams["amount"] ?? ""
 
-        if let amountValue = UInt64(amount), amountValue <= spendableBalance {
-            return (address, amount, .isBitcoin)
-        } else {
-            return (address, "0", .isBitcoin)
-        }
+        let amountValue = UInt64(amount)
+        return (amountValue ?? 0, PaymentAddress(type: .onchain, address: address))
     }
 
     private func processLightningAddress(_ address: String, amount: String) -> (
-        String, String, Payment
+        UInt64, PaymentAddress
     ) {
         let sanitizedAddress = address.replacingOccurrences(of: "lightning:", with: "")
 
         if sanitizedAddress.lowercased().starts(with: "lno") {
-            // Use the amount passed from the BIP21 parsing logic
-            return (sanitizedAddress, amount, .isLightning)
+            // TODO: Need to extract amount from offer, but not yet possible with ldkNode
+            return (UInt64(amount) ?? 0, PaymentAddress(type: .bolt12, address: sanitizedAddress))
         } else {
             let bolt11Amount = sanitizedAddress.bolt11amount() ?? amount
-            return (sanitizedAddress, bolt11Amount, .isLightning)
+            return (
+                UInt64(bolt11Amount) ?? 0, PaymentAddress(type: .bolt11, address: sanitizedAddress)
+            )
         }
     }
 
@@ -218,6 +204,13 @@ extension String {
             return address.uppercased()
         }
         return self.uppercased()
+    }
+
+    func truncateMiddle(first: Int, last: Int) -> String {
+        guard self.count > first + last else { return self }
+        let start = self.prefix(first)
+        let end = self.suffix(last)
+        return "\(start)…\(end)"
     }
 
 }

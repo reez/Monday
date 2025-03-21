@@ -11,7 +11,7 @@ import SwiftUI
 
 struct ChannelsListView: View {
     @State private var refreshFlag = false
-    let viewModel: ChannelsListViewModel
+    @State var viewModel: ChannelsListViewModel
 
     var body: some View {
         ZStack {

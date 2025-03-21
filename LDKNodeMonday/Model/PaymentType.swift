@@ -7,9 +7,9 @@
 
 import Foundation
 
-enum Payment {
-    case isLightning
-    case isLightningURL
-    case isBitcoin
-    case isNone
+enum PaymentType {
+    case lightning
+    case lightningURL
+    case bitcoin
+    case none
 }

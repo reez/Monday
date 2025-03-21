@@ -67,7 +67,7 @@ struct AmountEntryView: View {
             }
             .padding(.bottom, 20)
             .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
-            .navigationTitle("Add Amount")
+            .navigationTitle("Amount")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
@@ -77,6 +77,41 @@ struct AmountEntryView: View {
             ForEach(characters, id: \.self) { character in
                 NumpadButton(numpadAmount: $numpadAmount, character: character)
                     .frame(width: buttonSize, height: buttonSize)
+            }
+        }
+    }
+}
+
+struct NumpadButton: View {
+    @Binding var numpadAmount: String
+    var character: String
+
+    var body: some View {
+        Button {
+            if character == "<" {
+                if numpadAmount.count > 1 {
+                    numpadAmount.removeLast()
+                } else {
+                    numpadAmount = "0"
+                }
+            } else if character == " " {
+                return
+            } else {
+                if numpadAmount == "0" {
+                    numpadAmount = character
+                } else {
+                    numpadAmount.append(character)
+                }
+            }
+        } label: {
+            if character == "<" {
+                Image(systemName: "delete.left")
+                    .bold()
+                    .foregroundColor(.primary)
+            } else {
+                Text(character)
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .foregroundColor(.primary)
             }
         }
     }

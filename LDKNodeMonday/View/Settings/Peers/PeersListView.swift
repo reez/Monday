@@ -10,7 +10,7 @@ import LDKNode
 import SwiftUI
 
 struct PeersListView: View {
-    @ObservedObject var viewModel: PeersListViewModel
+    @State var viewModel: PeersListViewModel
 
     var body: some View {
         VStack {
