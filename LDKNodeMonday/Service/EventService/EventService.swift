@@ -20,23 +20,8 @@ class EventService: ObservableObject {
             if let event = notification.object as? Event {
                 self?.lastEvent = event
             } else {
-                self?.lastEvent = nil  //"\(notification.object.debugDescription)"
+                self?.lastEvent = nil
             }
         }
-
-        /* Don't use this
-        NotificationCenter.default.addObserver(
-            forName: .ldkErrorReceived,
-            object: nil,
-            queue: .main
-        ) { [weak self] notification in
-            if let error = notification.object as? NodeError {
-                let errorDetails = handleNodeError(error)
-                self?.lastEvent = "\(errorDetails.title)"
-            } else {
-                self?.lastEvent = "\(notification.object.debugDescription)"
-            }
-        }
-        */
     }
 }

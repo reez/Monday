@@ -91,7 +91,6 @@ extension Event {
 
 struct EventItemView: View {
     var event: Event?
-    //var displayBalanceType: DisplayBalanceType
     var price: Double
 
     var body: some View {
