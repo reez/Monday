@@ -50,13 +50,15 @@ struct PaymentsListView: View {
                     ForEach(
                         payments
                             .filter {
-                                $0.status != .pending ||
-                                ($0.status == .pending && Double($0.latestUpdateTimestamp) > Date().timeIntervalSince1970 - 1800 && ($0.amountMsat ?? 0) > 0)
+                                $0.status != .pending
+                                    || ($0.status == .pending
+                                        && Double($0.latestUpdateTimestamp) > Date()
+                                            .timeIntervalSince1970 - 1800
+                                        && ($0.amountMsat ?? 0) > 0)
                             }
                             .sorted { $0.latestUpdateTimestamp > $1.latestUpdateTimestamp },
                         id: \.id
-                    )
- { payment in
+                    ) { payment in
                         PaymentItemView(
                             payment: payment,
                             displayBalanceType: displayBalanceType,
