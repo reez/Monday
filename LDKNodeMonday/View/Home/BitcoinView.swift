@@ -252,7 +252,8 @@ struct TransactionButtons: View {
                     viewModel: SendViewModel.init(
                         lightningClient: viewModel.lightningClient,
                         sendViewState: .manualEntry,
-                        price: viewModel.price
+                        price: viewModel.price,
+                        balances: viewModel.balances
                     )
                 )
                 .presentationDetents([.large])
@@ -269,7 +270,8 @@ struct TransactionButtons: View {
                     viewModel: SendViewModel.init(
                         lightningClient: viewModel.lightningClient,
                         sendViewState: .scanAddress,
-                        price: viewModel.price
+                        price: viewModel.price,
+                        balances: viewModel.balances
                     )
                 )
                 .presentationDetents([.large])

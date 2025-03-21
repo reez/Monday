@@ -19,11 +19,18 @@ class SendViewModel: ObservableObject {
     @Published var amountSat: UInt64 = 0
     @Published var sendError: MondayError?
     var price: Double
+    @Published var balances: BalanceDetails
 
-    init(lightningClient: LightningNodeClient, sendViewState: SendViewState, price: Double) {
+    init(
+        lightningClient: LightningNodeClient,
+        sendViewState: SendViewState,
+        price: Double,
+        balances: BalanceDetails
+    ) {
         self.lightningClient = lightningClient
         self.sendViewState = sendViewState
         self.price = price
+        self.balances = balances
     }
 
     func send() async throws {

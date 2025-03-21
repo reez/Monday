@@ -91,7 +91,8 @@ struct SendView: View {
         viewModel: SendViewModel.init(
             lightningClient: .mock,
             sendViewState: .paymentSent,
-            price: 19000.00
+            price: 19000.00,
+            balances: .mock
         )
     )
 }
