@@ -42,9 +42,18 @@ class SendViewModel: ObservableObject {
                 )
                 _ = try await lightningClient.send(uriString)
             case .bolt11:
-                _ = try await lightningClient.sendBolt11Payment(Bolt11Invoice(paymentAddress?.address ?? ""), nil)
+                _ = try await lightningClient.sendBolt11Payment(
+                    Bolt11Invoice(paymentAddress?.address ?? ""),
+                    nil
+                )
             default:
                 debugPrint("Unhandled paymentAddress type")
+                DispatchQueue.main.async {
+                    self.sendError = .init(
+                        title: "Unsupported payment type",
+                        detail: "The payment address type is not supported."
+                    )
+                }
             }
         } catch let error as NodeError {
             NotificationCenter.default.post(name: .ldkErrorReceived, object: error)
