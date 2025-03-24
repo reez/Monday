@@ -90,6 +90,8 @@ extension Event {
 }
 
 struct EventItemView: View {
+    @Environment(\.colorScheme) var colorScheme
+
     var event: Event?
     var price: Double
 
@@ -126,9 +128,14 @@ struct EventItemView: View {
             }
         }
         .padding()
-        .background(Color.white)
+        .background(Color(uiColor: .systemBackground))
         .clipShape(Capsule())
-        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+        .shadow(
+            color: (colorScheme == .dark ? Color.white : Color.black).opacity(0.2),
+            radius: 4,
+            x: 0,
+            y: 2
+        )
         .lineLimit(1)
         .minimumScaleFactor(0.75)
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
