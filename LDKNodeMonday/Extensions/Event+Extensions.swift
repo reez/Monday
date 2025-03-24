@@ -101,15 +101,16 @@ struct EventItemView: View {
                     .frame(width: 40, height: 40)
                 Image(systemName: event?.iconName ?? "info.circle")
                     .font(.system(.body, weight: .bold))
-                    .foregroundColor(.bitcoinNeutral8)
+                    .foregroundColor(.bitcoinNeutral6)
             }
 
             VStack(alignment: .leading) {
                 Text(event?.title ?? "Title")
                     .font(.system(.body, design: .rounded, weight: .medium))
+                    .foregroundColor(.bitcoinNeutral8)
                 Text("Just now")
                     .font(.system(.subheadline, design: .rounded))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.bitcoinNeutral6)
             }
 
             Spacer()
@@ -121,14 +122,14 @@ struct EventItemView: View {
                         .foregroundColor(.bitcoinGreen)
                     Text(event?.amount.formattedSatsAsUSD(price: price) ?? "")
                         .font(.system(.subheadline, design: .rounded))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.bitcoinNeutral6)
                 }
             }
         }
         .padding()
-        .background(Color.white)
+        .background(Color(uiColor: .systemBackground))
         .clipShape(Capsule())
-        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+        .shadow(color: Color.bitcoinNeutral5.opacity(0.8), radius: 4, x: 0, y: 2)
         .lineLimit(1)
         .minimumScaleFactor(0.75)
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
