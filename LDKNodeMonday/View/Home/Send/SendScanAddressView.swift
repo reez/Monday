@@ -92,6 +92,11 @@ extension SendScanAddressView {
 
                 withAnimation {
                     viewModel.sendViewState = .reviewPayment
+                    if viewModel.amountSat == 0 {
+                        viewModel.sendViewState = .manualEntry
+                    } else {
+                        viewModel.sendViewState = .reviewPayment
+                    }
                 }
             }
         } else {
