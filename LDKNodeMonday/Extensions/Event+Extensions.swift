@@ -90,6 +90,8 @@ extension Event {
 }
 
 struct EventItemView: View {
+    @Environment(\.colorScheme) var colorScheme
+
     var event: Event?
     var price: Double
 
@@ -101,16 +103,15 @@ struct EventItemView: View {
                     .frame(width: 40, height: 40)
                 Image(systemName: event?.iconName ?? "info.circle")
                     .font(.system(.body, weight: .bold))
-                    .foregroundColor(.bitcoinNeutral6)
+                    .foregroundColor(.bitcoinNeutral8)
             }
 
             VStack(alignment: .leading) {
                 Text(event?.title ?? "Title")
                     .font(.system(.body, design: .rounded, weight: .medium))
-                    .foregroundColor(.bitcoinNeutral8)
                 Text("Just now")
                     .font(.system(.subheadline, design: .rounded))
-                    .foregroundColor(.bitcoinNeutral6)
+                    .foregroundColor(.secondary)
             }
 
             Spacer()
@@ -122,14 +123,19 @@ struct EventItemView: View {
                         .foregroundColor(.bitcoinGreen)
                     Text(event?.amount.formattedSatsAsUSD(price: price) ?? "")
                         .font(.system(.subheadline, design: .rounded))
-                        .foregroundColor(.bitcoinNeutral6)
+                        .foregroundColor(.secondary)
                 }
             }
         }
         .padding()
         .background(Color(uiColor: .systemBackground))
         .clipShape(Capsule())
-        .shadow(color: Color.bitcoinNeutral5.opacity(0.8), radius: 4, x: 0, y: 2)
+        .shadow(
+            color: (colorScheme == .dark ? Color.white : Color.black).opacity(0.2),
+            radius: 4,
+            x: 0,
+            y: 2
+        )
         .lineLimit(1)
         .minimumScaleFactor(0.75)
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
