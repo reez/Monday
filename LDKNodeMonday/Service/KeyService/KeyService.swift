@@ -121,16 +121,14 @@ extension KeyClient {
     )
 }
 
-#if DEBUG
-    extension KeyClient {
-        static let mock = Self(
-            saveBackupInfo: { _ in },
-            getBackupInfo: { mockBackupInfo },
-            deleteBackupInfo: {},
-            saveNetwork: { _ in },
-            getNetwork: { nil },
-            saveServerURL: { _ in },
-            getServerURL: { nil }
-        )
-    }
-#endif
+extension KeyClient {
+    static let mock = Self(
+        saveBackupInfo: { _ in },
+        getBackupInfo: { mockBackupInfo },
+        deleteBackupInfo: {},
+        saveNetwork: { _ in },
+        getNetwork: { nil },
+        saveServerURL: { _ in },
+        getServerURL: { nil }
+    )
+}
