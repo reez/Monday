@@ -34,101 +34,10 @@ class ReceiveViewModel: ObservableObject {
         await MainActor.run {
             self.addressGenerationStatus = .generating
         }
-
-        do {
-            // Use the LDK Node method for generating unified QR string
-            let unified = try await lightningClient.receive(amountSat, message, expirySecs)
-            let parsedAddresses = parseUnifiedQR(unified)
-            let finalAddresses: [PaymentAddress?]
-
-            do {
-                // IF amountSat is higher than existing channel(s) receive capacity, generate JIT invoice
-                let needsJIT = amountSat.satsAsMsats > maxReceiveCapacity()
-                if needsJIT {
-                    let bolt11Invoice = try await lightningClient.bolt11Payment(
-                        amountSat.satsAsMsats,
-                        message,
-                        expirySecs,
-                        nil,
-                        true
-                    )
-                    let bolt11JITPaymentAddress = PaymentAddress(
-                        type: .bolt11Jit,
-                        address: bolt11Invoice
-                    )
-
-                    // Replace the Bolt11 with the JIT version
-                    finalAddresses = parsedAddresses.map { address in
-                        guard let address = address else { return nil }
-                        return address.type == .bolt11 ? bolt11JITPaymentAddress : address
-                    }
-                } else {
-                    // If no JIT needed, use the parsed addresses as-is
-                    finalAddresses = parsedAddresses
-                }
-            } catch {
-                debugPrint("Error generating Bolt11:", error.localizedDescription)
-                finalAddresses = parsedAddresses
-            }
-
-            await MainActor.run {
-                self.paymentAddresses = finalAddresses
-                self.addressGenerationStatus = .finished
-            }
-        } catch let error {
-            debugPrint("Error generating unified QR: ", error.localizedDescription)
-
-            // Fall back to create separate addressinfo
-            var unifiedPaymentAddress: PaymentAddress?
-            var onchainPaymentAddress: PaymentAddress?
-            var bolt11PaymentAddress: PaymentAddress?
-
-            // Onchain
-            do {
-                let onchainAddress = try await lightningClient.newAddress()
-                onchainPaymentAddress = PaymentAddress(
-                    type: .onchain,
-                    address: onchainAddress
-                )
-            } catch {
-                debugPrint("Error generating onchain address:", error.localizedDescription)
-            }
-
-            // Bolt11
-            do {
-                let needsJIT = amountSat.satsAsMsats > maxReceiveCapacity()
-                let bolt11Invoice = try await lightningClient.bolt11Payment(
-                    amountSat.satsAsMsats,
-                    message,
-                    expirySecs,
-                    nil,
-                    needsJIT
-                )
-                bolt11PaymentAddress = PaymentAddress(
-                    type: needsJIT ? .bolt11Jit : .bolt11,
-                    address: bolt11Invoice
-                )
-            } catch {
-                debugPrint("Error generating Bolt11:", error.localizedDescription)
-            }
-
-            // Unified
-            if bolt11PaymentAddress != nil {
-                let unifiedQRString = unifiedQRString(
-                    onchainAddress: onchainPaymentAddress?.address ?? "",
-                    amountBTC: amountSat.satsAsBTC,
-                    message: message,
-                    bolt11: bolt11PaymentAddress?.address,
-                    bolt12: nil
-                )
-                unifiedPaymentAddress = PaymentAddress(
-                    type: .bip21,
-                    address: unifiedQRString
-                )
-            }
-
-            let addresses = [unifiedPaymentAddress, onchainPaymentAddress, bolt11PaymentAddress]
-                .compactMap { $0 }
+        let needsJIT = amountSat.satsAsMsats > maxReceiveCapacity()
+        if needsJIT {
+            // Generate onchain and bolt11Jit, create BIP21 from those
+            let addresses = await generateUnifiedWithJIT()
 
             await MainActor.run {
                 self.paymentAddresses = addresses
@@ -143,7 +52,91 @@ class ReceiveViewModel: ObservableObject {
                     )
                 }
             }
+        } else {
+            // If no JIT needed, use the LDK Node method for generating unified QR string
+            do {
+                let unified = try await lightningClient.receive(amountSat, message, expirySecs)
+                let parsedAddresses = parseUnifiedQR(unified)
+
+                await MainActor.run {
+                    self.paymentAddresses = parsedAddresses
+                    self.addressGenerationStatus = .finished
+                }
+            } catch let error {
+                debugPrint("Error generating unified QR: ", error.localizedDescription)
+
+                // Fall back to create separate addressinfo
+                let addresses = await generateUnifiedWithJIT()
+
+                await MainActor.run {
+                    self.paymentAddresses = addresses
+                    self.addressGenerationStatus = .finished
+                }
+
+                if paymentAddresses.isEmpty {
+                    await MainActor.run {
+                        self.receiveViewError = .init(
+                            title: "Address error",
+                            detail: "Failed to generate any addresses."
+                        )
+                    }
+                }
+            }
         }
+    }
+
+    func generateUnifiedWithJIT() async -> [PaymentAddress] {
+        // Generate onchain and bolt11Jit, create BIP21 from those
+        var unifiedPaymentAddress: PaymentAddress?
+        var onchainPaymentAddress: PaymentAddress?
+        var bolt11PaymentAddress: PaymentAddress?
+
+        // Onchain
+        do {
+            let onchainAddress = try await lightningClient.newAddress()
+            onchainPaymentAddress = PaymentAddress(
+                type: .onchain,
+                address: onchainAddress
+            )
+        } catch {
+            debugPrint("Error generating onchain address:", error.localizedDescription)
+        }
+
+        // Bolt11
+        do {
+            let needsJIT = amountSat.satsAsMsats > maxReceiveCapacity()
+            let bolt11Invoice = try await lightningClient.bolt11Payment(
+                amountSat.satsAsMsats,
+                message,
+                expirySecs,
+                nil,
+                needsJIT
+            )
+            bolt11PaymentAddress = PaymentAddress(
+                type: needsJIT ? .bolt11Jit : .bolt11,
+                address: bolt11Invoice
+            )
+        } catch {
+            debugPrint("Error generating Bolt11:", error.localizedDescription)
+        }
+
+        // Unified
+        if bolt11PaymentAddress != nil {
+            let unifiedQRString = unifiedQRString(
+                onchainAddress: onchainPaymentAddress?.address ?? "",
+                amountBTC: amountSat.satsAsBTC,
+                message: message,
+                bolt11: bolt11PaymentAddress?.address,
+                bolt12: nil
+            )
+            unifiedPaymentAddress = PaymentAddress(
+                type: .bip21,
+                address: unifiedQRString
+            )
+        }
+
+        return [unifiedPaymentAddress, onchainPaymentAddress, bolt11PaymentAddress]
+            .compactMap { $0 }
     }
 
     func maxReceiveCapacity() -> UInt64 {
