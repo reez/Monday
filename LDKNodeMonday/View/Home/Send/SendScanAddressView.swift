@@ -58,7 +58,7 @@ extension SendScanAddressView {
                 isShowingAlert = true
             } else {
                 viewModel.address = extractedPaymentAddress?.address ?? ""
-                viewModel.amountSat = extractedAmount
+                viewModel.amountSat = extractedAmount != 0 ? extractedAmount : viewModel.amountSat
                 viewModel.paymentAddress = extractedPaymentAddress
 
                 withAnimation {
