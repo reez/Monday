@@ -77,7 +77,7 @@ class LightningNodeService {
         config.logDirPath = logPath
         config.network = self.network
         config.trustedPeers0conf = [
-            Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId
+            Constants.Config.LiquiditySourceLsps2.Signet.see.nodeId
         ]
         config.logLevel = .trace
 
@@ -100,9 +100,9 @@ class LightningNodeService {
                 rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
             )
             nodeBuilder.setLiquiditySourceLsps2(
-                address: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.address,
-                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.nodeId,
-                token: Constants.Config.LiquiditySourceLsps2.Signet.mutiny.token
+                address: Constants.Config.LiquiditySourceLsps2.Signet.see.address,
+                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.see.nodeId,
+                token: Constants.Config.LiquiditySourceLsps2.Signet.see.token
             )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
         case .regtest:
