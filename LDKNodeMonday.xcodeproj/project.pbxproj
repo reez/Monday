@@ -814,7 +814,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LDKNodeMonday/Preview Content\"";
-				DEVELOPMENT_TEAM = 8DAB7BVU34;
+				DEVELOPMENT_TEAM = 9G6M658RKZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LDKNodeMonday/Info.plist;
@@ -847,7 +847,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LDKNodeMonday/Preview Content\"";
-				DEVELOPMENT_TEAM = 8DAB7BVU34;
+				DEVELOPMENT_TEAM = 9G6M658RKZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LDKNodeMonday/Info.plist;
@@ -901,7 +901,7 @@
 			repositoryURL = "https://github.com/lightningdevkit/ldk-node.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.4.3;
+				version = 0.5.0;
 			};
 		};
 		AE01C5AE2AB3BEED00F28C7E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {

@@ -107,7 +107,7 @@ class ReceiveViewModel: ObservableObject {
             let needsJIT = amountSat.satsAsMsats > maxReceiveCapacity()
             let bolt11Invoice = try await lightningClient.bolt11Payment(
                 amountSat.satsAsMsats,
-                message,
+                Bolt11InvoiceDescription.direct(description: message),  //message,
                 expirySecs,
                 nil,
                 needsJIT
