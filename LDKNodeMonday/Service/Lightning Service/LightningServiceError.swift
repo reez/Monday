@@ -164,6 +164,15 @@ func handleNodeError(_ error: NodeError) -> MondayError {
     case .InvalidNodeAlias(let message):
         return .init(title: "InvalidNodeAlias", detail: message)
 
+    case .InvalidCustomTlvs(let message):
+        return .init(title: "InvalidCustomTlvs", detail: message)
+
+    case .InvalidDateTime(let message):
+        return .init(title: "InvalidDateTime", detail: message)
+
+    case .InvalidFeeRate(let message):
+        return .init(title: "InvalidFeeRate", detail: message)
+
     }
 
 }

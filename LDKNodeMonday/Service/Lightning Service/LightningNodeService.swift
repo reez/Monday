@@ -72,14 +72,26 @@ class LightningNodeService {
             withIntermediateDirectories: true
         )
 
+        // This is what `Config` looks like now, need to find out where `logDirPath` and `logLevel` are now
+
+        //        public struct Config {
+        //            public var storageDirPath: String
+        //            public var network: Network
+        //            public var listeningAddresses: [SocketAddress]?
+        //            public var nodeAlias: NodeAlias?
+        //            public var trustedPeers0conf: [PublicKey]
+        //            public var probingLiquidityLimitMultiplier: UInt64
+        //            public var anchorChannelsConfig: AnchorChannelsConfig?
+        //            public var sendingParameters: SendingParameters?
+
         var config = defaultConfig()
         config.storageDirPath = networkPath
-        config.logDirPath = logPath
+        //        config.logDirPath = logPath
         config.network = self.network
         config.trustedPeers0conf = [
             Constants.Config.LiquiditySourceLsps2.Signet.see.nodeId
         ]
-        config.logLevel = .trace
+        //        config.logLevel = .trace
 
         let nodeBuilder = Builder.fromConfig(config: config)
         nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: nil)
@@ -100,8 +112,8 @@ class LightningNodeService {
                 rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
             )
             nodeBuilder.setLiquiditySourceLsps2(
-                address: Constants.Config.LiquiditySourceLsps2.Signet.see.address,
                 nodeId: Constants.Config.LiquiditySourceLsps2.Signet.see.nodeId,
+                address: Constants.Config.LiquiditySourceLsps2.Signet.see.address,
                 token: Constants.Config.LiquiditySourceLsps2.Signet.see.token
             )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
@@ -270,7 +282,7 @@ class LightningNodeService {
 
     func bolt11Payment(
         amountMsat: UInt64,
-        description: String,
+        description: Bolt11InvoiceDescription,
         expirySecs: UInt32,
         maxLspFeeLimitMsat: UInt64?,
         receiveViaJitChannel: Bool?
@@ -334,7 +346,7 @@ extension LightningNodeService {
                     name: .ldkEventReceived,
                     object: event
                 )
-                ldkNode.eventHandled()
+                try? ldkNode.eventHandled()
             }
         }
     }
@@ -378,7 +390,8 @@ public struct LightningNodeClient {
     let send: (String) async throws -> QrPaymentResult
     let sendBolt11Payment: (Bolt11Invoice, SendingParameters?) async throws -> PaymentId
     let receive: (UInt64, String, UInt32) async throws -> String
-    let bolt11Payment: (UInt64, String, UInt32, UInt64?, Bool?) async throws -> Bolt11Invoice
+    let bolt11Payment:
+        (UInt64, Bolt11InvoiceDescription, UInt32, UInt64?, Bool?) async throws -> Bolt11Invoice
     let listPeers: () -> [PeerDetails]
     let listChannels: () -> [ChannelDetails]
     let listPayments: () -> [PaymentDetails]
@@ -539,14 +552,16 @@ let mockPayments: [PaymentDetails] = [
         id: "1",
         kind: .bolt11(hash: "hash1", preimage: nil, secret: nil),
         amountMsat: 100_000_000,
+        feePaidMsat: nil,
         direction: .inbound,
         status: .pending,
         latestUpdateTimestamp: UInt64(Date.now.timeIntervalSince1970)
     ),
     .init(
         id: "2",
-        kind: .onchain,
+        kind: .onchain(txid: "txid", status: .unconfirmed),
         amountMsat: 640_000_000,
+        feePaidMsat: nil,
         direction: .inbound,
         status: .succeeded,
         latestUpdateTimestamp: UInt64(Date.now.addingTimeInterval(0.5 * 3600).timeIntervalSince1970)
@@ -555,6 +570,7 @@ let mockPayments: [PaymentDetails] = [
         id: "3",
         kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
         amountMsat: 340_000_000,
+        feePaidMsat: nil,
         direction: .outbound,
         status: .succeeded,
         latestUpdateTimestamp: UInt64(Date.now.addingTimeInterval(3 * 3600).timeIntervalSince1970)
@@ -563,14 +579,16 @@ let mockPayments: [PaymentDetails] = [
         id: "4",
         kind: .bolt11(hash: "hash3", preimage: nil, secret: nil),
         amountMsat: 160_000_000,
+        feePaidMsat: nil,
         direction: .inbound,
         status: .succeeded,
         latestUpdateTimestamp: UInt64(Date.now.addingTimeInterval(48 * 3600).timeIntervalSince1970)
     ),
     .init(
         id: "5",
-        kind: .onchain,
+        kind: .onchain(txid: "txid", status: .unconfirmed),
         amountMsat: 210_000_000,
+        feePaidMsat: nil,
         direction: .outbound,
         status: .failed,
         latestUpdateTimestamp: 1_718_841_640

@@ -14,7 +14,7 @@ extension PaymentKind {
             return nil
         case .bolt11(_, let preimage, _):
             return preimage
-        case .bolt11Jit(_, let preimage, _, _):
+        case .bolt11Jit(_, let preimage, _, _, _):
             return preimage
         case .spontaneous(_, let preimage):
             return preimage

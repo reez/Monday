@@ -100,11 +100,15 @@ struct PaymentItemView: View {
                     .fill(.background)
                     .frame(width: 16, height: 16)
                     .overlay(
-                        Image(systemName: payment.kind == .onchain ? "bitcoinsign" : "bolt")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 12, height: 12)
-                            .foregroundColor(.secondary)
+                        Image(
+                            systemName: payment.kind
+                                == .onchain(txid: .init(), status: .unconfirmed)
+                                ? "bitcoinsign" : "bolt"
+                        )
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 12, height: 12)
+                        .foregroundColor(.secondary)
                     )
                     .offset(x: 20, y: 11)
             }
