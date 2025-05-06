@@ -108,6 +108,9 @@ struct SettingsView: View {
                         "Logs: Files → On My iPhone → Monday",
                         systemImage: "line.3.horizontal.button.angledtop.vertical.right"
                     )
+                    Link(destination: URL(string: "https://github.com/reez/Monday/issues/new")!) {
+                        Label("Open a GitHub Issue", systemImage: "ladybug")
+                    }
                 } header: {
                     Text("Design & Develop").foregroundColor(.primary)
                 }
