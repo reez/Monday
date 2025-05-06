@@ -104,6 +104,10 @@ struct SettingsView: View {
                         ),
                         label: { Label("Use mock data", systemImage: "testtube.2") }
                     )
+                    Label(
+                        "Logs: Files → On My iPhone → Monday",
+                        systemImage: "line.3.horizontal.button.angledtop.vertical.right"
+                    )
                 } header: {
                     Text("Design & Develop").foregroundColor(.primary)
                 }
