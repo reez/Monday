@@ -24,10 +24,10 @@ struct BackupInfo: Codable, Equatable {
     }
 }
 
-#if DEBUG
-    let mockBackupInfo = BackupInfo(
-        mnemonic: "",
-        networkString: Network.signet.description,
-        serverURL: EsploraServer.mutiny_signet.url
-    )
-#endif
+//#if DEBUG
+let mockBackupInfo = BackupInfo(
+    mnemonic: "",
+    networkString: Network.signet.description,
+    serverURL: EsploraServer.mutiny_signet.url
+)
+//#endif
