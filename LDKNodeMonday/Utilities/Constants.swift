@@ -49,6 +49,7 @@ struct Constants {
                 static let see = LSP.see
                 static let lqwd = LSP.lqwd
                 static let olympus = LSP.olympus
+                static let megalith = LSP.megalith
             }
         }
 
@@ -75,6 +76,11 @@ struct Constants {
         static let lqwd = LightningServiceProvider(
             address: "192.243.215.98:27100",
             nodeId: "0275eb44504d53b2a083852e3bffcc4e178195b9546c162590d8c282f3ed3243fc",
+            token: ""
+        )
+        static let megalith = LightningServiceProvider(
+            address: "143.198.63.18:9735",
+            nodeId: "02d71bd10286058cfb8c983f761c069a549d822ca3eb4a4c67d15aa8bec7483251",
             token: ""
         )
     }

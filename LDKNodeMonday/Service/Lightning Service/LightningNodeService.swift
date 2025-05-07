@@ -89,9 +89,18 @@ class LightningNodeService {
         //        config.logDirPath = logPath
         config.network = self.network
         config.trustedPeers0conf = [
-            Constants.Config.LiquiditySourceLsps2.Signet.see.nodeId
+            Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId
         ]
         //        config.logLevel = .trace
+        
+        let anchor_cfg = AnchorChannelsConfig(
+            trustedPeersNoReserve: [
+                Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId
+            ],
+            perChannelReserveSats: UInt64(0)
+        )
+        config.anchorChannelsConfig = .some(anchor_cfg)
+        
 
         let nodeBuilder = Builder.fromConfig(config: config)
         nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: nil)
@@ -112,9 +121,9 @@ class LightningNodeService {
                 rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
             )
             nodeBuilder.setLiquiditySourceLsps2(
-                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.see.nodeId,
-                address: Constants.Config.LiquiditySourceLsps2.Signet.see.address,
-                token: Constants.Config.LiquiditySourceLsps2.Signet.see.token
+                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId,
+                address: Constants.Config.LiquiditySourceLsps2.Signet.megalith.address,
+                token: Constants.Config.LiquiditySourceLsps2.Signet.megalith.token
             )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
         case .regtest:
