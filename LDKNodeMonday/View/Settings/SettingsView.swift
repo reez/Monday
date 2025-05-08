@@ -107,7 +107,10 @@ struct SettingsView: View {
                     NavigationLink(
                         destination: LogFilesView()
                     ) {
-                        Label("Log files", systemImage: "line.3.horizontal.button.angledtop.vertical.right")
+                        Label(
+                            "Log files",
+                            systemImage: "line.3.horizontal.button.angledtop.vertical.right"
+                        )
                     }
                     Link(destination: URL(string: "https://github.com/reez/Monday/issues/new")!) {
                         Label("Open a GitHub Issue", systemImage: "ladybug")
