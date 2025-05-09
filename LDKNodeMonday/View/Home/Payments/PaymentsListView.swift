@@ -85,9 +85,13 @@ struct PaymentsListView: View {
         .listStyle(.plain)
         .padding(.horizontal)
         .sheet(item: $selectedPayment) { paymentDetail in
-            PaymentDetailView(payment: paymentDetail)
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.hidden)
+            PaymentDetailView(
+                payment: paymentDetail,
+                displayBalanceType: displayBalanceType,
+                price: price
+            )
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.hidden)
         }
     }
 }

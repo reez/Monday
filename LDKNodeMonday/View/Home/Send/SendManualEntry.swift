@@ -64,7 +64,8 @@ struct SendManualEntry: View {
                             viewModel.address.extractPaymentInfo()
 
                         if extractedPaymentAddress != nil && viewModel.paymentAddress == nil {
-                            viewModel.amountSat = extractedAmount != 0 ? extractedAmount : viewModel.amountSat
+                            viewModel.amountSat =
+                                extractedAmount != 0 ? extractedAmount : viewModel.amountSat
                             viewModel.paymentAddress = extractedPaymentAddress
 
                             if extractedAmount != 0 {
