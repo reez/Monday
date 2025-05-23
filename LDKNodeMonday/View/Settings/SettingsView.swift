@@ -89,6 +89,14 @@ struct SettingsView: View {
                     ) {
                         Label("Peers", systemImage: "person.line.dotted.person")
                     }
+                    
+                    NavigationLink(
+                        destination: LSPSettingsView(walletClient: $viewModel.walletClient)
+
+                    ) {
+                        Label("LSP", systemImage: "rays")
+                            .badge((viewModel.walletClient.lsp.name).capitalized)
+                    }
                 } header: {
                     Text("Lightning Node").foregroundColor(.primary)
                 }
