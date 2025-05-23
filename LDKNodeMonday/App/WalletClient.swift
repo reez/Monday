@@ -16,6 +16,7 @@ public class WalletClient {
     public var lightningClient: LightningNodeClient
     public var network = Network.signet
     public var server = EsploraServer.mutiny_signet
+    public var lsp = LightningServiceProvider.megalith_signet
     public var appMode: AppMode
     public var appState = AppState.loading
     public var appError: Error?
@@ -79,7 +80,12 @@ public class WalletClient {
         try? self.lightningClient.stop()
     }
 
-    func restart(newNetwork: Network, newServer: EsploraServer, appMode: AppMode? = .live) async {
+    func restart(
+        newNetwork: Network,
+        newServer: EsploraServer,
+        appMode: AppMode? = .live,
+        lsp: LightningServiceProvider? = nil
+    ) async {
         do {
             await MainActor.run {
                 self.appState = .loading
@@ -100,6 +106,10 @@ public class WalletClient {
                 self.network = newNetwork
                 self.server = newServer
                 self.appState = .wallet
+
+                if let lsp = lsp {
+                    self.lsp = lsp
+                }
             }
         } catch let error {
             debugPrint(error)

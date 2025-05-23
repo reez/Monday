@@ -78,6 +78,26 @@ extension KeyService {
             throw KeyServiceError.readError
         }
     }
+
+    func saveLSP(lspString: String) throws {
+        let currentBackupInfo = try self.getBackupInfo()
+        let newBackupInfo = BackupInfo(
+            mnemonic: currentBackupInfo.mnemonic,
+            networkString: currentBackupInfo.networkString,
+            serverURL: currentBackupInfo.serverURL,
+            lspString: lspString
+        )
+        try self.saveBackupInfo(backupInfo: newBackupInfo)
+    }
+
+    func getLSP() throws -> String? {
+        do {
+            let backupInfo = try self.getBackupInfo()
+            return backupInfo.lspNodeId
+        } catch {
+            throw KeyServiceError.readError
+        }
+    }
 }
 
 public struct KeyClient {
@@ -89,6 +109,8 @@ public struct KeyClient {
     let getNetwork: () throws -> String?
     let saveServerURL: (String) throws -> Void
     let getServerURL: () throws -> String?
+    let saveLSP: (String) throws -> Void
+    let getLSP: () throws -> String?
 
     private init(
         saveBackupInfo: @escaping (BackupInfo) throws -> Void,
@@ -97,7 +119,9 @@ public struct KeyClient {
         saveNetwork: @escaping (String) throws -> Void,
         getNetwork: @escaping () throws -> String?,
         saveServerURL: @escaping (String) throws -> Void,
-        getServerURL: @escaping () throws -> String?
+        getServerURL: @escaping () throws -> String?,
+        saveLSP: @escaping (String) throws -> Void,
+        getLSP: @escaping () throws -> String?
     ) {
         self.saveBackupInfo = saveBackupInfo
         self.getBackupInfo = getBackupInfo
@@ -106,6 +130,8 @@ public struct KeyClient {
         self.getNetwork = getNetwork
         self.saveServerURL = saveServerURL
         self.getServerURL = getServerURL
+        self.saveLSP = saveLSP
+        self.getLSP = getLSP
     }
 }
 
@@ -117,7 +143,9 @@ extension KeyClient {
         saveNetwork: { network in try KeyService().saveNetwork(networkString: network) },
         getNetwork: { try KeyService().getNetwork() },
         saveServerURL: { url in try KeyService().saveServerURL(url: url) },
-        getServerURL: { try KeyService().getServerURL() }
+        getServerURL: { try KeyService().getServerURL() },
+        saveLSP: { lsp in try KeyService().saveLSP(lspString: lsp) },
+        getLSP: { try KeyService().getLSP() }
     )
 }
 
@@ -129,6 +157,8 @@ extension KeyClient {
         saveNetwork: { _ in },
         getNetwork: { nil },
         saveServerURL: { _ in },
-        getServerURL: { nil }
+        getServerURL: { nil },
+        saveLSP: { _ in },
+        getLSP: { nil }
     )
 }
