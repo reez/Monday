@@ -55,7 +55,10 @@ class LightningNodeService {
                 fatalError("Configuration error: No Esplora servers available for \(network)")
             }
             self.server = server
-            self.lsp = LightningServiceProvider.getByNodeId(backupInfo.lspNodeId ?? LightningServiceProvider.megalith_signet.nodeId) ?? .megalith_signet
+            self.lsp =
+                LightningServiceProvider.getByNodeId(
+                    backupInfo.lspNodeId ?? LightningServiceProvider.megalith_signet.nodeId
+                ) ?? .megalith_signet
         } else {
             self.network = .signet
             self.server = .mutiny_signet
@@ -93,13 +96,12 @@ class LightningNodeService {
         config.network = self.network
         config.trustedPeers0conf = [LightningServiceProvider.megalith_signet.nodeId]
         //        config.logLevel = .trace
-        
+
         let anchor_cfg = AnchorChannelsConfig(
             trustedPeersNoReserve: [LightningServiceProvider.megalith_signet.nodeId],
             perChannelReserveSats: UInt64(0)
         )
         config.anchorChannelsConfig = .some(anchor_cfg)
-        
 
         let nodeBuilder = Builder.fromConfig(config: config)
         nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: nil)

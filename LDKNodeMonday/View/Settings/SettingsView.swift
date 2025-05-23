@@ -89,7 +89,7 @@ struct SettingsView: View {
                     ) {
                         Label("Peers", systemImage: "person.line.dotted.person")
                     }
-                    
+
                     NavigationLink(
                         destination: LSPSettingsView(walletClient: $viewModel.walletClient)
 

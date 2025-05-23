@@ -22,13 +22,10 @@ struct BackupInfo: Codable, Equatable {
     }
 
     static func == (lhs: BackupInfo, rhs: BackupInfo) -> Bool {
-        return lhs.mnemonic == rhs.mnemonic &&
-               lhs.networkString == rhs.networkString &&
-               lhs.serverURL == rhs.serverURL &&
-               lhs.lspNodeId == rhs.lspNodeId
+        return lhs.mnemonic == rhs.mnemonic && lhs.networkString == rhs.networkString
+            && lhs.serverURL == rhs.serverURL && lhs.lspNodeId == rhs.lspNodeId
     }
 }
-
 
 //#if DEBUG
 let mockBackupInfo = BackupInfo(

@@ -78,7 +78,7 @@ extension KeyService {
             throw KeyServiceError.readError
         }
     }
-    
+
     func saveLSP(lspString: String) throws {
         let currentBackupInfo = try self.getBackupInfo()
         let newBackupInfo = BackupInfo(

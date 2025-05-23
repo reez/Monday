@@ -80,7 +80,12 @@ public class WalletClient {
         try? self.lightningClient.stop()
     }
 
-    func restart(newNetwork: Network, newServer: EsploraServer, appMode: AppMode? = .live, lsp: LightningServiceProvider? = nil) async {
+    func restart(
+        newNetwork: Network,
+        newServer: EsploraServer,
+        appMode: AppMode? = .live,
+        lsp: LightningServiceProvider? = nil
+    ) async {
         do {
             await MainActor.run {
                 self.appState = .loading
@@ -101,7 +106,7 @@ public class WalletClient {
                 self.network = newNetwork
                 self.server = newServer
                 self.appState = .wallet
-                
+
                 if let lsp = lsp {
                     self.lsp = lsp
                 }

@@ -41,7 +41,9 @@ struct LSPSettingsView: View {
                         }
                     }
                 } footer: {
-                    Text("Set your desired Lightning Service Provider.\nIf in doubt, use the default settings.")
+                    Text(
+                        "Set your desired Lightning Service Provider.\nIf in doubt, use the default settings."
+                    )
                 }
                 .alert("Change and restart?", isPresented: $showRestartAlert) {
                     Button("Cancel", role: .cancel) {
@@ -93,4 +95,3 @@ struct LSPSettingsView: View {
         LSPSettingsView(walletClient: .constant(WalletClient(appMode: AppMode.mock)))
     }
 #endif
-
