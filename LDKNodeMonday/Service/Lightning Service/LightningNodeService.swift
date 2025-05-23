@@ -33,6 +33,7 @@ class LightningNodeService {
     var networkColor = Color.black
     var network: Network
     var server: EsploraServer
+    var lsp: LightningServiceProvider
 
     init(
         keyService: KeyClient = .live
@@ -54,9 +55,11 @@ class LightningNodeService {
                 fatalError("Configuration error: No Esplora servers available for \(network)")
             }
             self.server = server
+            self.lsp = LightningServiceProvider.getByNodeId(backupInfo.lspNodeId ?? LightningServiceProvider.megalith_signet.nodeId) ?? .megalith_signet
         } else {
             self.network = .signet
             self.server = .mutiny_signet
+            self.lsp = .megalith_signet
         }
 
         self.keyService = keyService
@@ -88,15 +91,11 @@ class LightningNodeService {
         config.storageDirPath = networkPath
         //        config.logDirPath = logPath
         config.network = self.network
-        config.trustedPeers0conf = [
-            Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId
-        ]
+        config.trustedPeers0conf = [LightningServiceProvider.megalith_signet.nodeId]
         //        config.logLevel = .trace
         
         let anchor_cfg = AnchorChannelsConfig(
-            trustedPeersNoReserve: [
-                Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId
-            ],
+            trustedPeersNoReserve: [LightningServiceProvider.megalith_signet.nodeId],
             perChannelReserveSats: UInt64(0)
         )
         config.anchorChannelsConfig = .some(anchor_cfg)
@@ -121,9 +120,9 @@ class LightningNodeService {
                 rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
             )
             nodeBuilder.setLiquiditySourceLsps2(
-                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId,
-                address: Constants.Config.LiquiditySourceLsps2.Signet.megalith.address,
-                token: Constants.Config.LiquiditySourceLsps2.Signet.megalith.token
+                nodeId: lsp.nodeId,
+                address: lsp.address,
+                token: lsp.token
             )
             self.networkColor = Constants.BitcoinNetworkColor.signet.color
         case .regtest:
