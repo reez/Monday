@@ -37,128 +37,75 @@ class LightningNodeService {
     init(
         keyService: KeyClient = .live
     ) {
-
-        if let backupInfo = try? KeyClient.live.getBackupInfo() {
+        if let backupInfo = try? keyService.getBackupInfo(), !backupInfo.mnemonic.isEmpty {
             guard let network = Network(stringValue: backupInfo.networkString) else {
-                // This should never happen, but if it does:
                 fatalError("Configuration error: No Network found in BackupInfo")
             }
             self.network = network
-
             guard
                 let server =
                     EsploraServer(URLString: backupInfo.serverURL)
                     ?? availableServers(network: network).first
             else {
-                // This should never happen, but if it does:
                 fatalError("Configuration error: No Esplora servers available for \(network)")
             }
             self.server = server
-        } else {
-            self.network = .signet
-            self.server = .mutiny_signet
-        }
-
-        self.keyService = keyService
-
-        let documentsPath = FileManager.default.getDocumentsDirectoryPath()
-        let networkPath = URL(fileURLWithPath: documentsPath)
-            .appendingPathComponent(network.description)
-            .path
-        let logPath = networkPath + "/logs"
-
-        try? FileManager.default.createDirectory(
-            atPath: logPath,
-            withIntermediateDirectories: true
-        )
-
-        // This is what `Config` looks like now, need to find out where `logDirPath` and `logLevel` are now
-
-        //        public struct Config {
-        //            public var storageDirPath: String
-        //            public var network: Network
-        //            public var listeningAddresses: [SocketAddress]?
-        //            public var nodeAlias: NodeAlias?
-        //            public var trustedPeers0conf: [PublicKey]
-        //            public var probingLiquidityLimitMultiplier: UInt64
-        //            public var anchorChannelsConfig: AnchorChannelsConfig?
-        //            public var sendingParameters: SendingParameters?
-
-        var config = defaultConfig()
-        config.storageDirPath = networkPath
-        //        config.logDirPath = logPath
-        config.network = self.network
-        config.trustedPeers0conf = [
-            Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId
-        ]
-        //        config.logLevel = .trace
-        
-        let anchor_cfg = AnchorChannelsConfig(
-            trustedPeersNoReserve: [
+            self.keyService = keyService
+            let documentsPath = FileManager.default.getDocumentsDirectoryPath()
+            let networkPath = URL(fileURLWithPath: documentsPath)
+                .appendingPathComponent(network.description)
+                .path
+            let logPath = networkPath + "/logs"
+            try? FileManager.default.createDirectory(
+                atPath: logPath,
+                withIntermediateDirectories: true
+            )
+            var config = defaultConfig()
+            config.storageDirPath = networkPath
+            config.network = self.network
+            config.trustedPeers0conf = [
                 Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId
-            ],
-            perChannelReserveSats: UInt64(0)
-        )
-        config.anchorChannelsConfig = .some(anchor_cfg)
-        
-
-        let nodeBuilder = Builder.fromConfig(config: config)
-        nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: nil)
-
-        switch self.network {
-        case .bitcoin:
-            nodeBuilder.setGossipSourceRgs(
-                rgsServerUrl: Constants.Config.RGSServerURLNetwork.bitcoin
+            ]
+            let anchor_cfg = AnchorChannelsConfig(
+                trustedPeersNoReserve: [
+                    Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId
+                ],
+                perChannelReserveSats: UInt64(0)
             )
-            self.networkColor = Constants.BitcoinNetworkColor.bitcoin.color
-        case .testnet:
-            nodeBuilder.setGossipSourceRgs(
-                rgsServerUrl: Constants.Config.RGSServerURLNetwork.testnet
-            )
-            self.networkColor = Constants.BitcoinNetworkColor.testnet.color
-        case .signet:
-            nodeBuilder.setGossipSourceRgs(
-                rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
-            )
-            nodeBuilder.setLiquiditySourceLsps2(
-                nodeId: Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId,
-                address: Constants.Config.LiquiditySourceLsps2.Signet.megalith.address,
-                token: Constants.Config.LiquiditySourceLsps2.Signet.megalith.token
-            )
-            self.networkColor = Constants.BitcoinNetworkColor.signet.color
-        case .regtest:
-            self.networkColor = Constants.BitcoinNetworkColor.regtest.color
-        }
-
-        let mnemonic: String
-        do {
-            let backupInfo = try keyService.getBackupInfo()
-            if backupInfo.mnemonic == "" {
-                let newMnemonic = generateEntropyMnemonic()
-                let backupInfo = BackupInfo(
-                    mnemonic: newMnemonic,
-                    networkString: self.network.description,
-                    serverURL: self.server.url
+            config.anchorChannelsConfig = .some(anchor_cfg)
+            let nodeBuilder = Builder.fromConfig(config: config)
+            nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: nil)
+            switch self.network {
+            case .bitcoin:
+                nodeBuilder.setGossipSourceRgs(
+                    rgsServerUrl: Constants.Config.RGSServerURLNetwork.bitcoin
                 )
-                try? keyService.saveBackupInfo(backupInfo)
-                mnemonic = newMnemonic
-            } else {
-                mnemonic = backupInfo.mnemonic
+                self.networkColor = Constants.BitcoinNetworkColor.bitcoin.color
+            case .testnet:
+                nodeBuilder.setGossipSourceRgs(
+                    rgsServerUrl: Constants.Config.RGSServerURLNetwork.testnet
+                )
+                self.networkColor = Constants.BitcoinNetworkColor.testnet.color
+            case .signet:
+                nodeBuilder.setGossipSourceRgs(
+                    rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
+                )
+                nodeBuilder.setLiquiditySourceLsps2(
+                    nodeId: Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId,
+                    address: Constants.Config.LiquiditySourceLsps2.Signet.megalith.address,
+                    token: Constants.Config.LiquiditySourceLsps2.Signet.megalith.token
+                )
+                self.networkColor = Constants.BitcoinNetworkColor.signet.color
+            case .regtest:
+                self.networkColor = Constants.BitcoinNetworkColor.regtest.color
             }
-        } catch {
-            let newMnemonic = generateEntropyMnemonic()
-            let backupInfo = BackupInfo(
-                mnemonic: newMnemonic,
-                networkString: self.network.description,
-                serverURL: self.server.url
-            )
-            try? keyService.saveBackupInfo(backupInfo)
-            mnemonic = newMnemonic
+            let mnemonic = backupInfo.mnemonic
+            nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
+            let ldkNode = try! nodeBuilder.build()
+            self.ldkNode = ldkNode
+        } else {
+            fatalError("No mnemonic found in keychain. Wallet must be created explicitly.")
         }
-        nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
-
-        let ldkNode = try! nodeBuilder.build()  // Handle error instead of "!"
-        self.ldkNode = ldkNode
     }
 
     func start() async throws {
