@@ -351,11 +351,14 @@ extension LightningNodeService {
         Task {
             while true {
                 let event = await ldkNode.nextEventAsync()
+                // Ensure event is handled before posting notification
+                if event != nil {
+                    try? ldkNode.eventHandled()
+                }
                 NotificationCenter.default.post(
                     name: .ldkEventReceived,
                     object: event
                 )
-                try? ldkNode.eventHandled()
             }
         }
     }
