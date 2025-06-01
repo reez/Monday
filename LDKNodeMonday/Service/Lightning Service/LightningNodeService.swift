@@ -19,7 +19,7 @@ class LightningNodeService {
             defer { lock.unlock() }
             if _shared == nil {
                 fatalError(
-                    "LightningNodeService.shared must be set using createAndSetShared() before use."
+                    "LightningNodeService.shared must be set using initializeShared() before use."
                 )
             }
             return _shared!
@@ -415,7 +415,7 @@ public struct LightningNodeClient {
 }
 
 extension LightningNodeClient {
-    /// NOTE: LightningNodeService.shared must be set via createAndSetShared() before using .live
+    /// NOTE: LightningNodeService.shared must be set via initializeShared() before using .live
     static let live = Self(
         start: { try await LightningNodeService.shared.start() },
         stop: { try LightningNodeService.shared.stop() },
