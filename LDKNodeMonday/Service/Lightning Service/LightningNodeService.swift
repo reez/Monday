@@ -18,7 +18,9 @@ class LightningNodeService {
             lock.lock()
             defer { lock.unlock() }
             if _shared == nil {
-                fatalError("LightningNodeService.shared must be set using createAndSetShared() before use.")
+                fatalError(
+                    "LightningNodeService.shared must be set using createAndSetShared() before use."
+                )
             }
             return _shared!
         }
@@ -41,18 +43,30 @@ class LightningNodeService {
         self.server = server
     }
 
-
     static func create(keyService: KeyClient = .live) async throws -> LightningNodeService {
         let backupInfo = try? KeyClient.live.getBackupInfo()
         let network: Network
         let server: EsploraServer
         if let backupInfo {
             guard let n = Network(stringValue: backupInfo.networkString) else {
-                throw NSError(domain: "LightningNodeService", code: 1, userInfo: [NSLocalizedDescriptionKey: "No Network found in BackupInfo"])
+                throw NSError(
+                    domain: "LightningNodeService",
+                    code: 1,
+                    userInfo: [NSLocalizedDescriptionKey: "No Network found in BackupInfo"]
+                )
             }
             network = n
-            guard let s = EsploraServer(URLString: backupInfo.serverURL) ?? availableServers(network: n).first else {
-                throw NSError(domain: "LightningNodeService", code: 2, userInfo: [NSLocalizedDescriptionKey: "No Esplora servers available for \(network)"])
+            guard
+                let s = EsploraServer(URLString: backupInfo.serverURL)
+                    ?? availableServers(network: n).first
+            else {
+                throw NSError(
+                    domain: "LightningNodeService",
+                    code: 2,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "No Esplora servers available for \(network)"
+                    ]
+                )
             }
             server = s
         } else {
@@ -82,13 +96,19 @@ class LightningNodeService {
         var networkColor = Color.black
         switch network {
         case .bitcoin:
-            nodeBuilder.setGossipSourceRgs(rgsServerUrl: Constants.Config.RGSServerURLNetwork.bitcoin)
+            nodeBuilder.setGossipSourceRgs(
+                rgsServerUrl: Constants.Config.RGSServerURLNetwork.bitcoin
+            )
             networkColor = Constants.BitcoinNetworkColor.bitcoin.color
         case .testnet:
-            nodeBuilder.setGossipSourceRgs(rgsServerUrl: Constants.Config.RGSServerURLNetwork.testnet)
+            nodeBuilder.setGossipSourceRgs(
+                rgsServerUrl: Constants.Config.RGSServerURLNetwork.testnet
+            )
             networkColor = Constants.BitcoinNetworkColor.testnet.color
         case .signet:
-            nodeBuilder.setGossipSourceRgs(rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet)
+            nodeBuilder.setGossipSourceRgs(
+                rgsServerUrl: Constants.Config.RGSServerURLNetwork.signet
+            )
             nodeBuilder.setLiquiditySourceLsps2(
                 nodeId: Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId,
                 address: Constants.Config.LiquiditySourceLsps2.Signet.megalith.address,
@@ -126,7 +146,12 @@ class LightningNodeService {
         }
         nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
         let ldkNode = try await nodeBuilder.build()
-        let service = LightningNodeService(ldkNode: ldkNode, keyService: keyService, network: network, server: server)
+        let service = LightningNodeService(
+            ldkNode: ldkNode,
+            keyService: keyService,
+            network: network,
+            server: server
+        )
         service.networkColor = networkColor
         return service
     }
