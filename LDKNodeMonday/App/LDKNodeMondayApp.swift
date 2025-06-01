@@ -26,13 +26,19 @@ struct LDKNodeMondayApp: App {
                         case .onboarding:
                             OnboardingView(
                                 viewModel: .init(
-                                    walletClient: .constant(walletClient)
+                                    walletClient: Binding(
+                                        get: { self.walletClient! },
+                                        set: { self.walletClient = $0 }
+                                    )
                                 )
                             )
                         case .wallet:
                             BitcoinView(
                                 viewModel: .init(
-                                    walletClient: .constant(walletClient),
+                                    walletClient: Binding(
+                                        get: { self.walletClient! },
+                                        set: { self.walletClient = $0 }
+                                    ),
                                     priceClient: .live,
                                     lightningClient: walletClient.lightningClient
                                 ),
