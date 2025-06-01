@@ -169,6 +169,6 @@ struct NetworkSettingsView: View {
 
 #if DEBUG
     #Preview {
-        NetworkSettingsView(walletClient: .constant(WalletClient(appMode: AppMode.mock)))
+        NetworkSettingsView(walletClient: .constant(WalletClient.mock))
     }
 #endif
