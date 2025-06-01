@@ -57,7 +57,11 @@ public class WalletClient {
 
     func start() async {
         var backupInfo: BackupInfo?
-        backupInfo = try? KeyClient.live.getBackupInfo()
+        do {
+            backupInfo = try keyClient.getBackupInfo()
+        } catch {
+            backupInfo = nil
+        }
 
         if backupInfo != nil {
             do {
@@ -75,6 +79,7 @@ public class WalletClient {
                 }
             }
         } else {
+            // No backup info: go to onboarding, do NOT create wallet automatically
             await MainActor.run {
                 self.appState = .onboarding
             }
@@ -89,12 +94,17 @@ public class WalletClient {
         do {
             await MainActor.run {
                 self.appState = .loading
-                switch appMode {
-                case .mock:
+            }
+            switch appMode {
+            case .mock:
+                await MainActor.run {
                     self.appMode = .mock
                     self.keyClient = .mock
                     self.lightningClient = .mock
-                default:
+                }
+            default:
+                try await LightningNodeService.initializeShared()
+                await MainActor.run {
                     self.appMode = .live
                     self.keyClient = .live
                     self.lightningClient = .live
@@ -124,6 +134,8 @@ public class WalletClient {
             try lightningClient.deleteDocuments()
             try lightningClient.deleteWallet()
             try lightningClient.reset()
+            // Also delete backup info from keychain
+            try keyClient.deleteBackupInfo()
 
             await MainActor.run {
                 self.appState = .onboarding

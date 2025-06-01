@@ -10,6 +10,14 @@ import Foundation
 import LDKNode
 import SwiftUI
 
+// MARK: - PaymentSendState
+
+enum PaymentSendState {
+    case pending
+    case succeeded
+    case failed
+}
+
 @MainActor
 class SendViewModel: ObservableObject {
     let lightningClient: LightningNodeClient
@@ -60,12 +68,11 @@ class SendViewModel: ObservableObject {
 
     func send() async throws {
         do {
-            var paymentId: String? = nil
             switch paymentAddress?.type {
             case .bip21:
                 let uriString = paymentAddress?.address ?? ""
-                let result = try await lightningClient.send(uriString)
-                if let id = (result as? QrPaymentResult)?.id { paymentId = id }
+                _ = try await lightningClient.send(uriString)
+                self.sentPaymentId = nil  // No paymentId for BIP21
             case .onchain:
                 let uriString = unifiedQRString(
                     onchainAddress: paymentAddress?.address ?? "",
@@ -74,14 +81,15 @@ class SendViewModel: ObservableObject {
                     bolt11: nil,
                     bolt12: nil
                 )
-                let result = try await lightningClient.send(uriString)
-                if let id = (result as? QrPaymentResult)?.id { paymentId = id }
+                _ = try await lightningClient.send(uriString)
+                self.sentPaymentId = nil  // No paymentId for onchain
             case .bolt11:
                 let result = try await lightningClient.sendBolt11Payment(
                     Bolt11Invoice(paymentAddress?.address ?? ""),
                     nil
                 )
-                paymentId = result.value
+                self.sentPaymentId = result  // result is PaymentId (String)
+                self.paymentSendState = .pending
             default:
                 debugPrint("Unhandled paymentAddress type")
                 DispatchQueue.main.async {
@@ -90,10 +98,6 @@ class SendViewModel: ObservableObject {
                         detail: "The payment address type is not supported."
                     )
                 }
-            }
-            if let paymentId = paymentId {
-                self.sentPaymentId = paymentId
-                self.paymentSendState = .pending
             }
         } catch let error as NodeError {
             NotificationCenter.default.post(name: .ldkErrorReceived, object: error)

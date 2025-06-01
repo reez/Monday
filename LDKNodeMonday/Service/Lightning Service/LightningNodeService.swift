@@ -174,7 +174,7 @@ class LightningNodeService {
             try LightningNodeService.shared.stop()
         }
         LightningNodeService._shared = nil
-        try await LightningNodeService.shared.start()
+        try await LightningNodeService.initializeShared()
     }
 
     func reset() throws {
