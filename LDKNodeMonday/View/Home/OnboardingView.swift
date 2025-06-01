@@ -138,7 +138,7 @@ struct OnboardingView: View {
     #Preview {
         OnboardingView(
             viewModel: .init(
-                walletClient: .constant(WalletClient(appMode: AppMode.mock))
+                walletClient: .constant(WalletClient.mock)
             )
         )
     }

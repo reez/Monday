@@ -340,11 +340,11 @@ extension DisplayBalanceType {
     #Preview {
         BitcoinView(
             viewModel: .init(
-                walletClient: .constant(WalletClient(appMode: AppMode.mock)),
+                walletClient: .constant(WalletClient.mock),
                 priceClient: .mock,
                 lightningClient: .mock
             ),
-            sendNavigationPath: .constant(.init())
+            sendNavigationPath: .constant(NavigationPath())
         )
     }
 #endif

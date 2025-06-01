@@ -20,17 +20,23 @@ public class WalletClient {
     public var appState = AppState.loading
     public var appError: Error?
 
-    public init(appMode: AppMode) {
+    private init(appMode: AppMode, keyClient: KeyClient, lightningClient: LightningNodeClient) {
         self.appMode = appMode
+        self.keyClient = keyClient
+        self.lightningClient = lightningClient
+    }
+
+    public static func create(appMode: AppMode) async throws -> WalletClient {
         switch appMode {
         case .live:
-            self.keyClient = .live
-            self.lightningClient = .live
+            try await LightningNodeService.initializeShared()
+            return WalletClient(appMode: .live, keyClient: .live, lightningClient: .live)
         case .mock:
-            self.keyClient = .mock
-            self.lightningClient = .mock
+            return WalletClient(appMode: .mock, keyClient: .mock, lightningClient: .mock)
         }
     }
+
+    public static let mock = WalletClient(appMode: .mock, keyClient: .mock, lightningClient: .mock)
 
     func createWallet(seedPhrase: String, network: Network, server: EsploraServer) async {
         do {
