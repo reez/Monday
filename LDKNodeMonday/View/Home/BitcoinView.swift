@@ -91,7 +91,10 @@ struct BitcoinView: View {
                 hideAfter: 5.0,
                 animation: .spring,
                 modifierType: .slide
-            )
+            ),
+            onDismiss: {
+                self.eventService.lastEvent = nil
+            }
         ) {
             EventItemView(event: eventService.lastEvent, price: viewModel.price)
                 .padding(.horizontal, 40)
