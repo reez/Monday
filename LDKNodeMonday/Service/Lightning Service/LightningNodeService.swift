@@ -92,7 +92,7 @@ class LightningNodeService {
             Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId
         ]
         //        config.logLevel = .trace
-        
+
         let anchor_cfg = AnchorChannelsConfig(
             trustedPeersNoReserve: [
                 Constants.Config.LiquiditySourceLsps2.Signet.megalith.nodeId
@@ -100,7 +100,6 @@ class LightningNodeService {
             perChannelReserveSats: UInt64(0)
         )
         config.anchorChannelsConfig = .some(anchor_cfg)
-        
 
         let nodeBuilder = Builder.fromConfig(config: config)
         nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: nil)
