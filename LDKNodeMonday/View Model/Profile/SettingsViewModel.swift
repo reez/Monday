@@ -17,7 +17,7 @@ class SettingsViewModel: ObservableObject {
     @Published var esploraURL: String?
     @Published var status: NodeStatus?
     @Published var isStatusFinished: Bool = false
-    @State var currentLSP: LightningServiceProvider
+    @Published var currentLSP: LightningServiceProvider
 
     let lightningClient: LightningNodeClient
     let keyClient: KeyClient

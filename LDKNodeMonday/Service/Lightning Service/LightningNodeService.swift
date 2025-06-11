@@ -94,11 +94,11 @@ class LightningNodeService {
         config.storageDirPath = networkPath
         //        config.logDirPath = logPath
         config.network = self.network
-        config.trustedPeers0conf = [LightningServiceProvider.megalith_signet.nodeId]
+        config.trustedPeers0conf = [self.lsp.nodeId]
         //        config.logLevel = .trace
 
         let anchor_cfg = AnchorChannelsConfig(
-            trustedPeersNoReserve: [LightningServiceProvider.megalith_signet.nodeId],
+            trustedPeersNoReserve: [self.lsp.nodeId],
             perChannelReserveSats: UInt64(0)
         )
         config.anchorChannelsConfig = .some(anchor_cfg)
