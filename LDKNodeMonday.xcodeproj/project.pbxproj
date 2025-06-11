@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65269D402DF9C32F00EB63F3 /* LSPSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65269D3F2DF9C32F00EB63F3 /* LSPSettingsView.swift */; };
 		652CF3A62D6DFEE200D700D0 /* AmountEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652CF3A52D6DFEDC00D700D0 /* AmountEntryView.swift */; };
 		655574802D398A750064F859 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555747F2D398A750064F859 /* LoadingView.swift */; };
 		655574822D3994E10064F859 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655574812D3994E10064F859 /* ErrorView.swift */; };
@@ -96,6 +97,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		65269D3F2DF9C32F00EB63F3 /* LSPSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPSettingsView.swift; sourceTree = "<group>"; };
 		652CF3A52D6DFEDC00D700D0 /* AmountEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountEntryView.swift; sourceTree = "<group>"; };
 		6555747F2D398A750064F859 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		655574812D3994E10064F859 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -469,6 +471,7 @@
 				AE551D432B8ECCAD0034B61E /* Peers */,
 				AE49E86E2A253AAE002623E8 /* Channel */,
 				AE49E87A2A2544DC002623E8 /* Danger */,
+				65269D3F2DF9C32F00EB63F3 /* LSPSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -678,6 +681,7 @@
 				AEE8FDDD29F855E700406DD9 /* String+Extensions.swift in Sources */,
 				AE00550E2B479EF000100797 /* OnboardingView.swift in Sources */,
 				AEBFD8B02B8A97DB0024E3F7 /* LightningServiceProvider.swift in Sources */,
+				65269D402DF9C32F00EB63F3 /* LSPSettingsView.swift in Sources */,
 				AE6BB56F2A008CBA009E16E3 /* UInt64+Extensions.swift in Sources */,
 				AE49E85A2A2536D4002623E8 /* ChannelAddViewModel.swift in Sources */,
 				AE0055142B4895B500100797 /* SeedViewModel.swift in Sources */,

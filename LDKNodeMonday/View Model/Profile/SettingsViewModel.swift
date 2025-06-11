@@ -17,6 +17,7 @@ class SettingsViewModel: ObservableObject {
     @Published var esploraURL: String?
     @Published var status: NodeStatus?
     @Published var isStatusFinished: Bool = false
+    @Published var currentLSP: LightningServiceProvider
 
     let lightningClient: LightningNodeClient
     let keyClient: KeyClient
@@ -29,6 +30,7 @@ class SettingsViewModel: ObservableObject {
         _walletClient = walletClient
         self.keyClient = keyClient
         self.lightningClient = lightningClient
+        self.currentLSP = walletClient.wrappedValue.lsp
 
         // Call these immediately to populate data, wasnt immediately doing it otherwise?
         getNodeID()
