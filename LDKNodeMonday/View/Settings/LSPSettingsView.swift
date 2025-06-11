@@ -33,7 +33,7 @@ struct LSPSettingsView: View {
                     }
                     .pickerStyle(.navigationLink)
                     .accessibilityLabel("Select LSP")
-                    .onChange(of: currentLSP) { _ in
+                    .onChange(of: currentLSP) { oldValue, newValue in
                         if walletClient.appState == .onboarding {
                             walletClient.lsp = currentLSP
                         } else {
