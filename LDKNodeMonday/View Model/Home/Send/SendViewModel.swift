@@ -50,7 +50,7 @@ class SendViewModel: ObservableObject {
                 _ = try await lightningClient.send(uriString)
             case .bolt11:
                 _ = try await lightningClient.sendBolt11Payment(
-                    Bolt11Invoice(paymentAddress?.address ?? ""),
+                    Bolt11Invoice.fromStr(invoiceStr: paymentAddress?.address ?? ""),
                     nil
                 )
             default:

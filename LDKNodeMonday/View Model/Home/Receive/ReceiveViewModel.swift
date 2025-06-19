@@ -112,9 +112,10 @@ class ReceiveViewModel: ObservableObject {
                 nil,
                 needsJIT
             )
+            let bolt11InvoiceString = bolt11Invoice.debugDescription
             bolt11PaymentAddress = PaymentAddress(
                 type: needsJIT ? .bolt11Jit : .bolt11,
-                address: bolt11Invoice
+                address: bolt11InvoiceString
             )
         } catch {
             debugPrint("Error generating Bolt11:", error.localizedDescription)
