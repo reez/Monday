@@ -112,7 +112,7 @@ class ReceiveViewModel: ObservableObject {
                 nil,
                 needsJIT
             )
-            let bolt11InvoiceString = bolt11Invoice.debugDescription
+            let bolt11InvoiceString = bolt11Invoice.description
             bolt11PaymentAddress = PaymentAddress(
                 type: needsJIT ? .bolt11Jit : .bolt11,
                 address: bolt11InvoiceString
