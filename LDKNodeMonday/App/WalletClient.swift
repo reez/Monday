@@ -16,7 +16,7 @@ public class WalletClient {
     public var lightningClient: LightningNodeClient
     public var network = Network.signet
     public var server = EsploraServer.mutiny_signet
-    public var lsp = LightningServiceProvider.megalith_signet
+    public var lsp = LightningServiceProvider.see_signet
     public var appMode: AppMode
     public var appState = AppState.loading
     public var appError: Error?

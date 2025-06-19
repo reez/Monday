@@ -57,12 +57,12 @@ class LightningNodeService {
             self.server = server
             self.lsp =
                 LightningServiceProvider.getByNodeId(
-                    backupInfo.lspNodeId ?? LightningServiceProvider.megalith_signet.nodeId
-                ) ?? .megalith_signet
+                    backupInfo.lspNodeId ?? LightningServiceProvider.see_signet.nodeId
+                ) ?? .see_signet
         } else {
             self.network = .signet
             self.server = .mutiny_signet
-            self.lsp = .megalith_signet
+            self.lsp = .see_signet
         }
 
         self.keyService = keyService
