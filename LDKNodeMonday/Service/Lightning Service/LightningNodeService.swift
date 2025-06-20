@@ -167,13 +167,13 @@ class LightningNodeService {
             if case BuildError.WalletSetupFailed = error {
                 print("Cleaning up corrupted wallet data...")
                 try? FileManager.default.removeItem(atPath: networkPath)
-                
+
                 // Recreate the directories
                 try? FileManager.default.createDirectory(
                     atPath: logPath,
                     withIntermediateDirectories: true
                 )
-                
+
                 // Try building again with clean state
                 let ldkNode = try! nodeBuilder.build()
                 self.ldkNode = ldkNode
@@ -203,15 +203,15 @@ class LightningNodeService {
         if LightningNodeService.shared.status().isRunning {
             try LightningNodeService.shared.stop()
         }
-        
+
         // Clean up wallet data to prevent conflicts on next initialization
         let documentsPath = FileManager.default.getDocumentsDirectoryPath()
         let networkPath = URL(fileURLWithPath: documentsPath)
             .appendingPathComponent(network.description)
             .path
-        
+
         try? FileManager.default.removeItem(atPath: networkPath)
-        
+
         LightningNodeService._shared = nil
     }
 
