@@ -158,8 +158,30 @@ class LightningNodeService {
         }
         nodeBuilder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
 
-        let ldkNode = try! nodeBuilder.build()  // Handle error instead of "!"
-        self.ldkNode = ldkNode
+        do {
+            let ldkNode = try nodeBuilder.build()
+            self.ldkNode = ldkNode
+        } catch {
+            print("Failed to build node, attempting recovery: \(error)")
+            // If wallet setup fails, clean up and try once more
+            if case BuildError.WalletSetupFailed = error {
+                print("Cleaning up corrupted wallet data...")
+                try? FileManager.default.removeItem(atPath: networkPath)
+
+                // Recreate the directories
+                try? FileManager.default.createDirectory(
+                    atPath: logPath,
+                    withIntermediateDirectories: true
+                )
+
+                // Try building again with clean state
+                let ldkNode = try! nodeBuilder.build()
+                self.ldkNode = ldkNode
+            } else {
+                // For other errors, fail as before
+                fatalError("Unexpected error building node: \(error)")
+            }
+        }
     }
 
     func start() async throws {
@@ -171,17 +193,25 @@ class LightningNodeService {
     }
 
     func restart() async throws {
-        if LightningNodeService.shared.status().isRunning {
-            try LightningNodeService.shared.stop()
+        if self.status().isRunning {
+            try self.stop()
         }
-        LightningNodeService._shared = nil
-        try await LightningNodeService.shared.start()
+        try await self.start()
     }
 
     func reset() throws {
         if LightningNodeService.shared.status().isRunning {
             try LightningNodeService.shared.stop()
         }
+
+        // Clean up wallet data to prevent conflicts on next initialization
+        let documentsPath = FileManager.default.getDocumentsDirectoryPath()
+        let networkPath = URL(fileURLWithPath: documentsPath)
+            .appendingPathComponent(network.description)
+            .path
+
+        try? FileManager.default.removeItem(atPath: networkPath)
+
         LightningNodeService._shared = nil
     }
 
