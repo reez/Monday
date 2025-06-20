@@ -171,17 +171,25 @@ class LightningNodeService {
     }
 
     func restart() async throws {
-        if LightningNodeService.shared.status().isRunning {
-            try LightningNodeService.shared.stop()
+        if self.status().isRunning {
+            try self.stop()
         }
-        LightningNodeService._shared = nil
-        try await LightningNodeService.shared.start()
+        try await self.start()
     }
 
     func reset() throws {
         if LightningNodeService.shared.status().isRunning {
             try LightningNodeService.shared.stop()
         }
+        
+        // Clean up wallet data to prevent conflicts on next initialization
+        let documentsPath = FileManager.default.getDocumentsDirectoryPath()
+        let networkPath = URL(fileURLWithPath: documentsPath)
+            .appendingPathComponent(network.description)
+            .path
+        
+        try? FileManager.default.removeItem(atPath: networkPath)
+        
         LightningNodeService._shared = nil
     }
 
