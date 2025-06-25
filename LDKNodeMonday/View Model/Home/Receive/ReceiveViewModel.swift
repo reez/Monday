@@ -105,7 +105,7 @@ class ReceiveViewModel: ObservableObject {
         // Bolt11
         let receiveCapacity = maxReceiveCapacity()
         let needsJIT = amountSat.satsAsMsats > receiveCapacity
-        
+
         // Always try to generate bolt11 invoice
         // The needsJIT flag will handle JIT channel creation when capacity is insufficient
         do {
