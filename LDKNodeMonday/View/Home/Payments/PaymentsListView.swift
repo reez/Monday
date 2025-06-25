@@ -39,12 +39,19 @@ struct PaymentsListView: View {
         List {
             Section {
                 if payments.isEmpty {
-                    Text("No activity, yet.\nGo get some bitcoin!")
-                        .font(.caption)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, minHeight: 400)  // Ensure vertical space
-                        .listRowSeparator(.hidden)
+                    VStack(spacing: 20) {
+                        Text("No activity, yet.\nGo get some bitcoin!")
+                            .font(.body)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.secondary)
+
+                        Image("super")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 150, height: 150)
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 400)  // Ensure vertical space
+                    .listRowSeparator(.hidden)
                 } else {
                     // List payments
                     // Filter out: .pending that are older than 30 minutes or 0 amount
@@ -161,6 +168,13 @@ struct PaymentItemView: View {
     #Preview {
         PaymentsListView(
             payments: .constant(mockPayments),
+            displayBalanceType: .constant(.fiatSats),
+            price: 75000.14
+        )
+    }
+    #Preview {
+        PaymentsListView(
+            payments: .constant([]),
             displayBalanceType: .constant(.fiatSats),
             price: 75000.14
         )
