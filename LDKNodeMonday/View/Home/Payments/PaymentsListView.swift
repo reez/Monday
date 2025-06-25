@@ -54,14 +54,13 @@ struct PaymentsListView: View {
                     .listRowSeparator(.hidden)
                 } else {
                     // List payments
-                    // Filter out: .pending that are older than 30 minutes or 0 amount
+                    // Filter out: .pending and .failed that are older than 30 minutes or 0 amount
                     ForEach(
                         payments
                             .filter {
-                                $0.status != .pending
-                                    || ($0.status == .pending
-                                        && Double($0.latestUpdateTimestamp) > Date()
-                                            .timeIntervalSince1970 - 1800
+                                ($0.status != .pending && $0.status != .failed)
+                                    || (Double($0.latestUpdateTimestamp) > Date()
+                                        .timeIntervalSince1970 - 1800
                                         && ($0.amountMsat ?? 0) > 0)
                             }
                             .sorted { $0.latestUpdateTimestamp > $1.latestUpdateTimestamp },
