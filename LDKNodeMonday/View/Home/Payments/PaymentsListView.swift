@@ -18,6 +18,7 @@ struct PaymentsListView: View {
     @Binding var displayBalanceType: DisplayBalanceType
     var price: Double
     @State private var selectedPayment: PaymentDetails?
+    @State private var hasLoaded = false
 
     var sections: [PaymentSection] {
         orderedStatuses.compactMap { status -> PaymentSection? in
@@ -38,7 +39,11 @@ struct PaymentsListView: View {
     var body: some View {
         List {
             Section {
-                if payments.isEmpty {
+                if !hasLoaded {
+                    EmptyView()
+                        .frame(maxWidth: .infinity, minHeight: 400)
+                        .listRowSeparator(.hidden)
+                } else if payments.isEmpty {
                     VStack(spacing: 20) {
                         Text("No activity, yet.\nGo get some bitcoin!")
                             .font(.body)
@@ -90,6 +95,14 @@ struct PaymentsListView: View {
         }
         .listStyle(.plain)
         .padding(.horizontal)
+        .onAppear {
+            DispatchQueue.main.async {
+                hasLoaded = true
+            }
+        }
+        .onChange(of: payments) {
+            hasLoaded = true
+        }
         .sheet(item: $selectedPayment) { paymentDetail in
             PaymentDetailView(
                 payment: paymentDetail,
