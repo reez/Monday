@@ -34,7 +34,8 @@ class ReceiveViewModel: ObservableObject {
         await MainActor.run {
             self.addressGenerationStatus = .generating
         }
-        let needsJIT = amountSat.satsAsMsats > maxReceiveCapacity()
+        let receiveCapacity = maxReceiveCapacity()
+        let needsJIT = amountSat.satsAsMsats > receiveCapacity || (amountSat == 0 && receiveCapacity == 0)
         if needsJIT {
             // Generate onchain and bolt11Jit, create BIP21 from those
             let addresses = await generateUnifiedWithJIT()
@@ -104,7 +105,7 @@ class ReceiveViewModel: ObservableObject {
 
         // Bolt11
         let receiveCapacity = maxReceiveCapacity()
-        let needsJIT = amountSat.satsAsMsats > receiveCapacity
+        let needsJIT = amountSat.satsAsMsats > receiveCapacity || (amountSat == 0 && receiveCapacity == 0)
 
         // Always try to generate bolt11 invoice
         // The needsJIT flag will handle JIT channel creation when capacity is insufficient
