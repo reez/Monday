@@ -103,22 +103,29 @@ class ReceiveViewModel: ObservableObject {
         }
 
         // Bolt11
-        do {
-            let needsJIT = amountSat.satsAsMsats > maxReceiveCapacity()
-            let bolt11Invoice = try await lightningClient.bolt11Payment(
-                amountSat.satsAsMsats,
-                Bolt11InvoiceDescription.direct(description: message),  //message,
-                expirySecs,
-                nil,
-                needsJIT
-            )
-            let bolt11InvoiceString = bolt11Invoice.description
-            bolt11PaymentAddress = PaymentAddress(
-                type: needsJIT ? .bolt11Jit : .bolt11,
-                address: bolt11InvoiceString
-            )
-        } catch {
-            debugPrint("Error generating Bolt11:", error.localizedDescription)
+        let receiveCapacity = maxReceiveCapacity()
+        let needsJIT = amountSat.satsAsMsats > receiveCapacity
+        
+        // Skip regular bolt11 if we have zero capacity and non-zero amount (it will always fail)
+        if receiveCapacity == 0 && amountSat > 0 && !needsJIT {
+            // Don't generate regular bolt11 invoice
+        } else {
+            do {
+                let bolt11Invoice = try await lightningClient.bolt11Payment(
+                    amountSat.satsAsMsats,
+                    Bolt11InvoiceDescription.direct(description: message),  //message,
+                    expirySecs,
+                    nil,
+                    needsJIT
+                )
+                let bolt11InvoiceString = bolt11Invoice.description
+                bolt11PaymentAddress = PaymentAddress(
+                    type: needsJIT ? .bolt11Jit : .bolt11,
+                    address: bolt11InvoiceString
+                )
+            } catch {
+                debugPrint("Error generating Bolt11:", error.localizedDescription)
+            }
         }
 
         // Unified
