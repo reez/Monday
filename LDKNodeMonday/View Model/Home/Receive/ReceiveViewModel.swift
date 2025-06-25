@@ -106,26 +106,23 @@ class ReceiveViewModel: ObservableObject {
         let receiveCapacity = maxReceiveCapacity()
         let needsJIT = amountSat.satsAsMsats > receiveCapacity
         
-        // Skip regular bolt11 if we have zero capacity and non-zero amount (it will always fail)
-        // When receiveCapacity == 0 and amountSat > 0, needsJIT will always be true
-        // So we only generate JIT invoices in this case
-        if !(receiveCapacity == 0 && amountSat > 0 && needsJIT) {
-            do {
-                let bolt11Invoice = try await lightningClient.bolt11Payment(
-                    amountSat.satsAsMsats,
-                    Bolt11InvoiceDescription.direct(description: message),  //message,
-                    expirySecs,
-                    nil,
-                    needsJIT
-                )
-                let bolt11InvoiceString = bolt11Invoice.description
-                bolt11PaymentAddress = PaymentAddress(
-                    type: needsJIT ? .bolt11Jit : .bolt11,
-                    address: bolt11InvoiceString
-                )
-            } catch {
-                debugPrint("Error generating Bolt11:", error.localizedDescription)
-            }
+        // Always try to generate bolt11 invoice
+        // The needsJIT flag will handle JIT channel creation when capacity is insufficient
+        do {
+            let bolt11Invoice = try await lightningClient.bolt11Payment(
+                amountSat.satsAsMsats,
+                Bolt11InvoiceDescription.direct(description: message),  //message,
+                expirySecs,
+                nil,
+                needsJIT
+            )
+            let bolt11InvoiceString = bolt11Invoice.description
+            bolt11PaymentAddress = PaymentAddress(
+                type: needsJIT ? .bolt11Jit : .bolt11,
+                address: bolt11InvoiceString
+            )
+        } catch {
+            debugPrint("Error generating Bolt11:", error.localizedDescription)
         }
 
         // Unified
