@@ -107,9 +107,9 @@ class ReceiveViewModel: ObservableObject {
         let needsJIT = amountSat.satsAsMsats > receiveCapacity
         
         // Skip regular bolt11 if we have zero capacity and non-zero amount (it will always fail)
-        if receiveCapacity == 0 && amountSat > 0 && !needsJIT {
-            // Don't generate regular bolt11 invoice
-        } else {
+        // When receiveCapacity == 0 and amountSat > 0, needsJIT will always be true
+        // So we only generate JIT invoices in this case
+        if !(receiveCapacity == 0 && amountSat > 0 && needsJIT) {
             do {
                 let bolt11Invoice = try await lightningClient.bolt11Payment(
                     amountSat.satsAsMsats,
