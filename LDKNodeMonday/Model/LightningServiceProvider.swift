@@ -22,8 +22,8 @@ public struct LightningServiceProvider: Hashable {
     /// [Olympus Docs](https://docs.zeusln.app/lsp/api/flow/)
     static let olympus_signet = LightningServiceProvider(
         name: "Olympus",
-        address: "45.79.192.236:9735",
-        nodeId: "031b301307574bbe9b9ac7b79cbe1700e31e544513eae0b5d7497483083f99e581",
+        address: "45.79.201.241:9735",
+        nodeId: "032ae843e4d7d177f151d021ac8044b0636ec72b1ce3ffcde5c04748db2517ab03",
         token: ""
     )
     static let lqwd_signet = LightningServiceProvider(
