@@ -52,7 +52,7 @@ public class WalletClient {
 
     func start() async {
         var backupInfo: BackupInfo?
-        backupInfo = try? KeyClient.live.getBackupInfo()
+        backupInfo = try? self.keyClient.getBackupInfo()
 
         if backupInfo != nil {
             do {
