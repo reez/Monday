@@ -63,7 +63,7 @@ public class WalletClient {
                     self.server = lightningClient.getServer()
                     
                     // Load LSP from keychain if available
-                    if let savedLSPNodeId = try? KeyClient.live.getLSP(),
+                    if let savedLSPNodeId = try? self.keyClient.getLSP(),
                        !savedLSPNodeId.isEmpty,
                        let savedLSP = LightningServiceProvider.getByNodeId(savedLSPNodeId) {
                         self.lsp = savedLSP
