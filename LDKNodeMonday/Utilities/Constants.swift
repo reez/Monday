@@ -156,9 +156,9 @@ public func availableServers(network: Network) -> [EsploraServer] {
 public func availableLSPs(network: Network) -> [LightningServiceProvider] {
     switch network {
     case .bitcoin:
-        return []
+        return [.olympus_mainnet]
     case .testnet:
-        return []
+        return [.olympus_testnet]
     case .regtest:
         return []
     case .signet:
