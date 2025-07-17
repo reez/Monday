@@ -160,6 +160,12 @@ struct BalanceHeader: View {
             return viewModel.balances.totalLightningBalanceSats.formatted(
                 .number.notation(.automatic)
             )
+        case .totalBip177:
+            return "₿" + viewModel.unifiedBalance.formattedBip177()
+        case .onchainBip177:
+            return "₿" + viewModel.balances.totalOnchainBalanceSats.formattedBip177()
+        case .lightningBip177:
+            return "₿" + viewModel.balances.totalLightningBalanceSats.formattedBip177()
         }
     }
 
@@ -171,23 +177,22 @@ struct BalanceHeader: View {
             return "₿" + viewModel.unifiedBalance.formattedSatsAsBtc()
         case .btcFiat:
             return viewModel.totalUSDValue
-        case .totalSats:
+        case .totalSats, .totalBip177:
             return "Total"
-        case .onchainSats:
+        case .onchainSats, .onchainBip177:
             return "Onchain"
-        case .lightningSats:
+        case .lightningSats, .lightningBip177:
             return "Lightning"
+
         }
     }
 
     var unitValue: String {
         switch displayBalanceType {
-        case .fiatBtc:
-            return ""
-        case .btcFiat:
-            return ""
-        default:
+        case .totalSats, .onchainSats, .lightningSats:
             return "sats"
+        default:
+            return ""
         }
     }
 }
@@ -312,6 +317,9 @@ public enum DisplayBalanceType: String {
     case totalSats
     case onchainSats
     case lightningSats
+    case onchainBip177
+    case lightningBip177
+    case totalBip177
 }
 
 extension DisplayBalanceType {
@@ -328,6 +336,12 @@ extension DisplayBalanceType {
         case .onchainSats:
             self = .lightningSats
         case .lightningSats:
+            self = .totalBip177
+        case .totalBip177:
+            self = .onchainBip177
+        case .onchainBip177:
+            self = .lightningBip177
+        case .lightningBip177:
             self = .fiatSats
         }
     }
