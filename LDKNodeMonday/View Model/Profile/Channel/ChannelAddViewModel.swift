@@ -48,6 +48,7 @@ class ChannelAddViewModel: ObservableObject {
                 channelConfig,
                 false
             )
+            try? lightningClient.syncWallets()
             DispatchQueue.main.async {
                 self.channelAddViewError = nil
                 self.isOpenChannelFinished = true

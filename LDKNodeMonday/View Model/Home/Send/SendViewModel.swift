@@ -38,9 +38,15 @@ class SendViewModel: ObservableObject {
             switch paymentAddress?.type {
             case .bip21:
                 let uriString = paymentAddress?.address ?? ""
-                _ = try await lightningClient.send(uriString)
+                let result = try await lightningClient.send(uriString)
+                if case .onchain = result {
+                    try? lightningClient.syncWallets()
+                }
             case .bolt12:
-                _ = try await lightningClient.send(paymentAddress?.address ?? "")
+                let result = try await lightningClient.send(paymentAddress?.address ?? "")
+                if case .onchain = result {
+                    try? lightningClient.syncWallets()
+                }
             case .onchain:
                 let uriString = unifiedQRString(
                     onchainAddress: paymentAddress?.address ?? "",
@@ -49,7 +55,10 @@ class SendViewModel: ObservableObject {
                     bolt11: nil,
                     bolt12: nil
                 )
-                _ = try await lightningClient.send(uriString)
+                let result = try await lightningClient.send(uriString)
+                if case .onchain = result {
+                    try? lightningClient.syncWallets()
+                }
             case .bolt11:
                 _ = try await lightningClient.sendBolt11Payment(
                     Bolt11Invoice.fromStr(invoiceStr: paymentAddress?.address ?? ""),
