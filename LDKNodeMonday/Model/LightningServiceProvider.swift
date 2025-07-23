@@ -20,10 +20,22 @@ public struct LightningServiceProvider: Hashable {
         token: "4GH1W3YW"
     )
     /// [Olympus Docs](https://docs.zeusln.app/lsp/api/flow/)
-    static let olympus_signet = LightningServiceProvider(
+    static let olympus_mainnet = LightningServiceProvider(
         name: "Olympus",
         address: "45.79.192.236:9735",
         nodeId: "031b301307574bbe9b9ac7b79cbe1700e31e544513eae0b5d7497483083f99e581",
+        token: ""
+    )
+    static let olympus_testnet = LightningServiceProvider(
+        name: "Olympus",
+        address: "139.144.22.237:9735",
+        nodeId: "03e84a109cd70e57864274932fc87c5e6434c59ebb8e6e7d28532219ba38f7f6df",
+        token: ""
+    )
+    static let olympus_signet = LightningServiceProvider(
+        name: "Olympus",
+        address: "45.79.201.241:9735",
+        nodeId: "032ae843e4d7d177f151d021ac8044b0636ec72b1ce3ffcde5c04748db2517ab03",
         token: ""
     )
     static let lqwd_signet = LightningServiceProvider(
@@ -42,6 +54,8 @@ public struct LightningServiceProvider: Hashable {
     static func getByNodeId(_ nodeId: String) -> LightningServiceProvider? {
         let allProviders: [LightningServiceProvider] = [
             .see_signet,
+            .olympus_mainnet,
+            .olympus_testnet,
             .olympus_signet,
             .lqwd_signet,
             .megalith_signet,
