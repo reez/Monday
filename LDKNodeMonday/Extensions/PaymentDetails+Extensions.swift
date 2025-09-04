@@ -96,7 +96,9 @@ extension PaymentDetails {
             case .fiatSats, .fiatBtc:
                 return satsAmount.formattedSatsAsUSD(price: price)
             case .btcFiat:
-                return satsAmount.formattedSatsAsBtc()
+                return "₿" + satsAmount.formattedSatsAsBtc()
+            case .onchainBip177, .lightningBip177, .totalBip177:
+                return "₿" + satsAmount.formattedBip177()
             default:
                 return satsAmount.formatted(.number.notation(.automatic))
             }
