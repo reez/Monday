@@ -111,6 +111,9 @@ class LightningNodeService {
         config.anchorChannelsConfig = .some(anchor_cfg)
 
         let nodeBuilder = Builder.fromConfig(config: config)
+        // Enable filesystem logging
+        let logFilePath = logPath + "/ldk-node.log"
+        nodeBuilder.setFilesystemLogger(logFilePath: logFilePath, maxLogLevel: .trace)
         let esploraSyncConfig = EsploraSyncConfig(backgroundSyncConfig: .some(backgroundSync))
         nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: esploraSyncConfig)
 
