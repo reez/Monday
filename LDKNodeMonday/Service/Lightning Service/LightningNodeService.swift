@@ -97,9 +97,12 @@ class LightningNodeService {
         config.trustedPeers0conf = [self.lsp.nodeId]
         //        config.logLevel = .trace
         
-        // Faster sync intervals for better balance updates
-        config.onchainWalletSyncIntervalSecs = 20  // Default: 80 seconds
-        config.lightningWalletSyncIntervalSecs = 10  // Default: 30 seconds
+        // Faster sync intervals for better balance updates (moved under EsploraSyncConfig)
+        let backgroundSync = BackgroundSyncConfig(
+            onchainWalletSyncIntervalSecs: 20,      // Default: 80 seconds
+            lightningWalletSyncIntervalSecs: 10,    // Default: 30 seconds
+            feeRateCacheUpdateIntervalSecs: 600     // Default: 600 seconds
+        )
 
         let anchor_cfg = AnchorChannelsConfig(
             trustedPeersNoReserve: [self.lsp.nodeId],
@@ -108,7 +111,8 @@ class LightningNodeService {
         config.anchorChannelsConfig = .some(anchor_cfg)
 
         let nodeBuilder = Builder.fromConfig(config: config)
-        nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: nil)
+        let esploraSyncConfig = EsploraSyncConfig(backgroundSyncConfig: .some(backgroundSync))
+        nodeBuilder.setChainSourceEsplora(serverUrl: self.server.url, config: esploraSyncConfig)
 
         switch self.network {
         case .bitcoin:
