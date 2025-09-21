@@ -40,7 +40,7 @@ struct SendReviewView: View {
                 Label("Insufficient Funds", systemImage: "x.circle")
                     .padding(40)
             }
-            
+
             Button.init {
                 Task {
                     try await viewModel.send()

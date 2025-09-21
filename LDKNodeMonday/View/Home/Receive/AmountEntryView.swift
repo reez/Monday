@@ -51,19 +51,19 @@ struct AmountEntryView: View {
                 .padding(.horizontal, 50)
                 .padding(.bottom, 30)
 
-//                Button {
-//                    amount = UInt64(numpadAmount) ?? 0
-//                    dismiss()
-//                } label: {
-//                    Text("Done")
-//                }
-//                .buttonStyle(
-//                    BitcoinOutlined(
-//                        tintColor: .accent,
-//                        isCapsule: true
-//                    )
-//                )
-                
+                //                Button {
+                //                    amount = UInt64(numpadAmount) ?? 0
+                //                    dismiss()
+                //                } label: {
+                //                    Text("Done")
+                //                }
+                //                .buttonStyle(
+                //                    BitcoinOutlined(
+                //                        tintColor: .accent,
+                //                        isCapsule: true
+                //                    )
+                //                )
+
                 Button.init {
                     amount = UInt64(numpadAmount) ?? 0
                     dismiss()
@@ -73,8 +73,6 @@ struct AmountEntryView: View {
                         .padding(.horizontal, 80)
                 }
                 .buttonStyle(.borderedProminent)
-                
-                
 
             }
             .padding(.bottom, 20)

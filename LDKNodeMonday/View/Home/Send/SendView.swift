@@ -35,7 +35,7 @@ struct SendView: View {
                             .frame(width: 150, height: 150, alignment: .center)
                             .padding(40)
                         Spacer()
-                        
+
                         Button.init {
                             dismiss()
                         } label: {
@@ -45,7 +45,6 @@ struct SendView: View {
                         }
                         .padding(.bottom, 40)
                         .buttonStyle(.borderedProminent)
-
 
                     }
                 }

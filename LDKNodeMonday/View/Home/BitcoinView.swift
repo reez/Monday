@@ -144,7 +144,8 @@ struct BitcoinView: View {
                 viewModel: .init(lightningClient: viewModel.lightningClient)
             )
         }
-        .sheet(isPresented: $isSendSheetManualPresented, onDismiss: { Task { viewModel.update() } }) {
+        .sheet(isPresented: $isSendSheetManualPresented, onDismiss: { Task { viewModel.update() } })
+        {
             SendView(
                 viewModel: SendViewModel.init(
                     lightningClient: viewModel.lightningClient,
@@ -155,7 +156,8 @@ struct BitcoinView: View {
             )
             .presentationDetents([.large])
         }
-        .sheet(isPresented: $isSendSheetCameraPresented, onDismiss: { Task { viewModel.update() } }) {
+        .sheet(isPresented: $isSendSheetCameraPresented, onDismiss: { Task { viewModel.update() } })
+        {
             SendView(
                 viewModel: SendViewModel.init(
                     lightningClient: viewModel.lightningClient,

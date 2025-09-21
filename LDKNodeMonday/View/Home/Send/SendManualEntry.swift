@@ -117,7 +117,7 @@ struct SendManualEntry: View {
         }.padding(.vertical, 40)
 
         Spacer()
-        
+
         Button.init {
             viewModel.sendViewState = .reviewPayment
         } label: {
@@ -129,7 +129,6 @@ struct SendManualEntry: View {
         .buttonStyle(.borderedProminent)
         .disabled(viewModel.amountSat == 0)
 
-        
     }
 }
 

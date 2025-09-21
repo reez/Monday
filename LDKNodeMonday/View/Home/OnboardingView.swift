@@ -33,12 +33,12 @@ struct OnboardingView: View {
                             .foregroundColor(.accent)
                             .frame(width: 150, height: 150, alignment: .center)
                             .padding(40)
-//                            .scaleEffect(animateContent ? 1 : 0)
-//                            .opacity(animateContent ? 1 : 0)
-//                            .animation(
-//                                .spring(response: 0.6, dampingFraction: 0.5),
-//                                value: animateContent
-//                            )
+                        //                            .scaleEffect(animateContent ? 1 : 0)
+                        //                            .opacity(animateContent ? 1 : 0)
+                        //                            .animation(
+                        //                                .spring(response: 0.6, dampingFraction: 0.5),
+                        //                                value: animateContent
+                        //                            )
                         Group {
                             Text("Monday Wallet")
                                 .font(.largeTitle.weight(.semibold))
@@ -47,9 +47,9 @@ struct OnboardingView: View {
                                 .multilineTextAlignment(.center)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
-//                        .opacity(animateContent ? 1 : 0)
-//                        .offset(y: animateContent ? 0 : 20)
-//                        .animation(.easeOut(duration: 0.5).delay(0.3), value: animateContent)
+                        //                        .opacity(animateContent ? 1 : 0)
+                        //                        .offset(y: animateContent ? 0 : 20)
+                        //                        .animation(.easeOut(duration: 0.5).delay(0.3), value: animateContent)
                     }
 
                     Spacer()
@@ -68,7 +68,7 @@ struct OnboardingView: View {
                                 .padding(.horizontal, 20)
                         }
                         .buttonStyle(.borderedProminent)
-                        
+
                         Button {
                             showingImportWalletSheet.toggle()
                         } label: {
@@ -80,11 +80,11 @@ struct OnboardingView: View {
                         .sheet(isPresented: $showingImportWalletSheet) {
                             ImportWalletView().environmentObject(viewModel)
                         }
-                        
+
                     }
-//                    .opacity(animateContent ? 1 : 0)
-//                    .offset(y: animateContent ? 0 : 30)
-//                    .animation(.easeOut(duration: 0.5).delay(0.6), value: animateContent)
+                    //                    .opacity(animateContent ? 1 : 0)
+                    //                    .offset(y: animateContent ? 0 : 30)
+                    //                    .animation(.easeOut(duration: 0.5).delay(0.6), value: animateContent)
 
                 }
                 .dynamicTypeSize(...DynamicTypeSize.accessibility2)
@@ -105,9 +105,9 @@ struct OnboardingView: View {
                                 .fontWeight(.medium)
                             }
                         )
-//                        .opacity(animateContent ? 1 : 0)
-//                        .offset(x: animateContent ? 0 : 100)
-//                        .animation(.easeOut(duration: 0.5).delay(0.6), value: animateContent)
+                        //                        .opacity(animateContent ? 1 : 0)
+                        //                        .offset(x: animateContent ? 0 : 100)
+                        //                        .animation(.easeOut(duration: 0.5).delay(0.6), value: animateContent)
                     }
                 }
                 .sheet(isPresented: $showingNetworkSettingsSheet) {
@@ -126,11 +126,11 @@ struct OnboardingView: View {
                         }
                     )
                 }
-//                .onAppear {
-//                    withAnimation {
-//                        animateContent = true
-//                    }
-//                }
+            //                .onAppear {
+            //                    withAnimation {
+            //                        animateContent = true
+            //                    }
+            //                }
         }
     }
 }
