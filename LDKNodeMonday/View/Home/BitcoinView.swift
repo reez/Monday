@@ -18,6 +18,9 @@ struct BitcoinView: View {
     @State private var showToast = false
     @State private var showingNodeIDView = false
     @State private var displayBalanceType = DisplayBalanceType.userDefaults
+    @State private var isReceiveSheetPresented = false
+    @State private var isSendSheetManualPresented = false
+    @State private var isSendSheetCameraPresented = false
     @StateObject var viewModel: BitcoinViewModel
     @StateObject private var eventService = EventService()
     @Binding var sendNavigationPath: NavigationPath
@@ -27,9 +30,6 @@ struct BitcoinView: View {
         VStack {
             BalanceHeader(displayBalanceType: $displayBalanceType, viewModel: viewModel)
                 .padding(.vertical, 40)
-
-            TransactionButtons(viewModel: viewModel)
-                .padding(.horizontal, 40)
 
             PaymentsListView(
                 payments: $viewModel.payments,
@@ -59,6 +59,38 @@ struct BitcoinView: View {
                     }
                 }
             }
+            ToolbarItemGroup(placement: .bottomBar) {
+                // Send button
+                Button {
+                    isSendSheetManualPresented = true
+                } label: {
+                    Label("Send", systemImage: "arrow.up")
+                }.disabled(viewModel.unifiedBalance == 0)
+                    .glassEffect()
+
+                Spacer()
+
+                // Scan QR button
+                Button {
+                    isSendSheetCameraPresented = true
+                } label: {
+                    Label("Scan QR", systemImage: "qrcode.viewfinder")
+                }
+                .font(.title)
+                .disabled(viewModel.unifiedBalance == 0)
+                .glassEffect()
+
+                Spacer()
+
+                // Receive button
+                Button {
+                    isReceiveSheetPresented = true
+                } label: {
+                    Label("Receive", systemImage: "arrow.down")
+                }
+                .sensoryFeedback(.increase, trigger: isReceiveSheetPresented)
+                .glassEffect()
+            }
         }
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)  // Sets max dynamic size for all Text
         .onAppear { viewModel.update() }
@@ -66,6 +98,11 @@ struct BitcoinView: View {
             of: eventService.lastEvent,
             { _, _ in
                 showToast = eventService.lastEvent != nil
+                withAnimation {
+                    isReceiveSheetPresented = false
+                    isSendSheetManualPresented = false
+                    isSendSheetCameraPresented = false
+                }
             }
         )
         .onReceive(viewModel.$bitcoinViewError) { errorMessage in
@@ -106,6 +143,32 @@ struct BitcoinView: View {
             ReceiveView(
                 viewModel: .init(lightningClient: viewModel.lightningClient)
             )
+        }
+        .sheet(isPresented: $isSendSheetManualPresented, onDismiss: { Task { viewModel.update() } }) {
+            SendView(
+                viewModel: SendViewModel.init(
+                    lightningClient: viewModel.lightningClient,
+                    sendViewState: .manualEntry,
+                    price: viewModel.price,
+                    balances: viewModel.balances
+                )
+            )
+            .presentationDetents([.large])
+        }
+        .sheet(isPresented: $isSendSheetCameraPresented, onDismiss: { Task { viewModel.update() } }) {
+            SendView(
+                viewModel: SendViewModel.init(
+                    lightningClient: viewModel.lightningClient,
+                    sendViewState: .scanAddress,
+                    price: viewModel.price,
+                    balances: viewModel.balances
+                )
+            )
+            .presentationDetents([.large])
+        }
+        .sheet(isPresented: $isReceiveSheetPresented, onDismiss: { Task { viewModel.update() } }) {
+            ReceiveView(viewModel: .init(lightningClient: viewModel.lightningClient))
+                .presentationDetents([.large])
         }
     }
 
@@ -195,119 +258,6 @@ struct BalanceHeader: View {
             return ""
         }
     }
-}
-
-struct TransactionButtons: View {
-    @ObservedObject var viewModel: BitcoinViewModel
-    @State private var isReceiveSheetPresented = false
-    @State private var isSendSheetManualPresented = false
-    @State private var isSendSheetCameraPresented = false
-    @StateObject private var eventService = EventService()
-
-    var body: some View {
-        HStack(alignment: .center) {
-
-            // Send button
-            Button {
-                isSendSheetManualPresented = true
-            } label: {
-                Text("Send")
-            }.buttonStyle(
-                BitcoinFilled(
-                    width: 120,
-                    tintColor: .accent,
-                    isCapsule: true
-                )
-            ).disabled(viewModel.unifiedBalance == 0)
-
-            Spacer()
-
-            // Scan QR button
-            Button {
-                isSendSheetCameraPresented = true
-            } label: {
-                Label("Scan QR", systemImage: "qrcode.viewfinder")
-                    .font(.title)
-                    .frame(height: 60, alignment: .center)
-                    .labelStyle(.iconOnly)
-                    .foregroundColor(.accentColor)
-                    .padding()
-            }.disabled(viewModel.unifiedBalance == 0)
-
-            Spacer()
-
-            // Receive button
-            Button("Receive") {
-                isReceiveSheetPresented = true
-            }
-            .sensoryFeedback(.increase, trigger: isReceiveSheetPresented)
-            .buttonStyle(
-                BitcoinFilled(
-                    width: 120,
-                    tintColor: .accent,
-                    isCapsule: true
-                )
-            )
-            .sheet(
-                isPresented: $isSendSheetManualPresented,
-                onDismiss: {
-                    Task {
-                        viewModel.update()
-                    }
-                }
-            ) {
-                SendView(
-                    viewModel: SendViewModel.init(
-                        lightningClient: viewModel.lightningClient,
-                        sendViewState: .manualEntry,
-                        price: viewModel.price,
-                        balances: viewModel.balances
-                    )
-                )
-                .presentationDetents([.large])
-            }
-            .sheet(
-                isPresented: $isSendSheetCameraPresented,
-                onDismiss: {
-                    Task {
-                        viewModel.update()
-                    }
-                }
-            ) {
-                SendView(
-                    viewModel: SendViewModel.init(
-                        lightningClient: viewModel.lightningClient,
-                        sendViewState: .scanAddress,
-                        price: viewModel.price,
-                        balances: viewModel.balances
-                    )
-                )
-                .presentationDetents([.large])
-            }
-            .sheet(
-                isPresented: $isReceiveSheetPresented,
-                onDismiss: {
-                    Task {
-                        viewModel.update()
-                    }
-                }
-            ) {
-                ReceiveView(viewModel: .init(lightningClient: viewModel.lightningClient))
-                    .presentationDetents([.large])
-            }
-
-        }.onChange(
-            of: eventService.lastEvent,
-            { _, _ in
-                withAnimation {
-                    isReceiveSheetPresented = false
-                    isSendSheetManualPresented = false
-                    isSendSheetCameraPresented = false
-                }
-            }
-        )
-    }
-
 }
 
 public enum DisplayBalanceType: String {
