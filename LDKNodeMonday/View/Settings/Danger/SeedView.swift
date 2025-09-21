@@ -30,16 +30,21 @@ struct SeedView: View {
                 .multilineTextAlignment(.center)
                 .padding(40)
                 Spacer()
-                Button("Show Recovery Phrase") {
+                Button.init {
                     showAlert = true
-                }.buttonStyle(BitcoinFilled(tintColor: .accentColor, isCapsule: true))
-                    .alert(
-                        "Are you sure you want to view the recovery phrase?",
-                        isPresented: $showAlert
-                    ) {
-                        Button("Yes", role: .destructive) { showRecoveryPhrase = true }
-                        Button("No", role: .cancel) {}
-                    }
+                } label: {
+                    Text("Show Recovery Phrase")
+                        .padding(.all, 10)
+                        .padding(.horizontal, 60)
+                }
+                .buttonStyle(.borderedProminent)
+                .alert(
+                    "Are you sure you want to view the recovery phrase?",
+                    isPresented: $showAlert
+                ) {
+                    Button("Yes", role: .destructive) { showRecoveryPhrase = true }
+                    Button("No", role: .cancel) {}
+                }
             } else {
                 SeedPhraseView(
                     words: viewModel.seed.mnemonic.components(separatedBy: " "),

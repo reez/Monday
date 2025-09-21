@@ -41,7 +41,7 @@ struct SendReviewView: View {
                     .padding(40)
             }
 
-            Button {
+            Button.init {
                 Task {
                     try await viewModel.send()
                 }
@@ -54,15 +54,13 @@ struct SendReviewView: View {
                 }
             } label: {
                 Text("Send")
+                    .padding(.all, 10)
+                    .padding(.horizontal, 80)
             }
-            .buttonStyle(
-                BitcoinFilled(
-                    tintColor: .accent,
-                    isCapsule: true
-                )
-            )
-            .disabled(disableSend())
             .padding(.bottom, 40)
+            .buttonStyle(.borderedProminent)
+            .disabled(disableSend())
+
         }
     }
 
