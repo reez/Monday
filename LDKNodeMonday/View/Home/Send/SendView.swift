@@ -35,18 +35,18 @@ struct SendView: View {
                             .frame(width: 150, height: 150, alignment: .center)
                             .padding(40)
                         Spacer()
-                        Button {
+                        
+                        Button.init {
                             dismiss()
                         } label: {
                             Text("Done")
+                                .padding(.all, 10)
+                                .padding(.horizontal, 80)
                         }
-                        .buttonStyle(
-                            BitcoinFilled(
-                                tintColor: .accent,
-                                isCapsule: true
-                            )
-                        )
                         .padding(.bottom, 40)
+                        .buttonStyle(.borderedProminent)
+
+
                     }
                 }
             }
