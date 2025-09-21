@@ -51,18 +51,30 @@ struct AmountEntryView: View {
                 .padding(.horizontal, 50)
                 .padding(.bottom, 30)
 
-                Button {
+//                Button {
+//                    amount = UInt64(numpadAmount) ?? 0
+//                    dismiss()
+//                } label: {
+//                    Text("Done")
+//                }
+//                .buttonStyle(
+//                    BitcoinOutlined(
+//                        tintColor: .accent,
+//                        isCapsule: true
+//                    )
+//                )
+                
+                Button.init {
                     amount = UInt64(numpadAmount) ?? 0
                     dismiss()
                 } label: {
                     Text("Done")
+                        .padding(.all, 10)
+                        .padding(.horizontal, 80)
                 }
-                .buttonStyle(
-                    BitcoinOutlined(
-                        tintColor: .accent,
-                        isCapsule: true
-                    )
-                )
+                .buttonStyle(.borderedProminent)
+                
+                
 
             }
             .padding(.bottom, 20)
