@@ -117,19 +117,19 @@ struct SendManualEntry: View {
         }.padding(.vertical, 40)
 
         Spacer()
-
-        Button {
+        
+        Button.init {
             viewModel.sendViewState = .reviewPayment
         } label: {
             Text("Review")
+                .padding(.all, 10)
+                .padding(.horizontal, 80)
         }
-        .buttonStyle(
-            BitcoinFilled(
-                tintColor: .accent,
-                isCapsule: true
-            )
-        ).disabled(viewModel.amountSat == 0)
         .padding(.bottom, 40)
+        .buttonStyle(.borderedProminent)
+        .disabled(viewModel.amountSat == 0)
+
+        
     }
 }
 
