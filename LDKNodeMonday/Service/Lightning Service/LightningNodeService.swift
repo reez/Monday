@@ -34,6 +34,11 @@ class LightningNodeService {
     var network: Network
     var server: EsploraServer
     var lsp: LightningServiceProvider
+    private var eventListenerTask: Task<Void, Never>?
+
+    deinit {
+        cancelEventListenerTask()
+    }
 
     init(
         keyService: KeyClient = .live
@@ -195,11 +200,59 @@ class LightningNodeService {
         }
     }
 
+    private static func existingInstance() -> LightningNodeService? {
+        lock.lock()
+        let instance = _shared
+        lock.unlock()
+        return instance
+    }
+
+    static func stopAndReleaseShared() throws {
+        guard let instance = existingInstance() else { return }
+        do {
+            try instance.stop()
+        } catch let error as NodeError {
+            if case .NotRunning = error {
+                instance.cancelEventListenerTask()
+            } else {
+                throw error
+            }
+        }
+        stopTrackingSharedInstance()
+    }
+
+    static func rebuildShared(keyService: KeyClient) throws -> LightningNodeService {
+        if let instance = existingInstance() {
+            do {
+                try instance.stop()
+            } catch let error as NodeError {
+                if case .NotRunning = error {
+                    instance.cancelEventListenerTask()
+                } else {
+                    throw error
+                }
+            }
+        }
+
+        let service = LightningNodeService(keyService: keyService)
+        lock.lock()
+        _shared = service
+        lock.unlock()
+        return service
+    }
+
+    private static func stopTrackingSharedInstance() {
+        lock.lock()
+        _shared = nil
+        lock.unlock()
+    }
+
     func start() async throws {
         try ldkNode.start()
     }
 
     func stop() throws {
+        cancelEventListenerTask()
         try ldkNode.stop()
     }
 
@@ -211,8 +264,11 @@ class LightningNodeService {
     }
 
     func reset() throws {
-        if LightningNodeService.shared.status().isRunning {
-            try LightningNodeService.shared.stop()
+        if let instance = LightningNodeService.existingInstance() {
+            if instance.status().isRunning {
+                try instance.stop()
+            }
+            instance.cancelEventListenerTask()
         }
 
         // Clean up wallet data to prevent conflicts on next initialization
@@ -223,7 +279,7 @@ class LightningNodeService {
 
         try? FileManager.default.removeItem(atPath: networkPath)
 
-        LightningNodeService._shared = nil
+        LightningNodeService.stopTrackingSharedInstance()
     }
 
     func nodeId() -> String {
@@ -390,20 +446,30 @@ extension LightningNodeService {
 
 extension LightningNodeService {
     func listenForEvents() {
-        Task {
-            while true {
-                let event = await ldkNode.nextEventAsync()
+        eventListenerTask?.cancel()
+        eventListenerTask = Task { [weak self] in
+            guard let self else { return }
+            while !Task.isCancelled {
+                let event = await self.ldkNode.nextEventAsync()
+                if Task.isCancelled { break }
                 NotificationCenter.default.post(
                     name: .ldkEventReceived,
                     object: event
                 )
-                try? ldkNode.eventHandled()
+                try? self.ldkNode.eventHandled()
             }
         }
     }
 
     func syncWallets() throws {
         try self.ldkNode.syncWallets()
+    }
+}
+
+extension LightningNodeService {
+    fileprivate func cancelEventListenerTask() {
+        eventListenerTask?.cancel()
+        eventListenerTask = nil
     }
 }
 
