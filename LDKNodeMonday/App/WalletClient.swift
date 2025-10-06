@@ -105,7 +105,11 @@ public class WalletClient {
                     self.appMode = .mock
                     self.keyClient = .mock
                     self.lightningClient = .mock
-                case .live, @unknown default:
+                case .live:
+                    self.appMode = .live
+                    self.keyClient = .live
+                    self.lightningClient = .live
+                @unknown default:
                     self.appMode = .live
                     self.keyClient = .live
                     self.lightningClient = .live
@@ -116,7 +120,9 @@ public class WalletClient {
             case .mock:
                 try LightningNodeService.stopAndReleaseShared()
             case .live:
-                try LightningNodeService.rebuildShared(keyService: self.keyClient)
+                _ = try LightningNodeService.rebuildShared(keyService: self.keyClient)
+            @unknown default:
+                _ = try LightningNodeService.rebuildShared(keyService: self.keyClient)
             }
 
             try await lightningClient.start()
