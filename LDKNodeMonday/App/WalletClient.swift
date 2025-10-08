@@ -96,27 +96,44 @@ public class WalletClient {
         lsp: LightningServiceProvider? = nil
     ) async {
         do {
+            let targetMode = appMode ?? .live
+
             await MainActor.run {
                 self.appState = .loading
-                switch appMode {
+                switch targetMode {
                 case .mock:
                     self.appMode = .mock
                     self.keyClient = .mock
                     self.lightningClient = .mock
-                default:
+                case .live:
+                    self.appMode = .live
+                    self.keyClient = .live
+                    self.lightningClient = .live
+                @unknown default:
                     self.appMode = .live
                     self.keyClient = .live
                     self.lightningClient = .live
                 }
             }
-            try await lightningClient.restart()
+
+            switch targetMode {
+            case .mock:
+                try LightningNodeService.stopAndReleaseShared()
+            case .live:
+                _ = try LightningNodeService.rebuildShared(keyService: self.keyClient)
+            @unknown default:
+                _ = try LightningNodeService.rebuildShared(keyService: self.keyClient)
+            }
+
+            try await lightningClient.start()
             lightningClient.listenForEvents()
+
             await MainActor.run {
                 self.network = newNetwork
                 self.server = newServer
                 self.appState = .wallet
 
-                if let lsp = lsp {
+                if let lsp {
                     self.lsp = lsp
                 }
             }

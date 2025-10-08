@@ -46,7 +46,8 @@ extension KeyService {
         let newBackupInfo = BackupInfo(
             mnemonic: currentBackupInfo.mnemonic,
             networkString: networkString,
-            serverURL: currentBackupInfo.serverURL
+            serverURL: currentBackupInfo.serverURL,
+            lspString: currentBackupInfo.lspNodeId
         )
         try self.saveBackupInfo(backupInfo: newBackupInfo)
     }
@@ -65,7 +66,8 @@ extension KeyService {
         let newBackupInfo = BackupInfo(
             mnemonic: currentBackupInfo.mnemonic,
             networkString: currentBackupInfo.networkString,
-            serverURL: url
+            serverURL: url,
+            lspString: currentBackupInfo.lspNodeId
         )
         try self.saveBackupInfo(backupInfo: newBackupInfo)
     }
