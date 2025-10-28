@@ -74,6 +74,20 @@ public class WalletClient {
                     self.appState = .wallet
                 }
             } catch let error {
+                if let nodeError = error as? NodeError,
+                    case .FeerateEstimationUpdateTimeout = nodeError
+                {
+                    let warning = handleNodeError(nodeError)
+                    await MainActor.run {
+                        self.appError = NSError(
+                            domain: warning.title,
+                            code: nodeError.hashValue,
+                            userInfo: [NSLocalizedDescriptionKey: warning.detail]
+                        )
+                        self.appState = .error
+                    }
+                    return
+                }
                 await MainActor.run {
                     self.appError = error
                     self.appState = .error
