@@ -10,12 +10,18 @@ import LDKNode
 import SwiftUI
 
 struct SeedView: View {
-    @ObservedObject var viewModel: SeedViewModel
+    @StateObject private var viewModel: SeedViewModel
     @State private var showAlert = false
     @State private var showRecoveryPhrase = false
     @State private var isCopied = false
     @State private var showCheckmark = false
     @State private var showingSeedViewErrorAlert = false
+
+    init(keyClient: KeyClient, lightningClient: LightningNodeClient) {
+        _viewModel = StateObject(
+            wrappedValue: SeedViewModel(keyClient: keyClient, lightningClient: lightningClient)
+        )
+    }
 
     var body: some View {
 
@@ -46,7 +52,8 @@ struct SeedView: View {
                     preferredWordsPerRow: 2,
                     usePaging: true,
                     wordsPerPage: 12
-                ).padding()
+                )
+                .padding()
 
                 HStack {
                     Button(
@@ -98,6 +105,6 @@ struct SeedView: View {
 
 #if DEBUG
     #Preview {
-        SeedView(viewModel: .init(lightningClient: .mock))
+        SeedView(keyClient: .mock, lightningClient: .mock)
     }
 #endif

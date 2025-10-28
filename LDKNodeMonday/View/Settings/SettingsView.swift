@@ -25,7 +25,8 @@ struct SettingsView: View {
                 Section {
                     NavigationLink(
                         destination: SeedView(
-                            viewModel: .init(lightningClient: viewModel.lightningClient)
+                            keyClient: viewModel.keyClient,
+                            lightningClient: viewModel.lightningClient
                         )
                     ) {
                         Label("Recovery Phrase", systemImage: "lock")

@@ -61,6 +61,7 @@ public class WalletClient {
                 await MainActor.run {
                     self.network = lightningClient.getNetwork()
                     self.server = lightningClient.getServer()
+                    self.lsp = lightningClient.getLsp()
 
                     // Load LSP from keychain if available
                     if let savedLSPNodeId = try? self.keyClient.getLSP(),
@@ -73,6 +74,20 @@ public class WalletClient {
                     self.appState = .wallet
                 }
             } catch let error {
+                if let nodeError = error as? NodeError,
+                    case .FeerateEstimationUpdateTimeout = nodeError
+                {
+                    let warning = handleNodeError(nodeError)
+                    await MainActor.run {
+                        self.appError = NSError(
+                            domain: warning.title,
+                            code: nodeError.hashValue,
+                            userInfo: [NSLocalizedDescriptionKey: warning.detail]
+                        )
+                        self.appState = .error
+                    }
+                    return
+                }
                 await MainActor.run {
                     self.appError = error
                     self.appState = .error

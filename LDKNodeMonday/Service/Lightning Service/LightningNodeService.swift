@@ -60,10 +60,10 @@ class LightningNodeService {
                 fatalError("Configuration error: No Esplora servers available for \(network)")
             }
             self.server = server
+            let resolvedLspNodeId =
+                backupInfo.lspNodeId ?? LightningServiceProvider.see_signet.nodeId
             self.lsp =
-                LightningServiceProvider.getByNodeId(
-                    backupInfo.lspNodeId ?? LightningServiceProvider.see_signet.nodeId
-                ) ?? .see_signet
+                LightningServiceProvider.getByNodeId(resolvedLspNodeId) ?? .see_signet
         } else {
             self.network = .signet
             self.server = .mutiny_signet
@@ -427,6 +427,10 @@ class LightningNodeService {
         return payments
     }
 
+    func currentLsp() -> LightningServiceProvider {
+        return lsp
+    }
+
     func status() -> NodeStatus {
         let status = ldkNode.status()
         return status
@@ -516,6 +520,7 @@ public struct LightningNodeClient {
     let listPeers: () -> [PeerDetails]
     let listChannels: () -> [ChannelDetails]
     let listPayments: () -> [PaymentDetails]
+    let getLsp: () -> LightningServiceProvider
     let status: () -> NodeStatus
     let deleteWallet: () throws -> Void
     let getBackupInfo: () throws -> BackupInfo
@@ -597,6 +602,7 @@ extension LightningNodeClient {
         listPeers: { LightningNodeService.shared.listPeers() },
         listChannels: { LightningNodeService.shared.listChannels() },
         listPayments: { LightningNodeService.shared.listPayments() },
+        getLsp: { LightningNodeService.shared.currentLsp() },
         status: { LightningNodeService.shared.status() },
         deleteWallet: { try LightningNodeService.shared.deleteWallet() },
         getBackupInfo: { try LightningNodeService.shared.getBackupInfo() },
@@ -643,6 +649,7 @@ extension LightningNodeClient {
         listPeers: { [] },
         listChannels: { [] },
         listPayments: { mockPayments },
+        getLsp: { .see_signet },
         status: {
             NodeStatus(
                 isRunning: true,

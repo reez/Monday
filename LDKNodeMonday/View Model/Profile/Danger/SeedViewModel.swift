@@ -16,25 +16,44 @@ class SeedViewModel: ObservableObject {
         serverURL: EsploraServer.mutiny_signet.url
     )
     @Published var seedViewError: MondayError?
-    private let lightningClient: LightningNodeClient
+    private let keyClient: KeyClient
+    private let lightningClient: LightningNodeClient?
 
-    init(lightningClient: LightningNodeClient) {
+    init(keyClient: KeyClient, lightningClient: LightningNodeClient? = nil) {
+        self.keyClient = keyClient
         self.lightningClient = lightningClient
     }
 
     func getSeed() {
         do {
-            let seed = try lightningClient.getBackupInfo()
-            self.seed = seed
-        } catch let error as NodeError {
-            let errorString = handleNodeError(error)
+            let seed = try keyClient.getBackupInfo()
             DispatchQueue.main.async {
-                self.seedViewError = .init(title: errorString.title, detail: errorString.detail)
+                self.seed = seed
             }
         } catch {
+            if let lightningClient {
+                do {
+                    let seed = try lightningClient.getBackupInfo()
+                    DispatchQueue.main.async {
+                        self.seed = seed
+                    }
+                    return
+                } catch let nodeError as NodeError {
+                    let errorString = handleNodeError(nodeError)
+                    DispatchQueue.main.async {
+                        self.seedViewError = .init(
+                            title: errorString.title,
+                            detail: errorString.detail
+                        )
+                    }
+                    return
+                } catch {
+                    // Fall through to generic error handling below.
+                }
+            }
             DispatchQueue.main.async {
                 self.seedViewError = .init(
-                    title: "Unexpected error",
+                    title: "Recovery phrase unavailable",
                     detail: error.localizedDescription
                 )
             }

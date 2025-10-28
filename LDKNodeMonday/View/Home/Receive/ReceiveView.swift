@@ -37,6 +37,19 @@ struct ReceiveView: View {
                         selectedPaymentAddress: selectedPaymentAddress,
                         addressArray: viewModel.paymentAddresses.compactMap { $0 }
                     )
+                    if let warning = viewModel.lightningWarning {
+                        VStack(spacing: 4) {
+                            Text(warning.title)
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                            Text(warning.detail)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(.top, 16)
+                        .padding(.horizontal, 32)
+                    }
                 }
 
                 Spacer()
