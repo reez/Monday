@@ -15,6 +15,7 @@ class ReceiveViewModel: ObservableObject {
     @Published var paymentAddresses: [PaymentAddress?] = []
     @Published var addressGenerationStatus = AddressGenerationStatus.generating
     @Published var receiveViewError: MondayError?
+    @Published var lightningWarning: MondayError?
     @Published var networkColor = Color.gray
     @Published var amountSat: UInt64 = 0
     @Published var message: String = ""
@@ -33,6 +34,8 @@ class ReceiveViewModel: ObservableObject {
     func receivePayment(amountSat: UInt64, message: String, expirySecs: UInt32) async {
         await MainActor.run {
             self.addressGenerationStatus = .generating
+            self.receiveViewError = nil
+            self.lightningWarning = nil
         }
         let receiveCapacity = maxReceiveCapacity()
         let needsJIT =
@@ -109,23 +112,45 @@ class ReceiveViewModel: ObservableObject {
         let needsJIT =
             amountSat.satsAsMsats > receiveCapacity || (amountSat == 0 && receiveCapacity == 0)
 
-        // Always try to generate bolt11 invoice
-        // The needsJIT flag will handle JIT channel creation when capacity is insufficient
-        do {
-            let bolt11Invoice = try await lightningClient.bolt11Payment(
-                amountSat.satsAsMsats,
-                Bolt11InvoiceDescription.direct(description: message),  //message,
-                expirySecs,
-                nil,
-                needsJIT
+        // Always try to generate bolt11 invoice unless we know it will fail (e.g., zero amount with no inbound)
+        if amountSat == 0 && needsJIT {
+            debugPrint(
+                "Skipping Bolt11 generation: zero-amount request with no inbound capacity (needsJIT=true)"
             )
-            let bolt11InvoiceString = bolt11Invoice.description
-            bolt11PaymentAddress = PaymentAddress(
-                type: needsJIT ? .bolt11Jit : .bolt11,
-                address: bolt11InvoiceString
-            )
-        } catch {
-            debugPrint("Error generating Bolt11:", error.localizedDescription)
+        } else {
+            do {
+                let bolt11Invoice = try await lightningClient.bolt11Payment(
+                    amountSat.satsAsMsats,
+                    Bolt11InvoiceDescription.direct(description: message),
+                    expirySecs,
+                    nil,
+                    needsJIT
+                )
+                let bolt11InvoiceString = bolt11Invoice.description
+                bolt11PaymentAddress = PaymentAddress(
+                    type: needsJIT ? .bolt11Jit : .bolt11,
+                    address: bolt11InvoiceString
+                )
+            } catch let nodeError as NodeError {
+                let mondayError = handleNodeError(nodeError)
+                let pendingInbound = lightningClient.listPayments()
+                    .filter { $0.direction == .inbound && $0.status == .pending }
+                let pendingSummary = pendingInbound.map {
+                    "id=\($0.id), amountMsat=\($0.amountMsat), kind=\(String(describing: $0.kind))"
+                }
+                debugPrint(
+                    """
+                    Error generating Bolt11 (needsJIT=\(needsJIT), amountMsat=\(amountSat.satsAsMsats), message=\(message)):
+                    \(nodeError)
+                    Pending inbound payments: \(pendingSummary)
+                    """
+                )
+                await MainActor.run {
+                    self.lightningWarning = mondayError
+                }
+            } catch {
+                debugPrint("Error generating Bolt11:", error.localizedDescription)
+            }
         }
 
         // Unified
