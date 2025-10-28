@@ -61,23 +61,13 @@ class LightningNodeService {
             }
             self.server = server
             let resolvedLspNodeId =
-                backupInfo.lspNodeId ?? LightningServiceProvider.megalith_signet.nodeId
-            if let resolvedLsp = LightningServiceProvider.getByNodeId(resolvedLspNodeId) {
-                print(
-                    "LightningNodeService: using LSP \(resolvedLsp.name) (\(resolvedLsp.nodeId))"
-                )
-                self.lsp = resolvedLsp
-            } else {
-                print(
-                    "LightningNodeService: missing LSP for node id \(resolvedLspNodeId); defaulting to Megalith"
-                )
-                self.lsp = .megalith_signet
-            }
+                backupInfo.lspNodeId ?? LightningServiceProvider.see_signet.nodeId
+            self.lsp =
+                LightningServiceProvider.getByNodeId(resolvedLspNodeId) ?? .see_signet
         } else {
             self.network = .signet
-            self.server = .mutiny_signet  //.mutiny_signet
-            print("LightningNodeService: no backup info; defaulting to Megalith LSP")
-            self.lsp = .megalith_signet  //.see_signet
+            self.server = .mutiny_signet
+            self.lsp = .see_signet
         }
 
         self.keyService = keyService
@@ -659,7 +649,7 @@ extension LightningNodeClient {
         listPeers: { [] },
         listChannels: { [] },
         listPayments: { mockPayments },
-        getLsp: { .megalith_signet },
+        getLsp: { .see_signet },
         status: {
             NodeStatus(
                 isRunning: true,
