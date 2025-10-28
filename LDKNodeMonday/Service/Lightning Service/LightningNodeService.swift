@@ -437,6 +437,10 @@ class LightningNodeService {
         return payments
     }
 
+    func currentLsp() -> LightningServiceProvider {
+        return lsp
+    }
+
     func status() -> NodeStatus {
         let status = ldkNode.status()
         return status
@@ -526,6 +530,7 @@ public struct LightningNodeClient {
     let listPeers: () -> [PeerDetails]
     let listChannels: () -> [ChannelDetails]
     let listPayments: () -> [PaymentDetails]
+    let getLsp: () -> LightningServiceProvider
     let status: () -> NodeStatus
     let deleteWallet: () throws -> Void
     let getBackupInfo: () throws -> BackupInfo
@@ -607,6 +612,7 @@ extension LightningNodeClient {
         listPeers: { LightningNodeService.shared.listPeers() },
         listChannels: { LightningNodeService.shared.listChannels() },
         listPayments: { LightningNodeService.shared.listPayments() },
+        getLsp: { LightningNodeService.shared.currentLsp() },
         status: { LightningNodeService.shared.status() },
         deleteWallet: { try LightningNodeService.shared.deleteWallet() },
         getBackupInfo: { try LightningNodeService.shared.getBackupInfo() },
@@ -653,6 +659,7 @@ extension LightningNodeClient {
         listPeers: { [] },
         listChannels: { [] },
         listPayments: { mockPayments },
+        getLsp: { .megalith_signet },
         status: {
             NodeStatus(
                 isRunning: true,

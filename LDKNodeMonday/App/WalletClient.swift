@@ -16,7 +16,7 @@ public class WalletClient {
     public var lightningClient: LightningNodeClient
     public var network = Network.signet
     public var server = EsploraServer.mutiny_signet
-    public var lsp = LightningServiceProvider.see_signet
+    public var lsp = LightningServiceProvider.megalith_signet
     public var appMode: AppMode
     public var appState = AppState.loading
     public var appError: Error?
@@ -61,6 +61,7 @@ public class WalletClient {
                 await MainActor.run {
                     self.network = lightningClient.getNetwork()
                     self.server = lightningClient.getServer()
+                    self.lsp = lightningClient.getLsp()
 
                     // Load LSP from keychain if available
                     if let savedLSPNodeId = try? self.keyClient.getLSP(),
