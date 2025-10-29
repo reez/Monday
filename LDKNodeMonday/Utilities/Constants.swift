@@ -31,7 +31,8 @@ struct Constants {
             struct Signet {
                 static let allValues = [
                     EsploraServer.mutiny_signet,
-                    EsploraServer.bdk_signet,
+                    EsploraServer.mempool_signet,
+                    //                    EsploraServer.bdk_signet,
                     EsploraServer.lqwd_signet,
                 ]
             }
@@ -92,7 +93,11 @@ public struct EsploraServer: Hashable {
     )
 
     static let mutiny_signet = EsploraServer(name: "Mutiny", url: "https://mutinynet.com/api")
-    static let bdk_signet = EsploraServer(name: "BDK", url: "http://signet.bitcoindevkit.net")
+    static let mempool_signet = EsploraServer(
+        name: "Mempool",
+        url: "https://mempool.space/signet/api"
+    )
+    //    static let bdk_signet = EsploraServer(name: "BDK", url: "http://signet.bitcoindevkit.net")
     static let lqwd_signet = EsploraServer(name: "LQWD", url: "https://mutinynet.ltbl.io/api")
 
     static let local_regtest = EsploraServer(name: "Local", url: "http://127.0.0.1:3002")
@@ -116,7 +121,8 @@ extension EsploraServer {
         blockstream_bitcoin.url: .blockstream_bitcoin,
         mempoolspace_bitcoin.url: .mempoolspace_bitcoin,
         mutiny_signet.url: .mutiny_signet,
-        bdk_signet.url: .bdk_signet,
+        mempool_signet.url: .mempool_signet,
+        //        bdk_signet.url: .bdk_signet,
         lqwd_signet.url: .lqwd_signet,
         local_regtest.url: .local_regtest,
         blockstream_testnet.url: .blockstream_testnet,
@@ -129,7 +135,8 @@ extension EsploraServer {
         case "https://blockstream.info/api": self = .blockstream_bitcoin
         case "https://mempool.space/api": self = .mempoolspace_bitcoin
         case "https://mutinynet.com/api": self = .mutiny_signet
-        case "http://signet.bitcoindevkit.net": self = .bdk_signet
+        case "https://mempool.space/signet/api": self = .mempool_signet
+        //        case "http://signet.bitcoindevkit.net": self = .bdk_signet
         case "https://mutinynet.ltbl.io/api": self = .lqwd_signet
         case "http://127.0.0.1:3002": self = .local_regtest
         case "http://blockstream.info/testnet/api": self = .blockstream_testnet
